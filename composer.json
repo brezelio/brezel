@@ -4,7 +4,7 @@
   "minimum-stability": "stable",
   "license": "proprietary",
   "require": {
-    "brezel/brezel-api": "^1.3"
+    "brezel/brezel": "dev-package"
   },
   "require-dev": {
     "barryvdh/laravel-ide-helper": "^2.6",
@@ -21,6 +21,10 @@
     "roave/security-advisories": "dev-master"
   },
   "repositories": {
+    "brezel/brezel": {
+      "type": "git",
+      "url": "https://gitlab.com/kibro/brezel/brezel.git"
+    },
     "dev-package": {
       "type": "path",
       "url": "/users/keanu/dev/kibro/brezel-api",
