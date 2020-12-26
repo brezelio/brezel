@@ -1,5 +1,6 @@
 {
   "name": "brezel/example",
+  "version": "1.4.0",
   "description": "description",
   "minimum-stability": "stable",
   "license": "proprietary",
