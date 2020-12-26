@@ -23,8 +23,8 @@
   },
   "scripts": {
     "post-create-project-cmd": [
-      "@php \"copy('.env.example', '.env');\"",
-      "@php \"copy('supervisord.conf.example', 'supervisord.conf');\""
+      "@php -r \"copy('.env.example', '.env');\"",
+      "@php -r \"copy('supervisord.conf.example', 'supervisord.conf');\""
     ]
   },
   "repositories": {
