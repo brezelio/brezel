@@ -1,0 +1,11 @@
+[
+  {
+    "bakery_resource_client": "global",
+    "bakery_resource": {
+      "module": "clients",
+      "fields": {
+        "title": "Example Client"
+      }
+    }
+  }
+]

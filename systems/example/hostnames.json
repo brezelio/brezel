@@ -1,0 +1,8 @@
+[
+  {
+    "bakery_resource_hostname": "example",
+    "bakery_resource": {
+      "hostname": "example"
+    }
+  }
+]
