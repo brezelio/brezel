@@ -9,5 +9,5 @@ use App\Brezel;
 
 $brezel = new Brezel();
 $brezel->console();
-$status = $this->command($argv);
+$status = $brezel->command($argv);
 exit($status);
