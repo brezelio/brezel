@@ -1,11 +1,11 @@
 {
-  "name": "brezel/example",
+  "name": "brezel/brezel",
   "version": "1.4.0",
   "description": "description",
   "minimum-stability": "stable",
   "license": "proprietary",
   "require": {
-    "brezel/brezel": "dev-package"
+    "brezel/api": "dev-package"
   },
   "require-dev": {
     "barryvdh/laravel-ide-helper": "^2.6",
@@ -28,9 +28,9 @@
     ]
   },
   "repositories": {
-    "brezel/brezel": {
+    "brezel/api": {
       "type": "git",
-      "url": "https://gitlab.com/kibro/brezel/brezel.git"
+      "url": "https://gitlab.com/kibro/brezel/api.git"
     },
     "dev-package": {
       "type": "path",
