@@ -1,9 +1,0 @@
-[
-  {
-    "bakery_resource_module": "clients",
-    "bakery_resource": {
-      "identifier": "clients",
-      "type": "clients"
-    }
-  }
-]

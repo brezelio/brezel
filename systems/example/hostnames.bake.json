@@ -1,6 +1,7 @@
 [
   {
     "bakery_resource_hostname": "example",
+    "import": true,
     "bakery_resource": {
       "hostname": "example"
     }

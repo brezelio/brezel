@@ -1,9 +1,0 @@
-[
-  {
-    "bakery_resource_module": "users",
-    "bakery_resource": {
-      "identifier": "users",
-      "type": "users"
-    }
-  }
-]

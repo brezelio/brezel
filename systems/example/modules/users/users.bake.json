@@ -1,0 +1,30 @@
+[
+  {
+    "bakery_resource_module": "users",
+    "bakery_resource": {
+      "identifier": "users",
+      "type": "users",
+      "icon": "user",
+      "fields": [
+        {
+          "identifier": "name",
+          "type": "text"
+        },
+        {
+          "identifier": "email",
+          "type": "email"
+        },
+        {
+          "identifier": "password",
+          "type": "password",
+          "options": {
+            "ignore_when_empty": true
+          }
+        }
+      ],
+      "layouts": {
+        "detail": "${file('modules/users/users.detail.json')}"
+      }
+    }
+  }
+]

@@ -5,7 +5,10 @@
       "module": "clients",
       "fields": {
         "title": "Example Client"
-      }
+      },
+      "hostnames": [
+        "${bakery_resource_hostname.example.hostname}"
+      ]
     }
   }
 ]
