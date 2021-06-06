@@ -5,7 +5,7 @@
   "minimum-stability": "stable",
   "license": "proprietary",
   "require": {
-    "brezel/api": "dev-package"
+    "brezel/api": "*"
   },
   "require-dev": {
     "barryvdh/laravel-ide-helper": "^2.6",
@@ -27,17 +27,10 @@
       "@php -r \"copy('supervisord.conf.example', 'supervisord.conf');\""
     ]
   },
-  "repositories": {
-    "brezel/api": {
+  "repositories": [
+    {
       "type": "git",
       "url": "https://gitlab.com/kibro/brezel/api.git"
-    },
-    "dev-package": {
-      "type": "path",
-      "url": "/users/keanu/dev/kibro/brezel-api",
-      "options": {
-        "symlink": true
-      }
     }
-  }
+  ]
 }
