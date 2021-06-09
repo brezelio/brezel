@@ -18,19 +18,12 @@
     "pestphp/pest": "0.3.*",
     "pestphp/pest-plugin-laravel": "0.3.*",
     "phpstan/phpstan": "^0.12.38",
-    "phpunit/phpunit": "^9.0",
-    "roave/security-advisories": "dev-master"
+    "phpunit/phpunit": "^9.0"
   },
   "scripts": {
     "post-create-project-cmd": [
       "@php -r \"copy('.env.example', '.env');\"",
       "@php -r \"copy('supervisord.conf.example', 'supervisord.conf');\""
     ]
-  },
-  "repositories": [
-    {
-      "type": "git",
-      "url": "https://gitlab.com/kibro/brezel/api.git"
-    }
-  ]
+  }
 }
