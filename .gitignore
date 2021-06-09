@@ -1,6 +1,4 @@
 .env
-composer.lock
-supervisord.conf
 vendor
 
 .DS_Store
