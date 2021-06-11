@@ -25,11 +25,5 @@
       "@php -r \"copy('.env.example', '.env');\"",
       "@php -r \"copy('supervisord.conf.example', 'supervisord.conf');\""
     ]
-  },
-  "repositories": {
-    "10031718": {
-      "type": "composer",
-      "url": "https://gitlab.com/api/v4/group/10031718/-/packages/composer/"
-    }
   }
 }
