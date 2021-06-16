@@ -31,7 +31,7 @@ build_backend:
       - vendor
   before_script:
     - git config --global url."https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.com/".insteadOf "git@gitlab.com:"
-    - composer config gitlab-token.gitlab.com $CI_JOB_TOKEN
+    - composer config gitlab-token.gitlab.com $PACKAGE_REGISTRY_TOKEN
     - composer config repositories.10031718 composer https://gitlab.com/api/v4/group/10031718/-/packages/composer/
   script:
     - composer install
