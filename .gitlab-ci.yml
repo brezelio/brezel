@@ -4,7 +4,7 @@ stages:
   - build
   - deploy
 
-build_frontend_npm:
+build_frontend:
   image: node:14.15
   stage: build
   only:
