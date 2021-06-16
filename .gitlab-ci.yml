@@ -20,6 +20,21 @@ build_frontend:
     - npm install
     - npm run build
 
+build_backend:
+  image: php:7.4
+  stage: build
+  only:
+    - master
+  artifacts:
+    expire_in: 1 week
+    paths:
+      - vendor
+  before_script:
+    - composer config gitlab-token.gitlab.com $CI_JOB_TOKEN
+    - composer config repositories.10031718 composer https://gitlab.com/api/v4/group/10031718/-/packages/composer/
+  script:
+    - composer install
+
 deploy_frontend:
   image: docker:git
   stage: deploy
