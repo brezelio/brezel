@@ -1,0 +1,6 @@
+.DS_Store
+.env
+.env.local
+storage/logs
+storage/app/tenancy
+storage/*.key
