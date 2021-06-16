@@ -21,7 +21,7 @@ build_frontend:
     - npm run build
 
 build_backend:
-  image: php:7.4
+  image: composer
   stage: build
   only:
     - master
