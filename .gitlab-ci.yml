@@ -21,7 +21,7 @@ build_frontend:
     - npm run build
 
 build_backend:
-  image: php:7.4
+  image: registry.gitlab.com/kibro/brezel/api
   stage: build
   only:
     - master
