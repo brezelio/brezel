@@ -13,7 +13,6 @@ build_frontend:
     expire_in: 1 week
     paths:
       - dist
-      - node_modules
   script:
     - 'echo "//gitlab.com/api/v4/packages/npm/:_authToken=${CI_JOB_TOKEN}" > ~/.npmrc'
     - npm config set @kibro:registry https://gitlab.com/api/v4/packages/npm/
