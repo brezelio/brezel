@@ -30,7 +30,6 @@ build_backend:
     paths:
       - vendor
   before_script:
-    - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
     - composer config repositories.10031718 composer https://__token__:$PACKAGE_REGISTRY_TOKEN@gitlab.com/api/v4/group/10031718/-/packages/composer/packages.json
   script:
     - composer install
