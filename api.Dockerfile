@@ -16,4 +16,5 @@ CMD vendor/bin/brezel init && \
     vendor/bin/brezel system create example && \
     vendor/bin/brezel apply && \
     vendor/bin/brezel load && \
+    supervisord -c /app/storage/supervisord.conf && \
     php-fpm
