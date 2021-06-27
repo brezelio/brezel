@@ -4,7 +4,7 @@ stages:
   - build
   - deploy
 
-build_frontend:
+build frontend:
   image: node:14.15
   stage: build
   only:
@@ -13,13 +13,16 @@ build_frontend:
     expire_in: 1 week
     paths:
       - dist
+  cache:
+    - paths:
+        - node_modules
   script:
     - 'echo "//gitlab.com/api/v4/packages/npm/:_authToken=${CI_JOB_TOKEN}" > ~/.npmrc'
     - npm config set @kibro:registry https://gitlab.com/api/v4/packages/npm/
     - npm install
     - npm run build
 
-build_backend:
+build backend:
   image: registry.gitlab.com/kibro/brezel/api
   stage: build
   only:
@@ -33,7 +36,7 @@ build_backend:
   script:
     - composer install
 
-deploy_frontend:
+deploy frontend:
   image: docker:git
   stage: deploy
   variables:
@@ -49,12 +52,12 @@ deploy_frontend:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
   script:
     - docker info
-    - docker pull $CI_REGISTRY_IMAGE:static || true
-    - docker build -f static.Dockerfile --cache-from $CI_REGISTRY_IMAGE:static --tag $CI_REGISTRY_IMAGE:static-$CI_COMMIT_SHA --tag $CI_REGISTRY_IMAGE:static .
-    - docker push $CI_REGISTRY_IMAGE:static-$CI_COMMIT_SHA
-    - docker push $CI_REGISTRY_IMAGE:static
+    - docker pull $CI_REGISTRY_IMAGE:spa || true
+    - docker build -f spa.Dockerfile --cache-from $CI_REGISTRY_IMAGE:spa --tag $CI_REGISTRY_IMAGE:spa-$CI_COMMIT_SHA --tag $CI_REGISTRY_IMAGE:spa .
+    - docker push $CI_REGISTRY_IMAGE:spa-$CI_COMMIT_SHA
+    - docker push $CI_REGISTRY_IMAGE:spa
 
-deploy_backend:
+deploy backend:
   image: docker:git
   stage: deploy
   variables:
