@@ -5,7 +5,7 @@
   "minimum-stability": "stable",
   "license": "proprietary",
   "require": {
-    "brezel/api": "^1.5"
+    "brezel/api": "^1.0"
   },
   "require-dev": {
     "barryvdh/laravel-ide-helper": "^2.6",
