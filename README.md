@@ -3,8 +3,7 @@
 ## Project setup
 
 ````shell
-composer global install brezel/api
-brezel new my-brezel
+composer create-project --prefer-dist brezel/brezel mybrezel
 ````
 
 Install the frontend components:
