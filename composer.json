@@ -25,5 +25,11 @@
       "@php -r \"copy('.env.example', '.env');\"",
       "@php -r \"copy('supervisord.conf.example', 'supervisord.conf');\""
     ]
-  }
+  },
+  "repositories": [
+    {
+      "type": "git",
+      "url": "https://gitlab.com/kibro/brezel/api.git"
+    }
+  ]
 }
