@@ -2,6 +2,7 @@
   "name": "brezel/brezel",
   "version": "1.0.0",
   "description": "description",
+  "type": "project",
   "minimum-stability": "stable",
   "license": "proprietary",
   "require": {
