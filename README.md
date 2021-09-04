@@ -41,8 +41,8 @@ VUE_APP_SYSTEM=example
 
 ## Setup Brezel and System(s)
 ```shell
-vendor/bin/brezel init  # this generates an app key and a RSA keypair
-vendor/bin/brezel system create example  # this creates a system named "example" and a directory with the same name
+php bakery init  # this generates an app key and a RSA keypair
+php bakery system create example  # this creates a system named "example" and a directory with the same name
 ```
 
 ## Manage your System(s)
@@ -50,17 +50,17 @@ Go to the system directory and place `*.bake.json` files under a directory struc
 
 Plan your system updates with:
 ```shell
-vendor/bin/brezel plan
+php bakery plan
 ```
 
 Apply your system updates with:
 ```shell
-vendor/bin/brezel apply
+php bakery apply
 ```
 
 Load your workflow files with:
 ```shell
-vendor/bin/brezel load
+php bakery load
 ```
 
 ### Compiles and hot-reloads for development
