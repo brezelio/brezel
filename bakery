@@ -8,6 +8,7 @@ require_once __DIR__ . '/vendor/autoload.php';
 use App\Brezel;
 
 $brezel = new Brezel();
+$brezel->setBasePath(realpath('.'));
 $brezel->console();
 $status = $brezel->command($argv);
 exit($status);
