@@ -1,3 +1,7 @@
+stages:
+  - build
+  - deploy
+
 # include:
 #  - local: 'gitlab/.Docker.gitlab-ci.yml'  # Uncomment this for docker deployment
 #  - local: 'gitlab/.ssh.gitlab-ci.yml'     # Uncomment this for SSH deployment
