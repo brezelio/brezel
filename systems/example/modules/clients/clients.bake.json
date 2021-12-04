@@ -1,7 +1,7 @@
 [
   {
-    "bakery_resource_module": "clients",
-    "bakery_resource": {
+    "resource_module": "clients",
+    "resource": {
       "identifier": "clients",
       "type": "clients",
       "icon": "setting",

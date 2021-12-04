@@ -1,13 +1,14 @@
 [
   {
-    "bakery_resource_client": "global",
-    "bakery_resource": {
+    "resource_client": "global",
+    "resource": {
       "module": "clients",
+      "global": true,
       "fields": {
         "title": "Example Client"
       },
       "hostnames": [
-        "${bakery_resource_hostname.example.hostname}"
+        "${resource_hostname.example.hostname}"
       ]
     }
   }

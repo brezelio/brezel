@@ -1,13 +1,14 @@
 [
   {
-    "bakery_resource_user": "admin",
-    "bakery_resource": {
+    "resource_user": "admin",
+    "resource": {
       "module": "users",
-      "client": "${bakery_resource_client.global}",
+      "client": "${resource_client.global}",
       "root": true,
       "fields": {
-        "email": "nc@ki-bro.com",
-        "password": "secret"
+        "email": "dev@ki-bro.com",
+        "password": "secret",
+        "name": "Admin"
       }
     }
   }

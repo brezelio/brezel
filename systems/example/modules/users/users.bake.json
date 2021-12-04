@@ -1,7 +1,7 @@
 [
   {
-    "bakery_resource_module": "users",
-    "bakery_resource": {
+    "resource_module": "users",
+    "resource": {
       "identifier": "users",
       "type": "users",
       "icon": "user",
