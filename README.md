@@ -20,7 +20,7 @@ npm install
 Make sure to set the following environment variables accordingly:
 
 ```shell
-copy('.env.example', '.env');
+cp .env.example .env;
 ```
 
 ```dotenv
