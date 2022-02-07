@@ -1,0 +1,23 @@
+#!/bin/bash
+# Update all seeded systems that use bakery:load,
+# the bakery planer and
+# update all old workflows
+
+start=$(date +%s)
+
+# migrate all systems
+echo "bakery migrations..."
+php bakery migrate --force
+echo "bakery load..."
+php bakery load
+echo "bakery apply..."
+php bakery apply
+
+end=$(date +%s)
+
+echo "bin/u took: $((end - start)) second(s)"
+
+if [ "$(uname)" == "Darwin" ]; then
+  # Do something under Mac OS X platform
+  say bin/u
+fi

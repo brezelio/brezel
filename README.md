@@ -1,11 +1,13 @@
-# Brezel
-
-## 1. Create project
+# Creating a new Brezel
+Only relevant if you are in brezel/brezel and want to create a new project
 ````shell
 composer create-project --prefer-dist brezel/brezel mybrezel
 ````
 
-## 2. Install project
+
+# Installing a Brezel
+
+## 1. Install project
 Install the Brezel instance itself:
 ````shell
 composer install --prefer-dist
@@ -16,7 +18,7 @@ Install the frontend components:
 npm install
 ```
 
-### 2.1 Environment setup
+### 1.1 Environment setup
 Make sure to set the following environment variables accordingly:
 
 ```shell
@@ -47,22 +49,42 @@ VUE_APP_API_URL=https://api.example.test
 VUE_APP_SYSTEM=example
 ```
 
-### 2.2 Setup Brezel and System(s)
+Don't forget to also configure any .env files you might need in `/systems/<system_identifier>`!
+
+### 1.2 Setup brezel and system(s)
+
+----
+
+#### Important: If you had a system with the same identifier installed before you need to clean up your DB first!
+Delete ``brezel_api_<system_identifier>`` user and database
+
+----
+
 Generate the key and migrate the meta database:
 ```shell
 php bakery init
 ```
-Create the 3B instance:
+Create the Brezel instance:
 ```shell
-php bakery system create example
+php bakery system create <system_identifier>
 ```
 When installing updates via composer, make sure to run the migration script afterwards:
 ```shell
 php bakery migrate
 ```
 
+## 2. Running the System locally
+Windows:
+
+Run ``bin/serve_on_windows``
+
 ## 3. Working with brezel system(s)
 Go to the system directory and place `*.bake.json` files under a directory structure of your choice. Tutorials and information about how to use the Bakery can be found at https://wiki.brezel.io.
+
+Update the whole system:
+```shell
+./bin/u
+```
 
 Plan your system updates with:
 ```shell
