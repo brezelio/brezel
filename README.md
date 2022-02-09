@@ -102,7 +102,7 @@ information about how to use the Bakery can be found at https://wiki.brezel.io.
 Simply update the whole system.
 
 ```shell
-./bin/u
+bin/u
 ```
 
 (optional) Plan your system updates.
