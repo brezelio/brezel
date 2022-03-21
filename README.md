@@ -61,10 +61,10 @@ Delete ``brezel_api_<system_identifier>`` user and database
 
 ## 1.3.2. Initialize DB
 
-Create the meta database, that is used for multiple (or one) brezel instance(s).
+Create the meta database, that is used for multiple (or one) brezel system(s).
 
 ```mysql
-CREATE DATABASE brezel_<system_identifier>_meta
+CREATE DATABASE brezel_meta
 ```
 
 Generate the key and migrate the meta database.
