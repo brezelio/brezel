@@ -1,15 +1,9 @@
-# 0. Creating a new Brezel
+# 1. Installation
 
-*Only relevant if you are in brezel/brezel and want to create a new project.*
-
+Via composer:
 ````shell
 composer create-project --prefer-dist brezel/brezel mybrezel
 ````
-
-*Change the defaults in .env.example to system specific values.*  
-*Also update the README (e.g. replace <system_identifier> and <repo_identifier>)*
-
-# 1. Installation
 
 ## 1.1. Libraries
 
