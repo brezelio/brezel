@@ -1,12 +1,12 @@
 {
   "name": "brezel/brezel",
-  "version": "1.2.1",
+  "version": "1.3.0",
   "description": "description",
   "type": "project",
   "minimum-stability": "stable",
   "license": "proprietary",
   "require": {
-    "brezel/api": "^0.31.3"
+    "brezel/api": "^0.42.0"
   },
   "require-dev": {
     "barryvdh/laravel-ide-helper": "^2.6",
