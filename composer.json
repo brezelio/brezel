@@ -1,12 +1,12 @@
 {
     "name": "brezel/brezel",
-    "version": "1.3.0",
+    "version": "1.4.0",
     "description": "description",
     "type": "project",
     "minimum-stability": "stable",
     "license": "proprietary",
     "require": {
-        "brezel/api": "^0.42.0"
+        "brezel/api": "^0.45.0"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^2.6",
@@ -23,8 +23,7 @@
     },
     "scripts": {
         "post-create-project-cmd": [
-            "@php -r \"copy('.env.example', '.env');\"",
-            "@php -r \"copy('supervisord.conf.example', 'supervisord.conf');\""
+            "@php -r \"copy('.env.example', '.env');\""
         ]
     },
     "config": {
