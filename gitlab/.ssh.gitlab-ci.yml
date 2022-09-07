@@ -17,7 +17,7 @@ stages:
   script:
     - 'echo "//gitlab.com/api/v4/packages/npm/:_authToken=${CI_JOB_TOKEN}" > ~/.npmrc'
     - npm config set @kibro:registry https://gitlab.com/api/v4/packages/npm/
-    - npm install
+    - npm install -f
     - npm run build
 
 .deploy frontend base:
