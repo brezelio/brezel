@@ -53,7 +53,7 @@ stages:
 build frontend:
   extends: .build frontend base
   only:
-    - master
+    - main
 
 deploy frontend:
   extends: .deploy frontend base
@@ -61,7 +61,7 @@ deploy frontend:
   needs:
     - build frontend
   only:
-    - master
+    - main
   variables:
     DEPLOY_HOST: $PROD_HOST
     DEPLOY_PORT: $PROD_PORT
@@ -71,7 +71,7 @@ deploy frontend:
 deploy backend:
   extends: .deploy backend base
   only:
-    - master
+    - main
   variables:
     DEPLOY_HOST: $PROD_HOST
     DEPLOY_PORT: $PROD_PORT
