@@ -1,124 +1,116 @@
-# 1. Installation
+### Install or update the Brezel components
 
-Via composer:
-````shell
-composer create-project --prefer-dist brezel/brezel mybrezel
-````
+Install composer packages:
 
-## 1.1. Libraries
+```bash
+composer install
+```
 
-````shell
-composer install --prefer-dist
+Install NPM packages:
+
+```bash
 npm install
-````
-
-## 1.2. Environment setup
-
-```shell
-cp .env.example .env;
 ```
 
-Make sure to set the following environment variables accordingly.
+### Create the Database
 
-```dotenv
-# General settings
-APP_URL="https://<repo_identifier>.test" # macOS example
-APP_URL="http://localhost" # windows example
-
-# Frontend env
-VUE_APP_API_URL="https://<repo_identifier>.test" # macOS example
-VUE_APP_API_URL="http://localhost" # windows example
-
-# Brezel settings
-BREZEL_EXPORT_URL="https://export.cluster01.brezel.io" # prod url: can be used if this service is not installed locally
-
-# Database settings
-TENANCY_USERNAME="<username>"
-TENANCY_PASSWORD="<password>"
-
-# Standard mail settings
-MAIL_USERNAME=<mailtrap_username>
-MAIL_PASSWORD=<mailtrap_password>
-```
-
-*Don't forget to also set up the .env in ``/systems/<system_identifier>``!*
-
-## 1.3. Setup brezel and system(s)
-
-----
-
-## 1.3.1. (important) (optional) DB cleanup
-
-If you had the system installed before you need to clean up your DB first.
-
-Delete ``brezel_api_<system_identifier>`` user and database
-
-## 1.3.2. Initialize DB
-
-Create the meta database, that is used for multiple (or one) brezel system(s).
+Create a new MySQL database called `brezel_meta`. This will be the meta database for one or more Brezel systems. In MySQL, execute the following command:
 
 ```mysql
 CREATE DATABASE brezel_meta
 ```
 
-Generate the key and migrate the meta database.
+### Configure your Brezel environment
 
-```shell
+Copy the `.env.example` file to `.env` and edit the `.env` file.
+
+For a full list of settable environment variables, consult the [environment variable reference](https://wiki.brezel.io/docs/configuration/env/). To get started, make sure to set the following variables:
+
+##### General settings
+
+```dotenv
+APP_URL="http://mybrezel.test"
+```
+
+##### SPA settings
+
+Note: variables that are prefixed with `VUE_` are baked into client JS scripts.
+
+**Do not** put sensitive values here.
+
+```dotenv
+VUE_APP_API_URL="http://mybrezel.test"
+VUE_APP_SYSTEM=example
+```
+
+##### Database settings
+
+```dotenv
+TENANCY_HOST=127.0.0.1
+TENANCY_PORT=3306
+TENANCY_DATABASE="brezel_meta"
+TENANCY_USERNAME="<user>"
+TENANCY_PASSWORD="<password>"
+```
+
+##### Brezel settings
+
+```dotenv
+BREZEL_EXPORT_URL="https://export.staging.cluster-sw.brezel.io"
+```
+
+### Setup your Brezel
+
+Initialize the database:
+
+```bash
 php bakery init
 ```
 
-Create the instance.
+Create one or more Brezel systems:
 
-```shell
-php bakery system create <system_identifier>
+```bash
+php bakery system create example
 ```
 
-# 2. Working with brezel system(s)
+The corresponding directory `systems/example` can hold `.bake`-configuration files that can be synced to the `example` database. To do this, you can run the following command:
 
-## 2.1. Running locally
-
-**macOS**  
-Set up the api via valet.  
-Run ``bin/serve``
-
-**Linux**  
-Set up the api hosting.  
-Run ``npm run serve``
-
-**Windows**  
-Run ``bin/serve_on_windows``
-
-## 2.2. Make changes
-
-Go to the system directory and place `*.bake.json` files under a directory structure of your choice. Tutorials and
-information about how to use the Bakery can be found at https://wiki.brezel.io.
-
-Simply update the whole system.
-
-```shell
-bin/u
-```
-
-(optional) Plan your system updates.
-
-```shell
-php bakery plan
-```
-
-Apply your system updates.
-
-```shell
+```bash
 php bakery apply
 ```
 
-Load your workflow files.
+To just see what Brezel plans to change, do:
 
-```shell
-php bakery load
+```bash
+php bakery plan
 ```
 
-(optional) When installing updates via composer, make sure to run the migration script afterwards.
+### Set up your web server
 
-```shell
-php bakery migrate
+##### macOS, Linux
+
+If you used valet in the [webserver setup]({{< ref path="prerequisites.md" >}}):
+
+```bash
+valet link
 ```
+
+Now valet created the symbolic link `mybrezel.test` to your Brezel instance. This is where the Brezel **API** is reachable from now on.
+
+##### Windows
+
+Go to the Brezel directory and run the following script on the Windows terminal:
+
+```bash
+bin\serve_on_windows.ps1
+```
+
+### Run the SPA service
+
+In the Brezel directory, start the SPA development server:
+
+```bash
+npm run serve
+```
+
+The service will listen on localhost:8080 or the nearest open port.
