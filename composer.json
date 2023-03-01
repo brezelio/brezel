@@ -6,7 +6,7 @@
     "minimum-stability": "stable",
     "license": "proprietary",
     "require": {
-        "brezel/api": "^0.45.0"
+        "brezel/api": "^0.54.0"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^2.6",
@@ -29,13 +29,15 @@
     "config": {
         "allow-plugins": {
             "dealerdirect/phpcodesniffer-composer-installer": true,
-            "pestphp/pest-plugin": true
-        }
+            "pestphp/pest-plugin": true,
+            "endroid/installer": true
+        },
+        "gitlab-domains": ["gitlab.kiwis-and-brownies.de"]
     },
-    "repositories": [
-        {
-            "type": "git",
-            "url": "https://gitlab.com/kibro/brezel/api.git"
+    "repositories": {
+        "gitlab.kiwis-and-brownies.de/7": {
+            "type": "composer",
+            "url": "https://gitlab.kiwis-and-brownies.de/api/v4/group/7/-/packages/composer/packages.json"
         }
-    ]
+    }
 }
