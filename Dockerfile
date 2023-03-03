@@ -41,20 +41,20 @@ RUN apt-get clean
 COPY --chown=www-data:www-data . /app
 RUN chown -R www-data:www-data /var/www
 
-# Change current user to www-data
-USER www-data
+USER root
 
 WORKDIR /app
 
-# Use .env.example as default environment variables
 RUN rm -rf .env
-RUN cp .env.example .env
 
-# Expose port 9000 and start php-fpm server
-EXPOSE 9000
-CMD php bakery init && \
+RUN cp php.ini /usr/local/etc/php/conf.d/app.ini
+RUN cp api.nginx.conf /etc/nginx/sites-enabled/default
+
+EXPOSE 80
+CMD php bakery init --force && \
+    php bakery migrate --force && \
     php bakery system create example && \
     php bakery apply && \
-    php bakery load && \
-    supervisord -c /app/storage/supervisord.conf && \
-    php-fpm
+    php bakery load --force && \
+    /usr/bin/supervisord -c /app/supervisord.conf -n
+
