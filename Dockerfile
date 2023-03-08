@@ -56,5 +56,6 @@ CMD php bakery init --force && \
     php bakery system create example && \
     php bakery apply && \
     php bakery load --force && \
+    mkdir -p storage/app storage/framework storage/logs && \
+    chown -R www-data:www-data storage && \
     /usr/bin/supervisord -c /app/supervisord.conf -n
-
