@@ -23,10 +23,10 @@ RUN apt-get install -y libc-client-dev
 RUN apt-get install -y libkrb5-dev
 RUN apt-get install -y rsync
 RUN apt-get install -y supervisor
+RUN apt-get install -y nginx
 
 # Install PHP and composer dependencies
 RUN apt-get install -qq git curl libmcrypt-dev libjpeg-dev libpng-dev libfreetype6-dev libbz2-dev libjpeg62-turbo-dev
-RUN pecl install xdebug-2.8.1
 
 # Install needed extensions
 RUN docker-php-ext-configure imap --with-kerberos --with-imap-ssl
@@ -48,7 +48,7 @@ WORKDIR /app
 RUN rm -rf .env
 
 RUN cp php.ini /usr/local/etc/php/conf.d/app.ini
-RUN cp api.nginx.conf /etc/nginx/sites-enabled/default
+RUN cp nginx.conf /etc/nginx/sites-enabled/default
 
 EXPOSE 80
 CMD php bakery init --force && \
