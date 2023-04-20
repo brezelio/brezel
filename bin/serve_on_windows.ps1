@@ -1,3 +1,8 @@
+param (
+    [Parameter(Mandatory=$false, Position=0)]
+    [string]$noNginx
+)
+
 $maximizedAndOwnWindow = "-M -w 0"
 $brezelRoot = $PSScriptRoot -replace ".{4}$"
 $cdBrezel = "cd $brezelRoot"
@@ -11,6 +16,9 @@ $pwshNP = "pwsh --noprofile -noexit -c"
 # whether to use nginx
 $useNginx = $false
 try {
+    if ($noNginx) {
+        throw
+    }
     $nginxCommand = Get-Command -Syntax nginx -ErrorAction Stop
     $nginxPath = ($nginxCommand -replace '\\','/') -replace '/nginx.exe',''
     Write-Host "Starting with nginx" -ForegroundColor DarkGreen
@@ -33,7 +41,7 @@ if ($useNginx)
 
     $runApiNginx = -join(
     "Write-Host 'Starting api with nginx listening on 127.0.0.1:8081' -ForegroundColor DarkGreen && ",
-    "`"nginx -p $nginxPath -e $brezelRoot/nginxerrors.log -c $brezelRoot/api/bin/assets/windows/nginx.conf`""
+    "`"nginx -p $nginxPath -e $brezelRoot/nginxerrors.log -c $brezelRoot/bin/assets/windows/nginx.conf`""
     )
     $runApiFastCGI = "./bin/runPHPCGI.ps1"
 } else {
