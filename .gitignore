@@ -26,3 +26,5 @@ pnpm-debug.log*
 *.sw?
 
 composer-local.json
+
+bin/assets/windows/nginx.conf
