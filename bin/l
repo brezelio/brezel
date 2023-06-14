@@ -1,0 +1,16 @@
+#!/bin/bash
+# Run bakery:load
+
+start=$(date +%s)
+
+echo "bakery load..."
+php artisan bakery:load
+
+end=$(date +%s)
+
+echo "bin/l took: $((end - start)) second(s)"
+
+if [ "$(uname)" == "Darwin" ]; then
+  # Do something under Mac OS X platform
+  say bin/l
+fi
