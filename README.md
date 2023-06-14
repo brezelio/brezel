@@ -9,8 +9,10 @@ composer install
 Install NPM packages:
 
 ```bash
-npm install
+yarn install
 ```
+
+On windows you might need to run `yarn install --ignore-engines --ignore-platform` because of old spa dependencies
 
 ### Create the Database
 
@@ -39,8 +41,8 @@ Note: variables that are prefixed with `VUE_` are baked into client JS scripts.
 **Do not** put sensitive values here.
 
 ```dotenv
-VUE_APP_API_URL="http://mybrezel.test"
-VUE_APP_SYSTEM=example
+APP_URL="http://mybrezel.test"
+APP_SYSTEM=example
 ```
 
 ##### Database settings
@@ -70,8 +72,10 @@ php bakery init
 Create one or more Brezel systems:
 
 ```bash
-php bakery system create example
+php bakery system create <system>
 ```
+
+Run ``bin/u`` to apply the current system config.
 
 The corresponding directory `systems/example` can hold `.bake`-configuration files that can be synced to the `example` database. To do this, you can run the following command:
 
@@ -104,6 +108,8 @@ Go to the Brezel directory and run the following script on the Windows terminal:
 ```bash
 bin\serve_on_windows.ps1
 ```
+
+If you get CORS errors sure that you are running the script without nginx. You can run it with`./bin/serve_on_windows.ps1 $true` to disable nginx.
 
 ### Run the SPA service
 
