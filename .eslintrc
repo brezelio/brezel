@@ -1,0 +1,33 @@
+{
+    "root": true,
+    "env": {
+        "cypress/globals": true,
+        "es2021": true
+    },
+    "extends": [
+        "plugin:vue/vue3-recommended",
+        "@vue/standard"
+    ],
+    "plugins": [
+        "cypress"
+    ],
+    "rules": {
+        "indent": "off",
+        "comma-dangle": [
+            "warn",
+            {
+                "arrays": "always-multiline",
+                "objects": "always-multiline",
+                "imports": "always-multiline",
+                "exports": "always-multiline",
+                "functions": "never"
+            }
+        ],
+        "vue/html-closing-bracket-spacing": "off",
+        "vue/multi-word-component-names": "off"
+    },
+    "parserOptions": {
+        "ecmaVersion": 2020,
+        "allowImportExportEverywhere": true
+    }
+}

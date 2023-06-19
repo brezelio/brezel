@@ -1,10 +1,12 @@
-import 'ant-design-vue/dist/antd.less'
-import Brezel from '@kibro/brezel-spa'
-import App from './App'
+import '@kibro/brezel-spa/dist-lib/style.css'
+import { Brezel } from '@kibro/brezel-spa'
+import App from './App.vue'
 
-const brezel = new Brezel(process.env.VUE_APP_API_URL, process.env.VUE_APP_SYSTEM)
+const brezel = new Brezel(import.meta.env.VITE_APP_API_URL, import.meta.env.VITE_APP_SYSTEM, {
+  systemPath: '',
+})
 const app = brezel.bootstrap(App)
 
 window.app = app
 
-export default app.$mount('#app')
+export default app.mount('#app')

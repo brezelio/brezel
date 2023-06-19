@@ -1,13 +1,16 @@
 <template>
-  <BrezelApp>
-    <template slot="logo">
-      <img
-        src="/assets/logo.svg"
-        style="width: 100%; max-height: 100px"
-        alt="Logo"
-      >
+  <BrezelApp loading-animation="pulse">
+    <template #logo>
+      <div>
+        <img
+          src="/assets/logo.svg"
+          class="main-logo"
+          style="width: 100%; max-height: 100px"
+          alt="Logo"
+        >
+      </div>
     </template>
-    <template slot="loginLogo">
+    <template #loginLogo>
       <img
         src="/assets/logo.svg"
         :style="{ maxWidth: '100%', margin: '0 auto 26px auto', display: 'block' }"
@@ -16,16 +19,20 @@
     </template>
   </BrezelApp>
 </template>
+
 <script>
-import BrezelApp from '@kibro/brezel-spa/src/components/App'
+import { App as BrezelApp } from '@kibro/brezel-spa'
 
 export default {
   name: 'App',
   components: {
-    BrezelApp
-  }
+    BrezelApp,
+  },
 }
 </script>
 
 <style lang="scss">
+.main-logo {
+  padding: 8px;
+}
 </style>
