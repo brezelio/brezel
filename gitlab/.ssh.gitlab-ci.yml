@@ -35,7 +35,7 @@ stages:
     - scp -P $DEPLOY_PORT spa.htaccess $DEPLOY_USER@$DEPLOY_HOST:$DEPLOY_PATH/dist/.htaccess
 
 .deploy backend base:
-  image: registry.kiwis-and-brownies.de/kibro/brezel/api
+  image: registry.kiwis-and-brownies.de/kibro/brezel/api:php-7.4
   stage: deploy
   script:
     # ssh connect
@@ -44,7 +44,7 @@ stages:
     - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
     - ssh-add <(echo "$PRIVATE_KEY")
     - ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST "cd $DEPLOY_PATH && (git clone $CI_REPOSITORY_URL . || (git reset --hard HEAD && git pull))"
-    - ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST "cd $DEPLOY_PATH && composer config --auth gitlab-token.gitlab.kiwis-and-brownies.de "$BREZEL_API_READ_TOKEN" --no-ansi --no-interaction"
+    - ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST "cd $DEPLOY_PATH && composer config --auth gitlab-token.gitlab.kiwis-and-brownies.de $PACKAGE_TOKEN_USER "$PACKAGE_TOKEN" --no-ansi --no-interaction"
     - ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST "cd $DEPLOY_PATH && composer install --no-interaction --no-dev"
     - ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST "cd $DEPLOY_PATH && php bakery init --force"
     - ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST "cd $DEPLOY_PATH && php bakery apply"
