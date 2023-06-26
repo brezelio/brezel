@@ -16,3 +16,6 @@ file=/tmp/supervisor-brezel.sock             ; the path to the socket file
 
 [supervisorctl]
 serverurl=unix:///tmp/supervisor-brezel.sock ; use a unix:// URL  for a unix socket
+
+[include]
+files = storage/workers.supervisord.conf
