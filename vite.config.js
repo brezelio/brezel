@@ -32,7 +32,9 @@ export default defineConfig({
     }),
   ],
   optimizeDeps: {
-    include: ['@kibro/brezel-spa', 'ant-design-vue'],
+    include: [
+      '@kibro/brezel-spa',
+    ],
     esbuildOptions: {
       // Node.js global to browser globalThis
       define: {
