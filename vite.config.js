@@ -79,10 +79,6 @@ export default defineConfig({
         replacement: 'rollup-plugin-node-polyfills/polyfills/util',
       },
       {
-        find: 'events',
-        replacement: 'rollup-plugin-node-polyfills/polyfills/events',
-      },
-      {
         find: 'url',
         replacement: 'rollup-plugin-node-polyfills/polyfills/url',
       },
@@ -93,18 +89,6 @@ export default defineConfig({
       {
         find: 'http',
         replacement: 'rollup-plugin-node-polyfills/polyfills/http',
-      },
-      {
-        find: 'stream',
-        replacement: 'rollup-plugin-node-polyfills/polyfills/stream',
-      },
-      {
-        find: 'buffer',
-        replacement: 'rollup-plugin-node-polyfills/polyfills/buffer-es6',
-      },
-      {
-        find: 'process',
-        replacement: 'rollup-plugin-node-polyfills/polyfills/process-es6',
       },
       {
         find: /^~/,
