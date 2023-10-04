@@ -31,7 +31,7 @@ try {
 $runSpa = "npm run serve"
 $runBrotcast = "php artisan websockets:serve --port=8086"
 $runQueue = "php bakery work"
-$runCron = "./bin/cronWSL.ps1"
+$runCron = "./bin/cronPowershell.ps1"
 if ($useNginx)
 {
     # Prepare nginx.conf and replace variables with real paths
