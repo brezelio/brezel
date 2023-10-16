@@ -24,7 +24,7 @@ try {
     Write-Host "Starting with nginx" -ForegroundColor DarkGreen
     $useNginx = $true
 } catch {
-    Write-Host "Starting without nginx. Considser installing nginx in your path for better performance. The install location must not contain spaces. `n(e.g. 'C:/nginx' is good while 'C:/Programm Files/...' would not work.)" -ForegroundColor DarkRed
+    Write-Host "Starting without nginx. Consider installing nginx in your path for better performance. The install location must not contain spaces. `n(e.g. 'C:/nginx' is good while 'C:/Programm Files/...' would not work.)" -ForegroundColor DarkRed
 }
 
 # Define Commands
@@ -98,4 +98,4 @@ $Command = -join (
 "split-pane -s 0.5 $cronScheduler"
 )
 
-Start-Process wt "$Command"
+Start-Process -NoNewWindow wt "$Command"
