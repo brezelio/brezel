@@ -105,7 +105,7 @@ export default defineConfig({
     },
   },
   server: {
-    https: true,
-    port: 5173,
+    https: false,
+    port: 8080,
   },
 })

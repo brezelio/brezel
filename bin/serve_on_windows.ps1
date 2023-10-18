@@ -29,7 +29,7 @@ try {
 
 # Define Commands
 $runSpa = "npm run serve"
-$runBrotcast = "php artisan websockets:serve --port=8086"
+$runBrotcast = "npm run start"
 $runQueue = "php bakery work"
 $runCron = "./bin/cronPowershell.ps1"
 if ($useNginx)

@@ -1,1 +1,2 @@
 *.key
+/workers.supervisord.conf
