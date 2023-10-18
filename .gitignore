@@ -28,3 +28,4 @@ pnpm-debug.log*
 composer-local.json
 
 bin/assets/windows/nginx.conf
+/nginxerrors.log
