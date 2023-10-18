@@ -9,17 +9,15 @@ composer install
 Install NPM packages:
 
 ```bash
-yarn install
+npm install
 ```
-
-On windows you might need to run `yarn install --ignore-engines --ignore-platform` because of old spa dependencies
 
 ### Create the Database
 
-Create a new MySQL database called `brezel_meta`. This will be the meta database for one or more Brezel systems. In MySQL, execute the following command:
+Create a new MySQL database called `brezel_meta_<some-name>`. This will be the meta database for one or more Brezel systems. In MySQL, execute the following command:
 
 ```mysql
-CREATE DATABASE brezel_meta
+CREATE DATABASE brezel_meta_<some-name>
 ```
 
 ### Configure your Brezel environment
@@ -36,7 +34,7 @@ APP_URL="http://mybrezel.test"
 
 ##### SPA settings
 
-Note: variables that are prefixed with `VUE_` are baked into client JS scripts.
+Note: variables that are prefixed with `VITE_` are baked into client JS scripts.
 
 **Do not** put sensitive values here.
 
