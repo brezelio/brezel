@@ -8,7 +8,7 @@
         "lint": "eslint --ext .js,.vue --ignore-path .gitignore --fix src"
     },
     "dependencies": {
-        "@kibro/brezel-spa": "^2.0.0-alpha.98",
+        "@kibro/brezel-spa": "^2.0.0-alpha.254",
         "vue": "^3.3.4"
     },
     "devDependencies": {
