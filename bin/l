@@ -4,7 +4,7 @@
 start=$(date +%s)
 
 echo "bakery load..."
-php artisan bakery:load
+php bakery load
 
 end=$(date +%s)
 
