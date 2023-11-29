@@ -1,9 +1,4 @@
 <?php
 
-require_once __DIR__ . '/../vendor/autoload.php';
-
-use App\Brezel;
-
-$brezel = new Brezel();
-$brezel->setBasePath(realpath(__DIR__ . '/..'));
+$brezel = require_once __DIR__. '/../bootstrap/app.php';
 $brezel->handle();
