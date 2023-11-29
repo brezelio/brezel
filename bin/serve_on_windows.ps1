@@ -30,7 +30,8 @@ try {
 # Define Commands
 $runSpa = "npm run serve"
 $runBrotcast = "npm run start"
-$runQueue = "php bakery work"
+$runQueue = "php bakery work --sleep=1"
+$runBrotcastQueue = "php bakery work --sleep=1 --queue=brotcasts"
 $runCron = "./bin/cronPowershell.ps1"
 if ($useNginx)
 {
@@ -53,6 +54,7 @@ $spa = "$title spa $pwshNP $cdBrezel && $runSpa"
 $apiDir = "$title api-dir $pwsh $cdBrezel"
 $brotcast = "$title brotcast $pwshNP $cdBrezelTools\brotcast-server && $runBrotcast"
 $queue = "$title queue $pwshNP $cdBrezel && 'Queue listening...' && $runQueue"
+$brotcastQueue = "$title queue $pwshNP $cdBrezel && 'Queue listening...' && $runBrotcastQueue"
 $cronScheduler = "$title cron-scheduler $pwshNP $cdBrezel && $runCron"
 if ($useNginx)
 {
@@ -77,7 +79,9 @@ if ($useNginx)
     "split-pane -H -s 0.66 $apiNginx; ",
     "split-pane -H -s 0.5 $brotcast; ",
     "move-focus up; ",
-    "split-pane -s 0.5 $apiFastCGI; "
+    "split-pane -s 0.5 $apiFastCGI; ",
+    "move-focus down; ",
+    "split-pane -s 0.5 $queue; "
     )
 } else {
     $lowerLeftSection = -join (
