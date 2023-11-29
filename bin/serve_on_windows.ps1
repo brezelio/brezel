@@ -54,7 +54,7 @@ $spa = "$title spa $pwshNP $cdBrezel && $runSpa"
 $apiDir = "$title api-dir $pwsh $cdBrezel"
 $brotcast = "$title brotcast $pwshNP $cdBrezelTools\brotcast-server && $runBrotcast"
 $queue = "$title queue $pwshNP $cdBrezel && 'Queue listening...' && $runQueue"
-$brotcastQueue = "$title queue $pwshNP $cdBrezel && 'Queue listening...' && $runBrotcastQueue"
+$brotcastQueue = "$title queue $pwshNP $cdBrezel && 'Brotcast queue listening...' && $runBrotcastQueue"
 $cronScheduler = "$title cron-scheduler $pwshNP $cdBrezel && $runCron"
 if ($useNginx)
 {
@@ -66,11 +66,11 @@ if ($useNginx)
 
 
 # Build Command that creates multiple panes in this layout:
-#| spa      | empty window in |
-#|----------| api dir         |
-#| api      |                 |
-#|----------|-----------------|
-#| brotcast | queue  | cron   |
+#| spa        | empty window in |
+#|------------| api dir         |
+#| api        |                 |
+#|------------|-----------------|
+#| WS | Queue | queue  | cron   |
 
 # Build lower left part of command that contains api (either 1 or 2 panes when using nginx) and brotcast
 if ($useNginx)
@@ -81,12 +81,13 @@ if ($useNginx)
     "move-focus up; ",
     "split-pane -s 0.5 $apiFastCGI; ",
     "move-focus down; ",
-    "split-pane -s 0.5 $queue; "
+    "split-pane -s 0.5 $brotcastQueue; "
     )
 } else {
     $lowerLeftSection = -join (
     "split-pane -H -s 0.66 $api; ",
-    "split-pane -H -s 0.5 $brotcast; "
+    "split-pane -H -s 0.5 $brotcast; ",
+    "split-pane -s 0.5 $brotcastQueue; "
     )
 }
 
