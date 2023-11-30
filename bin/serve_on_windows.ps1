@@ -31,7 +31,7 @@ try {
 $runSpa = "npm run serve"
 $runBrotcast = "npm run start"
 $runQueue = "php bakery work --sleep=1"
-$runBrotcastQueue = "php bakery work --sleep=1 --queue=brotcasts"
+$runBrotcastQueue = "php bakery work --sleep=1 --queue=broadcasts"
 $runCron = "./bin/cronPowershell.ps1"
 if ($useNginx)
 {
