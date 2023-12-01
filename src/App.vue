@@ -21,7 +21,11 @@
 </template>
 
 <script>
+// Local Dist / Build
 import { App as BrezelApp } from '@kibro/brezel-spa'
+
+// Linked
+// import BrezelApp from '@kibro/brezel-spa/src/components/App.vue'
 
 export default {
   name: 'App',
