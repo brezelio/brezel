@@ -2,7 +2,6 @@
 <html lang="de">
 <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover,user-scalable=no">
     <link id="favicon" rel="icon" href="/favicon.ico">
     <link id="mask-icon" rel="mask-icon" href="" color="">
@@ -18,16 +17,43 @@
     </style>
 
     <script>
-      var Module = {};
+        var Module = {};
     </script>
 
     <script type="module" src="/src/main.js"></script>
 </head>
 <body>
 <noscript>
-    <strong>We're sorry but Brezel doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
+    <strong>We're sorry but KAB Tools doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
 </noscript>
 <div id="app"></div>
-<!-- built files will be auto injected -->
+<link rel="stylesheet" type="text/css" href="/globalstyle.css">
+<script>
+    function bakeMeABrezel () {
+        console.info('%c             ,@@**             \n' +
+            '         .&@@@@&*****,         \n' +
+            '      (&&&@@@@@&********       \n' +
+            '   %&&&&&&&&@@@&********       \n' +
+            '&&&&&&&&&&&&&&&&********       \n' +
+            '%%%%&&&&&&&&*   ,,,*****       \n' +
+            '%%%%%%%&(      /,,,,,,,*       \n' +
+            '%%%%%%%#       *,,,,,,,,***    \n' +
+            '%%%%%%%#       *,,,,,,,,*****  \n' +
+            '#%%%%%%#         ,,,,,,,*******\n' +
+            '####%%%#             ,,,*******\n' +
+            '#######%#             ,&/******\n' +
+            '#######%%%%%.      &&&&@@@@#***\n' +
+            '#######%%%%%%%%*&&&&&&&@@@@@@@#\n' +
+            '  ,####%%%%%%%%&&&&&&&&@@@@@%  \n' +
+            '      /%%%%%%%%&&&&&&&&@%.     \n' +
+            '         ,%%%%%&&&&&&*         ', 'color: #6d0201')
+    }
+
+    Object.defineProperty(window, 'bake', { get: bakeMeABrezel })
+    Object.defineProperty(window, 'bakeMeBabyOneMoreTime', { get: bakeMeABrezel })
+    Object.defineProperty(window, 'loveIsAllYouKnead', { get: bakeMeABrezel })
+    Object.defineProperty(window, 'letsGetKnotty', { get: bakeMeABrezel })
+    Object.defineProperty(window, 'loveTheWayYouLye', { get: bakeMeABrezel })
+</script>
 </body>
 </html>

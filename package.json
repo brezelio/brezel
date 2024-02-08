@@ -1,75 +1,20 @@
 {
-    "name": "brezel-example",
-    "version": "0.1.0",
-    "private": true,
-    "scripts": {
-        "build": "vite build",
-        "serve": "vite dev",
-        "lint": "eslint --ext .js,.vue --ignore-path .gitignore --fix src"
-    },
-    "dependencies": {
-        "@kibro/brezel-spa": "2.0.0-alpha.254",
-        "vue": "^3.3.4"
-    },
-    "devDependencies": {
-        "@esbuild-plugins/node-globals-polyfill": "^0.2.3",
-        "@esbuild-plugins/node-modules-polyfill": "^0.2.2",
-        "@rollup/plugin-commonjs": "^23.0.0",
-        "@rollup/plugin-node-resolve": "^15.0.1",
-        "@rollup/pluginutils": "^5.0.2",
-        "@vitejs/plugin-basic-ssl": "^1.0.1",
-        "@vitejs/plugin-vue": "^4.0.0",
-        "@vue/eslint-config-standard": "^4.0.0",
-        "assert": "^2.0.0",
-        "autoprefixer": "^10.4.14",
-        "babel-runtime": "^6.26.0",
-        "eslint": "^8.27.0",
-        "eslint-plugin-cypress": "^2.12.1",
-        "eslint-plugin-import": "^2.25.4",
-        "eslint-plugin-vue": "^8.7.1",
-        "less": "^3.13.1",
-        "readable-stream": "^3.6.0",
-        "rollup-plugin-node-polyfills": "^0.2.1",
-        "sass": "^1.48.0",
-        "terser": "^5.15.1",
-        "vite": "^4.1.1",
-        "vite-plugin-mkcert": "^1.15.0",
-        "vite-plugin-pwa": "^0.14.4",
-        "vite-svg-loader": "^4.0.0"
-    },
-    "eslintConfig": {
-        "root": true,
-        "env": {
-            "node": true
-        },
-        "extends": [
-            "plugin:vue/essential",
-            "@vue/standard"
-        ],
-        "parserOptions": {
-            "parser": "babel-eslint"
-        },
-        "rules": {},
-        "overrides": [
-            {
-                "files": [
-                    "**/__tests__/*.{j,t}s?(x)",
-                    "**/tests/unit/**/*.spec.{j,t}s?(x)"
-                ],
-                "env": {
-                    "jest": true
-                }
-            }
-        ]
-    },
-    "postcss": {
-        "plugins": {
-            "autoprefixer": {}
-        }
-    },
-    "browserslist": [
-        "> 1%",
-        "last 2 versions",
-        "not dead"
-    ]
+  "name": "brezel-example",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "vite --host 0.0.0.0 -c node_modules/@kibro/brezel-spa/vite.config.js",
+    "build": "NODE_OPTIONS=--max-old-space-size=4096 vite build -c node_modules/@kibro/brezel-spa/vite.config.js",
+    "serve": "vite dev -c node_modules/@kibro/brezel-spa/vite.config.js",
+    "lint": "eslint --ext .js,.vue --ignore-path .gitignore --fix src"
+  },
+  "dependencies": {
+    "@kibro/brezel-spa": "2.2.0",
+    "vite": "*"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
 }
