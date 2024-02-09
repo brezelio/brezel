@@ -9,8 +9,9 @@
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore --fix src"
   },
   "dependencies": {
-    "@kibro/brezel-spa": "2.2.0",
-    "vite": "*"
+    "@kibro/brezel-spa": "2.2.3",
+    "vite": "*",
+    "vue": "*"
   },
   "browserslist": [
     "> 1%",
