@@ -23,7 +23,7 @@
         }
       ],
       "layouts": {
-        "detail": "${file('modules/users/users.detail.json')}"
+        "detail": "${file('/config/users.detail.json')}"
       }
     }
   }

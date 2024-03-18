@@ -59,7 +59,7 @@
         }
       ],
       "layouts": {
-        "detail": "${file('modules/clients/clients.detail.json')}"
+        "detail": "${file('/config/clients.detail.json')}"
       }
     }
   }
