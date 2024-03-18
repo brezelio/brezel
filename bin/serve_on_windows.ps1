@@ -28,10 +28,10 @@ try {
 }
 
 # Define Commands
-$runSpa = "npm run serve"
+$runSpa = "npm run dev"
 $runBrotcast = "npm run start"
-$runQueue = "php bakery work --sleep=1"
-$runBrotcastQueue = "php bakery work --sleep=1 --queue=broadcasts"
+$runQueue = "php bakery work --tries=1 --sleep=1"
+$runBrotcastQueue = "php bakery work --tries=1 --queue=broadcasts"
 $runCron = "./bin/cronPowershell.ps1"
 if ($useNginx)
 {
