@@ -1,11 +1,10 @@
-image: node:14.15
+image: node:20
 
 stages:
   - build
   - deploy
 
 .build frontend base:
-  image: node:16
   stage: build
   artifacts:
     expire_in: 1 week
