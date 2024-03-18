@@ -14,9 +14,14 @@ stages:
     - paths:
         - node_modules
   script:
-    - 'echo "//gitlab.kiwis-and-brownies.de/api/v4/packages/npm/:_authToken=${CI_JOB_TOKEN}" > ~/.npmrc'
     - npm config set @kibro:registry https://gitlab.kiwis-and-brownies.de/api/v4/packages/npm/
-    - npm install -f
+    - 'echo "//gitlab.kiwis-and-brownies.de/api/v4/packages/npm/:_authToken=${CI_JOB_TOKEN}" >> ~/.npmrc'
+    - 'echo "//gitlab.kiwis-and-brownies.de/api/v4/projects/15/packages/npm/:_authToken=${CI_JOB_TOKEN}" >> ~/.npmrc'
+    - 'echo "//gitlab.kiwis-and-brownies.de/api/v4/projects/18/packages/npm/:_authToken=${CI_JOB_TOKEN}" >> ~/.npmrc'
+    - 'echo "//gitlab.kiwis-and-brownies.de/api/v4/projects/19/packages/npm/:_authToken=${CI_JOB_TOKEN}" >> ~/.npmrc'
+    - 'echo "//gitlab.kiwis-and-brownies.de/api/v4/projects/44/packages/npm/:_authToken=${CI_JOB_TOKEN}" >> ~/.npmrc'
+    - 'echo "//gitlab.kiwis-and-brownies.de/api/v4/projects/58/packages/npm/:_authToken=${CI_JOB_TOKEN}" >> ~/.npmrc'
+    - npm ci
     - npm run build
 
 .deploy frontend base:
