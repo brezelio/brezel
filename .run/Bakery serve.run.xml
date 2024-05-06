@@ -1,0 +1,6 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Bakery serve" type="PhpLocalRunConfigurationType" factoryName="PHP Console" path="$PROJECT_DIR$/server.php">
+    <CommandLine parameters="-S 127.0.0.1:8081" />
+    <method v="2" />
+  </configuration>
+</component>
