@@ -30,3 +30,5 @@ composer-local.json
 bin/assets/windows/nginx.conf
 
 nginxerrors.log
+
+dev-dist
