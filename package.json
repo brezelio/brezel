@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "vite --host 0.0.0.0 -c node_modules/@kibro/brezel-spa/vite.config.js",
     "build": "NODE_OPTIONS=--max-old-space-size=4096 vite build -c node_modules/@kibro/brezel-spa/vite.config.js",
-    "serve": "vite dev -c node_modules/@kibro/brezel-spa/vite.config.js"
+    "serve": "vite dev -c node_modules/@kibro/brezel-spa/vite.config.js",
+    "vite-cache:clear": "rm -rf node_modules/.vite"
   },
   "type": "module",
   "dependencies": {
