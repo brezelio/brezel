@@ -1,0 +1,13 @@
+[
+  {
+    "resource_client": "global",
+    "resource": {
+      "module": "clients",
+      "global": true,
+      "fields": {
+        "title": "BKM Client"
+      },
+      "hostnames": ["bkm-mannesmann"]
+    }
+  }
+]

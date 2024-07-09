@@ -1,0 +1,43 @@
+{
+  "buttons": {},
+  "notifications": {},
+  "modules": {
+    "clients": {
+      "title": "Clients",
+      "fields": {
+        "title": "Title",
+        "description": "Description"
+      }
+    },
+    "users": {
+      "title": "Users",
+      "headlines": {
+        "address": "Address"
+      },
+      "fields": {
+        "name": "Name",
+        "email": "Email",
+        "password": "Password",
+        "role": "Role",
+        "address": "Address",
+        "zip": "Zip",
+        "city": "city",
+        "phone": "Phone"
+      }
+    }
+  },
+  "widgets": {},
+  "pdf": {},
+  "mails": {},
+  "workflows": {},
+  "calendar": {
+    "events": "Events",
+    "employeeBirthdays": "Employee birthday",
+    "employee_absence": "Absence",
+    "employee_sick": "Sick",
+    "employee_vacation": "Vacation",
+    "employee_training": "Training",
+    "employee_overtime_reduction": "Overtime reduction",
+    "holidays": "Holidays"
+  }
+}

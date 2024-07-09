@@ -1,0 +1,66 @@
+[
+  {
+    "resource_module": "clients",
+    "resource": {
+      "identifier": "clients",
+      "type": "clients",
+      "icon": "setting",
+      "fields": [
+        {
+          "identifier": "title",
+          "type": "text",
+          "options": {
+            "autofocus": true,
+            "rules": "required"
+          }
+        },
+        {
+          "identifier": "currency",
+          "type": "text",
+          "options": {
+            "rules": "required"
+          }
+        },
+        {
+          "identifier": "description",
+          "type": "textarea"
+        },
+        {
+          "identifier": "color",
+          "type": "text"
+        },
+        {
+          "identifier": "mail_host",
+          "type": "text"
+        },
+        {
+          "identifier": "mail_port",
+          "type": "number"
+        },
+        {
+          "identifier": "mail_username",
+          "type": "text"
+        },
+        {
+          "identifier": "mail_password",
+          "type": "text"
+        },
+        {
+          "identifier": "mail_encryption",
+          "type": "text"
+        },
+        {
+          "identifier": "mail_from_address",
+          "type": "email"
+        },
+        {
+          "identifier": "mail_from_name",
+          "type": "text"
+        }
+      ],
+      "layouts": {
+        "detail": "${file('/config/clients.detail.json')}"
+      }
+    }
+  }
+]
