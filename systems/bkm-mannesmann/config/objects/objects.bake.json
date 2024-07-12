@@ -1,0 +1,65 @@
+[
+  {
+    "resource_module": "objects",
+    "import": true,
+    "resource": {
+      "identifier": "objects",
+      "title": "email",
+      "icon": "sliders",
+      "layouts": {
+        "detail": "${file('config/objects/objects.detail.json')}",
+        "index": "${file('config/objects/objects.index.json')}"
+      },
+      "fields": [
+        {
+          "identifier": "customer",
+          "type": "select",
+          "options": {
+            "references": "customers",
+            "rules": "required"
+          }
+        },
+        {
+          "identifier": "name",
+          "type": "text",
+          "options": {
+            "rules": "required"
+          }
+        },
+        {
+          "identifier": "email",
+          "type": "email"
+        },
+        {
+          "identifier": "address",
+          "type": "text",
+          "options": {
+            "rules": "required"
+          }
+        },
+        {
+          "identifier": "zip",
+          "type": "text",
+          "options": {
+            "rules": "required"
+          }
+        },
+        {
+          "identifier": "city",
+          "type": "text",
+          "options": {
+            "rules": "required"
+          }
+        },
+        {
+          "identifier": "landline",
+          "type": "tel"
+        },
+        {
+          "identifier": "mobile",
+          "type": "tel"
+        }
+      ]
+    }
+  }
+]

@@ -1,0 +1,23 @@
+[
+  {
+    "resource_module": "problems",
+    "import": true,
+    "resource": {
+      "identifier": "problems",
+      "title": "name",
+      "icon": "setting",
+      "layouts": {
+        "detail": "${file('config/problems/problems.detail.json')}"
+      },
+      "fields": [
+        {
+          "identifier": "name",
+          "type": "text",
+          "options":{
+            "rules":"required"
+          }
+        }
+      ]
+    }
+  }
+]

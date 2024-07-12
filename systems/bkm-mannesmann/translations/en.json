@@ -24,6 +24,65 @@
         "city": "city",
         "phone": "Phone"
       }
+    },
+    "customers":{
+      "title":"Customers",
+      "headlines":{
+        "general":"General",
+        "address":"Address"
+      },
+      "fields":{
+        "customer_id":"Customer ID",
+        "name":"Name",
+        "email":"E-mail",
+        "invoice_address":"Addess",
+        "invoice_zip":"Zip",
+        "invoice_city":"City",
+        "phone_landline":"Landline",
+        "phone_mobile":"Mobile"
+
+      },
+      "tabs":{
+        "general":"General",
+        "objects":"Objects"
+      }
+    },
+    "objects":{
+      "title":"Objects",
+      "headlines":{
+        "general":"General",
+        "address":"Address"
+      },
+      "fields":{
+        "customer":"Customer",
+        "name":"Name",
+        "email":"E-mail",
+        "address":"Address",
+        "zip":"Zip",
+        "city":"City",
+        "landline":"Landline",
+        "mobile":"Mobile"
+      }
+    },
+    "services":{
+      "title":"Services",
+      "headlines":{
+        "general":"General"
+      },
+      "fields":{
+        "service_name":"Name",
+        "billing_type":"Billing type",
+        "price":"price"
+      }
+    },
+    "problems":{
+      "title":"Problems",
+      "headlines":{
+        "general":"General"
+      },
+      "fields":{
+        "name":"Name"
+      }
     }
   },
   "widgets": {},

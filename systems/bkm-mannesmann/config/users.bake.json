@@ -4,6 +4,7 @@
     "resource": {
       "identifier": "users",
       "type": "users",
+      "title":"name",
       "icon": "user",
       "fields": [
         {

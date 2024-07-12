@@ -1,0 +1,32 @@
+{
+  "tabs": [
+    {
+      "identifier": "services",
+      "icon": "sliders",
+      "rows": [
+        {
+          "cols": [
+            {
+              "span": 12,
+              "components": [
+                {
+                  "type": "headline",
+                  "options": {
+                    "identifier": "general",
+                    "icon": "user"
+                  }
+                },
+                {
+                  "type": "field_group",
+                  "options": {
+                    "fields": ["service_name", "billing_type", "price"]
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

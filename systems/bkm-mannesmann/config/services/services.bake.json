@@ -1,0 +1,36 @@
+[
+    {
+      "resource_module": "services",
+      "import": true,
+      "resource": {
+        "identifier": "services",
+        "title": "service_name",
+        "icon": "sliders",
+        "layouts": {
+          "detail": "${file('config/services/services.detail.json')}",
+          "index": "${file('config/services/services.index.json')}"
+        },
+        "fields": [
+          {
+            "identifier": "service_name",
+            "type": "text"
+          },
+          {
+            "identifier":"billing_type",
+            "type":"choice",
+            "options":{
+                "values":[
+                    "hourly",
+                    "flat_price"
+                ]
+            }
+          },
+          {
+            "identifier":"price",
+            "type":"currency"
+          }
+        ]
+      }
+    }
+  ]
+  

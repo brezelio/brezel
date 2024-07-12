@@ -12,7 +12,8 @@
     "users": {
       "title": "Nutzer",
       "headlines": {
-        "address": "Anschrift"
+        "address": "Anschrift",
+        "basic":"Grundlagen"
       },
       "fields": {
         "name": "Name",
@@ -23,6 +24,65 @@
         "zip": "PLZ",
         "city": "Stadt",
         "phone": "Telefon"
+      }
+    },
+    "customers":{
+      "title":"Kunden",
+      "headlines":{
+        "customers":"Kunden",
+        "general":"Allgemein",
+        "address":"Anschrift"
+      },
+      "fields":{
+        "customer_id":"Kundennummer",
+        "name":"Name",
+        "email":"E-Mail",
+        "invoice_address":"Rechnungsanschrift",
+        "invoice_zip":"PLZ",
+        "invoice_city":"Stadt",
+        "phone_landline":"Festnetznummer",
+        "phone_mobile":"Mobilnummer"
+      },
+      "tabs":{
+        "general":"Allgemein",
+        "objects":"Objekte"
+      }
+    },
+    "objects":{
+      "title":"Objekte",
+      "headlines":{
+        "general":"Allgemein",
+        "address":"Anschrift"
+      },
+      "fields":{
+        "customer":"Kunde",
+        "name":"Name",
+        "email":"E-Mail",
+        "address":"Anschrift",
+        "zip":"PLZ",
+        "city":"Stadt",
+        "landline":"Festnetznummer",
+        "mobile":"Mobilnummer"
+      }
+    },
+    "services":{
+      "title":"Dienste",
+      "headlines":{
+        "general":"Allgemein"
+      },
+      "fields":{
+        "service_name":"Name",
+        "billing_type":"Abrechnungstyp",
+        "price":"Preis"
+      }
+    },
+    "problems":{
+      "title":"Probleme",
+      "headlines":{
+        "general":"Allgemein"
+      },
+      "fields":{
+        "name":"Name"
       }
     }
   },

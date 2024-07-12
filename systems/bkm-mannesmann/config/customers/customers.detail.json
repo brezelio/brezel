@@ -1,0 +1,102 @@
+{
+  "tab_position": "right",
+  "tabs": [
+    {
+      "identifier": "general",
+      "icon": "user",
+      "rows": [
+        {
+          "cols": [
+            {
+              "span": 12,
+              "components": [
+                {
+                  "type": "headline",
+                  "options": {
+                    "identifier": "general",
+                    "icon": "user"
+                  }
+                },
+                {
+                  "type": "field_group",
+                  "options": {
+                    "fields": ["customer_id", "name", "email", "phone_mobile"]
+                  }
+                }
+              ]
+            },
+            {
+              "span": 12,
+              "components": [
+                {
+                  "type": "headline",
+                  "options": {
+                    "identifier": "address",
+                    "icon": "environment"
+                  }
+                },
+                {
+                  "type": "field_group",
+                  "options": {
+                    "fields": [
+                      "phone_landline",
+                      "invoice_address",
+                      "invoice_zip",
+                      "invoice_city"
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "identifier": "objects",
+      "options": {
+        "recipes": {
+          "hidden_from_frontend": "!id"
+        },
+        "show_in": ["module.show"]
+      },
+      "icon": "sliders",
+      "rows": [
+        {
+          "cols": [
+            {
+              "span": 24,
+              "components": [
+                {
+                  "type": "headline",
+                  "options": {
+                    "identifier": "sliders",
+                    "icon": "group"
+                  }
+                },
+
+                {
+                  "type": "resource_table",
+                  "options": {
+                    "module": "objects",
+                    "columns": {
+                      "display": ["customer", "name", "email"],
+                      "fetch": ["customer", "name", "email"]
+                    },
+                    "pre_filters": [
+                      {
+                        "column": "customer.id",
+                        "operator": "=",
+                        "field": "id"
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

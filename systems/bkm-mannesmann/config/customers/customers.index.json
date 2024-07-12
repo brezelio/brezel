@@ -1,0 +1,40 @@
+{
+    "type": "index",
+    "tabs": [
+        {
+            "identifier": "customers",
+            "icon": "user",
+            "position": 0,
+            "rows": [
+                {
+                    "cols": [
+                        {
+                            "options": {
+                            },
+                            "components": [
+                                {
+                                    "type": "headline",
+                                    "options": {
+                                        "identifier": "customers",
+                                        "icon": "team"
+                                    }
+                                },
+                                {
+                                    "type": "resource_table",
+                                    "options": {
+                                        "module": "customers",
+                                        "columns": [
+                                            "customer_id",
+                                            "name",
+                                            "email"
+                                        ]
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

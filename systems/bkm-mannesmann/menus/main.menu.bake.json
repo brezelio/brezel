@@ -1,15 +1,24 @@
 [
-    {
-        "resource_menu": "main",
-        "resource": {
-            "name": "main",
-            "elements": [
-                "users",
-                "clients"
-            ]
+  {
+    "resource_menu": "main",
+    "resource": {
+      "name": "main",
+      "elements": [
+        "users",
+        "clients",
+        {
+          "name": "customers",
+          "icon": "user"
+        },
+        {
+          "name": "services",
+          "icon": "service"
+        },
+        {
+          "name": "problems",
+          "icon": "setting"
         }
+      ]
     }
+  }
 ]
-
-
-

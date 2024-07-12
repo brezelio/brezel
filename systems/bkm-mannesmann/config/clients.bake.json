@@ -4,6 +4,7 @@
     "resource": {
       "identifier": "clients",
       "type": "clients",
+      "title":"title",
       "icon": "setting",
       "fields": [
         {
