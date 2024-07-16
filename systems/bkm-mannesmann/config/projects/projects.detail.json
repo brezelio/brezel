@@ -1,0 +1,117 @@
+{
+  "tabs": [
+    {
+      "identifier": "projects",
+      "icon":"container",
+      "rows": [
+        {
+          "cols": [
+            {
+              "span": 12,
+              "components": [
+                {
+                  "type": "headline",
+                  "options": {
+                    "identifier": "general",
+                    "icon": "user"
+                  }
+                },
+                {
+                  "type": "field_group",
+                  "options": {
+                    "vertical_labels": true,
+                    "fields": [
+                      "process",
+                      "customer",
+                      "object",
+                      "start_date",
+                      "end_date",
+                      "total_worktime",
+                      "status",
+                      "problem",
+                      "room_temperature",
+                      "room_humidity"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "span": 12,
+              "components": [
+                {
+                  "type": "headline",
+                  "options": {
+                    "identifier": "info",
+                    "icon": "user"
+                  }
+                },
+                {
+                  "type": "field_group",
+                  "options": {
+                    "vertical_labels": true,
+                    "fields": [
+                      "surface_temperature",
+                      "construction_year",
+                      "wall_material",
+                      "wall_thickness",
+                      "building_type",
+                      "level",
+                      "floor_material",
+                      "strip_foundation",
+                      "seals_done_in_the_past"
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "cols": [
+            {
+              "components": [
+                {
+                  "options": {
+                    "vertical_labels": true,
+                    "fields": ["services"]
+                  },
+                  "type": "field_group"
+                }
+              ],
+              "span": 24
+            }
+          ]
+        },
+        {
+          "cols": [
+            {
+              "components": [
+                {
+                  "options": {
+                    "vertical_labels": true,
+                    "fields": []
+                  },
+                  "type": "field_group"
+                }
+              ],
+              "span": 12
+            },
+            {
+              "components": [
+                {
+                  "options": {
+                    "vertical_labels": true,
+                    "fields": ["taxrate", "price_net", "price_total"]
+                  },
+                  "type": "field_group"
+                }
+              ],
+              "span": 12
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

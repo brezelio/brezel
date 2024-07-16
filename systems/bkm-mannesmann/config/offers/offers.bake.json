@@ -1,0 +1,160 @@
+[
+  {
+    "resource_module": "offers",
+    "import": true,
+    "resource": {
+      "identifier": "offers",
+      "icon": "shop",
+      "layouts": {
+        "detail": "${file('config/offers/offers.detail.json')}"
+      },
+      "fields": [
+        {
+          "identifier": "process",
+          "type": "select",
+          "options": {
+            "rules": "required",
+            "references": "processes"
+          }
+        },
+        {
+          "identifier": "date",
+          "type": "date",
+          "options": {
+            "rules": "required"
+          }
+        },
+        {
+          "identifier": "created_by",
+          "type": "select",
+          "options": {
+            "references": "users",
+            "rules": "required"
+          }
+        },
+        {
+          "identifier": "customer",
+          "type": "select",
+          "options": {
+            "references": "customers",
+            "rules": "required"
+          }
+        },
+        {
+          "identifier": "object",
+          "type": "select",
+          "options": {
+            "references": "objects"
+          }
+        },
+        {
+          "identifier": "problem",
+          "type": "select",
+          "options": {
+            "references": "problems",
+            "rules": "required"
+          }
+        },
+        {
+          "identifier": "room_temperature",
+          "type": "number"
+        },
+        {
+          "identifier": "room_humidity",
+          "type": "number"
+        },
+        {
+          "identifier": "surface_temperature",
+          "type": "number"
+        },
+        {
+          "identifier": "construction_year",
+          "type": "text"
+        },
+        {
+          "identifier": "wall_material",
+          "type": "text"
+        },
+        {
+          "identifier": "wall_thickness",
+          "type": "number"
+        },
+        {
+            "identifier":"building_type",
+            "type":"select",
+            "options":{
+                "references":"building_types"
+            }
+        },
+        {
+          "identifier": "level",
+          "type": "text"
+        },
+        {
+          "identifier": "floor_material",
+          "type": "text"
+        },
+        {
+          "identifier": "strip_foundation",
+          "type": "text"
+        },
+        {
+          "identifier": "seals_done_in_the_past",
+          "type": "checkbox"
+        },
+        {
+          "identifier": "positions",
+          "options": {
+              "show_ordering": true,
+              "fields": [
+                  {
+                      "identifier": "service",
+                      "type": "select",
+                      "options": {
+                          "references": "services",
+                          "add_options": true
+                      }
+                  },
+                  {
+                      "identifier": "description",
+                      "type": "text"
+                  },
+                  {
+                      "identifier": "single_price",
+                      "type": "currency"
+                  },
+                  {
+                      "identifier": "quantity",
+                      "type": "number",
+                      "options": {
+                          "decimal_digits": 2,
+                          "min": 1
+                      }
+                  },
+                  {
+                      "identifier": "total_price",
+                      "type": "currency",
+                      "recipe":"single_price * quantity"
+                  }
+              ]
+          },
+          "type": "list"
+      },
+      {
+        "identifier":"taxrate",
+        "type":"number"
+      },
+      {
+        "identifier":"price_net",
+        "type":"currency",
+        "recipe":"sum(positions[*].total_price)"
+      },
+      {
+        "identifier":"price_total",
+        "type":"currency",
+        "recipe":"price_net+(price_net* (taxrate / 100))"
+      }
+      ]
+    }
+  }
+]

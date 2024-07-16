@@ -13,7 +13,7 @@
       "title": "Nutzer",
       "headlines": {
         "address": "Anschrift",
-        "basic":"Grundlagen"
+        "basic": "Grundlagen"
       },
       "fields": {
         "name": "Name",
@@ -26,63 +26,166 @@
         "phone": "Telefon"
       }
     },
-    "customers":{
-      "title":"Kunden",
-      "headlines":{
-        "customers":"Kunden",
-        "general":"Allgemein",
-        "address":"Anschrift"
+    "customers": {
+      "title": "Kunden",
+      "headlines": {
+        "customers": "Kunden",
+        "general": "Allgemein",
+        "address": "Anschrift"
       },
-      "fields":{
-        "customer_id":"Kundennummer",
-        "name":"Name",
-        "email":"E-Mail",
-        "invoice_address":"Rechnungsanschrift",
-        "invoice_zip":"PLZ",
-        "invoice_city":"Stadt",
-        "phone_landline":"Festnetznummer",
-        "phone_mobile":"Mobilnummer"
+      "fields": {
+        "customer_id": "Kundennummer",
+        "name": "Name",
+        "email": "E-Mail",
+        "invoice_address": "Rechnungsanschrift",
+        "invoice_zip": "PLZ",
+        "invoice_city": "Stadt",
+        "phone_landline": "Festnetznummer",
+        "phone_mobile": "Mobilnummer"
       },
-      "tabs":{
-        "general":"Allgemein",
-        "objects":"Objekte"
+      "tabs": {
+        "general": "Allgemein",
+        "objects": "Objekte"
       }
     },
-    "objects":{
-      "title":"Objekte",
-      "headlines":{
-        "general":"Allgemein",
-        "address":"Anschrift"
+    "objects": {
+      "title": "Objekte",
+      "headlines": {
+        "general": "Allgemein",
+        "address": "Anschrift"
       },
-      "fields":{
-        "customer":"Kunde",
-        "name":"Name",
-        "email":"E-Mail",
-        "address":"Anschrift",
-        "zip":"PLZ",
-        "city":"Stadt",
-        "landline":"Festnetznummer",
-        "mobile":"Mobilnummer"
+      "fields": {
+        "customer": "Kunde",
+        "name": "Name",
+        "email": "E-Mail",
+        "address": "Anschrift",
+        "zip": "PLZ",
+        "city": "Stadt",
+        "landline": "Festnetznummer",
+        "mobile": "Mobilnummer"
       }
     },
-    "services":{
-      "title":"Dienste",
-      "headlines":{
-        "general":"Allgemein"
+    "services": {
+      "title": "Dienste",
+      "headlines": {
+        "general": "Allgemein"
       },
-      "fields":{
-        "service_name":"Name",
-        "billing_type":"Abrechnungstyp",
-        "price":"Preis"
+      "fields": {
+        "name": "Name",
+        "billing_type": "Abrechnungstyp",
+        "price": "Preis"
+      },
+      "choice": {
+        "billing_type": {
+          "hourly": "Stündlich",
+          "flat_price": "Pauschalpreis"
+        }
       }
     },
-    "problems":{
-      "title":"Probleme",
-      "headlines":{
-        "general":"Allgemein"
+    "problems": {
+      "title": "Probleme",
+      "headlines": {
+        "general": "Allgemein"
       },
-      "fields":{
-        "name":"Name"
+      "fields": {
+        "name": "Name"
+      }
+    },
+    "building_types": {
+      "title": "Gebäudetypen",
+      "headlines": {
+        "general": "Allgemein"
+      },
+      "fields": {
+        "name": "Name"
+      }
+    },
+    "processes": {
+      "title": "Prozesse",
+      "headlines": {
+        "general": "Allgemein"
+      },
+      "fields": {
+        "process_id": "Prozess-Nr"
+      }
+    },
+    "offers": {
+      "title": "Angebote",
+      "headlines": {
+        "general": "Allgemein",
+        "info": "Infos"
+      },
+      "fields": {
+        "process": "Prozess",
+        "customer": "Kunde",
+        "object": "Objekt",
+        "start_date": "Startdatum",
+        "end_date": "Abschlussdatum",
+        "total_worktime": "Arbeitszeit Total",
+        "status": "Status",
+        "problem": "Problem",
+        "room_temperature": "Raumtemperatur",
+        "room_humidity": "Luftfeuchte",
+        "surface_temperature": "Oberflächentemperatur",
+        "construction_year": "Baujahr",
+        "wall_material": "Wandbaustoff",
+        "wall_thickness": "Wandstärke",
+        "building_type": "Bauart",
+        "level": "Stockwerk",
+        "floor_material": "Bodenplatte",
+        "strip_foundation": "Streifenfundament",
+        "seals_done_in_the_past": "Nachträgliche Abdichtungen in der Vergangenheit?",
+        "positions": "Positionen",
+        "service": "Leistung",
+        "description": "Beschreibung",
+        "single_price": "Einzelpreis",
+        "quantity": "Anzahl",
+        "total_price": "Gesamtpreis",
+        "taxrate": "Steuersatz",
+        "price_net": "Netto-Preis",
+        "price_total": "Brutto-Preis"
+      }
+    },
+    "projects": {
+      "titile": "Projekte",
+      "headlines": {
+        "general": "Allgemein",
+        "info": "Infos"
+      },
+      "fields": {
+        "process": "Prozess",
+        "date": "Datum",
+        "created_by": "Erstellt von",
+        "customer": "Kunde",
+        "object": "Objekt",
+        "problem": "Problem",
+        "room_temperature": "Raumtemperatur",
+        "room_humidity": "Luftfeuchte",
+        "surface_temperature": "Oberflächentemperatur",
+        "construction_year": "Baujahr",
+        "wall_material": "Wandbaustoff",
+        "wall_thickness": "Wandstärke",
+        "building_type": "Bauart",
+        "level": "Stockwerk",
+        "floor_material": "Bodenplatte",
+        "strip_foundation": "Streifenfundament",
+        "seals_done_in_the_past": "Nachträgliche Abdichtungen in der Vergangenheit?",
+        "services": "Leistungen",
+        "service": "Leistung",
+        "description": "Beschreibung",
+        "single_price": "Einzelpreis",
+        "quantity": "Anzahl",
+        "total_price": "Gesamtpreis",
+        "taxrate": "Steuersatz",
+        "price_net": "Netto-Preis",
+        "price_total": "Brutto-Preis"
+      },
+      "choice": {
+        "status": {
+          "planned": "Geplant",
+          "in_progress": "in Arbeit",
+          "finished": "fertig"
+        }
       }
     }
   },

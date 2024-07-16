@@ -1,0 +1,33 @@
+{
+    "tabs": [
+      {
+        "identifier": "processes",
+        "icon": "setting",
+        "rows": [
+          {
+            "cols": [
+              {
+                "span": 12,
+                "components": [
+                  {
+                    "type": "headline",
+                    "options": {
+                      "identifier": "general",
+                      "icon": "user"
+                    }
+                  },
+                  {
+                    "type": "field_group",
+                    "options": {
+                      "fields": ["process_id"]
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+  

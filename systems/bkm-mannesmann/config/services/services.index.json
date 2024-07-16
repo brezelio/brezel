@@ -17,7 +17,7 @@
                                     "options": {
                                         "module": "services",
                                         "columns": [
-                                            "service_name",
+                                            "name",
                                             "billing_type",
                                             "price"
                                         ]

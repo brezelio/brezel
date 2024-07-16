@@ -4,7 +4,7 @@
       "import": true,
       "resource": {
         "identifier": "services",
-        "title": "service_name",
+        "title": "name",
         "icon": "sliders",
         "layouts": {
           "detail": "${file('config/services/services.detail.json')}",
@@ -12,8 +12,11 @@
         },
         "fields": [
           {
-            "identifier": "service_name",
-            "type": "text"
+            "identifier": "name",
+            "type": "text",
+            "options":{
+              "rules":"required"
+            }
           },
           {
             "identifier":"billing_type",

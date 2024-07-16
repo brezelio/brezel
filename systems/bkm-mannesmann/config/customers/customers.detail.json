@@ -70,8 +70,8 @@
                 {
                   "type": "headline",
                   "options": {
-                    "identifier": "sliders",
-                    "icon": "group"
+                    "identifier": "objects",
+                    "icon": "sliders"
                   }
                 },
 
@@ -82,6 +82,108 @@
                     "columns": {
                       "display": ["customer", "name", "email"],
                       "fetch": ["customer", "name", "email"]
+                    },
+                    "pre_filters": [
+                      {
+                        "column": "customer.id",
+                        "operator": "=",
+                        "field": "id"
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "identifier": "offers",
+      "options": {
+        "recipes": {
+          "hidden_from_frontend": "!id"
+        },
+        "show_in": ["module.show"]
+      },
+      "icon": "shop",
+      "rows": [
+        {
+          "cols": [
+            {
+              "span": 24,
+              "components": [
+                {
+                  "type": "headline",
+                  "options": {
+                    "identifier": "offers",
+                    "icon": "shop"
+                  }
+                },
+                {
+                  "type": "resource_table",
+                  "options": {
+                    "module": "offers",
+                    "columns": {
+                      "display": [
+                        "process",
+                        "date",
+                        "created_by",
+                        "customer",
+                        "object",
+                        "problem",
+                        "room_temperature",
+                        "room_humidity"
+                      ]
+                    },
+                    "pre_filters": [
+                      {
+                        "column": "customer.id",
+                        "operator": "=",
+                        "field": "id"
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "identifier": "projects",
+      "options": {
+        "recipes": {
+          "hidden_from_frontend": "!id"
+        },
+        "show_in": ["module.show"]
+      },
+      "icon": "container",
+      "rows": [
+        {
+          "cols": [
+            {
+              "span": 24,
+              "components": [
+                {
+                  "type": "headline",
+                  "options": {
+                    "identifier": "projects",
+                    "icon": "container"
+                  }
+                },
+                {
+                  "type": "resource_table",
+                  "options": {
+                    "module": "projects",
+                    "columns": {
+                      "display": [
+                        "process",
+                        "customer",
+                        "object",
+                        "problem"
+                      ]
                     },
                     "pre_filters": [
                       {

@@ -19,7 +19,7 @@
                 {
                   "type": "field_group",
                   "options": {
-                    "fields": ["service_name", "billing_type", "price"]
+                    "fields": ["name", "billing_type", "price"]
                   }
                 }
               ]

@@ -17,6 +17,14 @@
         {
           "name": "problems",
           "icon": "setting"
+        },
+        {
+          "name":"building_types",
+          "icon":"setting"
+        },
+        {
+          "name":"processes",
+          "icon":"setting"
         }
       ]
     }

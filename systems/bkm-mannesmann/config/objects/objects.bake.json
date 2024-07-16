@@ -4,7 +4,7 @@
     "import": true,
     "resource": {
       "identifier": "objects",
-      "title": "email",
+      "title": "name",
       "icon": "sliders",
       "layouts": {
         "detail": "${file('config/objects/objects.detail.json')}",

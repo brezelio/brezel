@@ -25,63 +25,165 @@
         "phone": "Phone"
       }
     },
-    "customers":{
-      "title":"Customers",
-      "headlines":{
-        "general":"General",
-        "address":"Address"
+    "customers": {
+      "title": "Customers",
+      "headlines": {
+        "general": "General",
+        "address": "Address"
       },
-      "fields":{
-        "customer_id":"Customer ID",
-        "name":"Name",
-        "email":"E-mail",
-        "invoice_address":"Addess",
-        "invoice_zip":"Zip",
-        "invoice_city":"City",
-        "phone_landline":"Landline",
-        "phone_mobile":"Mobile"
-
+      "fields": {
+        "customer_id": "Customer ID",
+        "name": "Name",
+        "email": "E-mail",
+        "invoice_address": "Addess",
+        "invoice_zip": "Zip",
+        "invoice_city": "City",
+        "phone_landline": "Landline",
+        "phone_mobile": "Mobile"
       },
-      "tabs":{
-        "general":"General",
-        "objects":"Objects"
+      "tabs": {
+        "general": "General",
+        "objects": "Objects"
       }
     },
-    "objects":{
-      "title":"Objects",
-      "headlines":{
-        "general":"General",
-        "address":"Address"
+    "objects": {
+      "title": "Objects",
+      "headlines": {
+        "general": "General",
+        "address": "Address"
       },
-      "fields":{
-        "customer":"Customer",
-        "name":"Name",
-        "email":"E-mail",
-        "address":"Address",
-        "zip":"Zip",
-        "city":"City",
-        "landline":"Landline",
-        "mobile":"Mobile"
+      "fields": {
+        "customer": "Customer",
+        "name": "Name",
+        "email": "E-mail",
+        "address": "Address",
+        "zip": "Zip",
+        "city": "City",
+        "landline": "Landline",
+        "mobile": "Mobile"
       }
     },
-    "services":{
-      "title":"Services",
-      "headlines":{
-        "general":"General"
+    "services": {
+      "title": "Services",
+      "headlines": {
+        "general": "General"
       },
-      "fields":{
-        "service_name":"Name",
-        "billing_type":"Billing type",
-        "price":"price"
+      "fields": {
+        "name": "Name",
+        "billing_type": "Billing type",
+        "price": "price"
+      },
+      "choice": {
+        "billing_type": {
+          "hourly": "Hourly",
+          "flat_price": "Flat price"
+        }
       }
     },
-    "problems":{
-      "title":"Problems",
-      "headlines":{
-        "general":"General"
+    "problems": {
+      "title": "Problems",
+      "headlines": {
+        "general": "General"
       },
-      "fields":{
-        "name":"Name"
+      "fields": {
+        "name": "Name"
+      }
+    },
+    "building_types": {
+      "title": "Building types",
+      "headlines": {
+        "general": "General"
+      },
+      "fields": {
+        "name": "Name"
+      }
+    },
+    "processes": {
+      "title": "Processes",
+      "headlines": {
+        "general": "General"
+      },
+      "fields": {
+        "process_id": "Process ID"
+      }
+    },
+    "offers": {
+      "title": "Offers",
+      "headlines": {
+        "general": "General",
+        "info": "Info"
+      },
+      "fields": {
+        "process": "Process",
+        "date": "Date",
+        "created_by": "Created by",
+        "customer": "Customer",
+        "object": "Object",
+        "problem": "Problem",
+        "room_temperature": "Room temperature",
+        "room_humidity": "Room humidity",
+        "surface_temperature": "Surface temperature",
+        "construction_year": "Construction year",
+        "wall_material": "Wall material",
+        "wall_thickness": "Wall thickness",
+        "building_type": "Building type",
+        "level": "Level",
+        "floor_material": "Floor material",
+        "strip_foundation": "Strip foundation",
+        "seals_done_in_the_past": "Seals done in the past",
+        "positions": "Positions",
+        "service": "Service",
+        "description": "Description",
+        "single_price": "Single price",
+        "quantity": "Quantity",
+        "total_price": "Total price",
+        "taxrate": "Taxrate",
+        "price_net": "Price net",
+        "price_total": "Price total"
+      }
+    },
+    "projects": {
+      "titile": "Projects",
+      "headlines": {
+        "general": "General",
+        "info": "Info"
+      },
+      "fields": {
+        "process": "Process",
+        "customer": "Customer",
+        "object": "Object",
+        "start_date": "Start date",
+        "end_date": "End date",
+        "total_worktime": "Total worktime",
+        "status": "Status",
+        "problem": "Problem",
+        "room_temperature": "Room temperature",
+        "room_humidity": "Room humidity",
+        "surface_temperature": "Surface temperature",
+        "construction_year": "Construction year",
+        "wall_material": "Wall material",
+        "wall_thickness": "Wall thickness",
+        "building_type": "Building type",
+        "level": "Level",
+        "floor_material": "Floor material",
+        "strip_foundation": "Strip foundation",
+        "seals_done_in_the_past": "Seals done in the past",
+        "services": "Services",
+        "service": "Service",
+        "description": "Description",
+        "single_price": "Single price",
+        "quantity": "Quantity",
+        "total_price": "Total price",
+        "taxrate": "Taxrate",
+        "price_net": "Price net",
+        "price_total": "Price total"
+      },
+      "choice": {
+        "status": {
+          "planned": "Planned",
+          "in_progress": "In progress",
+          "finished": "Finished"
+        }
       }
     }
   },

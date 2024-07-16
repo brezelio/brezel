@@ -1,0 +1,21 @@
+[
+    {
+      "resource_module": "processes",
+      "import": true,
+      "resource": {
+        "identifier": "processes",
+        "title": "process_id",
+        "icon": "setting",
+        "layouts": {
+          "detail": "${file('config/processes/processes.detail.json')}"
+        },
+        "fields": [
+          {
+            "identifier": "process_id",
+            "type": "incrementing"
+          }
+        ]
+      }
+    }
+  ]
+  
