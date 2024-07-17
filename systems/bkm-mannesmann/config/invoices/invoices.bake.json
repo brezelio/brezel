@@ -1,0 +1,115 @@
+[
+  {
+    "resource_module": "invoices",
+    "resource": {
+      "identifier": "invoices",
+      "title": "invoice_number",
+      "icon": "bank",
+      "layouts": {
+        "detail": "${file('/config/invoices/invoices.detail.json')}"
+      },
+      "fields": [
+        {
+          "identifier": "process",
+          "type": "select",
+          "options": {
+            "references": "processes",
+            "rules": "required"
+          }
+        },
+        {
+          "identifier": "invoice_number",
+          "type": "incrementing",
+          "options": {
+            "incrementing_default": 0,
+            "incrementing_format": "TEXT%INV-|DATE%Y|DATE%m|TEXT%-|INCREMENTING_VALUE%3"
+          }
+        },
+        {
+            "identifier":"customer",
+            "type":"select",
+            "options":{
+                "references":"customers"
+            }
+        },
+        {
+            "identifier": "type",
+            "type": "choice",
+            "options": {
+              "values": ["partial", "final"]
+            }
+          },
+          {
+            "identifier": "status",
+            "type": "choice",
+            "options": {
+              "values": ["open", "paid"]
+            }
+          },
+          {
+            "identifier": "address",
+            "type": "text"
+          },
+          {
+            "identifier": "zip",
+            "type": "number"
+          },
+          {
+            "identifier": "city",
+            "type": "text"
+          },
+          {
+            "identifier": "phone",
+            "type": "tel"
+          },
+          {
+            "identifier": "positions",
+            "type": "list",
+            "options": {
+              "show_ordering": true,
+              "fields": [
+                {
+                  "identifier": "service",
+                  "type": "select",
+                  "options": {
+                    "references": "services"
+                  }
+                },
+                {
+                  "identifier": "description",
+                  "type": "text"
+                },
+                {
+                  "identifier": "single_price",
+                  "type": "currency"
+                },
+                {
+                  "identifier": "quantity",
+                  "type": "number"
+                },
+                {
+                  "identifier": "total_price",
+                  "type": "currency",
+                  "recipe":"single_price * quantity"
+              }
+              ]
+            }
+          },
+          {
+            "identifier": "taxrate",
+            "type": "number"
+          },
+          {
+            "identifier": "price_net",
+            "type": "currency",
+             "recipe":"sum(positions[*].total_price)"
+          },
+          {
+            "identifier": "price_total",
+            "type": "currency",
+           "recipe":"price_net+(price_net* (taxrate / 100))"
+          }
+      ]
+    }
+  }
+]

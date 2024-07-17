@@ -25,7 +25,11 @@
         {
           "name":"processes",
           "icon":"setting"
-        }
+        },
+        "projects",
+        "additional_services",
+        "proof_of_work",
+        "invoices"
       ]
     }
   }

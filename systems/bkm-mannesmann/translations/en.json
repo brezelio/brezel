@@ -185,6 +185,62 @@
           "finished": "Finished"
         }
       }
+    },
+    "additional_services": {
+      "title": "Additional Services",
+      "headlines": {
+        "general": "General",
+        "info": "Info"
+      },
+      "fields": {
+        "process": "Process",
+        "project": "Project",
+        "added_by": "Added by",
+        "timestamp": "Timestamp",
+        "service": "Service",
+        "reason": "Reason",
+        "attachments": "Attachments",
+        "file": "File"
+      }
+    },
+    "proof_of_work": {
+      "title": "Proof of work",
+      "headlines": {
+        "general": "General",
+        "info": "Info"
+      },
+      "fields": {
+        "project": "Project",
+        "timestamp": "Timestamp",
+        "attachments": "Attachments",
+        "file": "File"
+      }
+    },
+    "invoices": {
+      "title": "Invoices",
+      "headlines": {
+        "basic": "Basic",
+        "address": "Address"
+      },
+      "fields": {
+        "process": "Process",
+        "invoice_number": "Invoice Number",
+        "type": "Type",
+        "status": "Status",
+        "address": "Address",
+        "zip": "Zip",
+        "city": "City",
+        "phone": "Phone",
+        "positions": "Positions",
+        "service": "Service",
+        "description": "Description",
+        "single_price": "Single price",
+        "quantity": "Quantity",
+        "total_price": "Total price",
+        "taxrate": "Taxrate",
+        "price_net": "Price net",
+        "price_total": "Price total"
+      }
     }
   },
   "widgets": {},

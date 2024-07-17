@@ -152,14 +152,14 @@
       ]
     },
     {
-      "identifier": "projects",
+      "identifier": "invoices",
       "options": {
         "recipes": {
           "hidden_from_frontend": "!id"
         },
         "show_in": ["module.show"]
       },
-      "icon": "container",
+      "icon": "bank",
       "rows": [
         {
           "cols": [
@@ -169,20 +169,21 @@
                 {
                   "type": "headline",
                   "options": {
-                    "identifier": "projects",
-                    "icon": "container"
+                    "identifier": "invoices",
+                    "icon": "bank"
                   }
                 },
                 {
                   "type": "resource_table",
                   "options": {
-                    "module": "projects",
+                    "module": "invoices",
                     "columns": {
                       "display": [
                         "process",
+                        "invoice_number",
                         "customer",
-                        "object",
-                        "problem"
+                        "type",
+                        "status"
                       ]
                     },
                     "pre_filters": [

@@ -1,0 +1,66 @@
+[
+    {
+      "resource_module": "additional_services",
+      "import": true,
+      "resource": {
+        "identifier": "additional_services",
+        "icon": "contacts",
+        "layouts": {
+          "detail": "${file('config/additional_services/additional_services.detail.json')}"
+        },
+        "fields": [
+          {
+            "identifier": "process",
+            "type": "select",
+            "options": {
+              "rules": "required",
+              "references": "processes"
+            }
+          },
+          {
+            "identifier":"project",
+            "type":"select",
+            "options":{
+                "references":"projects"
+            }
+          },
+          {
+            "identifier":"added_by",
+            "type":"select",
+            "options":{
+                "references":"customers"
+            }
+          },
+          {
+            "identifier":"timestamp",
+            "type":"datetime"
+          },
+          {
+            "identifier":"service",
+            "type":"select",
+            "options":{
+                "references":"services"
+            }
+          },
+          {
+            "identifier":"reason",
+            "type":"text"
+          },
+          {
+            "identifier":"attachments",
+            "type":"list",
+            "options":{
+                "show_ordering": true,
+                "fields":[
+                    {
+                        "identifier":"file",
+                        "type":"upload"
+                    }
+                ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+  

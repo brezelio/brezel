@@ -1,0 +1,67 @@
+{
+  "tabs": [
+    {
+      "identifier": "additional_services",
+      "rows": [
+        {
+          "cols": [
+            {
+              "span": 12,
+              "components": [
+                {
+                  "type": "headline",
+                  "options": {
+                    "identifier": "general",
+                    "icon": "user"
+                  }
+                },
+                {
+                  "type": "field_group",
+                  "options": {
+                    "vertical_labels": true,
+                    "fields": ["process", "project", "added_by"]
+                  }
+                }
+              ]
+            },
+            {
+              "span": 12,
+              "components": [
+                {
+                  "type": "headline",
+                  "options": {
+                    "identifier": "info",
+                    "icon": "user"
+                  }
+                },
+                {
+                  "type": "field_group",
+                  "options": {
+                    "vertical_labels": true,
+                    "fields": ["timestamp", "service", "reason"]
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "cols": [
+            {
+              "components": [
+                {
+                  "options": {
+                    "vertical_labels": true,
+                    "fields": ["attachments"]
+                  },
+                  "type": "field_group"
+                }
+              ],
+              "span": 12
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

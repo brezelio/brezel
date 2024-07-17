@@ -1,0 +1,41 @@
+[
+    {
+      "resource_module": "proof_of_work",
+      "import": true,
+      "resource": {
+        "identifier": "proof_of_work",
+        "icon": "rocket",
+        "layouts": {
+          "detail": "${file('config/proof_of_work/proof_of_work.detail.json')}"
+        },
+        "fields": [
+          {
+            "identifier":"project",
+            "type":"select",
+            "options":{
+                "references":"projects",
+                "rules":"required"
+            }
+          },
+          {
+            "identifier":"timestamp",
+            "type":"datetime"
+          },
+          {
+            "identifier":"attachments",
+            "type":"list",
+            "options":{
+                "show_ordering": true,
+                "fields":[
+                    {
+                        "identifier":"file",
+                        "type":"upload"
+                    }
+                ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+  

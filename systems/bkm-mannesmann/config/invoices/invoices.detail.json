@@ -1,0 +1,102 @@
+{
+  "tabs": [
+    {
+      "identifier": "invoices",
+      "icon": "bank",
+      "rows": [
+        {
+          "cols": [
+            {
+              "span": 12,
+              "components": [
+                {
+                  "type": "headline",
+                  "options": {
+                    "identifier": "basic",
+                    "icon": "user"
+                  }
+                },
+                {
+                  "type": "field_group",
+                  "options": {
+                    "vertical_labels": true,
+                    "fields": [
+                      "process",
+                      "invoice_number",
+                      "customer",
+                      "type",
+                      "status"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "span": 12,
+              "components": [
+                {
+                  "type": "headline",
+                  "options": {
+                    "identifier": "address",
+                    "icon": "environment"
+                  }
+                },
+                {
+                  "type": "field_group",
+                  "options": {
+                    "vertical_labels": true,
+                    "fields": ["address", "zip", "city", "phone"]
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "cols": [
+            {
+              "span": 24,
+              "components": [
+                {
+                  "type": "field_group",
+                  "options": {
+                    "vertical_labels": true,
+                    "fields": ["positions"]
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "cols": [
+            {
+              "span": 12,
+              "components": [
+                {
+                  "type": "field_group",
+                  "options": {
+                    "vertical_labels": true,
+                    "fields": []
+                  }
+                }
+              ]
+            },
+            {
+              "span": 12,
+              "components": [
+                {
+                  "type": "field_group",
+                  "options": {
+                    "vertical_labels": true,
+                    "fields": ["taxrate", "price_net", "price_total"]
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

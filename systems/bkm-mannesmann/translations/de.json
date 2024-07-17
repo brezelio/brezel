@@ -45,7 +45,10 @@
       },
       "tabs": {
         "general": "Allgemein",
-        "objects": "Objekte"
+        "objects": "Objekte",
+        "offers":"Angebote",
+        "projects":"Projekte",
+        "invoices":"Rechnungen"
       }
     },
     "objects": {
@@ -186,6 +189,62 @@
           "in_progress": "in Arbeit",
           "finished": "fertig"
         }
+      }
+    },
+    "additional_services": {
+      "title": "Zusätzliche Dienstleistungen",
+      "headlines": {
+        "general": "Allgemein",
+        "info": "Infos"
+      },
+      "fields": {
+        "process": "Prozess",
+        "project": "Projekt",
+        "added_by": "Hinzugefügt von",
+        "timestamp": "Zeitstempel",
+        "service": "Leistung",
+        "reason": "Grund",
+        "attachments": "Anhänge",
+        "file": "Anhang"
+      }
+    },
+    "proof_of_work": {
+      "title": "Nachweis der Arbeit",
+      "headlines": {
+        "general": "Allgemein",
+        "info": "Infos"
+      },
+      "fields": {
+        "project": "Projekt",
+        "timestamp": "Zeitstempel",
+        "attachments": "Anhänge",
+        "file": "Anhang"
+      }
+    },
+    "invoices": {
+      "title": "Rechnungen",
+      "headlines": {
+        "basic": "Grundlegend",
+        "address": "Anschrift"
+      },
+      "fields": {
+        "process": "Prozess",
+        "invoice_number": "Rechnungsnummer",
+        "type": "Typ",
+        "status": "Status",
+        "address": "Anschrift",
+        "zip": "PLZ",
+        "city": "Stadt",
+        "phone": "Telefon",
+        "positions": "Positionen",
+        "service": "Leistung",
+        "description": "Beschreibung",
+        "single_price": "Einzelpreis",
+        "quantity": "Anzahl",
+        "total_price": "Gesamtpreis",
+        "taxrate": "Steuersatz",
+        "price_net": "Netto-Preis",
+        "price_total": "Brutto-Preis"
       }
     }
   },
