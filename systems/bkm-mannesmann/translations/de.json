@@ -1,5 +1,7 @@
 {
-  "buttons": {},
+  "buttons": {
+    "Create Project": "Projekt erstellen"
+  },
   "notifications": {},
   "modules": {
     "clients": {
@@ -249,7 +251,13 @@
     }
   },
   "widgets": {},
-  "workflows": {},
+  "workflows": {
+    "OffersToProject": {
+        "Confirm": {
+            "title": "Bestätigen Sie das Angebot"
+        }
+      }
+  },
   "calendar": {
     "events": "Termine",
     "employeeBirthdays": "Mitarbeiter-Geburtstage",

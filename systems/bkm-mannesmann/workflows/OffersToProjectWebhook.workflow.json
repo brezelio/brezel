@@ -1,0 +1,168 @@
+{
+    "identifier": "OffersToProjectWebhook",
+    "title": "Create Project from Offers",
+    "description": null,
+    "async": false,
+    "debug": false,
+    "elements": [
+        {
+            "name": "OffersToProjectWebhook",
+            "type": "event/webhook",
+            "options": {
+                "module": "offers",
+                "title": "Create Project",
+                "async": false,
+                "show_in_button_bar": false,
+                "roles": null,
+                "public": false
+            },
+            "in": {},
+            "set": {
+                "resource": "default:"
+            },
+            "to": {
+                "default": {
+                    "Confirm": [
+                        "default"
+                    ]
+                }
+            },
+            "meta": {
+                "position": [
+                    104,
+                    146.015625
+                ]
+            }
+        },
+        {
+            "name": "Confirm",
+            "type": "action/modal",
+            "options": {
+                "title": {
+                    ".recipe": "t('workflows.OffersToProject.Confirm.title')"
+                },
+                "type": "confirm",
+                "layout": null,
+                "fields": [],
+                "checkpoint": true,
+                "hard": false,
+                "autosave_key": null
+            },
+            "in": {},
+            "set": {},
+            "to": {
+                "confirm": {
+                    "CreateNewProject": [
+                        "default"
+                    ]
+                }
+            },
+            "meta": {
+                "position": [
+                    500.7777724423664,
+                    164.01560289267826
+                ]
+            }
+        },
+        {
+            "name": "CreateNewProject",
+            "type": "source/new",
+            "options": {
+                "module": "projects"
+            },
+            "in": {},
+            "set": {},
+            "to": {
+                "default": {
+                    "SetData": [
+                        "default"
+                    ]
+                }
+            },
+            "meta": {
+                "position": [
+                    885.6063019939191,
+                    188.21316328521294
+                ]
+            }
+        },
+        {
+            "name": "SetData",
+            "type": "op/set",
+            "options": {
+                "copy": "$resource",
+                "recipes": {
+                    "process": "$resource.process",
+                    "customer": "$resource.customer",
+                    "object": "$resource.object",
+                    "problem": "$resource.problem",
+                    "room_temperature": "$resource.room_temperature",
+                    "room_humidity": "$resource.room_humidity",
+                    "surface_temperature": "$resource.surface_temperature",
+                    "construction_year": "$resource.construction_year",
+                    "wall_material": "$resource.wall_material",
+                    "wall_thickness": "$resource.wall_thickness",
+                    "building_type": "$resource.building_type",
+                    "level": "$resource.level",
+                    "floor_material": "$resource.floor_material",
+                    "strip_foundation": "$resource.strip_foundation",
+                    "seals_done_in_the_past": "$resource.seals_done_in_the_past",
+                    "services": "$resource.positions"
+                },
+                "values": [],
+                "process": false
+            },
+            "in": {},
+            "set": {},
+            "to": {
+                "default": {
+                    "RedirectToProjects": [
+                        "default"
+                    ]
+                }
+            },
+            "meta": {
+                "position": [
+                    1257.348414832432,
+                    192.32838985976792
+                ]
+            }
+        },
+        {
+            "name": "RedirectToProjects",
+            "type": "action/redirect",
+            "options": {
+                "module": "projects",
+                "fill": true,
+                "action": "module.create",
+                "url": null,
+                "swap": false,
+                "target": null,
+                "http": null,
+                "queryParams": []
+            },
+            "in": {},
+            "set": {},
+            "to": {},
+            "meta": {
+                "position": [
+                    1637.3209794566928,
+                    173.1239994551355
+                ]
+            }
+        }
+    ],
+    "events": [
+        {
+            "identifier": "OffersToProjectWebhook",
+            "type": "webhook",
+            "module": "offers",
+            "title": "Create Project",
+            "async": false,
+            "show_in_button_bar": false,
+            "roles": null,
+            "public": false
+        }
+    ],
+    "comments": []
+}

@@ -1,5 +1,7 @@
 {
-  "buttons": {},
+  "buttons": {
+    "Create Project": "Create Project"
+  },
   "notifications": {},
   "modules": {
     "clients": {
@@ -246,7 +248,13 @@
   "widgets": {},
   "pdf": {},
   "mails": {},
-  "workflows": {},
+  "workflows": {
+    "OffersToProject": {
+        "Confirm": {
+            "title": "Confirm the offer"
+        }
+      }
+  },
   "calendar": {
     "events": "Events",
     "employeeBirthdays": "Employee birthday",

@@ -8,6 +8,14 @@
       "layouts": {
         "detail": "${file('config/offers/offers.detail.json')}"
       },
+      "buttons": {
+        "Create Project": {
+            "hidden": false,
+            "trigger": "OffersToProjectWebhook",
+            "style": "primary",
+            "show_in": ["module.show"]
+        }
+      },
       "fields": [
         {
           "identifier": "process",

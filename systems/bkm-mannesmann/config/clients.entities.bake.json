@@ -1,6 +1,7 @@
 [
   {
     "resource_client": "global",
+    "depends_on": "resource_module.clients",
     "resource": {
       "module": "clients",
       "global": true,
