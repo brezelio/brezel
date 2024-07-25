@@ -5,6 +5,7 @@
       "resource": {
         "identifier": "proof_of_work",
         "icon": "rocket",
+        "title": "id",
         "layouts": {
           "detail": "${file('config/proof_of_work/proof_of_work.detail.json')}"
         },
