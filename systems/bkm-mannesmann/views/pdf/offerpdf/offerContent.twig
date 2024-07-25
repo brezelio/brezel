@@ -1,0 +1,193 @@
+{% block setup %}
+    {{ '{"other": {"margin-top": "20", "margin-left": "20","margin-right": "20", "margin-bottom": "30" }}' }}
+{% endblock %}
+{% block header %}
+    <!DOCTYPE html>
+    <html lang="de">
+    <head>
+        <title></title>
+        <style>
+
+        </style>
+    </head>
+    <body>
+    </body>
+    </html>
+{% endblock %}
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <title>Offer</title>
+    <style>
+      html {
+        font-family: "TeX Gyre Heros", serif;
+        left: 4mm;
+        right: 4mm;
+      }
+      body {
+        margin-left: 10mm;
+        margin-right: 10mm;
+      }
+
+      .top_main {
+        width: 100%;
+        background-color: pink;
+        position: relative;
+        height: 38mm;
+      }
+      .section_top_left {
+        background-color: red;
+        position: absolute;
+        width: 60%;
+      }
+      .section_top_right {
+        background-color: grey;
+        position: absolute;
+        right: 6mm;
+        height: 40mm;
+      }
+      .class_sauerland{
+        font-size:20px;
+        text-align:center;
+         text-transform: uppercase;
+      }
+      .section_top_right_details{
+        margin-left:10px;
+        font-size:18px;
+      }
+      .section_top_right_icons{
+        color:green;
+  
+      }
+      .section_content_offer{
+        width:100%;
+        background-color:grey;
+        position:relative;
+        height:50mm;
+       
+      }
+       .section_content_left{
+        background-color:pink;
+        position:absolute;
+        height:42mm;
+
+      }
+      .section_content_right{
+        background-color:blue;
+        position:absolute;
+        right:16mm;
+        height:42mm;
+        margin-top:-43.5mm;
+
+      }
+     .section_content_orderdate{
+      width:100%;
+      background-color:yellow;
+      position:relative;
+      
+     }
+      
+      .positions {
+        border-spacing: 0;
+        width: 100%;
+      }
+
+      .positions th,
+      .positions td {
+        padding: 1mm;
+        vertical-align: middle;
+        border: 1px solid black;
+      }
+      .min-td {
+        width: auto;
+        white-space: nowrap;
+      }
+
+      .text-right {
+        text-align: right;
+      }
+
+      .text-left {
+        text-align: left;
+      }
+    </style>
+  </head>
+
+  <body>
+  
+    <hr />
+    <section class="section_content">
+    <section class="section_content_offer">
+      <b>Angebot/Auftrag</b> <br />
+      <section class="section_content_left">
+        <b> Kundenanschrift: </b>
+        <br />
+        Name:{{resource.customer.name}} Vorname:{{resource.customer.name}}
+        <br>
+        StraBe: {{resource.customer.invoice_city}} Hausnummber:
+        {{resource.customer.invoice_city}}
+        <br />
+        PLZ:{{resource.customer.invoice_zip}}
+        Ort:{{resource.customer.invoice_zip}}
+        <br />
+        Festnetz:{{resource.customer.invoice_zip}}
+        Mobil:{{resource.customer.phone_mobile}}
+        <br />
+        E-Mail:{{resource.customer.email}}
+      </section>
+      </section>
+      <section class="section_content_right">
+      <b>Liegenschaft:</b>
+      <br>
+       Name:{{resource.customer.name}} Vorname:{{resource.customer.name}}
+        <br>
+        StraBe: {{resource.customer.invoice_city}} Hausnummber:
+        {{resource.customer.invoice_city}}
+        <br />
+        PLZ:{{resource.customer.invoice_zip}}
+        Ort:{{resource.customer.invoice_zip}}
+      </section>
+    </section>
+       <section class="section_content_orderdate">
+       <b>Auftragsdaten</b>
+       <br>
+       <p>Welches Problem liegt vor? Horizontale Feuchte___ Flachen Feuchte___  Schimmel__  Raumtemperatur: __ Luftfeuchte:___  Oberflachentemperatur:___ Baujahr:_______ Wandbaustoff:_____________  Wandstarke: ___________ Bauart:_____ EFH___ DHH____ RH ___ MFH____ Stockwerk:_______________________ Bodenplatte:_______________ Streifenfundament:_______
+       Wurden in der Vergangenheit schon mal Abdichtungen nachtraglich erstellt: ja__ nein__ </p>
+       <b><u>Heirmit beauftrageich die  BWA Sauerland GmbH mit der Durchfuhrung folgender Arbeiten:</u><b>
+   </section>
+    <section style="height: 5mm;"></section>
+   <section class="table-responsive" style="overflow-x: auto; border-collapse: collapse;">
+        <table class="positions" style="border-collapse: collapse;">
+            <thead>
+                <tr class="positions-head" style="width: 100%;">
+                    <th>Leistung</th>
+                    <th>Beschreibung </th>
+                    <th>Anzahl</th>
+                    <th>Einzelpreis</th>
+                    <th>Gesamtpreis</th>
+                </tr>
+            </thead>
+            <tbody>
+                 {% if resource.positions %}
+                {% for  key, position in resource.positions %}
+                <tr class="position-row">
+                    <td class="" style="text-align: left;">{{ position.service.name ?? "" }} </td>
+                    <td class="" style="text-align: left;">{{ position.description ?? "" }}</td>
+                    <td class="" style="text-align: right;">{{ position.quantity ?? "" }}</td>
+                    <td class="" style="text-align: right;">{{ position.single_price ?? "" }} &#8364</td>
+                    <td class="" style="text-align: right;">{{ position.total_price ?? "" }}&#8364</td>
+                </tr>
+                {% endfor %}
+                {% endif %}
+
+            </tbody>
+        </table>
+    </section>
+  </body>
+</html>
+
+
+{% endblock %}

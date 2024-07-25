@@ -5,6 +5,7 @@
     "resource": {
       "identifier": "projects",
       "icon": "container",
+      "title":"id",
       "layouts": {
         "detail": "${file('config/projects/projects.detail.json')}"
       },

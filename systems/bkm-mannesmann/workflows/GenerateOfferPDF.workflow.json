@@ -1,0 +1,117 @@
+{
+    "identifier": "GenerateOfferPDF",
+    "title": "Generating the Offer PDF ",
+    "description": null,
+    "async": false,
+    "debug": true,
+    "entry": "OfferPDFWebhook",
+    "elements": [
+        {
+            "name": "OfferPDFWebhook",
+            "type": "event/webhook",
+            "options": {
+                "async": false,
+                "roles": null,
+                "title": "PDF",
+                "module": "offers",
+                "public": false,
+                "show_in_button_bar": false
+            },
+            "in": {},
+            "set": {
+                "offer": "default:"
+            },
+            "to": {
+                "default": {
+                    "lucky-cow-16": [
+                        "default"
+                    ]
+                }
+            },
+            "meta": {
+                "position": [
+                    212,
+                    84.015625
+                ]
+            }
+        },
+        {
+            "name": "weak-panther-67",
+            "type": "action/log",
+            "options": {},
+            "in": {},
+            "set": {},
+            "to": {},
+            "meta": {
+                "position": [
+                    964,
+                    391.015625
+                ]
+            }
+        },
+        {
+            "name": "lucky-cow-16",
+            "type": "action/export",
+            "options": {
+                "path": null,
+                "type": "pdf",
+                "view": null,
+                "export": [],
+                "footer": "pdf_footer",
+                "header": "pdf_header",
+                "merged": false,
+                "content": "offer_content",
+                "version": null,
+                "filename": "offer PDF",
+                "view_data": [],
+                "view_module": "views",
+                "store_module": "files"
+            },
+            "in": {},
+            "set": {},
+            "to": {
+                "default": {
+                    "weak-panther-67": [
+                        "default"
+                    ],
+                    "massive-dragonfly-24": [
+                        "default"
+                    ]
+                }
+            },
+            "meta": {
+                "position": [
+                    578,
+                    127.015625
+                ]
+            }
+        },
+        {
+            "name": "massive-dragonfly-24",
+            "type": "action/viewFile",
+            "options": {},
+            "in": {},
+            "set": {},
+            "to": {},
+            "meta": {
+                "position": [
+                    930,
+                    158.015625
+                ]
+            }
+        }
+    ],
+    "events": [
+        {
+            "identifier": "OfferPDFWebhook",
+            "type": "webhook",
+            "module": "offers",
+            "async": false,
+            "roles": null,
+            "title": "PDF",
+            "public": false,
+            "show_in_button_bar": false
+        }
+    ],
+    "comments": []
+}

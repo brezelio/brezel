@@ -14,6 +14,11 @@
             "trigger": "OffersToProjectWebhook",
             "style": "primary",
             "show_in": ["module.show"]
+        },
+        "Export_as_PDF": {
+          "trigger": "OfferPDFWebhook",
+          "icon": "file-pdf",
+          "show_in": ["module.show"]
         }
       },
       "fields": [
