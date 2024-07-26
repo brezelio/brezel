@@ -1,5 +1,5 @@
 {% block setup %}
-    {{ '{"other": {"margin-top": "20", "margin-left": "20","margin-right": "20", "margin-bottom": "30" }}' }}
+    {{ '{"other": {"margin-top": "5", "margin-left": "5","margin-right": "5", "margin-bottom": "5" }}' }}
 {% endblock %}
 {% block header %}
     <!DOCTYPE html>
@@ -7,13 +7,16 @@
     <head>
         <title></title>
         <style>
-
+ 
         </style>
     </head>
     <body>
+ 
+    </section>
     </body>
     </html>
 {% endblock %}
+
 {% block content %}
 
 <!DOCTYPE html>
@@ -24,32 +27,31 @@
     <style>
       html {
         font-family: "TeX Gyre Heros", serif;
-        left: 4mm;
-        right: 4mm;
+       
       }
       body {
         margin-left: 10mm;
         margin-right: 10mm;
       }
-
       .top_main {
         width: 100%;
-        background-color: pink;
         position: relative;
         height: 38mm;
       }
       .section_top_left {
-        background-color: red;
         position: absolute;
-        width: 60%;
+        width: 55%;
       }
       .section_top_right {
-        background-color: grey;
+        background-color: #8f8989;
         position: absolute;
-        right: 6mm;
-        height: 40mm;
+        right: 1mm;
+        height: 38mm;
+        border-radius:2mm;
+
       }
       .class_sauerland{
+        padding-top:5mm;
         font-size:20px;
         text-align:center;
          text-transform: uppercase;
@@ -64,19 +66,17 @@
       }
       .section_content_offer{
         width:100%;
-        background-color:grey;
         position:relative;
         height:50mm;
        
       }
        .section_content_left{
-        background-color:pink;
         position:absolute;
+        width:auto;
         height:42mm;
 
       }
       .section_content_right{
-        background-color:blue;
         position:absolute;
         right:16mm;
         height:42mm;
@@ -85,7 +85,6 @@
       }
      .section_content_orderdate{
       width:100%;
-      background-color:yellow;
       position:relative;
       
      }
@@ -113,11 +112,25 @@
       .text-left {
         text-align: left;
       }
+      .section_content_location{
+        bottom:10mm;
+      }
     </style>
   </head>
 
   <body>
-  
+    <section class="top_main">
+      <section class="section_top_left"></section>
+      <section class="section_top_right">
+        <div class="class_sauerland">Bwa Sauerland gmbh </div>
+        <div class="section_top_right_details">
+        <span class="section_top_right_icons" style="font-size:16px">&#127760</span> Peter-Dassis-Ring 40a, 57482 Wenden
+        <br />
+        <span class="section_top_right_icons" style="font-size:16px">&#128222</span> 02762-98 19 499
+        <br />
+        <span class="section_top_right_icons"style="font-size:20px" > &#x2709</span> info@bwa-sauerland.de
+      </section>
+    </section>
     <hr />
     <section class="section_content">
     <section class="section_content_offer">
@@ -125,37 +138,42 @@
       <section class="section_content_left">
         <b> Kundenanschrift: </b>
         <br />
-        Name:{{resource.customer.name}} Vorname:{{resource.customer.name}}
+        Name: {{resource.customer.name}} meenkeeee e Vorname: {{resource.customer.name}} 
         <br>
         StraBe: {{resource.customer.invoice_city}} Hausnummber:
         {{resource.customer.invoice_city}}
         <br />
-        PLZ:{{resource.customer.invoice_zip}}
-        Ort:{{resource.customer.invoice_zip}}
+        PLZ: {{resource.customer.invoice_zip}}
+        Ort: {{resource.customer.invoice_zip}}
         <br />
-        Festnetz:{{resource.customer.invoice_zip}}
-        Mobil:{{resource.customer.phone_mobile}}
+        Festnetz: {{resource.customer.invoice_zip}}
+        Mobil: {{resource.customer.phone_mobile}}
         <br />
-        E-Mail:{{resource.customer.email}}
+        E-Mail: {{resource.customer.email}}
       </section>
       </section>
       <section class="section_content_right">
       <b>Liegenschaft:</b>
       <br>
-       Name:{{resource.customer.name}} Vorname:{{resource.customer.name}}
+       Name: {{resource.customer.name}} Vorname: {{resource.customer.name}}
         <br>
-        StraBe: {{resource.customer.invoice_city}} Hausnummber:
+        StraBe: {{resource.customer.invoice_city}} Hausnummber: 
         {{resource.customer.invoice_city}}
         <br />
-        PLZ:{{resource.customer.invoice_zip}}
-        Ort:{{resource.customer.invoice_zip}}
+        PLZ: {{resource.customer.invoice_zip}}
+        Ort: {{resource.customer.invoice_zip}}
       </section>
     </section>
        <section class="section_content_orderdate">
        <b>Auftragsdaten</b>
        <br>
-       <p>Welches Problem liegt vor? Horizontale Feuchte___ Flachen Feuchte___  Schimmel__  Raumtemperatur: __ Luftfeuchte:___  Oberflachentemperatur:___ Baujahr:_______ Wandbaustoff:_____________  Wandstarke: ___________ Bauart:_____ EFH___ DHH____ RH ___ MFH____ Stockwerk:_______________________ Bodenplatte:_______________ Streifenfundament:_______
-       Wurden in der Vergangenheit schon mal Abdichtungen nachtraglich erstellt: ja__ nein__ </p>
+       <p>Welches Problem liegt vor? Horizontale Feuchte <b>{{resource.level}}</b> Flachen Feuchte___  Schimmel __  Raumtemperatur: <b>{{resource.room_temperature}}</b> Luftfeuchte: <b>{{resource.room_humidity}}</b>  Oberflachentemperatur: <b>{{resource.surface_temperature}}</b> Baujahr: <b>{{resource.construction_year}}</b> Wandbaustoff: <b>{{resource.wall_material}}</b>  Wandstarke: <b>{{resource.wall_thickness}}</b> Bauart: <b>{{resource.building_type}}</b> EFH___ DHH____ RH ___ MFH____ Stockwerk: <b>{{resource.level}}</b> Bodenplatte: <b>{{resource.floor_material}}</b> Streifenfundament: <b>{{resource.strip_foundation}}</b> </p>
+       <p>Wurden in der Vergangenheit schon mal Abdichtungen nachtraglich erstellt:{% if resource.seals_done_in_the_past == true %} <b>Yes</b>
+            
+            {%else%}
+            <b>No</b>
+{% endif %}
+          </p>
        <b><u>Heirmit beauftrageich die  BWA Sauerland GmbH mit der Durchfuhrung folgender Arbeiten:</u><b>
    </section>
     <section style="height: 5mm;"></section>
@@ -186,8 +204,51 @@
             </tbody>
         </table>
     </section>
+    <section>
+    <p>
+    Das o.g Angebot beinhaltet keinen Druckwasserschaden. Dieser wird separat pro Packer mit 120,00(brutto) berechnet. Eine Uberwanderung ist ebenfalls nicht enthalten. Hier muss ggf. die Horizontalsperre erganzt werden (auf eine doppellagige Horizontalsperre) oder sogar durch eine Flachensperre. Nach einer angemessenen Trocknungszeit,sollte der jetzt Salz belastete Putz durch einen geeigneten Putz ersetzt werden.
+    </p>
+    <p style="border:2px solid black; font-weight:bold" > Der Endpries errechnet sich nach AufmaB. Preis inkl. 19% MwStSumme: <span style="text-align:right;">{{resource.price_total}}</span> &#8364</p>
+    </section>
+    <section>
+    </section class="section_content_location">
+    <table class="positions" style="border-collapse: collapse;">
+            <thead>
+                <tr class="" style="width: 100%; margin-bottom:10px">
+                    <th style="width:50%;text-align:left" >Ort:  </th>
+                    <th style="width: 50%;text-align:left">den, </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="position-row">
+                    <td class="">
+                    {{resource.customer.invoice_city}}
+                    <br>
+                    {{resource.customer.invoice_zip}} 
+                    </td>
+                    <td class="" style=""margin-top:0;>{{resource.customer.name}}</td>
+                </tr>
+
+            </tbody>
+        </table>
+<section>
   </body>
 </html>
 
 
 {% endblock %}
+
+{% block footer %}
+ <!DOCTYPE html>
+    <html lang="de">
+    <head>
+        <title></title>
+        <style>
+
+        </style>
+    </head>
+    <body>
+    footer
+    </body>
+    </html>
+{%endblock%}

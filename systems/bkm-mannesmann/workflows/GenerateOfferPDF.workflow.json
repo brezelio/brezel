@@ -23,47 +23,35 @@
             },
             "to": {
                 "default": {
-                    "lucky-cow-16": [
+                    "ExpoetPDF": [
                         "default"
                     ]
                 }
             },
             "meta": {
                 "position": [
-                    212,
-                    84.015625
+                    0,
+                    -274
                 ]
             }
         },
         {
-            "name": "weak-panther-67",
-            "type": "action/log",
-            "options": {},
-            "in": {},
-            "set": {},
-            "to": {},
-            "meta": {
-                "position": [
-                    964,
-                    391.015625
-                ]
-            }
-        },
-        {
-            "name": "lucky-cow-16",
+            "name": "ExpoetPDF",
             "type": "action/export",
             "options": {
-                "path": null,
+                "path": "\"/\"",
                 "type": "pdf",
-                "view": null,
+                "view": "offer content",
                 "export": [],
-                "footer": "pdf_footer",
-                "header": "pdf_header",
+                "footer": null,
+                "header": null,
                 "merged": false,
-                "content": "offer_content",
-                "version": null,
+                "content": null,
+                "version": "2.0",
                 "filename": "offer PDF",
-                "view_data": [],
+                "view_data": {
+                    "resource": "$offer"
+                },
                 "view_module": "views",
                 "store_module": "files"
             },
@@ -71,23 +59,20 @@
             "set": {},
             "to": {
                 "default": {
-                    "weak-panther-67": [
-                        "default"
-                    ],
-                    "massive-dragonfly-24": [
+                    "ViewOfferPDF": [
                         "default"
                     ]
                 }
             },
             "meta": {
                 "position": [
-                    578,
-                    127.015625
+                    338,
+                    -194.5
                 ]
             }
         },
         {
-            "name": "massive-dragonfly-24",
+            "name": "ViewOfferPDF",
             "type": "action/viewFile",
             "options": {},
             "in": {},
@@ -95,8 +80,8 @@
             "to": {},
             "meta": {
                 "position": [
-                    930,
-                    158.015625
+                    676,
+                    -104.5
                 ]
             }
         }

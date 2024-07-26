@@ -6,7 +6,7 @@
       "module": "views",
       "client": "${resource_client.global}",
       "fields": {
-        "name": "offer_content",
+        "name": "offer content",
         "type": "twig",
         "code": "${file('views/pdf/offerpdf/offerContent.twig')}"
       }
