@@ -13,6 +13,19 @@
     }
   },
   {
+    "resource_view": "proof_of_work_pdf",
+    "depends_on": "resource_module.views",
+    "resource": {
+      "module": "views",
+      "client": "${resource_client.global}",
+      "fields": {
+        "name": "proof_of_work_pdf",
+        "type": "twig",
+        "code": "${file('views/pdf/proofOfWorkPdf.twig')}"
+      }
+    }
+  },
+  {
     "resource_view": "pdf_header",
     "depends_on": "resource_module.views",
     "resource": {

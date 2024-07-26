@@ -1,0 +1,102 @@
+{
+    "identifier": "generateProofOfWorkPDF",
+    "title": "Generate Proof Of Work PDF",
+    "description": null,
+    "async": false,
+    "debug": false,
+    "entry": "proofOfWorkPDFWebhook",
+    "elements": [
+        {
+            "name": "proofOfWorkPDFWebhook",
+            "type": "event/webhook",
+            "options": {
+                "async": false,
+                "roles": null,
+                "title": "PDF",
+                "module": "proof_of_work",
+                "public": false,
+                "show_in_button_bar": false
+            },
+            "in": {},
+            "set": {
+                "pow": "default:"
+            },
+            "to": {
+                "default": {
+                    "ExportAsPDF": [
+                        "default"
+                    ]
+                }
+            },
+            "meta": {
+                "position": [
+                    105,
+                    222.015625
+                ]
+            }
+        },
+        {
+            "name": "ExportAsPDF",
+            "type": "action/export",
+            "options": {
+                "path": "\"/\"",
+                "type": "pdf",
+                "view": "proof_of_work_pdf",
+                "export": {},
+                "footer": null,
+                "header": null,
+                "merged": false,
+                "content": null,
+                "version": "2.0",
+                "filename": "ExportProofOfWorkPdf",
+                "view_data": {
+                    "proofWork": "$pow"
+                },
+                "view_module": null,
+                "store_module": "files"
+            },
+            "in": {},
+            "set": {},
+            "to": {
+                "default": {
+                    "pdfView": [
+                        "default"
+                    ]
+                }
+            },
+            "meta": {
+                "position": [
+                    493,
+                    253.015625
+                ]
+            }
+        },
+        {
+            "name": "pdfView",
+            "type": "action/viewFile",
+            "options": {},
+            "in": {},
+            "set": {},
+            "to": {},
+            "meta": {
+                "position": [
+                    863,
+                    283.015625
+                ]
+            }
+        }
+    ],
+    "events": [
+        {
+            "identifier": "proofOfWorkPDFWebhook",
+            "type": "webhook",
+            "module": "proof_of_work",
+            "async": false,
+            "roles": null,
+            "title": "PDF",
+            "public": false,
+            "show_in_button_bar": false
+        }
+    ],
+    "comments": []
+}

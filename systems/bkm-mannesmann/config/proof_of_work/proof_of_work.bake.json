@@ -9,6 +9,13 @@
         "layouts": {
           "detail": "${file('config/proof_of_work/proof_of_work.detail.json')}"
         },
+        "buttons": {
+          "Export_as_PDF": {
+            "trigger": "proofOfWorkPDFWebhook",
+            "icon": "file-pdf",
+            "show_in": ["module.show"]
+          }
+        },
         "fields": [
           {
             "identifier":"project",

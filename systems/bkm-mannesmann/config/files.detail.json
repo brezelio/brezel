@@ -1,0 +1,61 @@
+{
+    "tabs": [
+        {
+            "identifier": "files",
+            "rows": [
+                {
+                    "cols": [
+                        {
+                            "span": 24,
+                            "components": [
+                                {
+                                    "type": "headline",
+                                    "options": {
+                                        "identifier": "general"
+                                    }
+                                },
+                                {
+                                    "type": "field_group",
+                                    "options": {
+                                        "fields": [
+                                            {
+                                                "identifier": "name",
+                                                "type": "text",
+                                                "options": {
+                                                    "autofocus": true,
+                                                    "rules": "required"
+                                                }
+                                            },
+                                            {
+                                                "identifier": "path",
+                                                "type": "text",
+                                                "options": {
+                                                    "rules": "required"
+                                                }
+                                            },
+                                            {
+                                                "identifier": "mime_type",
+                                                "type": "text",
+                                                "options": {
+                                                    "readonly": true
+                                                }
+                                            },
+                                            {
+                                                "identifier": "size",
+                                                "type": "number",
+                                                "options": {
+                                                    "rules": "required",
+                                                    "readonly": true
+                                                }
+                                            }
+                                        ]
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

@@ -1,6 +1,7 @@
 {
   "buttons": {
-    "Create Project": "Create Project"
+    "Create Project": "Create Project",
+    "Export_as_PDF": "Export as PDF"
   },
   "notifications": {},
   "modules": {
