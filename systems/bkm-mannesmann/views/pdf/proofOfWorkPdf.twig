@@ -36,7 +36,7 @@
             }
             .section_top_right_icons{
                 color:green;
-        
+
             }
 
         </style>
@@ -75,19 +75,39 @@
             width: 100%;
             margin-top: 1rem;
         }
-        .invisible-table {
-            width: 100%;
+        .left-block  {
+            width: 48%;
+            display: inline-block;
             text-align: left;
-            border-collapse: collapse;
         }
-        .invisible-table td, .invisible-table th {
+        .right-block  {
+            width: 50%;
+            display: inline-block;
+            text-align: left;
+        }
+        .hr-gap {
+            margin-top: 1rem;
+        }
+        .hr-gap-2x {
+            margin-top: 2rem;
+        }
+        .left-block, .right-block {
             font-size: 14px;
-            border: 1px solid black;
         }
-        .invisible-table th {
-            width: 25%;
+        .customer-detail-section-table, .project-detail-section-table {
+            border-collapse: collapse;
+            width: 100%;
         }
-
+        .customer-detail-section-table td, .customer-detail-section-table th, .project-detail-section-table td, .project-detail-section-table th {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align:left;
+        }
+        .left-small-block, .center-small-block, .right-small-block {
+            width: 33%;
+            display: inline-block;
+            text-align:left;
+        }
       
     </style>
   </head>
@@ -96,29 +116,168 @@
     <div class="full-block">
         <h2>Arbeitsnachweis zum Auftrag</h2>
     </div>
-    <div class="invisible-table-block">
-        <table class="invisible-table">
-            <tr>
-                <th>Eigenturmer/Verwaltung</th>
-                <td>Test data</td>
-                <th>Meiter/Objekt</th>
-                <td>Test data</td>
-            </tr>
-        </table>
+    <div class="left-block">
+        <div>Eigenturmer/Verwaltung</div>
+        <div class="hr-gap"></div>
+        <div>Name: Kron/D.I.S</div>
     </div>
-    <div class="invisible-table-block">
-        <table class="invisible-table">
+    <div class="right-block">
+        <div>Meiter/Objekt</div>
+        <div class="hr-gap"></div>
+        <div>Name: </div>
+    </div>
+    <div class="hr-gap"></div>
+    <div class="table-section">
+        <table class="customer-detail-section-table">
             <tr>
-                <th>Name</th>
-                <td>Kron / D.I.S</td>
-                <th>Name</th>
-                <td>Test data</td>
+                <td>Str. Nr.:</td>
+                <td>Str. Nr.:</td>
+            </tr>
+            <tr>
+                <td>PLZ,Ort:</td>
+                <td>Ort:</td>
+            </tr>
+            <tr>
+                <td>Tel.:</td>
+                <td>Tel.:</td>
+            </tr>
+            <tr>
+                <td>Mobil:</td>
+                <td>Mobil:</td>
+            </tr>
+            <tr>
+                <td>E-Mail:</td>
+                <td>E-Mail:</td>
+            </tr>
+            <tr>
+                <td>EFH/DHH/RH/freistehend</td>
+                <td>EFH/DHH/RH/freistehend</td>
             </tr>
         </table>
     </div>
 
+    <div class="hr-gap"></div>
+
+    <div class="table-section">
+        <table class="project-detail-section-table">
+            <tr>
+                <th>Horizontal</th>
+                <th>Lfm.</th>
+                <th>Wandmaterial</th>
+                <th>Wand cm</th>
+                <th>Fläche</th>
+                <th>Aufmaß m<sup>2</sup></th>
+                <th>Wandmaterial</th>
+            </tr>
+            <tr>
+                <td>HZ-250 Pro</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>KS-Platten</td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>HZ-250 Pro</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>Putz entfernen</td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Dichtband</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>IG streichen</td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Harz</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>VM</td>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="hr-gap"></div>
+
+    <div class="table-section">
+        <table class="project-detail-section-table">
+            <tr>
+                <td>HZ 250 PRO CHARGE</td>
+                <td></td>
+                <td>Mengeneinsatz Liter</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>HZ 250 PRO CHARGE</td>
+                <td></td>
+                <td>Mengeneinsatz Liter</td>
+                <td></td>
+            </tr>
+            
+        </table>
+    </div>
+
+    <div class="hr-gap"></div>
     
+    <div class="table-section">
+        <table class="project-detail-section-table">
+            <tr>
+                <th>Baustellen-Leitung</th>
+                <th>Handwerker</th>
+                <th>Arbeitsstunden</th>
+                <th>BL Horizontal</th>
+                <th>BL Fläche</th>
+                <th>BL Druckwasser</th>
+            </tr>
+            <tr>
+                <td>J. PreuB</td>
+                <td>W. Missel</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            
+        </table>
+    </div>
     
+    <div class="hr-gap-2x"></div>
+    <div class="left-block">
+        <div>Arbeitsbeginn:</div>
+        <div></div>
+    </div>
+    <div class="right-block">
+        <div>Arbeitsende:</div>
+        <div></div>
+    </div>
+
+    <div class="hr-gap-2x"></div>
+    <div class="left-block">
+        <div>Gummersbach, 14.11.2023</div>
+    </div>
+    
+    <div class="hr-gap-2x"></div>
+    <div class="left-small-block">
+        <div>Ort, Datum</div>
+    </div>
+    <div class="center-small-block">
+        <div>Bestätigung Auftraggeber</div>
+    </div>
+    <div class="right-small-block">
+        <div>Baustelle sauber verlassen</div>
+    </div>
+
   </body>
 </html>
 

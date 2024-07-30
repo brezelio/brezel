@@ -42,7 +42,7 @@
                 "path": "\"/\"",
                 "type": "pdf",
                 "view": "proof_of_work_pdf",
-                "export": {},
+                "export": [],
                 "footer": null,
                 "header": null,
                 "merged": false,
