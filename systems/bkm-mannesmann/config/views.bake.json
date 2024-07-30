@@ -8,7 +8,7 @@
             "type": "views",
             "identifier": "views",
             "title": "name",
-            "icon": "clock",
+            "icon": "eyes",
             "fields": [
                 {
                     "identifier": "name",
