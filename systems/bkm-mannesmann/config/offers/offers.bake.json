@@ -155,7 +155,11 @@
       },
       {
         "identifier":"taxrate",
-        "type":"number"
+        "type":"number",
+        "options":{
+          "default":19,
+          "readonly":true
+        }
       },
       {
         "identifier":"price_net",

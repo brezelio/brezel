@@ -101,28 +101,28 @@
 
       <section class="section_content">
         <section class="section_content_offer">
-          <b>Angebot/Auftrag</b> <br />
+          <b>{{t('pdf.offer.offer')}}/{{t('pdf.offer.order')}}</b> <br />
            <section class="table-responsive" style="overflow-x: auto; border-collapse: collapse;">
         <table class="positions" style="border-collapse: collapse;">
           <thead>
             <tr class="" style="width: 100%;">
-              <th class="border-none">Kundenanschrift: </th>
-              <th class="border-none">Liegenschaft: </th>
+              <th class="border-none">{{t('pdf.offer.customer_address')}}: </th>
+              <th class="border-none">{{t('pdf.offer.property')}}: </th>
             </tr>
           </thead>
           <tbody>
                 <tr class="position-row">
                   <td class="border-none">{{resource.customer.name}} {{resource.customer.name}}
                   <br>{{resource.customer.invoice_address }} {{resource.customer.invoice_address }} <br> {{resource.customer.invoice_zip}} {{resource.customer.invoice_city}} <br>
-                  Festnetz: {{resource.customer.phone_landline}}<br>
-                  Mobil: {{resource.customer.phone_mobile}}<br>
-                  E-Mail: {{resource.customer.email}}
+                  {{t('pdf.offer.landline')}}: {{resource.customer.phone_landline}}<br>
+                  {{t('pdf.offer.mobile')}}: {{resource.customer.phone_mobile}}<br>
+                  {{t('pdf.offer.email')}}: {{resource.customer.email}}
                   </td>
                   <td class="border-none">{{resource.customer.name}} {{resource.customer.name}}
                   <br>{{resource.customer.invoice_address }} {{resource.customer.invoice_address }} <br> {{resource.customer.invoice_zip}} {{resource.customer.invoice_city}}<br>
-                  Festnetz: {{resource.customer.phone_landline}}<br>
-                  Mobil: {{resource.customer.phone_mobile}}<br>
-                  E-Mail: {{resource.customer.email}} 
+                  {{t('pdf.offer.landline')}}: {{resource.customer.phone_landline}}<br>
+                  {{t('pdf.offer.mobile')}}: {{resource.customer.phone_mobile}}<br>
+                  {{t('pdf.offer.email')}}: {{resource.customer.email}} 
                 </tr>
           </tbody>
         </table>
@@ -131,28 +131,28 @@
          
       </section>
       <section>
-        <b>Auftragsdaten:</b>
+        <b>{{t('pdf.offer.order_data')}}:</b>
         <br>
-        Welches Problem liegt vor? Horizontale Feuchte <b>___</b> Flächen Feuchte___  Schimmel __  Raumtemperatur: <b>{{resource.room_temperature}}</b> Luftfeuchte: <b>{{resource.room_humidity}}</b>  Oberflächentemperatur: <b>{{resource.surface_temperature}}</b> Baujahr: <b>{{resource.construction_year}}</b> Wandbaustoff: <b>{{resource.wall_material}}</b>  Wandstärke: <b>{{resource.wall_thickness}}</b> Bauart: <b>{{resource.building_type}}</b> EFH___ DHH____ RH ___ MFH____ Stockwerk: <b>{{resource.level}}</b> Bodenplatte: <b>{{resource.floor_material}}</b> Streifenfundament: <b>{{resource.strip_foundation}}</b> 
+        {{t('pdf.offer.what_is_the_problem')}} {{t('pdf.offer.horizontal_humidity')}} <b>___</b> {{t('pdf.offer.surface_moisture')}}___  {{t('pdf.offer.mold')}} __  {{t('pdf.offer.room_temperature')}}: <b>{{resource.room_temperature}}</b> {{t('pdf.offer.room_humidity')}}: <b>{{resource.room_humidity}}</b> {{t('pdf.offer.surface_temperature')}}: <b>{{resource.surface_temperature}}</b> {{t('pdf.offer.construction_year')}}: <b>{{resource.construction_year}}</b> {{t('pdf.offer.wall_material')}}: <b>{{resource.wall_material}}</b>  {{t('pdf.offer.wall_thickness')}}: <b>{{resource.wall_thickness}}</b> {{t('pdf.offer.building_type')}}: <b>{{resource.building_type}}</b> {{t('pdf.offer.EFH')}}___ {{t('pdf.offer.DHH')}}____ {{t('pdf.offer.RH')}}___ {{t('pdf.offer.MFH')}}____ {{t('pdf.offer.level')}}: <b>{{resource.level}}</b> {{t('pdf.offer.floor_material')}}: <b>{{resource.floor_material}}</b> {{t('pdf.offer.strip_foundation')}}: <b>{{resource.strip_foundation}}</b> 
         <br>
-        Wurden in der Vergangenheit schon mal Abdichtungen nachtraglich erstellt:
+        {{t('pdf.offer.para1')}}
         {% if resource.seals_done_in_the_past == true %}
         <b>Yes</b>
         {%else%}
         <b>No</b>
         {% endif %}
         <br><br>
-        <b><u>Heirmit beauftrageich die  BWA Sauerland GmbH mit der Durchfuhrung folgender Arbeiten:</u><b>
+        <b><u>{{t('pdf.offer.para2')}}:</u><b>
       </section>
       <section class="table-responsive" style="overflow-x: auto; border-collapse: collapse;">
         <table class="positions" style="border-collapse: collapse;">
           <thead>
             <tr class="positions-head" style="width: 100%;">
-              <th>Leistung</th>
-              <th>Beschreibung </th>
-              <th>Anzahl</th>
-              <th>Einzelpreis</th>
-              <th>Gesamtpreis</th>
+              <th>{{t('pdf.offer.service')}}</th>
+              <th>{{t('pdf.offer.description')}}</th>
+              <th>{{t('pdf.offer.quantity')}}</th>
+              <th>{{t('pdf.offer.single_price')}}</th>
+              <th>{{t('pdf.offer.total_price')}}</th>
             </tr>
           </thead>
           <tbody>
@@ -172,18 +172,18 @@
       </section>
       <section>
         <p>
-          Das o.g Angebot beinhaltet keinen Druckwasserschaden. Dieser wird separat pro Packer mit 120,00€(brutto) berechnet. Eine Überwanderung ist ebenfalls nicht enthalten. Hier muss ggf. die Horizontalsperre erganzt werden (auf eine doppellagige Horizontalsperre) oder sogar durch eine Flächensperre. Nach einer angemessenen Trocknungszeit,sollte der jetzt Salz belastete Putz durch einen geeigneten Putz ersetzt werden.
+         {{t('pdf.offer.para3')}}
         </p>
         <p style="border:2px solid black; font-weight:bold" >
-          Der Endpries errechnet sich nach Aufmaß. Preis inkl. 19% MwStSumme: <span style="text-align:right;">{{resource.price_total}}</span> &#8364
+         {{t('pdf.offer.para4')}}: <span style="text-align:right;">{{resource.price_total}}</span> &#8364
         </p>
       </section>
       <section class="section_content_location">
         <table class="positions" style="margin-top:15mm";>
           <thead>
             <tr class="tables-location" style="width: 100%; ">
-              <th style="width:50%;text-align:left;border:none;" >Ort:  </th>
-              <th style="width: 50%;text-align:left;border:none;">den, </th>
+              <th style="width:50%;text-align:left;border:none;" >{{t('pdf.offer.place')}}:  </th>
+              <th style="width: 50%;text-align:left;border:none;">{{t('pdf.offer.the_one')}}, </th>
             </tr>
           </thead>
           <tbody>
@@ -199,8 +199,8 @@
         <table class="positions">
           <tbody>
             <tr>
-              <td style="width:50%; border:none;text-decoration: overline;">BKM Mannesmann Fachbetrieb </td>
-              <td style="width:50%; border:none;text-decoration: overline;">Unterschrift Auftraggeber</td>
+              <td style="width:50%; border:none;text-decoration: overline;">{{t('pdf.offer.message1')}} </td>
+              <td style="width:50%; border:none;text-decoration: overline;">{{t('pdf.offer.message2')}}</td>
             </tr>
           </tbody>
         </table>
