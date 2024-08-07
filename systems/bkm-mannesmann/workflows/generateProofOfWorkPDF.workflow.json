@@ -3,7 +3,7 @@
     "title": "Generate Proof Of Work PDF",
     "description": null,
     "async": false,
-    "debug": false,
+    "debug": true,
     "entry": "proofOfWorkPDFWebhook",
     "elements": [
         {
@@ -23,7 +23,7 @@
             },
             "to": {
                 "default": {
-                    "ExportAsPDF": [
+                    "EntitiesPOW": [
                         "default"
                     ]
                 }
@@ -50,7 +50,7 @@
                 "version": "2.0",
                 "filename": "ExportProofOfWorkPdf",
                 "view_data": {
-                    "proofWork": "$pow"
+                    "proofWork": "$powSource"
                 },
                 "view_module": null,
                 "store_module": "files"
@@ -66,8 +66,8 @@
             },
             "meta": {
                 "position": [
-                    493,
-                    253.015625
+                    794.1111529193515,
+                    243.46005947852666
                 ]
             }
         },
@@ -80,8 +80,70 @@
             "to": {},
             "meta": {
                 "position": [
-                    863,
-                    283.015625
+                    1109.1111266676658,
+                    276.9045048952558
+                ]
+            }
+        },
+        {
+            "name": "EntitiesPOW",
+            "type": "source/entities",
+            "options": {
+                "module": "proof_of_work",
+                "listItems": null,
+                "filters": [],
+                "with": [
+                    "project",
+                    "project.object",
+                    "project.customer"
+                ],
+                "fields": [],
+                "groupBy": [],
+                "having": [],
+                "limit": null,
+                "offset": null,
+                "first": false,
+                "scopes": [],
+                "permissions": false,
+                "withTrashed": false,
+                "global": false,
+                "autoDistinct": true,
+                "distinct": false
+            },
+            "in": {},
+            "set": {
+                "powSource": "default:"
+            },
+            "to": {
+                "default": {
+                    "hard-shrimp-67": [
+                        "default"
+                    ],
+                    "ExportAsPDF": [
+                        "default"
+                    ]
+                }
+            },
+            "meta": {
+                "position": [
+                    447.99999890618005,
+                    230.57119939356573
+                ]
+            }
+        },
+        {
+            "name": "hard-shrimp-67",
+            "type": "action/log",
+            "options": {
+                "active": true
+            },
+            "in": {},
+            "set": {},
+            "to": {},
+            "meta": {
+                "position": [
+                    475.99997991017153,
+                    552.7934074629733
                 ]
             }
         }

@@ -28,9 +28,7 @@
                       "end_date",
                       "total_worktime",
                       "status",
-                      "problem",
-                      "room_temperature",
-                      "room_humidity"
+                      "problem"
                     ]
                   }
                 }
@@ -51,6 +49,8 @@
                   "options": {
                     "vertical_labels": true,
                     "fields": [
+                      "room_temperature",
+                      "room_humidity",
                       "surface_temperature",
                       "construction_year",
                       "wall_material",

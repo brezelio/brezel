@@ -25,9 +25,7 @@
                       "created_by",
                       "customer",
                       "object",
-                      "problem",
-                      "room_temperature",
-                      "room_humidity"
+                      "problem"
                     ]
                   }
                 }
@@ -48,6 +46,8 @@
                   "options": {
                     "vertical_labels": true,
                     "fields": [
+                      "room_temperature",
+                      "room_humidity",
                       "surface_temperature",
                       "construction_year",
                       "wall_material",

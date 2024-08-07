@@ -130,24 +130,24 @@
     <div class="table-section">
         <table class="customer-detail-section-table">
             <tr>
-                <td>Str. Nr.:</td>
-                <td>Str. Nr.:</td>
+                <td>Str. Nr.: {{ proofWork.project.customer.invoice_address }}</td>
+                <td>Str. Nr.: {{ proofWork.project.object.address }}</td>
             </tr>
             <tr>
-                <td>PLZ,Ort:</td>
-                <td>Ort:</td>
+                <td>PLZ,Ort: {{ proofWork.project.customer.invoice_zip }} {{ proofWork.project.customer.invoice_city }}</td>
+                <td>PLZ,Ort: {{ proofWork.project.object.zip }} {{ proofWork.project.object.city }}</td>
             </tr>
             <tr>
-                <td>Tel.:</td>
-                <td>Tel.:</td>
+                <td>Tel.: {{ proofWork.project.customer.phone_landline }}</td>
+                <td>Tel.: {{ proofWork.project.object.landline }}</td>
             </tr>
             <tr>
-                <td>Mobil:</td>
-                <td>Mobil:</td>
+                <td>Mobil: {{ proofWork.project.customer.phone_mobile }}</td>
+                <td>Mobil: {{ proofWork.project.object.mobile }}</td>
             </tr>
             <tr>
-                <td>E-Mail:</td>
-                <td>E-Mail:</td>
+                <td>E-Mail: {{ proofWork.project.customer.email }}</td>
+                <td>E-Mail: {{ proofWork.project.object.email }}</td>
             </tr>
             <tr>
                 <td>EFH/DHH/RH/freistehend</td>
