@@ -10,10 +10,10 @@
       },
       "buttons": {
         "Create Project": {
-            "hidden": false,
-            "trigger": "OffersToProjectWebhook",
-            "style": "primary",
-            "show_in": ["module.show"]
+          "hidden": false,
+          "trigger": "OffersToProjectWebhook",
+          "style": "primary",
+          "show_in": ["module.show"]
         },
         "Export_as_PDF": {
           "trigger": "OfferPDFWebhook",
@@ -93,11 +93,11 @@
           "type": "number"
         },
         {
-            "identifier":"building_type",
-            "type":"select",
-            "options":{
-                "references":"building_types"
-            }
+          "identifier": "building_type",
+          "type": "select",
+          "options": {
+            "references": "building_types"
+          }
         },
         {
           "identifier": "level",
@@ -118,59 +118,62 @@
         {
           "identifier": "positions",
           "options": {
-              "show_ordering": true,
-              "fields": [
-                  {
-                      "identifier": "service",
-                      "type": "select",
-                      "options": {
-                          "references": "services",
-                          "add_options": true
-                      }
-                  },
-                  {
-                      "identifier": "description",
-                      "type": "text"
-                  },
-                  {
-                      "identifier": "single_price",
-                      "type": "currency"
-                  },
-                  {
-                      "identifier": "quantity",
-                      "type": "number",
-                      "options": {
-                          "decimal_digits": 2,
-                          "min": 1
-                      }
-                  },
-                  {
-                      "identifier": "total_price",
-                      "type": "currency",
-                      "recipe":"single_price * quantity"
+            "show_ordering": true,
+            "fields": [
+              {
+                "identifier": "service",
+                "type": "select",
+                "options": {
+                  "references": "services",
+                  "add_options": true,
+                  "events": {
+                    "on_change": ["OnChangeService"]
                   }
-              ]
+                }
+              },
+              {
+                "identifier": "description",
+                "type": "text"
+              },
+              {
+                "identifier": "single_price",
+                "type": "currency"
+              },
+              {
+                "identifier": "quantity",
+                "type": "number",
+                "options": {
+                  "decimal_digits": 2,
+                  "min": 1
+                }
+              },
+              {
+                "identifier": "total_price",
+                "type": "currency",
+                "recipe": "single_price * quantity"
+              }
+            ]
           },
           "type": "list"
-      },
-      {
-        "identifier":"taxrate",
-        "type":"number",
-        "options":{
-          "default":19,
-          "readonly":true
+        },
+        {
+          "identifier": "taxrate",
+          "type": "number",
+          "options": {
+            "default": 19,
+            "readonly": true
+          }
+        },
+        {
+          "identifier": "price_net",
+          "type": "currency",
+          "recipe": "sum(positions[*].total_price)"
+        },
+        {
+          "identifier": "price_total",
+          "type": "currency",
+          "recipe": "price_net+(price_net* (taxrate / 100))"
         }
-      },
-      {
-        "identifier":"price_net",
-        "type":"currency",
-        "recipe":"sum(positions[*].total_price)"
-      },
-      {
-        "identifier":"price_total",
-        "type":"currency",
-        "recipe":"price_net+(price_net* (taxrate / 100))"
-      }
       ]
     }
   }

@@ -29,7 +29,8 @@
         "projects",
         "additional_services",
         "proof_of_work",
-        "invoices"
+        "invoices",
+        "offers"
       ]
     }
   }

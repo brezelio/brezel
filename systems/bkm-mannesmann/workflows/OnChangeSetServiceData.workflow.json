@@ -1,0 +1,98 @@
+{
+    "identifier": "OnChangeSetServiceData",
+    "title": "On Change Set Service Data",
+    "description": null,
+    "async": false,
+    "debug": true,
+    "entry": "OnChangeService",
+    "elements": [
+        {
+            "name": "OnChangeService",
+            "type": "event/on_change",
+            "options": {
+                "async": false,
+                "title": null,
+                "module": null
+            },
+            "in": {},
+            "set": {},
+            "to": {
+                "default": {
+                    "GetSelector": [
+                        "default"
+                    ]
+                },
+                "selector": {
+                    "GetSelector": [
+                        "selector"
+                    ]
+                }
+            },
+            "meta": {
+                "position": [
+                    0,
+                    -312
+                ]
+            }
+        },
+        {
+            "name": "GetSelector",
+            "type": "op/selector",
+            "options": {
+                "selector": null
+            },
+            "in": {},
+            "set": {
+                "enitity": ":default",
+                "selector": ":selector",
+                "positions": "default:"
+            },
+            "to": {
+                "default": {
+                    "SetServiceData": [
+                        "default"
+                    ]
+                }
+            },
+            "meta": {
+                "position": [
+                    338,
+                    -162.5
+                ]
+            }
+        },
+        {
+            "name": "SetServiceData",
+            "type": "action/set",
+            "options": {
+                "copy": null,
+                "recipes": {
+                    "${selector}.single_price": "$positions[0].service.price"
+                },
+                "properties": [],
+                "add": []
+            },
+            "in": {
+                "default": "$position"
+            },
+            "set": {},
+            "to": {},
+            "meta": {
+                "position": [
+                    676,
+                    -116.5
+                ]
+            }
+        }
+    ],
+    "events": [
+        {
+            "identifier": "OnChangeService",
+            "type": "on_change",
+            "module": null,
+            "async": false,
+            "title": null
+        }
+    ],
+    "comments": []
+}

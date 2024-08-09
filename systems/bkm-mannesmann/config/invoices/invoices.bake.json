@@ -6,7 +6,8 @@
       "title": "invoice_number",
       "icon": "bank",
       "layouts": {
-        "detail": "${file('/config/invoices/invoices.detail.json')}"
+        "detail": "${file('/config/invoices/invoices.detail.json')}",
+        "index":"${file('/config/invoices/invoices.index.json')}"
       },
       "fields": [
         {
@@ -26,89 +27,97 @@
           }
         },
         {
-            "identifier":"customer",
-            "type":"select",
-            "options":{
-                "references":"customers"
-            }
+          "identifier": "customer",
+          "type": "select",
+          "options": {
+            "references": "customers"
+          }
         },
         {
-            "identifier": "type",
-            "type": "choice",
-            "options": {
-              "values": ["partial", "final"]
-            }
-          },
-          {
-            "identifier": "status",
-            "type": "choice",
-            "options": {
-              "values": ["open", "paid"]
-            }
-          },
-          {
-            "identifier": "address",
-            "type": "text"
-          },
-          {
-            "identifier": "zip",
-            "type": "number"
-          },
-          {
-            "identifier": "city",
-            "type": "text"
-          },
-          {
-            "identifier": "phone",
-            "type": "tel"
-          },
-          {
-            "identifier": "positions",
-            "type": "list",
-            "options": {
-              "show_ordering": true,
-              "fields": [
-                {
-                  "identifier": "service",
-                  "type": "select",
-                  "options": {
-                    "references": "services"
-                  }
-                },
-                {
-                  "identifier": "description",
-                  "type": "text"
-                },
-                {
-                  "identifier": "single_price",
-                  "type": "currency"
-                },
-                {
-                  "identifier": "quantity",
-                  "type": "number"
-                },
-                {
-                  "identifier": "total_price",
-                  "type": "currency",
-                  "recipe":"single_price * quantity"
-              }
-              ]
-            }
-          },
-          {
-            "identifier": "taxrate",
-            "type": "number"
-          },
-          {
-            "identifier": "price_net",
-            "type": "currency",
-             "recipe":"sum(positions[*].total_price)"
-          },
-          {
-            "identifier": "price_total",
-            "type": "currency",
-           "recipe":"price_net+(price_net* (taxrate / 100))"
+          "identifier": "type",
+          "type": "choice",
+          "options": {
+            "values": ["partial", "final"]
           }
+        },
+        {
+          "identifier": "status",
+          "type": "choice",
+          "options": {
+            "values": ["open", "paid"]
+          }
+        },
+        {
+          "identifier": "address",
+          "type": "text"
+        },
+        {
+          "identifier": "zip",
+          "type": "number"
+        },
+        {
+          "identifier": "city",
+          "type": "text"
+        },
+        {
+          "identifier": "phone",
+          "type": "tel"
+        },
+        {
+          "identifier": "positions",
+          "type": "list",
+          "options": {
+            "show_ordering": true,
+            "fields": [
+              {
+                "identifier": "service",
+                "type": "select",
+                "options": {
+                  "references": "services",
+                  "add_options": true,
+                  "events": {
+                    "on_change": ["OnChangeService"]
+                  }
+                }
+              },
+              {
+                "identifier": "description",
+                "type": "text"
+              },
+              {
+                "identifier": "single_price",
+                "type": "currency"
+              },
+              {
+                "identifier": "quantity",
+                "type": "number"
+              },
+              {
+                "identifier": "total_price",
+                "type": "currency",
+                "recipe": "single_price * quantity"
+              }
+            ]
+          }
+        },
+        {
+          "identifier": "taxrate",
+          "type": "number",
+          "options":{
+            "default":19,
+            "readonly":true
+          }
+        },
+        {
+          "identifier": "price_net",
+          "type": "currency",
+          "recipe": "sum(positions[*].total_price)"
+        },
+        {
+          "identifier": "price_total",
+          "type": "currency",
+          "recipe": "price_net+(price_net* (taxrate / 100))"
+        }
       ]
     }
   }
