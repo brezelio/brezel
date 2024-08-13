@@ -1,0 +1,42 @@
+{
+    "type": "index",
+    "tabs": [
+        {
+            "identifier": "invoices",
+            "icon": "bank",
+            "position": 0,
+            "rows": [
+                {
+                    "cols": [
+                        {
+                            "options": {
+                            },
+                            "components": [
+                                {
+                                    "type": "headline",
+                                    "options": {
+                                        "identifier": "products",
+                                        "icon": "fluent-mdl2:product-variant"
+                                    }
+                                },
+                                {
+                                    "type": "resource_table",
+                                    "options": {
+                                        "module": "products",
+                                        "columns": [
+                                            "name",
+                                            "item_number",
+                                            "description",
+                                            "price_netto",
+                                            "price_brutto"
+                                        ]
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

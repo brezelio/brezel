@@ -19,7 +19,7 @@
                 {
                   "type": "field_group",
                   "options": {
-                    "fields": ["name", "email", "password", "role"]
+                    "fields": ["name", "email", "password", "roles"]
                   }
                 }
               ]

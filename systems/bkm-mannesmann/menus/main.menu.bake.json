@@ -30,7 +30,20 @@
         "additional_services",
         "proof_of_work",
         "invoices",
-        "offers"
+        "offers",
+        "roles",
+        {
+          "name": "sale",
+          "type": "submenu",
+          "icon": "lucide:warehouse",
+          "elements": [
+              {
+                  "name": "products",
+                  "icon": "fluent-mdl2:product"
+              },
+              "orders"
+          ]
+        }
       ]
     }
   }

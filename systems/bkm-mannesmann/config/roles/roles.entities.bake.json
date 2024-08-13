@@ -1,0 +1,32 @@
+[
+    {
+        "resource_entity": "role_admin",
+        "policy": "sync",
+        "depends_on": "resource_module.roles",
+        "import": true,
+        "resource": {
+            "module": "roles",
+            "client": "${resource_client.global}",
+            "fields": {
+                "name": "Admin",
+                "slug": "admin",
+                "modules": true
+            }
+        }
+    },
+    {
+        "resource_entity": "role_partner",
+        "policy": "sync",
+        "depends_on": "resource_module.roles",
+        "import": true,
+        "resource": {
+            "module": "roles",
+            "client": "${resource_client.global}",
+            "fields": {
+                "name": "Partner",
+                "slug": "partner",
+                "modules": {"files":true,"roles":true,"users":{"read":{"filter":[[{"mode":"user","user":"id","field":"id","value":null,"operator":"="}]],"policies":[],"scopeModule":null},"fields":{"zip":{"read":true},"city":{"read":true},"name":{"read":true},"email":{"read":true},"phone":{"read":true},"roles":{"read":true},"address":{"read":true},"password":{"read":true}}},"views":true,"offers":true,"orders":true,"clients":true,"objects":true,"invoices":true,"problems":true,"products":{"read":true,"create":false,"delete":false,"fields":{"name":{"read":true,"write":false},"description":{"read":true,"write":false},"item_number":{"read":true,"write":false},"price_netto":{"read":true,"write":false},"price_brutto":{"read":true,"write":false}},"update":false},"projects":true,"services":true,"customers":true,"processes":true,"proof_of_work":true,"building_types":true,"additional_services":true}
+            }
+        }
+    }
+]

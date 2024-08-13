@@ -1,9 +1,9 @@
 <template>
   <BrezelApp loading-animation="pulse">
     <template #logo>
-      <div>
+      <div style="padding: 10px;">
         <img
-          src="/assets/logo.svg"
+          src="/assets/logo.jpg"
           class="main-logo"
           style="width: 100%; max-height: 100px"
           alt="Logo"
@@ -12,7 +12,7 @@
     </template>
     <template #loginLogo>
       <img
-        src="/assets/logo.svg"
+        src="/assets/logo.jpg"
         :style="{ maxWidth: '100%', margin: '0 auto 26px auto', display: 'block' }"
         alt="logo"
       >

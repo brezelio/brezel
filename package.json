@@ -10,7 +10,7 @@
   },
   "type": "module",
   "dependencies": {
-    "@kibro/brezel-spa": "3.10.5"
+    "@kibro/brezel-spa": "3.10.8"
   },
   "devDependencies": {
     "vite": "*",

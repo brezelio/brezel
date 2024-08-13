@@ -6,6 +6,9 @@
       "type": "clients",
       "title":"title",
       "icon": "setting",
+      "options": {
+          "global_login": "sameSite"
+      },
       "fields": [
         {
           "identifier": "title",

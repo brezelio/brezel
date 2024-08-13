@@ -11,5 +11,21 @@
         "name": "Admin"
       }
     }
+  },
+  {
+    "resource_user": "bkw_admin",
+    "resource": {
+      "module": "users",
+      "client": "${resource_client.bkw}",
+      "root": false,
+      "fields": {
+        "email": "admin@bkw.com",
+        "password": "secret",
+        "name": "BKW Admin",
+        "roles": [
+            "${resource_entity.role_admin}"
+        ]
+      }
+    }
   }
 ]

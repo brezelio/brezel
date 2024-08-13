@@ -6,6 +6,9 @@
       "type": "users",
       "title":"name",
       "icon": "user",
+      "options": {
+        "shared": true
+      },
       "fields": [
         {
           "identifier": "name",
@@ -23,10 +26,10 @@
           }
         },
         {
-          "identifier": "role",
-          "type": "choice",
+          "identifier": "roles",
+          "type": "multiselect",
           "options": {
-            "values": ["admin", "backoffice", "employee"]
+            "references": "roles"
           }
         },
         {
@@ -47,7 +50,8 @@
         }
       ],
       "layouts": {
-        "detail": "${file('/config/users.detail.json')}"
+        "detail": "${file('/config/users.detail.json')}",
+        "index": "${file('/config/users.index.json')}"
       }
     }
   }

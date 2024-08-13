@@ -1,0 +1,60 @@
+{
+    "tabs": [
+      {
+        "identifier": "products",
+        "icon":"container",
+        "rows": [
+          {
+            "cols": [
+              {
+                "span": 12,
+                "components": [
+                  {
+                    "type": "headline",
+                    "options": {
+                      "identifier": "general",
+                      "icon": "fluent-mdl2:product-release"
+                    }
+                  },
+                  {
+                    "type": "field_group",
+                    "options": {
+                      "vertical_labels": false,
+                      "fields": [
+                        "name",
+                        "item_number",
+                        "description"
+                      ]
+                    }
+                  }
+                ]
+              },
+              {
+                "span": 12,
+                "components": [
+                  {
+                    "type": "headline",
+                    "options": {
+                      "identifier": "pricing",
+                      "icon": "solar:tag-price-bold"
+                    }
+                  },
+                  {
+                    "type": "field_group",
+                    "options": {
+                      "vertical_labels": false,
+                      "fields": [
+                        "price_netto",
+                        "price_brutto"
+                      ]
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+  

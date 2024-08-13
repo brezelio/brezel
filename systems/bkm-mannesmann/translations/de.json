@@ -1,6 +1,7 @@
 {
   "buttons": {
-    "Create Project": "Projekt erstellen"
+    "Create Project": "Projekt erstellen",
+    "create_partner": "Partner erstellen"
   },
   "notifications": {},
   "modules": {
@@ -87,15 +88,6 @@
         }
       }
     },
-    "problems": {
-      "title": "Probleme",
-      "headlines": {
-        "general": "Allgemein"
-      },
-      "fields": {
-        "name": "Name"
-      }
-    },
     "building_types": {
       "title": "Gebäudetypen",
       "headlines": {
@@ -103,15 +95,6 @@
       },
       "fields": {
         "name": "Name"
-      }
-    },
-    "processes": {
-      "title": "Prozesse",
-      "headlines": {
-        "general": "Allgemein"
-      },
-      "fields": {
-        "process_id": "Prozess-Nr"
       }
     },
     "offers": {
@@ -149,6 +132,69 @@
         "taxrate": "Steuersatz",
         "price_net": "Netto-Preis",
         "price_total": "Brutto-Preis"
+      }
+    },
+    "orders": {
+      "title": "Bestellungen",
+      "headlines": {
+        "orders": "Bestellungen",
+        "order": "Bestellung",
+        "items": "Produkte",
+        "pricing": "Rechnungsdaten"
+      },
+      "fields": {
+        "ordered_by": "Besteller",
+        "order_date": "Bestelldatum",
+        "order_number": "Bestellnummer",
+        "items": "Artikel",
+        "status": "Bestellstatus",
+        "product": "Produkt",
+        "amount": "Anzahl",
+        "unit_price": "Stückpreis",
+        "unit_total": "Gesamtpreis",
+        "items_total": "Gesampreis"
+      },
+      "choice": {
+        "status": {
+          "pending": "Bestellung aufgegeben",
+          "processing": "In Bearbeitung",
+          "shipped": "Versandt",
+          "delivered": "Zugestellt",
+          "cancelled": "Storniert",
+          "returned": "Zurückgesendet"
+        }
+      }
+    },
+    "problems": {
+      "title": "Probleme",
+      "headlines": {
+        "general": "Allgemein"
+      },
+      "fields": {
+        "name": "Name"
+      }
+    },
+    "products": {
+      "title": "Produkte",
+      "headlines": {
+        "products": "Produkte",
+        "pricing": "Preisangaben"
+      },
+      "fields": {
+        "name": "Artikel Name",
+        "item_number": "Artikel Nummer",
+        "description": "Beschreibung",
+        "price_netto": "Netto Preis",
+        "price_brutto": "Brutto Preis"
+      }
+    },
+    "processes": {
+      "title": "Prozesse",
+      "headlines": {
+        "general": "Allgemein"
+      },
+      "fields": {
+        "process_id": "Prozess-Nr"
       }
     },
     "projects": {
@@ -248,6 +294,9 @@
         "price_net": "Netto-Preis",
         "price_total": "Brutto-Preis"
       }
+    },
+    "sale": {
+      "title": "Verkauf"
     }
   },
   "widgets": {},
@@ -299,7 +348,19 @@
         "Confirm": {
             "title": "Bestätigen Sie das Angebot"
         }
+    },
+    "ModalCreatePartner": {
+      "CreatePartnerModal": {
+        "modal": {
+          "title": "Partner anlegen",
+          "fields": {
+            "email": "E-Mail",
+            "password": "Passwort",
+            "name": "Name"
+          }
+        }
       }
+    }
   },
   "calendar": {
     "events": "Termine",

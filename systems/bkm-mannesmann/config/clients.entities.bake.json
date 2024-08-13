@@ -10,5 +10,17 @@
       },
       "hostnames": ["bkm-mannesmann"]
     }
+  },
+  {
+    "resource_client": "bkw",
+    "depends_on": "resource_module.clients",
+    "resource": {
+      "module": "clients",
+      "global": true,
+      "fields": {
+        "title": "BKW Client"
+      },
+      "hostnames": ["bkw"]
+    }
   }
 ]
