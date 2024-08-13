@@ -6,7 +6,7 @@
   "minimum-stability": "stable",
   "license": "proprietary",
   "require": {
-    "brezel/api": "^0.89.5"
+    "brezel/api": "^0.97.8"
   },
   "require-dev": {
     "barryvdh/laravel-ide-helper": "^2.6",
@@ -16,9 +16,9 @@
     "filp/whoops": "^2.0",
     "mockery/mockery": "^1.0",
     "nunomaduro/collision": "^5.0",
-    "pestphp/pest": "0.3.*",
-    "pestphp/pest-plugin-laravel": "0.3.*",
-    "phpstan/phpstan": "^0.12.38",
+    "pestphp/pest": "1.23.1",
+    "pestphp/pest-plugin-laravel": "1.4.0",
+    "phpstan/phpstan": "^1.10.60",
     "phpunit/phpunit": "^9.0"
   },
   "scripts": {
