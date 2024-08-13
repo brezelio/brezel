@@ -34,7 +34,10 @@
       "headlines": {
         "customers": "Kunden",
         "general": "Allgemein",
-        "address": "Anschrift"
+        "address": "Anschrift",
+        "offers": "Angebote",
+        "projects":"Projekte",
+        "invoices":"Rechnungen"
       },
       "fields": {
         "customer_id": "Kundennummer",
@@ -49,9 +52,9 @@
       "tabs": {
         "general": "Allgemein",
         "objects": "Objekte",
-        "offers":"Angebote",
-        "projects":"Projekte",
-        "invoices":"Rechnungen"
+        "offers": "Angebote",
+        "projects": "Projekte",
+        "invoices": "Rechnungen"
       }
     },
     "objects": {
@@ -301,64 +304,52 @@
   },
   "widgets": {},
   "pdf": {
-    "offer":{
-      "offer":"Angebot",
-      "order":"Auftrag",
-      "customer_address":"Kundenanschrift",
-      "property":"Liegenschaft",
-      "landline":"Festnetz",
-      "mobile":"Mobil",
-      "email":"E-Mail",
-      "order_data":"Auftragsdaten",
-      "what_is_the_problem":"Welches Problem liegt vor?",
-      "horizontal_humidity":"Horizontale Feuchte",
-      "surface_moisture":"Flächen Feuchte",
-      "mold":"Schimmel",
-      "room_temperature":"Raumtemperatur",
-      "room_humidity":"Luftfeuchte",
-      "surface_temperature":"Oberflächentemperatur",
-      "construction_year":"Baujahr",
-      "wall_material":"Wandbaustoff",
-      "wall_thickness":"Wandstärke",
-      "building_type":"Bauart",
-      "EFH":"EFH",
-      "DHH":"DHH",
-      "RH":"RH",
-      "MFH":"MFH",
-      "level":"Stockwerk",
-      "floor_material":"Bodenplatte",
-      "strip_foundation":"Streifenfundament",
-      "para1":"Wurden in der Vergangenheit schon mal Abdichtungen nachtraglich erstellt",
-      "para2":"Heirmit beauftrageich die  BWA Sauerland GmbH mit der Durchfuhrung folgender Arbeiten",
-      "service":"Leistung",
-      "description":"Beschreibung",
-      "quantity":"Anzahl",
-      "single_price":"Einzelpreis",
-      "total_price":"Gesamtpreis",
-      "para3":" Das o.g Angebot beinhaltet keinen Druckwasserschaden. Dieser wird separat pro Packer mit 120,00€(brutto) berechnet. Eine Überwanderung ist ebenfalls nicht enthalten. Hier muss ggf. die Horizontalsperre erganzt werden (auf eine doppellagige Horizontalsperre) oder sogar durch eine Flächensperre. Nach einer angemessenen Trocknungszeit,sollte der jetzt Salz belastete Putz durch einen geeigneten Putz ersetzt werden.",
-      "para4":"Der Endpries errechnet sich nach Aufmaß. Preis inkl. 19% MwStSumme",
-      "place":"ort",
-      "the_one":"Den",
-      "message1":"BKM Mannesmann Fachbetrieb",
-      "message2":"Unterschrift Auftraggeber"
+    "offer": {
+      "offer": "Angebot",
+      "order": "Auftrag",
+      "customer_address": "Kundenanschrift",
+      "property": "Liegenschaft",
+      "landline": "Festnetz",
+      "mobile": "Mobil",
+      "email": "E-Mail",
+      "order_data": "Auftragsdaten",
+      "what_is_the_problem": "Welches Problem liegt vor?",
+      "horizontal_humidity": "Horizontale Feuchte",
+      "surface_moisture": "Flächen Feuchte",
+      "mold": "Schimmel",
+      "room_temperature": "Raumtemperatur",
+      "room_humidity": "Luftfeuchte",
+      "surface_temperature": "Oberflächentemperatur",
+      "construction_year": "Baujahr",
+      "wall_material": "Wandbaustoff",
+      "wall_thickness": "Wandstärke",
+      "building_type": "Bauart",
+      "EFH": "EFH",
+      "DHH": "DHH",
+      "RH": "RH",
+      "MFH": "MFH",
+      "level": "Stockwerk",
+      "floor_material": "Bodenplatte",
+      "strip_foundation": "Streifenfundament",
+      "para1": "Wurden in der Vergangenheit schon mal Abdichtungen nachtraglich erstellt",
+      "para2": "Heirmit beauftrageich die  BWA Sauerland GmbH mit der Durchfuhrung folgender Arbeiten",
+      "service": "Leistung",
+      "description": "Beschreibung",
+      "quantity": "Anzahl",
+      "single_price": "Einzelpreis",
+      "total_price": "Gesamtpreis",
+      "para3": " Das o.g Angebot beinhaltet keinen Druckwasserschaden. Dieser wird separat pro Packer mit 120,00€(brutto) berechnet. Eine Überwanderung ist ebenfalls nicht enthalten. Hier muss ggf. die Horizontalsperre erganzt werden (auf eine doppellagige Horizontalsperre) oder sogar durch eine Flächensperre. Nach einer angemessenen Trocknungszeit,sollte der jetzt Salz belastete Putz durch einen geeigneten Putz ersetzt werden.",
+      "para4": "Der Endpries errechnet sich nach Aufmaß. Preis inkl. 19% MwStSumme",
+      "place": "ort",
+      "the_one": "Den",
+      "message1": "BKM Mannesmann Fachbetrieb",
+      "message2": "Unterschrift Auftraggeber"
     }
   },
   "workflows": {
     "OffersToProject": {
-        "Confirm": {
-            "title": "Bestätigen Sie das Angebot"
-        }
-    },
-    "ModalCreatePartner": {
-      "CreatePartnerModal": {
-        "modal": {
-          "title": "Partner anlegen",
-          "fields": {
-            "email": "E-Mail",
-            "password": "Passwort",
-            "name": "Name"
-          }
-        }
+      "Confirm": {
+        "title": "Bestätigen Sie das Angebot"
       }
     }
   },

@@ -127,15 +127,15 @@
                   "options": {
                     "module": "offers",
                     "columns": [
-                        "process",
-                        "date",
-                        "created_by",
-                        "customer",
-                        "object",
-                        "problem",
-                        "room_temperature",
-                        "room_humidity"
-                      ],
+                      "process",
+                      "date",
+                      "created_by",
+                      "customer",
+                      "object",
+                      "problem",
+                      "room_temperature",
+                      "room_humidity"
+                    ],
                     "pre_filters": [
                       {
                         "column": "customer.id",
@@ -145,9 +145,7 @@
                     ],
                     "create_in_modal": true,
                     "edit_in_modal": true,
-                    "related": [
-                        "customer"
-                    ]
+                    "related": ["customer"]
                   }
                 }
               ]
@@ -181,17 +179,17 @@
                 {
                   "type": "resource_table",
                   "options": {
-                    "module": "offers",
+                    "module": "projects",
                     "columns": [
-                        "process",
-                        "date",
-                        "created_by",
-                        "customer",
-                        "object",
-                        "problem",
-                        "room_temperature",
-                        "room_humidity"
-                      ],
+                      "process",
+                      "date",
+                      "created_by",
+                      "customer",
+                      "object",
+                      "problem",
+                      "room_temperature",
+                      "room_humidity"
+                    ],
                     "pre_filters": [
                       {
                         "column": "customer.id",
@@ -201,9 +199,7 @@
                     ],
                     "create_in_modal": true,
                     "edit_in_modal": true,
-                    "related": [
-                        "customer"
-                    ]
+                    "related": ["customer"]
                   }
                 }
               ]
