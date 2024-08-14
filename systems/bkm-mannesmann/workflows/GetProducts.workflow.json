@@ -13,7 +13,8 @@
             "options": {
                 "with": [
                     "image",
-                    "parent"
+                    "parent",
+                    "product_category"
                 ],
                 "first": false,
                 "limit": null,
@@ -23,7 +24,21 @@
                 "module": "products",
                 "offset": null,
                 "scopes": [],
-                "filters": [],
+                "filters": [
+                    [
+                        {
+                            "left": {
+                                "type": "field",
+                                "value": "product_category.name"
+                            },
+                            "operator": "LIKE",
+                            "right": {
+                                "type": "recipe",
+                                "value": "\"%\" + $categorieName + \"%\""
+                            }
+                        }
+                    ]
+                ],
                 "groupBy": [],
                 "orderBy": [],
                 "distinct": false,
@@ -45,8 +60,8 @@
             },
             "meta": {
                 "position": [
-                    477.93824586741187,
-                    74.74402486813393
+                    473.3642364747114,
+                    70.17001547543344
                 ]
             }
         },
@@ -54,21 +69,27 @@
             "name": "GetProducts",
             "type": "event/webhook",
             "options": {
-                "module": null
+                "module": null,
+                "title": null,
+                "async": false,
+                "roles": null,
+                "public": false
             },
             "in": {},
-            "set": {},
+            "set": {
+                "request": "request:"
+            },
             "to": {
                 "default": {
-                    "InitArray": [
+                    "GetDefaultCat": [
                         "default"
                     ]
                 }
             },
             "meta": {
                 "position": [
-                    -313.36077860932744,
-                    96.66159566213383
+                    -713.6877798061546,
+                    76.47334550921822
                 ]
             }
         },
@@ -89,8 +110,8 @@
             },
             "meta": {
                 "position": [
-                    1599.063841365018,
-                    166.46855677173994
+                    2181.4877040355477,
+                    164.9438869741731
                 ]
             }
         },
@@ -103,8 +124,8 @@
             "to": {},
             "meta": {
                 "position": [
-                    2119.381896490123,
-                    45.86700941224056
+                    2564.5858226295663,
+                    18.422931773507738
                 ]
             }
         },
@@ -251,13 +272,41 @@
                     185.57357158254493
                 ]
             }
+        },
+        {
+            "name": "GetDefaultCat",
+            "type": "op/recipe",
+            "options": {
+                "recipe": "$request.categorie.name ? $request.categorie.name : \"Bestseller\""
+            },
+            "in": {},
+            "set": {
+                "categorieName": "default:"
+            },
+            "to": {
+                "default": {
+                    "InitArray": [
+                        "default"
+                    ]
+                }
+            },
+            "meta": {
+                "position": [
+                    -255.40103125210425,
+                    132.81531059358412
+                ]
+            }
         }
     ],
     "events": [
         {
             "identifier": "GetProducts",
             "type": "webhook",
-            "module": null
+            "module": null,
+            "title": null,
+            "async": false,
+            "roles": null,
+            "public": false
         }
     ],
     "comments": []

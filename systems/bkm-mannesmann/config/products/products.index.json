@@ -26,6 +26,7 @@
                                         "columns": [
                                             "product_type",
                                             "name",
+                                            "product_category",
                                             "item_number",
                                             "description",
                                             "price_netto"

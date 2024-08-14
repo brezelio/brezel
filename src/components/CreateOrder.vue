@@ -6,6 +6,7 @@
                     v-model="filter.category"
                     :field="categorySelect"
                     class="filter-select"
+                    @change="getProducts"
                  />
                 <a-button @click="getProducts">
                     <template #icon>
@@ -99,7 +100,7 @@
                     Gesamtpreis
                     <span>{{  getSummary(shoppingCart) }}</span>
                 </div>
-                <a-button class="btn-green btn-submit" :disabled="!shoppingCart.length">
+                <a-button class="btn-green btn-submit" :disabled="!shoppingCart.length" @click="createOrder(shoppingCart)">
                     Bestellung aufgeben
                 </a-button>
             </div>
@@ -229,12 +230,12 @@ export default {
                     placeholder: 'Kategorie',
                     allow_clear: false
                 },
-            }            
+            }
         }
     },
     mounted() {
         this.getDefaultCategory()
-        this.getProducts()
+        //this.getProducts()
     },
     methods: {
         getProducts() {
@@ -279,7 +280,7 @@ export default {
                 ]),
             })
              Api.fetchEntities('products_categories', 1, params.toString()).then(res => {
-                this.filter.category = res
+                this.filter.category = res[0]
              })
         },
         formatPrice (price) {
@@ -324,6 +325,16 @@ export default {
                 sum += el.product.price_netto * el.amount
             })
             return this.formatPrice(sum)
+        },
+        createOrder(cart) {
+            const module = Api.getModule('orders')
+            const data = {
+                cart
+            }
+            module.fireEvent('CreateOrder', null, data).then(entity => {
+                this.shoppingCart = []
+                this.$message.success("Bestellung erfolgreich abgeschickt")
+            })
         }
     },
 }
