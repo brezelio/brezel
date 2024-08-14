@@ -1,0 +1,27 @@
+{
+    "tab_position": "top",
+    "tabs": [
+        {
+            "identifier": "create_order",
+            "rows": [
+                {
+                    "cols": [
+                        {
+                            "span": 24,
+                            "class": "noBackground page-details",
+                            "components": [
+                                {
+                                    "type": "widget",
+                                    "options": {
+                                        "widget": "custom",
+                                        "component": "CreateOrder"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

@@ -2,7 +2,7 @@
     "type": "index",
     "tabs": [
         {
-            "identifier": "invoices",
+            "identifier": "products",
             "icon": "bank",
             "position": 0,
             "rows": [
@@ -24,12 +24,19 @@
                                     "options": {
                                         "module": "products",
                                         "columns": [
+                                            "product_type",
                                             "name",
                                             "item_number",
                                             "description",
-                                            "price_netto",
-                                            "price_brutto"
-                                        ]
+                                            "price_netto"
+                                        ],
+                                        "column_settings": {
+                                            "product_type": {
+                                                "recipes": {
+                                                    "class": "'cell-type cell-type-' + product_type"
+                                                }
+                                            }
+                                        }
                                     }
                                 }
                             ]

@@ -1,60 +1,149 @@
 {
     "tabs": [
-      {
-        "identifier": "products",
-        "icon":"container",
-        "rows": [
-          {
-            "cols": [
-              {
-                "span": 12,
-                "components": [
-                  {
-                    "type": "headline",
-                    "options": {
-                      "identifier": "general",
-                      "icon": "fluent-mdl2:product-release"
-                    }
-                  },
-                  {
-                    "type": "field_group",
-                    "options": {
-                      "vertical_labels": false,
-                      "fields": [
-                        "name",
-                        "item_number",
-                        "description"
-                      ]
-                    }
-                  }
-                ]
-              },
-              {
-                "span": 12,
-                "components": [
-                  {
-                    "type": "headline",
-                    "options": {
-                      "identifier": "pricing",
-                      "icon": "solar:tag-price-bold"
-                    }
-                  },
-                  {
-                    "type": "field_group",
-                    "options": {
-                      "vertical_labels": false,
-                      "fields": [
-                        "price_netto",
-                        "price_brutto"
-                      ]
-                    }
-                  }
-                ]
-              }
+        {
+            "identifier": "products",
+            "icon": "container",
+            "rows": [
+                {
+                    "cols": [
+                        {
+                            "span": 12,
+                            "components": [
+                                {
+                                    "type": "headline",
+                                    "options": {
+                                        "identifier": "general",
+                                        "icon": "fluent-mdl2:product-release"
+                                    }
+                                },
+                                {
+                                    "type": "field_group",
+                                    "options": {
+                                        "vertical_labels": false,
+                                        "fields": [
+                                            "product_type",
+                                            "product_category",
+                                            "name",
+                                            "item_number",
+                                            "image"
+                                        ]
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "span": 12,
+                            "components": [
+                                {
+                                    "type": "headline",
+                                    "options": {
+                                        "identifier": "description",
+                                        "icon": "fluent-mdl2:product-catalog"
+                                    }
+                                },
+                                {
+                                    "type": "field_group",
+                                    "options": {
+                                        "vertical_labels": true,
+                                        "no_labels": true,
+                                        "fields": [
+                                            "description"
+                                        ]
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "cols": [
+                        {
+                            "options": {
+                                "recipes": {
+                                    "hidden_from_frontend": "product_type == 'group'"
+                                }
+                            },
+                            "span": 12,
+                            "components": [
+                                {
+                                    "type": "headline",
+                                    "options": {
+                                        "identifier": "pricing",
+                                        "icon": "solar:tag-price-bold"
+                                    }
+                                },
+                                {
+                                    "type": "field_group",
+                                    "options": {
+                                        "vertical_labels": false,
+                                        "fields": [
+                                            "price_netto"
+                                        ]
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "options": {
+                                "recipes": {
+                                    "hidden_from_frontend": "!id || product_type != 'group'"
+                                }
+                            },
+                            "span": 12,
+                            "components": [
+                                {
+                                    "type": "headline",
+                                    "options": {
+                                        "identifier": "child_products",
+                                        "icon": "fluent-mdl2:product-variant"
+                                    }
+                                },
+                                {
+                                    "type": "resource_table",
+                                    "options": {
+                                        "module": "products",
+                                        "columns": [
+                                            "name",
+                                            "item_number",
+                                            "description",
+                                            "price_netto"
+                                        ],
+                                        "toolbar": {
+                                            "components": [
+                                                {
+                                                    "type": "buttons",
+                                                    "options": {
+                                                        "buttons": [
+                                                            {
+                                                                "identifier": "add_item_to_product",
+                                                                "icon": "iconoir:shopping-bag-add",
+                                                                "style": "primary",
+                                                                "event": [
+                                                                    {
+                                                                        "action": "workflow",
+                                                                        "event": "AddProductToGroup"
+                                                                    }
+                                                                ]
+                                                            }
+                                                        ]
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "pre_filters": [
+                                            {
+                                                "column": "parent.id",
+                                                "operator": "=",
+                                                "field": "id"
+                                            }
+                                        ]
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
             ]
-          }
-        ]
-      }
+        }
     ]
-  }
-  
+}

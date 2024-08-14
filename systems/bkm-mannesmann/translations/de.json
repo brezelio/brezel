@@ -1,7 +1,8 @@
 {
   "buttons": {
     "Create Project": "Projekt erstellen",
-    "create_partner": "Partner erstellen"
+    "create_partner": "Partner erstellen",
+    "add_item_to_product": "Aritkel hinzufügen"
   },
   "notifications": {},
   "modules": {
@@ -28,6 +29,9 @@
         "city": "Stadt",
         "phone": "Telefon"
       }
+    },
+    "create_order": {
+      "title": "Angebote"
     },
     "customers": {
       "title": "Kunden",
@@ -180,15 +184,39 @@
     "products": {
       "title": "Produkte",
       "headlines": {
+        "general": "Allgemein",
         "products": "Produkte",
-        "pricing": "Preisangaben"
+        "pricing": "Preisangaben",
+        "description": "Beschreibung",
+        "technical": "Technische Daten",
+        "child_products": "Artikel"
       },
       "fields": {
         "name": "Artikel Name",
         "item_number": "Artikel Nummer",
         "description": "Beschreibung",
         "price_netto": "Netto Preis",
-        "price_brutto": "Brutto Preis"
+        "price_brutto": "Brutto Preis",
+        "image": "Artikel Bild",
+        "parent": "Artikel Zugehörigkeit",
+        "product_type": "Artikel Typ",
+        "product_category": "Kategorie"
+      },
+      "choice": {
+        "product_type": {
+          "single": "Einzelartikel",
+          "group": "Artikel Gruppe"
+        }
+      }
+    },
+    "products_categories": {
+      "title": "Produkt Kategorien",
+      "headlines": {
+        "category": "Kategorie",
+        "categories": "Kategorien"
+      },
+      "fields": {
+        "name": "Kategroie Name"
       }
     },
     "processes": {

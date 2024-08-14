@@ -19,8 +19,33 @@
             "type": "text"
           },
           {
+            "identifier": "product_type",
+            "type": "choice",
+            "options": {
+              "allow_clear": false,
+                "values": [
+                    "group",
+                    "single"
+                ],
+                "default": "single"
+            }
+          },
+          {
+            "identifier": "product_category",
+            "type": "multiselect",
+            "options": {
+              "rules": "required",
+              "references": "products_categories"
+            }
+          },
+          {
             "identifier": "item_number",
-            "type": "text"
+            "type": "text",
+            "options":{
+                "recipes": {
+                  "hidden_from_frontend": "product_type == 'group'"
+                }
+            }
           },
           {
             "identifier": "description",
@@ -34,11 +59,29 @@
             }
           },
           {
-            "identifier": "price_brutto",
-            "type": "currency",
+            "identifier": "parent",
+            "type": "select",
             "options": {
-                "span": 12
+                "references": "products",
+                "pre_filters": [
+                    {
+                        "column": "id",
+                        "operator": "!=",
+                        "field": "id"
+                    }
+                ]
             }
+          },
+          {
+            "identifier": "image",
+            "type": "file",
+            "options": {
+                "references": "files",
+                "path": "products",
+                "recipes": {
+                  "hidden_from_frontend": "product_type == 'group'"
+                }
+            }  
           }
         ]
       }

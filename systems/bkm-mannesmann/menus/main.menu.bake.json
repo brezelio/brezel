@@ -37,11 +37,13 @@
           "type": "submenu",
           "icon": "lucide:warehouse",
           "elements": [
+              "create_order",
               {
                   "name": "products",
                   "icon": "fluent-mdl2:product"
               },
-              "orders"
+              "orders",
+              "products_categories"
           ]
         }
       ]
