@@ -16,7 +16,7 @@
     "depends_on": "resource_module.clients",
     "resource": {
       "module": "clients",
-      "global": true,
+      "global": false,
       "fields": {
         "title": "BKW Client"
       },

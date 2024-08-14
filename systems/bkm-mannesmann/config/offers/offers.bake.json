@@ -10,7 +10,6 @@
       },
       "buttons": {
         "Create Project": {
-          "hidden": false,
           "trigger": "OffersToProjectWebhook",
           "style": "primary",
           "show_in": ["module.show"]
@@ -137,7 +136,10 @@
               },
               {
                 "identifier": "single_price",
-                "type": "currency"
+                "type": "currency",
+                "options": {
+                  "readonly": true
+                }
               },
               {
                 "identifier": "quantity",

@@ -4,17 +4,18 @@
     "description": null,
     "async": false,
     "debug": false,
+    "entry": "OffersToProjectWebhook",
     "elements": [
         {
             "name": "OffersToProjectWebhook",
             "type": "event/webhook",
             "options": {
-                "module": "offers",
-                "title": "Create Project",
                 "async": false,
-                "show_in_button_bar": false,
                 "roles": null,
-                "public": false
+                "title": "Create Project",
+                "module": null,
+                "public": false,
+                "show_in_button_bar": false
             },
             "in": {},
             "set": {
@@ -22,34 +23,36 @@
             },
             "to": {
                 "default": {
-                    "Confirm": [
+                    "OfferToProjectModal": [
                         "default"
                     ]
                 }
             },
             "meta": {
                 "position": [
-                    104,
-                    146.015625
+                    110,
+                    114.015625
                 ]
             }
         },
         {
-            "name": "Confirm",
+            "name": "OfferToProjectModal",
             "type": "action/modal",
             "options": {
+                "hard": false,
+                "type": "confirm",
                 "title": {
                     ".recipe": "t('workflows.OffersToProject.Confirm.title')"
                 },
-                "type": "confirm",
-                "layout": null,
                 "fields": [],
+                "layout": "offer_to_project.modal",
                 "checkpoint": true,
-                "hard": false,
                 "autosave_key": null
             },
             "in": {},
-            "set": {},
+            "set": {
+                "modalData": "confirm:"
+            },
             "to": {
                 "confirm": {
                     "CreateNewProject": [
@@ -59,8 +62,8 @@
             },
             "meta": {
                 "position": [
-                    500.7777724423664,
-                    164.01560289267826
+                    454.5911715637424,
+                    122.96084655612358
                 ]
             }
         },
@@ -68,49 +71,87 @@
             "name": "CreateNewProject",
             "type": "source/new",
             "options": {
-                "module": "projects"
+                "client": null,
+                "module": "projects",
+                "values": null
             },
             "in": {},
-            "set": {},
+            "set": {
+                "projectNew": "default:"
+            },
             "to": {
                 "default": {
-                    "SetData": [
+                    "setProjectData": [
                         "default"
                     ]
                 }
             },
             "meta": {
                 "position": [
-                    885.6063019939191,
-                    188.21316328521294
+                    760.7313918508196,
+                    135.18409185458165
                 ]
             }
         },
         {
-            "name": "SetData",
+            "name": "RedirectToProjects",
+            "type": "action/redirect",
+            "options": {
+                "url": {
+                    ".recipe": "\"/en/customers/\"+$resource.customer.id+\"?path=customers.detail.projects\""
+                },
+                "fill": true,
+                "http": null,
+                "swap": false,
+                "action": "module.create",
+                "module": "projects",
+                "target": null,
+                "queryParams": []
+            },
+            "in": {},
+            "set": {},
+            "to": {},
+            "meta": {
+                "position": [
+                    1679.278330599957,
+                    155.8413981544178
+                ]
+            }
+        },
+        {
+            "name": "setProjectData",
             "type": "op/set",
             "options": {
-                "copy": "$resource",
-                "recipes": {
-                    "process": "$resource.process",
-                    "customer": "$resource.customer",
-                    "object": "$resource.object",
-                    "problem": "$resource.problem",
-                    "room_temperature": "$resource.room_temperature",
-                    "room_humidity": "$resource.room_humidity",
-                    "surface_temperature": "$resource.surface_temperature",
-                    "construction_year": "$resource.construction_year",
-                    "wall_material": "$resource.wall_material",
-                    "wall_thickness": "$resource.wall_thickness",
-                    "building_type": "$resource.building_type",
-                    "level": "$resource.level",
-                    "floor_material": "$resource.floor_material",
-                    "strip_foundation": "$resource.strip_foundation",
-                    "seals_done_in_the_past": "$resource.seals_done_in_the_past",
-                    "services": "$resource.positions"
-                },
+                "copy": "$modalData",
                 "values": [],
-                "process": false
+                "process": false,
+                "recipes": {
+                    "services": "$modalData.positions.map(position => {\"service\": position.service,\"description\": position.description,\"single_price\": position.single_price,\"quantity\": position.quantity, \"total_price\": position.total_price})"
+                }
+            },
+            "in": {},
+            "set": {},
+            "to": {
+                "default": {
+                    "saveProjectData": [
+                        "default"
+                    ]
+                }
+            },
+            "meta": {
+                "position": [
+                    1075.3853654100697,
+                    145.19546219136583
+                ]
+            }
+        },
+        {
+            "name": "saveProjectData",
+            "type": "action/save",
+            "options": {
+                "skip_recipes": false,
+                "triggerEvents": false,
+                "continueIfInvalid": false
             },
             "in": {},
             "set": {},
@@ -123,31 +164,8 @@
             },
             "meta": {
                 "position": [
-                    1257.348414832432,
-                    192.32838985976792
-                ]
-            }
-        },
-        {
-            "name": "RedirectToProjects",
-            "type": "action/redirect",
-            "options": {
-                "module": "projects",
-                "fill": true,
-                "action": "module.create",
-                "url": null,
-                "swap": false,
-                "target": null,
-                "http": null,
-                "queryParams": []
-            },
-            "in": {},
-            "set": {},
-            "to": {},
-            "meta": {
-                "position": [
-                    1637.3209794566928,
-                    173.1239994551355
+                    1379.8032049792364,
+                    153.40438197594918
                 ]
             }
         }
@@ -156,12 +174,12 @@
         {
             "identifier": "OffersToProjectWebhook",
             "type": "webhook",
-            "module": "offers",
-            "title": "Create Project",
+            "module": null,
             "async": false,
-            "show_in_button_bar": false,
             "roles": null,
-            "public": false
+            "title": "Create Project",
+            "public": false,
+            "show_in_button_bar": false
         }
     ],
     "comments": []

@@ -130,7 +130,10 @@
               },
               {
                 "identifier": "single_price",
-                "type": "currency"
+                "type": "currency",
+                "options": {
+                  "readonly": true
+                }
               },
               {
                 "identifier": "quantity",
@@ -151,7 +154,11 @@
         },
         {
           "identifier": "taxrate",
-          "type": "number"
+          "type": "number",
+          "options": {
+            "readonly": true,
+            "default": 19
+          }
         },
         {
           "identifier": "price_net",
@@ -165,5 +172,15 @@
         }
       ]
     }
+  },
+  {
+    "resource_layout": "offer_to_project_modal",
+    "resource": {
+        "identifier": "offer_to_project.modal",
+        "spec": "${jsonFile('modals/projects/offer_to_project.modal.json', true)}"
+    }
   }
 ]
+
+
+

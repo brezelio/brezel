@@ -86,7 +86,10 @@
               },
               {
                 "identifier": "single_price",
-                "type": "currency"
+                "type": "currency",
+                "options": {
+                  "readonly": true
+                }
               },
               {
                 "identifier": "quantity",
