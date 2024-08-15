@@ -2,6 +2,7 @@
     <div class="create-orders">
         <div class="products-wrapper">
             <div class="filter-bar">
+                <span class="label">Kategorie:</span>
                 <FieldSelect
                     v-model="filter.category"
                     :field="categorySelect"
@@ -14,20 +15,32 @@
                     </template>
                 </a-button>
             </div>
-            <div class="products">
-                <div class="product-item" v-for="product in products" :key="product.id">
+            <div class="loading-products" v-if="loading.products">
+                <a-spin  size="large"/>
+                <span>Artikel werden geladen</span>
+            </div>
+            <div class="products" v-else>
+                <template v-for="product in products" :key="product.id">
+                <div class="product-item" v-if="product.product_type == 'single' || product.childs.length > 0">
                     <div  class="product-image">
-                        <img :src="product.product_type === 'group' ? product.childs[0].imageURL : product.imageURL"/>
+                        <template v-if="product.product_type === 'group'">
+                            <img :src="product?.childs[0]?.imageURL" v-if="product.childs && product?.childs[0]?.imageURL"/>
+                            <a-icon type="mdi:image-remove-outline" class="no-image" v-else />
+                        </template>
+                        <template v-else>
+                            <img :src="product.imageURL" v-if="product.imageURL !== 'none'"/>
+                            <a-icon type="mdi:image-remove-outline" class="no-image" v-else />
+                        </template>
                     </div>
                     <div class="product-info">
                         <div class="product-name">
                             {{ product.name }}
                         </div>
                         <div class="product-description">
-                            {{ product.product_type === 'group' ? product.childs[0].description : product.description }}
+                            {{ product.description }}
                         </div>
                         <div class="product-price">
-                            {{ product.product_type === 'group' ? formatPrice(product.childs[0].price_netto) : formatPrice(product.price_netto) }}
+                            {{ product.product_type === 'group' ? formatPrice(product?.childs[0]?.price_netto) : formatPrice(product.price_netto) }}
                         </div>
                         <div class="product-action">
                             <a-button class="add-to-cart" @click="openDetail(product)">
@@ -39,6 +52,7 @@
                         </div>
                     </div>
                 </div>
+            </template>
             </div>
         </div>
         <div class="shopping-cart">
@@ -245,20 +259,21 @@ export default {
                 categorie: this.filter.category
             }
             module.fireEvent('GetProducts', null, data).then(entity => {
-                this.loading.products = false
+                
                 //this.products = entity.products
                 console.log(entity)
                 Promise.all(entity.products.map(async (product) => {
                     product.imageURL = product.image ? await this.getImageSrc(product.image) : 'none'
                     if(product.childs) {
-                        product.childs.forEach(async (e) => {
-                            e.imageURL = e.image ? await this.getImageSrc(e.image) : 'none'
-                        })
+                        for (const e of product.childs) {
+                           e.imageURL = e.image ? await this.getImageSrc(e.image) : 'none'
+                        }
                     } 
                     
                     return product
                 })).then(p => {
                     this.products = p
+                    this.loading.products = false
                 })
             })
         },
@@ -355,6 +370,11 @@ export default {
     border-bottom: 1px solid rgb(223, 223, 223);
     display:flex;
     gap:10px;
+    align-items: center;
+}
+.filter-bar span.label {
+    font-weight: 600;
+    color:#4a545b;
 }
 .filter-bar :deep(.ant-select-selector){
     border-top-right-radius: 0px;
@@ -363,7 +383,16 @@ export default {
 .filter-select {
     min-width: 200px;
 }
-
+.loading-products {
+    text-align: center;
+    margin:20px 0px;
+}
+.loading-products .ant-spin {
+    margin-bottom: 20px;
+}
+.loading-products span {
+    color: #4a545b;
+}
 .products {
     padding:10px;
     display: flex;
@@ -375,6 +404,7 @@ export default {
     flex: 0 0 auto;
     width: 23.5%;
     padding: 1rem;
+    min-width: 240px;
 }
 .product-image {
     text-align: center;
@@ -386,6 +416,10 @@ export default {
     max-width: 100%;
     max-height: 100px;
     margin: auto;
+}
+.no-image {
+    font-size: 5rem;
+    opacity: 0.5;
 }
 .product-name {
     color: #4a545b;
