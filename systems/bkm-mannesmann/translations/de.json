@@ -229,7 +229,7 @@
       }
     },
     "projects": {
-      "titile": "Projekte",
+      "title": "Projekte",
       "headlines": {
         "general": "Allgemein",
         "info": "Infos"
@@ -260,7 +260,12 @@
         "total_price": "Gesamtpreis",
         "taxrate": "Steuersatz",
         "price_net": "Netto-Preis",
-        "price_total": "Brutto-Preis"
+        "price_total": "Brutto-Preis",
+        "start_date": "Startdatum",
+        "end_date": "Abschlussdatum",
+        "total_worktime": "Arbeitszeit Total",
+        "status": "Status",
+        "positions": "Leistungen"
       },
       "choice": {
         "status": {
@@ -375,9 +380,51 @@
     }
   },
   "workflows": {
-    "OffersToProject": {
-      "Confirm": {
-        "title": "Bestätigen Sie das Angebot"
+    "OffersToProjectWebhook": {
+      "OfferToProjectModal": {
+        "modal": {
+            "title": "Projekt erstellen",
+            "fields": {
+              "process": "Prozess",
+              "date": "Datum",
+              "created_by": "Erstellt von",
+              "customer": "Kunde",
+              "object": "Objekt",
+              "problem": "Problem",
+              "room_temperature": "Raumtemperatur",
+              "room_humidity": "Luftfeuchte",
+              "surface_temperature": "Oberflächentemperatur",
+              "construction_year": "Baujahr",
+              "wall_material": "Wandbaustoff",
+              "wall_thickness": "Wandstärke",
+              "building_type": "Bauart",
+              "level": "Stockwerk",
+              "floor_material": "Bodenplatte",
+              "strip_foundation": "Streifenfundament",
+              "seals_done_in_the_past": "Nachträgliche Abdichtungen in der Vergangenheit?",
+              "services": "Leistungen",
+              "service": "Leistung",
+              "description": "Beschreibung",
+              "single_price": "Einzelpreis",
+              "quantity": "Anzahl",
+              "total_price": "Gesamtpreis",
+              "taxrate": "Steuersatz",
+              "price_net": "Netto-Preis",
+              "price_total": "Brutto-Preis",
+              "start_date": "Startdatum",
+              "end_date": "Abschlussdatum",
+              "total_worktime": "Arbeitszeit Total",
+              "status": "Status",
+              "positions": "Leistungen"
+            },
+            "choice": {
+              "status": {
+                "planned": "Geplant",
+                "in_progress": "in Arbeit",
+                "finished": "fertig"
+              }
+            }
+        }
       }
     }
   },

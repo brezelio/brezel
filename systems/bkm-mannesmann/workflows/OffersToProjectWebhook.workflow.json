@@ -23,6 +23,9 @@
             },
             "to": {
                 "default": {
+                    "setLocale": [
+                        "default"
+                    ],
                     "OfferToProjectModal": [
                         "default"
                     ]
@@ -42,7 +45,7 @@
                 "hard": false,
                 "type": "confirm",
                 "title": {
-                    ".recipe": "t('workflows.OffersToProject.Confirm.title')"
+                    ".recipe": "t('workflows.OffersToProjectWebhook.OfferToProjectModal.modal.title')"
                 },
                 "fields": [],
                 "layout": "offer_to_project.modal",
@@ -98,7 +101,7 @@
             "type": "action/redirect",
             "options": {
                 "url": {
-                    ".recipe": "\"/en/customers/\"+$resource.customer.id+\"?path=customers.detail.projects\""
+                    ".recipe": "\"/\"+$locale+\"/customers/\"+$resource.customer.id+\"?path=customers.detail.projects\""
                 },
                 "fill": true,
                 "http": null,
@@ -113,8 +116,8 @@
             "to": {},
             "meta": {
                 "position": [
-                    1679.278330599957,
-                    155.8413981544178
+                    1613.278330599957,
+                    141.8413981544178
                 ]
             }
         },
@@ -140,8 +143,8 @@
             },
             "meta": {
                 "position": [
-                    1075.3853654100697,
-                    145.19546219136583
+                    1046.3853654100697,
+                    139.19546219136583
                 ]
             }
         },
@@ -164,8 +167,26 @@
             },
             "meta": {
                 "position": [
-                    1379.8032049792364,
-                    153.40438197594918
+                    1325.8032049792364,
+                    140.40438197594918
+                ]
+            }
+        },
+        {
+            "name": "setLocale",
+            "type": "op/recipe",
+            "options": {
+                "recipe": "locale()"
+            },
+            "in": {},
+            "set": {
+                "locale": "default:"
+            },
+            "to": {},
+            "meta": {
+                "position": [
+                    453,
+                    -42.984375
                 ]
             }
         }

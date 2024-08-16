@@ -177,7 +177,7 @@
     "resource_layout": "offer_to_project_modal",
     "resource": {
         "identifier": "offer_to_project.modal",
-        "spec": "${jsonFile('modals/projects/offer_to_project.modal.json', true)}"
+        "spec": "${jsonFile('config/modals/offer_to_project.modal.json', true)}"
     }
   }
 ]

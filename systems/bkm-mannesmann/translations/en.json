@@ -292,11 +292,16 @@
   },
   "mails": {},
   "workflows": {
-    "OffersToProject": {
-        "Confirm": {
-            "title": "Confirm the offer"
+    "OffersToProjectWebhook": {
+      "OfferToProjectModal": {
+        "modal": {
+          "title": "Create Project",
+            "fields": {
+              "positions": "Services"
+            }
         }
       }
+    }
   },
   "calendar": {
     "events": "Events",
