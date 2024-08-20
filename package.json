@@ -1,6 +1,6 @@
 {
   "name": "example",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "vite --host 0.0.0.0 -c node_modules/@kibro/brezel-spa/vite.config.js",
