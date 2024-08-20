@@ -2,7 +2,8 @@
   "buttons": {
     "Create Project": "Projekt erstellen",
     "create_partner": "Partner erstellen",
-    "add_item_to_product": "Aritkel hinzufügen"
+    "add_item_to_product": "Aritkel hinzufügen",
+    "create_invoice": "Rechnung erstellen"
   },
   "notifications": {},
   "modules": {
@@ -40,8 +41,8 @@
         "general": "Allgemein",
         "address": "Anschrift",
         "offers": "Angebote",
-        "projects":"Projekte",
-        "invoices":"Rechnungen"
+        "projects": "Projekte",
+        "invoices": "Rechnungen"
       },
       "fields": {
         "customer_id": "Kundennummer",
@@ -329,6 +330,16 @@
         "taxrate": "Steuersatz",
         "price_net": "Netto-Preis",
         "price_total": "Brutto-Preis"
+      },
+      "choice": {
+        "type": {
+          "partial": "Teilweise",
+          "final": "Endgültig"
+        },
+        "status": {
+          "open": "Öffnen Sie",
+          "paid": "Bezahlt"
+        }
       }
     },
     "sale": {
@@ -383,47 +394,85 @@
     "OffersToProjectWebhook": {
       "OfferToProjectModal": {
         "modal": {
-            "title": "Projekt erstellen",
-            "fields": {
-              "process": "Prozess",
-              "date": "Datum",
-              "created_by": "Erstellt von",
-              "customer": "Kunde",
-              "object": "Objekt",
-              "problem": "Problem",
-              "room_temperature": "Raumtemperatur",
-              "room_humidity": "Luftfeuchte",
-              "surface_temperature": "Oberflächentemperatur",
-              "construction_year": "Baujahr",
-              "wall_material": "Wandbaustoff",
-              "wall_thickness": "Wandstärke",
-              "building_type": "Bauart",
-              "level": "Stockwerk",
-              "floor_material": "Bodenplatte",
-              "strip_foundation": "Streifenfundament",
-              "seals_done_in_the_past": "Nachträgliche Abdichtungen in der Vergangenheit?",
-              "services": "Leistungen",
-              "service": "Leistung",
-              "description": "Beschreibung",
-              "single_price": "Einzelpreis",
-              "quantity": "Anzahl",
-              "total_price": "Gesamtpreis",
-              "taxrate": "Steuersatz",
-              "price_net": "Netto-Preis",
-              "price_total": "Brutto-Preis",
-              "start_date": "Startdatum",
-              "end_date": "Abschlussdatum",
-              "total_worktime": "Arbeitszeit Total",
-              "status": "Status",
-              "positions": "Leistungen"
-            },
-            "choice": {
-              "status": {
-                "planned": "Geplant",
-                "in_progress": "in Arbeit",
-                "finished": "fertig"
-              }
+          "title": "Projekt erstellen",
+          "fields": {
+            "process": "Prozess",
+            "date": "Datum",
+            "created_by": "Erstellt von",
+            "customer": "Kunde",
+            "object": "Objekt",
+            "problem": "Problem",
+            "room_temperature": "Raumtemperatur",
+            "room_humidity": "Luftfeuchte",
+            "surface_temperature": "Oberflächentemperatur",
+            "construction_year": "Baujahr",
+            "wall_material": "Wandbaustoff",
+            "wall_thickness": "Wandstärke",
+            "building_type": "Bauart",
+            "level": "Stockwerk",
+            "floor_material": "Bodenplatte",
+            "strip_foundation": "Streifenfundament",
+            "seals_done_in_the_past": "Nachträgliche Abdichtungen in der Vergangenheit?",
+            "services": "Leistungen",
+            "service": "Leistung",
+            "description": "Beschreibung",
+            "single_price": "Einzelpreis",
+            "quantity": "Anzahl",
+            "total_price": "Gesamtpreis",
+            "taxrate": "Steuersatz",
+            "price_net": "Netto-Preis",
+            "price_total": "Brutto-Preis",
+            "start_date": "Startdatum",
+            "end_date": "Abschlussdatum",
+            "total_worktime": "Arbeitszeit Total",
+            "status": "Status",
+            "positions": "Leistungen"
+          },
+          "choice": {
+            "status": {
+              "planned": "Geplant",
+              "in_progress": "in Arbeit",
+              "finished": "fertig"
             }
+          }
+        }
+      }
+    },
+    "ProjectsToInvoiceWebhook": {
+      "ProjectToInvoiceModal": {
+        "modal": {
+          "title": "Rechnung erstellen",
+          "fields": {
+            "process": "Prozess",
+            "invoice_number": "Rechnungsnummer",
+            "customer": "Kunde",
+            "type": "Typ",
+            "invoice_status": "Status",
+            "address": "Anschrift",
+            "zip": "PLZ",
+            "city": "Stadt",
+            "phone": "Telefon",
+            "positions": "Positionen",
+            "service": "Leistung",
+            "description": "Beschreibung",
+            "single_price": "Einzelpreis",
+            "quantity": "Anzahl",
+            "total_price": "Gesamtpreis",
+            "taxrate": "Steuersatz",
+            "price_net": "Netto-Preis",
+            "price_total": "Brutto-Preis",
+            "services":"Leistungen"
+          },
+          "choice": {
+            "type": {
+              "partial": "Teilweise",
+              "final": "Endgültig"
+            },
+            "status": {
+              "open": "Öffnen Sie",
+              "paid": "Bezahlt"
+            }
+          }
         }
       }
     }

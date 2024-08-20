@@ -9,6 +9,15 @@
       "layouts": {
         "detail": "${file('config/projects/projects.detail.json')}"
       },
+      "buttons": {
+        "create_invoice": {
+          "hidden": false,
+          "icon": "container",
+          "trigger": "ProjectsToInvoiceWebhook",
+          "style": "primary",
+          "show_in": ["module.show"]
+        }
+      },
       "fields": [
         {
           "identifier": "process",
@@ -176,11 +185,8 @@
   {
     "resource_layout": "offer_to_project_modal",
     "resource": {
-        "identifier": "offer_to_project.modal",
-        "spec": "${jsonFile('config/modals/offer_to_project.modal.json', true)}"
+      "identifier": "offer_to_project.modal",
+      "spec": "${jsonFile('config/modals/offer_to_project.modal.json', true)}"
     }
   }
 ]
-
-
-

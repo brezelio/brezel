@@ -123,5 +123,12 @@
         }
       ]
     }
+  },
+  {
+    "resource_layout": "project_to_invoice.modal",
+    "resource": {
+      "identifier": "project_to_invoice.modal",
+      "spec": "${jsonFile('config/modals/project_to_invoice.modal.json', true)}"
+    }
   }
 ]

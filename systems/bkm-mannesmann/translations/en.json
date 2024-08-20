@@ -1,7 +1,8 @@
 {
   "buttons": {
     "Create Project": "Create Project",
-    "Export_as_PDF": "Export as PDF"
+    "Export_as_PDF": "Export as PDF",
+    "create_invoice": "Create Invoice"
   },
   "notifications": {},
   "modules": {
@@ -300,6 +301,16 @@
               "positions": "Services"
             }
         }
+      }
+    },
+    "ProjectsToInvoiceWebhook": {
+      "ProjectToInvoiceModal": {
+       "modal":{
+        "title":"Create Invoice",
+        "fields":{
+          "invoice_status":"Status"
+        }
+       }
       }
     }
   },
