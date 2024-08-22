@@ -7,7 +7,7 @@
   "prefer-stable": true,
   "license": "proprietary",
   "require": {
-    "brezel/api": "dev-1.0.0-next.3"
+    "brezel/api": "dev-1.0.0-next.6"
   },
   "require-dev": {
     "barryvdh/laravel-ide-helper": "*",
@@ -16,15 +16,11 @@
     "pestphp/pest-plugin-laravel": "*",
     "spatie/laravel-ignition": "*"
   },
-  "scripts": {
-    "post-create-project-cmd": [
-      "@php -r \"copy('.env.example', '.env');\""
-    ]
-  },
   "config": {
     "allow-plugins": {
       "endroid/installer": true,
-      "pestphp/pest-plugin": true
+      "pestphp/pest-plugin": true,
+      "php-http/discovery": true
     },
     "gitlab-domains": ["gitlab.kiwis-and-brownies.de"]
   },
