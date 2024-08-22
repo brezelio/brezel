@@ -17,6 +17,7 @@
     "spatie/laravel-ignition": "*"
   },
   "config": {
+    "optimize-autoloader": true,
     "allow-plugins": {
       "endroid/installer": true,
       "pestphp/pest-plugin": true,
