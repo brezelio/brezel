@@ -27,8 +27,8 @@ build review spa:
     - 'echo "//gitlab.kiwis-and-brownies.de/api/v4/projects/58/packages/npm/:_authToken=${CI_JOB_TOKEN}" >> ~/.npmrc'
     - npm ci
   script:
-    - export VITE_APP_API_URL="https://api.$CI_COMMIT_REF_SLUG.bkm-mannesmann.review.brezel.cloud"
-    - export VITE_APP_SYSTEM=bkm-mannesmann
+    - export VITE_APP_API_URL="https://api.$CI_COMMIT_REF_SLUG.bkmmannesmann.review.brezel.cloud"
+    - export VITE_APP_SYSTEM=bkmmannesmann
     - npm run build
 
 build review api:
@@ -104,8 +104,8 @@ infra:update:
     - export KUBECONFIG="$HOME/.kube/config"
   script:
     - export BRANCH_TAG=$CI_COMMIT_REF_SLUG
-    - kubectl -n review-bkm-mannesmann-$BRANCH_TAG rollout restart deploy brezel-spa || true
-    - kubectl -n review-bkm-mannesmann-$BRANCH_TAG rollout restart statefulset brezel || true
+    - kubectl -n review-bkmmannesmann-$BRANCH_TAG rollout restart deploy brezel-spa || true
+    - kubectl -n review-bkmmannesmann-$BRANCH_TAG rollout restart statefulset brezel || true
 
 infra:review:
   image: registry.gitlab.com/gitlab-org/terraform-images/stable:latest
@@ -133,7 +133,7 @@ infra:deploy:
     - infra:review
   environment:
     name: $CI_COMMIT_REF_SLUG
-    url: https://$CI_ENVIRONMENT_SLUG.bkm-mannesmann.review.brezel.cloud
+    url: https://$CI_ENVIRONMENT_SLUG.bkmmannesmann.review.brezel.cloud
     deployment_tier: development
     on_stop: "stop review"
   variables:
@@ -163,5 +163,5 @@ stop review:
     - export KUBECONFIG="$HOME/.kube/config"
   script:
     - export BRANCH_TAG=$CI_COMMIT_REF_SLUG
-    - kubectl delete ns review-bkm-mannesmann-$BRANCH_TAG
+    - kubectl delete ns review-bkmmannesmann-$BRANCH_TAG
 
