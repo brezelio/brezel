@@ -38,10 +38,25 @@
                   "type": "field_group",
                   "options": {
                     "vertical_labels": true,
-                    "fields": ["timestamp", "service", "reason"]
+                    "fields": ["timestamp", "reason"]
                   }
                 }
               ]
+            }
+          ]
+        }, {
+          "cols": [
+            {
+              "components": [
+                {
+                  "options": {
+                    "vertical_labels": true,
+                    "fields": ["services"]
+                  },
+                  "type": "field_group"
+                }
+              ],
+              "span": 24
             }
           ]
         },
