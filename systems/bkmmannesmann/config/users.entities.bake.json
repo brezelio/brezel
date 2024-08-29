@@ -7,7 +7,7 @@
       "root": true,
       "fields": {
         "email": "dev@ki-bro.com",
-        "password": "secret",
+        "password": "${env('ROOT_PASSWORD')}",
         "name": "Admin"
       }
     }
@@ -20,7 +20,7 @@
       "root": false,
       "fields": {
         "email": "admin@bkw.com",
-        "password": "secret",
+        "password": "${env('ROOT_PASSWORD')}",
         "name": "BKW Admin",
         "roles": [
             "${resource_entity.role_admin}"
