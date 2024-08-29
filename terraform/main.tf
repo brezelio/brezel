@@ -78,8 +78,8 @@ module "bkmmannesmann" {
   pma_hostname      = "pma.${local.base_host}"
   brotcast_hostname = "brotcast.${local.base_host}"
   export_hostname   = "export.staging.cluster-sw.brezel.io"
-  image             = "registry.kiwis-and-brownies.de/kibro/basedonbrezel/bkmmannesmann:${local.branch_slug}"
-  spa_image         = "registry.kiwis-and-brownies.de/kibro/basedonbrezel/bkmmannesmann:${local.branch_slug}-spa"
+  image             = "registry.kiwis-and-brownies.de/kibro/basedonbrezel/bkm-mannesmann:${local.branch_slug}"
+  spa_image         = "registry.kiwis-and-brownies.de/kibro/basedonbrezel/bkm-mannesmann:${local.branch_slug}-spa"
   secure            = var.secure
   storage           = "10G"
   api_replicas      = 1
