@@ -4,7 +4,7 @@ resource "random_password" "dev_password" {
 }
 
 locals {
-  system      = "bkm-mannesmann"
+  system      = "bkmmannesmann"
   branch_slug = replace(var.branch, "[^a-zA-Z0-9-]", "-")
   base_host   = "${local.branch_slug}.${local.system}.review.brezel.cloud"
   app_url     = "http${var.secure ? "s" : ""}://${local.base_host}"
@@ -22,14 +22,14 @@ data "scaleway_rdb_instance" "brezel" {
   instance_id = var.scw_rdb_instance_id
 }
 
-resource "scaleway_rdb_database" "bkm-mannesmann_meta" {
+resource "scaleway_rdb_database" "bkmmannesmann_meta" {
   instance_id = data.scaleway_rdb_instance.brezel.instance_id
-  name        = "brezel_bkm-mannesmann_${var.branch}_meta"
+  name        = "brezel_bkmmannesmann_${var.branch}_meta"
 }
 
-resource "scaleway_rdb_database" "bkm-mannesmann" {
+resource "scaleway_rdb_database" "bkmmannesmann" {
   instance_id = data.scaleway_rdb_instance.brezel.instance_id
-  name        = "brezel_bkm-mannesmann_${var.branch}"
+  name        = "brezel_bkmmannesmann_${var.branch}"
 }
 
 resource "random_password" "db_meta_password" {
@@ -40,33 +40,33 @@ resource "random_password" "db_password" {
   length = 32
 }
 
-resource "scaleway_rdb_user" "bkm-mannesmann_meta" {
+resource "scaleway_rdb_user" "bkmmannesmann_meta" {
   instance_id = data.scaleway_rdb_instance.brezel.instance_id
-  name        = "brezel_bkm-mannesmann_${var.branch}_meta"
+  name        = "brezel_bkmmannesmann_${var.branch}_meta"
   password    = random_password.db_meta_password.result
 }
 
-resource "scaleway_rdb_privilege" "bkm-mannesmann_meta" {
+resource "scaleway_rdb_privilege" "bkmmannesmann_meta" {
   instance_id   = data.scaleway_rdb_instance.brezel.instance_id
-  database_name = scaleway_rdb_database.bkm-mannesmann_meta.name
-  user_name     = scaleway_rdb_user.bkm-mannesmann_meta.name
+  database_name = scaleway_rdb_database.bkmmannesmann_meta.name
+  user_name     = scaleway_rdb_user.bkmmannesmann_meta.name
   permission    = "all"
 }
 
-resource "scaleway_rdb_user" "bkm-mannesmann" {
+resource "scaleway_rdb_user" "bkmmannesmann" {
   instance_id = data.scaleway_rdb_instance.brezel.instance_id
-  name        = "brezel_bkm-mannesmann_${var.branch}"
+  name        = "brezel_bkmmannesmann_${var.branch}"
   password    = random_password.db_password.result
 }
 
-resource "scaleway_rdb_privilege" "bkm-mannesmann" {
+resource "scaleway_rdb_privilege" "bkmmannesmann" {
   instance_id   = data.scaleway_rdb_instance.brezel.instance_id
-  database_name = scaleway_rdb_database.bkm-mannesmann.name
-  user_name     = scaleway_rdb_user.bkm-mannesmann.name
+  database_name = scaleway_rdb_database.bkmmannesmann.name
+  user_name     = scaleway_rdb_user.bkmmannesmann.name
   permission    = "all"
 }
 
-module "bkm-mannesmann" {
+module "bkmmannesmann" {
   source            = "gitlab.kiwis-and-brownies.de/kibro/brezel-instance/kubernetes//brezel-instance"
   version           = "1.1.10"
   namespace         = kubernetes_namespace.branch.metadata[0].name
@@ -78,8 +78,8 @@ module "bkm-mannesmann" {
   pma_hostname      = "pma.${local.base_host}"
   brotcast_hostname = "brotcast.${local.base_host}"
   export_hostname   = "export.staging.cluster-sw.brezel.io"
-  image             = "registry.kiwis-and-brownies.de/kibro/basedonbrezel/bkm-mannesmann:${local.branch_slug}"
-  spa_image         = "registry.kiwis-and-brownies.de/kibro/basedonbrezel/bkm-mannesmann:${local.branch_slug}-spa"
+  image             = "registry.kiwis-and-brownies.de/kibro/basedonbrezel/bkmmannesmann:${local.branch_slug}"
+  spa_image         = "registry.kiwis-and-brownies.de/kibro/basedonbrezel/bkmmannesmann:${local.branch_slug}-spa"
   secure            = var.secure
   storage           = "10G"
   api_replicas      = 1
@@ -88,8 +88,8 @@ module "bkm-mannesmann" {
   with_database_pod = false
   db_host           = data.scaleway_rdb_instance.brezel.endpoint_ip
   db_port           = data.scaleway_rdb_instance.brezel.endpoint_port
-  db_name           = scaleway_rdb_database.bkm-mannesmann_meta.name
-  db_user           = scaleway_rdb_user.bkm-mannesmann_meta.name
+  db_name           = scaleway_rdb_database.bkmmannesmann_meta.name
+  db_user           = scaleway_rdb_user.bkmmannesmann_meta.name
   db_password       = random_password.db_meta_password.result
 
   brezel_resources = {
@@ -121,10 +121,10 @@ module "bkm-mannesmann" {
   }
 
   system_envs = {
-    "bkm-mannesmann" = {
+    "bkmmannesmann" = {
       MANAGE_CONNECTION = "false"
-      DB_DATABASE       = scaleway_rdb_database.bkm-mannesmann.name
-      DB_USER           = scaleway_rdb_user.bkm-mannesmann.name
+      DB_DATABASE       = scaleway_rdb_database.bkmmannesmann.name
+      DB_USER           = scaleway_rdb_user.bkmmannesmann.name
       DB_PASSWORD       = random_password.db_password.result
       ROOT_PASSWORD     = random_password.dev_password.result
 
