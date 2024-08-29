@@ -52,6 +52,22 @@
                   {
                     "options": {
                       "vertical_labels": true,
+                      "fields": ["work_done"]
+                    },
+                    "type": "field_group"
+                  }
+                ],
+                "span": 24
+              }
+            ]
+          },
+          {
+            "cols": [
+              {
+                "components": [
+                  {
+                    "options": {
+                      "vertical_labels": true,
                       "fields": ["attachments"]
                     },
                     "type": "field_group"

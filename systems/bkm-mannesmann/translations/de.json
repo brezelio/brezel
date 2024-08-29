@@ -287,8 +287,13 @@
         "project": "Projekt",
         "added_by": "Hinzugefügt von",
         "timestamp": "Zeitstempel",
-        "service": "Leistung",
         "reason": "Grund",
+        "services":"Leistungen",
+        "service":"Leistung",
+        "description":"Beschreibung",
+        "single_price":"Einzelpreis",
+        "quantity":"Anzahl",
+        "total_price":"Gesamtpreis",
         "attachments": "Anhänge",
         "file": "Anhang"
       }
@@ -302,6 +307,9 @@
       "fields": {
         "project": "Projekt",
         "timestamp": "Zeitstempel",
+        "work_done": "Durchgeführte Arbeiten",
+        "service": "Leistung",
+        "note": "Notiz",
         "attachments": "Anhänge",
         "file": "Anhang"
       }
@@ -461,7 +469,7 @@
             "taxrate": "Steuersatz",
             "price_net": "Netto-Preis",
             "price_total": "Brutto-Preis",
-            "services":"Leistungen"
+            "services": "Leistungen"
           },
           "choice": {
             "type": {
