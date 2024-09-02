@@ -27,6 +27,13 @@
           }
         },
         {
+          "identifier":"project",
+          "type":"select",
+          "options":{
+            "references":"projects"
+          }
+        },
+        {
           "identifier": "customer",
           "type": "select",
           "options": {
@@ -120,7 +127,30 @@
           "identifier": "price_total",
           "type": "currency",
           "recipe": "price_net+(price_net* (taxrate / 100))"
-        }
+        },
+        {
+          "identifier":"project_amount",
+          "type":"currency"
+        },
+        {
+          "identifier": "previously_invoiced",
+          "type": "currency",
+          "options": {
+              "recipes": {
+                  "frontend_disabled": "false"
+              },
+              "events": {
+                  "on_load": [
+                      "CalculateInvoicedAmount"
+                  ]
+              }
+          }
+      },
+      {
+          "identifier": "invoice_open_position",
+          "type": "currency",
+          "recipe": "round((price_total - previously_invoiced)*100)/100"
+      }
       ]
     }
   },

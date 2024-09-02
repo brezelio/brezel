@@ -2,7 +2,8 @@
   "buttons": {
     "Create Project": "Create Project",
     "Export_as_PDF": "Export as PDF",
-    "create_invoice": "Create Invoice"
+    "create_invoice": "Create Invoice",
+    "generate_partial_invoice":"Generate Partial Invoice"
   },
   "notifications": {},
   "modules": {
@@ -180,7 +181,9 @@
         "total_price": "Total price",
         "taxrate": "Taxrate",
         "price_net": "Price net",
-        "price_total": "Price total"
+        "price_total": "Price total",
+        "previously_invoiced": "Previously invoiced",
+        "invoice_open_position": "Invoice open position"
       },
       "choice": {
         "status": {
@@ -202,12 +205,12 @@
         "added_by": "Added by",
         "timestamp": "Timestamp",
         "reason": "Reason",
-        "services":"Services",
-        "service":"Service",
-        "description":"Description",
-        "single_price":"Single price",
-        "quantity":"Quantity",
-        "total_price":"Total price",
+        "services": "Services",
+        "service": "Service",
+        "description": "Description",
+        "single_price": "Single price",
+        "quantity": "Quantity",
+        "total_price": "Total price",
         "attachments": "Attachments",
         "file": "File"
       }
@@ -251,7 +254,10 @@
         "total_price": "Total price",
         "taxrate": "Taxrate",
         "price_net": "Price net",
-        "price_total": "Price total"
+        "price_total": "Price total",
+        "project_amount": "Project amount",
+        "previously_invoiced": "Previously invoiced",
+        "invoice_open_position": "Invoice open position"
       }
     }
   },
