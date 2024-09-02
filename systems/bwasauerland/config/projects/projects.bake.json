@@ -5,20 +5,34 @@
     "resource": {
       "identifier": "projects",
       "icon": "container",
-      "title": "id",
+      "title": "project_number",
       "layouts": {
         "detail": "${file('config/projects/projects.detail.json')}"
       },
       "buttons": {
         "create_invoice": {
-          "hidden": false,
+          "hidden": true,
           "icon": "container",
           "trigger": "ProjectsToInvoiceWebhook",
+          "style": "primary",
+          "show_in": ["module.show"]
+        },
+        "generate_partial_invoice": {
+          "hidden": true,
+          "icon": "bank",
+          "trigger": "GeneratePartialInvoice",
           "style": "primary",
           "show_in": ["module.show"]
         }
       },
       "fields": [
+        {
+          "identifier": "project_number",
+          "type": "incrementing",
+          "options": {
+            "incrementing_format": "TEXT%PRO-|DATE%Y|DATE%m|TEXT%-|INCREMENTING_VALUE%3"
+          }
+        },
         {
           "identifier": "process",
           "type": "select",
@@ -141,7 +155,7 @@
                 "identifier": "single_price",
                 "type": "currency",
                 "options": {
-                  "readonly": true
+                  "readonly": false
                 }
               },
               {
@@ -178,6 +192,23 @@
           "identifier": "price_total",
           "type": "currency",
           "recipe": "price_net+(price_net* (taxrate / 100))"
+        },
+        {
+          "identifier": "previously_invoiced",
+          "type": "currency",
+          "options": {
+            "recipes": {
+              "frontend_disabled": "false"
+            },
+            "events": {
+              "on_load": ["CalculateInvoicedAmount"]
+            }
+          }
+        },
+        {
+          "identifier": "invoice_open_position",
+          "type": "currency",
+          "recipe": "round((price_total - previously_invoiced)*100)/100"
         }
       ]
     }
@@ -187,6 +218,13 @@
     "resource": {
       "identifier": "offer_to_project.modal",
       "spec": "${jsonFile('config/modals/offer_to_project.modal.json', true)}"
+    }
+  },
+  {
+    "resource_layout": "partial_invoice_in_project_modal",
+    "resource": {
+      "identifier": "partial_invoice_in_project.modal",
+      "spec": "${jsonFile('config/modals/partial_invoice_in_project.modal.json', true)}"
     }
   }
 ]

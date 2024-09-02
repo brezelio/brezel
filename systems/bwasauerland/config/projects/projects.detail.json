@@ -21,6 +21,7 @@
                   "options": {
                     "vertical_labels": true,
                     "fields": [
+                      "project_number",
                       "process",
                       "customer",
                       "object",
@@ -102,7 +103,7 @@
                 {
                   "options": {
                     "vertical_labels": true,
-                    "fields": ["taxrate", "price_net", "price_total"]
+                    "fields": ["taxrate", "price_net", "price_total","previously_invoiced","invoice_open_position"]
                   },
                   "type": "field_group"
                 }

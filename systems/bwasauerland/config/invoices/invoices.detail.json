@@ -23,6 +23,7 @@
                     "fields": [
                       "process",
                       "invoice_number",
+                      "project",
                       "customer",
                       "type",
                       "status"
@@ -77,7 +78,11 @@
                   "type": "field_group",
                   "options": {
                     "vertical_labels": true,
-                    "fields": []
+                    "fields": [
+                      "project_amount",
+                      "previously_invoiced",
+                      "invoice_open_position"
+                    ]
                   }
                 }
               ]

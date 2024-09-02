@@ -3,7 +3,8 @@
     "Create Project": "Projekt erstellen",
     "create_partner": "Partner erstellen",
     "add_item_to_product": "Aritkel hinzufügen",
-    "create_invoice": "Rechnung erstellen"
+    "create_invoice": "Rechnung erstellen",
+    "generate_partial_invoice":"Teilrechnung erstellen"
   },
   "notifications": {},
   "modules": {
@@ -238,6 +239,7 @@
         "info": "Infos"
       },
       "fields": {
+        "project_number":"Projektnummer",
         "process": "Prozess",
         "date": "Datum",
         "created_by": "Erstellt von",
@@ -268,7 +270,9 @@
         "end_date": "Abschlussdatum",
         "total_worktime": "Arbeitszeit Total",
         "status": "Status",
-        "positions": "Leistungen"
+        "positions": "Leistungen",
+        "previously_invoiced": "Bisher in Rechnung gestellt",
+        "invoice_open_position": "Offene Position der Rechnung"
       },
       "choice": {
         "status": {
@@ -290,12 +294,12 @@
         "added_by": "Hinzugefügt von",
         "timestamp": "Zeitstempel",
         "reason": "Grund",
-        "services":"Leistungen",
-        "service":"Leistung",
-        "description":"Beschreibung",
-        "single_price":"Einzelpreis",
-        "quantity":"Anzahl",
-        "total_price":"Gesamtpreis",
+        "services": "Leistungen",
+        "service": "Leistung",
+        "description": "Beschreibung",
+        "single_price": "Einzelpreis",
+        "quantity": "Anzahl",
+        "total_price": "Gesamtpreis",
         "attachments": "Anhänge",
         "file": "Anhang"
       }
@@ -325,6 +329,8 @@
       "fields": {
         "process": "Prozess",
         "invoice_number": "Rechnungsnummer",
+        "project":"Projekt",
+        "customer":"Kunde",
         "type": "Typ",
         "status": "Status",
         "address": "Anschrift",
@@ -339,7 +345,10 @@
         "total_price": "Gesamtpreis",
         "taxrate": "Steuersatz",
         "price_net": "Netto-Preis",
-        "price_total": "Brutto-Preis"
+        "price_total": "Brutto-Preis",
+        "project_amount": "Projektbetrag",
+        "previously_invoiced": "Bisher in Rechnung gestellt",
+        "invoice_open_position": "Offene Position der Rechnung"
       },
       "choice": {
         "type": {
