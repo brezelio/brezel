@@ -4,34 +4,55 @@
     "resource": {
       "name": "main",
       "elements": [
-        "users",
-        "clients",
         {
-          "name": "customers",
-          "icon": "user"
+          "name": "project_management",
+          "type": "submenu",
+          "icon": "mdi:briefcase-outline",
+          "elements": [
+            {
+              "name":"processes",
+              "icon":"setting"
+            },
+            "offers",
+            "projects",
+            "additional_services",
+            "proof_of_work",
+            "invoices"
+          ]
         },
         {
-          "name": "services",
-          "icon": "service"
+          "name": "default_data",
+          "type": "submenu",
+          "icon": "user",
+          "elements": [
+            {
+              "name": "customers",
+              "icon": "user"
+            },
+            {
+              "name": "services",
+              "icon": "service"
+            },
+            {
+              "name": "problems",
+              "icon": "setting"
+            },
+            {
+              "name":"building_types",
+              "icon":"setting"
+            }
+          ]
         },
         {
-          "name": "problems",
-          "icon": "setting"
+          "name": "system_settings",
+          "type": "submenu",
+          "icon": "setting",
+          "elements": [
+            "users",
+            "clients",
+            "roles"
+          ]
         },
-        {
-          "name":"building_types",
-          "icon":"setting"
-        },
-        {
-          "name":"processes",
-          "icon":"setting"
-        },
-        "projects",
-        "additional_services",
-        "proof_of_work",
-        "invoices",
-        "offers",
-        "roles",
         {
           "name": "sale",
           "type": "submenu",

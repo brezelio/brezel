@@ -1,0 +1,11 @@
+[
+    {
+        "resource_styles": "styles",
+        "import": true,
+        "resource": {
+            "identifier": "styles",
+            "public": true,
+            "code": "${file('style/style.css')}"
+        }
+    }
+]

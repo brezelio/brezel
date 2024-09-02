@@ -139,7 +139,9 @@
         "total_price": "Gesamtpreis",
         "taxrate": "Steuersatz",
         "price_net": "Netto-Preis",
-        "price_total": "Brutto-Preis"
+        "price_total": "Brutto-Preis",
+        "date": "Datum",
+        "created_by": "Erstellt von"
       }
     },
     "orders": {
@@ -211,13 +213,13 @@
       }
     },
     "products_categories": {
-      "title": "Produkt Kategorien",
+      "title": "Produktkategorien",
       "headlines": {
         "category": "Kategorie",
         "categories": "Kategorien"
       },
       "fields": {
-        "name": "Kategroie Name"
+        "name": "Kategorie Name"
       }
     },
     "processes": {
@@ -352,6 +354,15 @@
     },
     "sale": {
       "title": "Verkauf"
+    },
+    "project_management": {
+      "title": "Projektverwaltung"
+    },
+    "default_data": {
+      "title": "Stammdaten"
+    },
+    "system_settings": {
+      "title": "Systemeinstellungen"
     }
   },
   "widgets": {},
