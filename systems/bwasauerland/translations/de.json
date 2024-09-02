@@ -39,6 +39,7 @@
       "headlines": {
         "customers": "Kunden",
         "general": "Allgemein",
+        "invoice_address": "Rechnungsanschrift",
         "address": "Anschrift",
         "offers": "Angebote",
         "projects": "Projekte",
@@ -48,9 +49,16 @@
         "customer_id": "Kundennummer",
         "name": "Name",
         "email": "E-Mail",
-        "invoice_address": "Rechnungsanschrift",
+        "invoice_street": "Anschrift",
+        "invoice_address_line_1": "Adresszeile 1",
+        "invoice_address_line_2": "Adresszeile 2",
         "invoice_zip": "PLZ",
         "invoice_city": "Stadt",
+        "address_street": "Anschrift",
+        "address_line_1": "Adresszeile 1",
+        "address_line_2": "Adresszeile 2",
+        "address_zip": "PLZ",
+        "address_city": "Stadt",
         "phone_landline": "Festnetznummer",
         "phone_mobile": "Mobilnummer"
       },
@@ -86,7 +94,7 @@
       },
       "fields": {
         "name": "Name",
-        "billing_type": "Abrechnungstyp",
+        "billing_type": "Einheit",
         "price": "Preis"
       },
       "choice": {
@@ -109,7 +117,8 @@
       "title": "Angebote",
       "headlines": {
         "general": "Allgemein",
-        "info": "Infos"
+        "info": "Infos",
+        "positions": "Positionen"
       },
       "fields": {
         "process": "Prozess",
@@ -141,7 +150,16 @@
         "price_net": "Netto-Preis",
         "price_total": "Brutto-Preis",
         "date": "Datum",
-        "created_by": "Erstellt von"
+        "created_by": "Erstellt von",
+        "quantity_type": "Einheit",
+        "tax_amount": "Steuerbetrag",
+        "pdf_info_text": "PDF-Infotext"
+      },
+      "choice": {
+        "quantity_type": {
+          "hourly": "Stündlich",
+          "flat_price": "Pauschalpreis"
+        }
       }
     },
     "orders": {
@@ -394,19 +412,21 @@
       "level": "Stockwerk",
       "floor_material": "Bodenplatte",
       "strip_foundation": "Streifenfundament",
-      "para1": "Wurden in der Vergangenheit schon mal Abdichtungen nachtraglich erstellt",
+      "para1": "Abdichtungen in der Vergangenheit?",
       "para2": "Heirmit beauftrageich die  BWA Sauerland GmbH mit der Durchfuhrung folgender Arbeiten",
       "service": "Leistung",
       "description": "Beschreibung",
       "quantity": "Anzahl",
       "single_price": "Einzelpreis",
-      "total_price": "Gesamtpreis",
-      "para3": " Das o.g Angebot beinhaltet keinen Druckwasserschaden. Dieser wird separat pro Packer mit 120,00€(brutto) berechnet. Eine Überwanderung ist ebenfalls nicht enthalten. Hier muss ggf. die Horizontalsperre erganzt werden (auf eine doppellagige Horizontalsperre) oder sogar durch eine Flächensperre. Nach einer angemessenen Trocknungszeit,sollte der jetzt Salz belastete Putz durch einen geeigneten Putz ersetzt werden.",
-      "para4": "Der Endpries errechnet sich nach Aufmaß. Preis inkl. 19% MwStSumme",
+      "para3": "",
+      "para4": "Der Endpreis errechnet sich nach Aufmaß.",
       "place": "ort",
       "the_one": "Den",
       "message1": "BKM Mannesmann Fachbetrieb",
-      "message2": "Unterschrift Auftraggeber"
+      "message2": "Unterschrift Auftraggeber",
+      "net_price": "Nettopreis ",
+      "taxrate": "MwSt",
+      "total_price": "Bruttopreis"
     }
   },
   "workflows": {

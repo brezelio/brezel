@@ -25,15 +25,20 @@
           "identifier": "process",
           "type": "select",
           "options": {
-            "rules": "required",
-            "references": "processes"
+            "references": "processes",
+            "add_options": true
           }
         },
         {
           "identifier": "date",
           "type": "date",
           "options": {
-            "rules": "required"
+            "fullDay": true,
+            "rules": "required",
+            "default": "NOW",
+            "recipes": {
+              "default": "date()"
+            }
           }
         },
         {
@@ -41,7 +46,10 @@
           "type": "select",
           "options": {
             "references": "users",
-            "rules": "required"
+            "rules": "required",
+            "recipes": {
+              "default": "user()"
+            }
           }
         },
         {
@@ -56,7 +64,8 @@
           "identifier": "object",
           "type": "select",
           "options": {
-            "references": "objects"
+            "references": "objects",
+            "add_options": true
           }
         },
         {
@@ -138,7 +147,17 @@
                 "identifier": "single_price",
                 "type": "currency",
                 "options": {
-                  "readonly": true
+                  "readonly": false
+                }
+              },
+              {
+                "identifier": "quantity_type",
+                "type": "choice",
+                "options": {
+                  "values": [
+                    "hourly",
+                    "flat_price"
+                  ]
                 }
               },
               {
@@ -146,7 +165,8 @@
                 "type": "number",
                 "options": {
                   "decimal_digits": 2,
-                  "min": 1
+                  "min": 1,
+                  "default": 1
                 }
               },
               {
@@ -167,6 +187,11 @@
           }
         },
         {
+          "identifier": "tax_amount",
+          "type": "currency",
+          "recipe": "price_net * (taxrate / 100)"
+        },
+        {
           "identifier": "price_net",
           "type": "currency",
           "recipe": "sum(positions[*].total_price)"
@@ -175,6 +200,13 @@
           "identifier": "price_total",
           "type": "currency",
           "recipe": "price_net+(price_net* (taxrate / 100))"
+        },
+        {
+          "identifier": "pdf_info_text",
+          "type": "textarea",
+          "options": {
+            "default": "Das o.g Angebot beinhaltet keinen Druckwasserschaden. Dieser wird separat pro Packer mit 120,00€(brutto) berechnet. Eine Überwanderung ist ebenfalls nicht enthalten. Hier muss ggf. die Horizontalsperre erganzt werden (auf eine doppellagige Horizontalsperre) oder sogar durch eine Flächensperre. Nach einer angemessenen Trocknungszeit,sollte der jetzt Salz belastete Putz durch einen geeigneten Putz ersetzt werden."
+          }
         }
       ]
     }

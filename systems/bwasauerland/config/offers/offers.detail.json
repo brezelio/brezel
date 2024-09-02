@@ -18,7 +18,7 @@
                 {
                   "type": "field_group",
                   "options": {
-                    "vertical_labels": true,
+                    "vertical_labels": false,
                     "fields": [
                       "process",
                       "date",
@@ -44,7 +44,7 @@
                 {
                   "type": "field_group",
                   "options": {
-                    "vertical_labels": true,
+                    "vertical_labels": false,
                     "fields": [
                       "room_temperature",
                       "room_humidity",
@@ -56,7 +56,8 @@
                       "level",
                       "floor_material",
                       "strip_foundation",
-                      "seals_done_in_the_past"
+                      "seals_done_in_the_past",
+                      "pdf_info_text"
                     ]
                   }
                 }
@@ -69,8 +70,14 @@
             {
               "components": [
                 {
+                  "type": "headline",
                   "options": {
-                    "vertical_labels": true,
+                    "identifier": "positions"
+                  }
+                },
+                {
+                  "options": {
+                    "no_labels": true,
                     "fields": ["positions"]
                   },
                   "type": "field_group"
@@ -97,8 +104,8 @@
               "components": [
                 {
                   "options": {
-                    "vertical_labels": true,
-                    "fields": ["taxrate", "price_net", "price_total"]
+                    "vertical_labels": false,
+                    "fields": ["price_net", "taxrate", "tax_amount", "price_total"]
                   },
                   "type": "field_group"
                 }

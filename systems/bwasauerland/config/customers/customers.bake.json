@@ -5,7 +5,7 @@
     "resource": {
       "identifier": "customers",
       "title": "customer_id.\"-\".name",
-      "icon": "user", 
+      "icon": "user",
       "layouts": {
         "detail": "${file('config/customers/customers.detail.json')}",
         "index": "${file('config/customers/customers.index.json')}"
@@ -28,11 +28,19 @@
           "type": "email"
         },
         {
-          "identifier": "invoice_address",
+          "identifier": "invoice_street",
           "type": "text",
           "options": {
             "rules": "required"
           }
+        },
+        {
+          "identifier": "invoice_address_line_1",
+          "type": "text"
+        },
+        {
+          "identifier": "invoice_address_line_2",
+          "type": "text"
         },
         {
           "identifier": "invoice_zip",
@@ -46,6 +54,32 @@
           "type": "text",
           "options": {
             "rules": "required"
+          }
+        },
+        {
+          "identifier": "address_street",
+          "type": "text",
+          "options": {
+          }
+        },
+        {
+          "identifier": "address_line_1",
+          "type": "text"
+        },
+        {
+          "identifier": "address_line_2",
+          "type": "text"
+        },
+        {
+          "identifier": "address_zip",
+          "type": "text",
+          "options": {
+          }
+        },
+        {
+          "identifier": "address_city",
+          "type": "text",
+          "options": {
           }
         },
         {

@@ -19,7 +19,7 @@
                   {
                     "type": "field_group",
                     "options": {
-                      "fields": ["process_id"]
+                      "fields": ["process_id", "name"]
                     }
                   }
                 ]
@@ -30,4 +30,3 @@
       }
     ]
   }
-  

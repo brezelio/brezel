@@ -1,5 +1,5 @@
 {% block setup %}
-    {{ '{"other": {"margin-top": "5", "margin-left": "5","margin-right": "5", "margin-bottom": "5" }}' }}
+    {{ '{"other": {"margin-top": "0", "margin-left": "25","margin-right": "20", "margin-bottom": "0" }}' }}
 {% endblock %}
 {% block header %}
 <!DOCTYPE html>
@@ -21,13 +21,16 @@
       <meta charset="utf-8" />
       <title>Offer</title>
       <style>
+          * {
+              overflow: hidden;
+          }
+
         html {
           font-family: "TeX Gyre Heros", serif;
-        
+
         }
         body {
-          margin-left: 10mm;
-          margin-right: 10mm;
+            line-height: 1;
         }
         .top_main {
           width: 100%;
@@ -62,6 +65,11 @@
           border-spacing: 0;
           width: 100%;
         }
+
+        .positions tr {
+            padding-bottom: 1cm;
+        }
+
         .positions th,
         .positions td {
           padding: 1mm;
@@ -82,6 +90,10 @@
           border:none;
           text-align:left;
         }
+
+        #offer_info tr td tr td {
+            padding-right: 1cm;
+        }
       </style>
     </head>
     <body>
@@ -101,7 +113,7 @@
 
       <section class="section_content">
         <section class="section_content_offer">
-          <b>{{t('pdf.offer.offer')}}/{{t('pdf.offer.order')}}</b> <br />
+          <b>{{t('pdf.offer.offer')}}</b> <br><br>
            <section class="table-responsive" style="overflow-x: auto; border-collapse: collapse;">
         <table class="positions" style="border-collapse: collapse;">
           <thead>
@@ -112,58 +124,111 @@
           </thead>
           <tbody>
                 <tr class="position-row">
-                  <td class="border-none">{{resource.customer.name}} {{resource.customer.name}}
-                  <br>{{resource.customer.invoice_address }} {{resource.customer.invoice_address }} <br> {{resource.customer.invoice_zip}} {{resource.customer.invoice_city}} <br>
+                  <td class="border-none">{{resource.customer.name}}
+                  <br>{{resource.customer.invoice_address_line_1 }} {{resource.customer.invoice_address_line_2 }} <br> {{resource.customer.invoice_street }} <br>{{resource.customer.invoice_zip}} {{resource.customer.invoice_city}} <br><br>
                   {{t('pdf.offer.landline')}}: {{resource.customer.phone_landline}}<br>
                   {{t('pdf.offer.mobile')}}: {{resource.customer.phone_mobile}}<br>
                   {{t('pdf.offer.email')}}: {{resource.customer.email}}
                   </td>
-                  <td class="border-none">{{resource.customer.name}} {{resource.customer.name}}
-                  <br>{{resource.customer.invoice_address }} {{resource.customer.invoice_address }} <br> {{resource.customer.invoice_zip}} {{resource.customer.invoice_city}}<br>
-                  {{t('pdf.offer.landline')}}: {{resource.customer.phone_landline}}<br>
-                  {{t('pdf.offer.mobile')}}: {{resource.customer.phone_mobile}}<br>
-                  {{t('pdf.offer.email')}}: {{resource.customer.email}} 
+                    <td class="border-none">{{resource.customer.name}}
+                        <br>{{resource.customer.invoice_address_line_1 }} {{resource.customer.invoice_address_line_2 }} <br> {{resource.customer.invoice_street }} <br>{{resource.customer.invoice_zip}} {{resource.customer.invoice_city}} <br><br>
+                        {{t('pdf.offer.landline')}}: {{resource.customer.phone_landline}}<br>
+                        {{t('pdf.offer.mobile')}}: {{resource.customer.phone_mobile}}<br>
+                        {{t('pdf.offer.email')}}: {{resource.customer.email}}
+                    </td>
                 </tr>
           </tbody>
         </table>
       </section>
         </section>
-         
+
       </section>
       <section>
+          <br>
         <b>{{t('pdf.offer.order_data')}}:</b>
-        <br>
-        {{t('pdf.offer.what_is_the_problem')}} {{t('pdf.offer.horizontal_humidity')}} <b>___</b> {{t('pdf.offer.surface_moisture')}}___  {{t('pdf.offer.mold')}} __  {{t('pdf.offer.room_temperature')}}: <b>{{resource.room_temperature}}</b> {{t('pdf.offer.room_humidity')}}: <b>{{resource.room_humidity}}</b> {{t('pdf.offer.surface_temperature')}}: <b>{{resource.surface_temperature}}</b> {{t('pdf.offer.construction_year')}}: <b>{{resource.construction_year}}</b> {{t('pdf.offer.wall_material')}}: <b>{{resource.wall_material}}</b>  {{t('pdf.offer.wall_thickness')}}: <b>{{resource.wall_thickness}}</b> {{t('pdf.offer.building_type')}}: <b>{{resource.building_type}}</b> {{t('pdf.offer.EFH')}}___ {{t('pdf.offer.DHH')}}____ {{t('pdf.offer.RH')}}___ {{t('pdf.offer.MFH')}}____ {{t('pdf.offer.level')}}: <b>{{resource.level}}</b> {{t('pdf.offer.floor_material')}}: <b>{{resource.floor_material}}</b> {{t('pdf.offer.strip_foundation')}}: <b>{{resource.strip_foundation}}</b> 
-        <br>
-        {{t('pdf.offer.para1')}}
-        {% if resource.seals_done_in_the_past == true %}
-        <b>Yes</b>
-        {%else%}
-        <b>No</b>
-        {% endif %}
-        <br><br>
-        <b><u>{{t('pdf.offer.para2')}}:</u><b>
+          <br>
+          <table style="width: 100%;" id="offer_info">
+              <tr>
+                  <td style="vertical-align: top;"><table>
+                          <tr>
+                              <td>{{t('pdf.offer.what_is_the_problem')}}</td>
+                              <td>{{t('pdf.offer.horizontal_humidity')}}</td>
+                          </tr>
+                          <tr>
+                              <td>{{t('pdf.offer.surface_moisture')}}</td>
+                              <td>{{t('pdf.offer.mold')}}</td>
+                          </tr>
+                          <tr>
+                              <td>{{t('pdf.offer.room_temperature')}}</td>
+                              <td>{{resource.room_temperature}}</td>
+                          </tr>
+                          <tr>
+                              <td>{{t('pdf.offer.room_humidity')}}</td>
+                              <td>{{resource.room_humidity}}</td>
+                          </tr>
+                          <tr>
+                              <td>{{t('pdf.offer.surface_temperature')}}</td>
+                              <td>{{resource.surface_temperature}}</td>
+                          </tr>
+                          <tr>
+                              <td>{{t('pdf.offer.construction_year')}}</td>
+                              <td>{{resource.construction_year}}</td>
+                          </tr>
+                      </table></td>
+                  <td style="vertical-align: top;"><table>
+                          <tr>
+                              <td>{{t('pdf.offer.wall_material')}}</td>
+                              <td>{{resource.wall_material}}</td>
+                          </tr>
+                          <tr>
+                              <td>{{t('pdf.offer.wall_thickness')}}</td>
+                              <td>{{resource.wall_thickness}}</td>
+                          </tr>
+                          <tr>
+                              <td>{{t('pdf.offer.building_type')}}</td>
+                              <td>{{resource.building_type}} {{ resource.level }}</td>
+                          </tr>
+                          <tr>
+                              <td>{{t('pdf.offer.floor_material')}}</td>
+                              <td>{{resource.floor_material}}</td>
+                          </tr>
+                          <tr>
+                              <td>{{t('pdf.offer.strip_foundation')}}</td>
+                              <td>{{resource.strip_foundation}}</td>
+                          </tr>
+                          <tr>
+                              <td>{{t('pdf.offer.para1')}}</td>
+                              <td>{% if resource.seals_done_in_the_past == true %}
+                                      Ja
+                                  {%else%}
+                                      Nein
+                                  {% endif %}</td>
+                          </tr>
+                      </table></td>
+              </tr>
+          </table>
       </section>
+      <br><br><br>
       <section class="table-responsive" style="overflow-x: auto; border-collapse: collapse;">
         <table class="positions" style="border-collapse: collapse;">
           <thead>
             <tr class="positions-head" style="width: 100%;">
-              <th>{{t('pdf.offer.service')}}</th>
-              <th>{{t('pdf.offer.description')}}</th>
-              <th>{{t('pdf.offer.quantity')}}</th>
-              <th>{{t('pdf.offer.single_price')}}</th>
-              <th>{{t('pdf.offer.total_price')}}</th>
+              <th style="width: 1px; padding: 0 10px 0 10px;">{{t('pdf.offer.service')}}</th>
+              <th style="text-align: left; padding: 0 10px 0 10px;">{{t('pdf.offer.description')}}</th>
+              <th style="width: 1px; padding: 0 10px 0 10px;">{{t('pdf.offer.quantity')}}</th>
+              <th style="width: 1px; padding: 0 10px 0 10px;">{{t('pdf.offer.single_price')}}</th>
+              <th style="width: 1px; padding: 0 10px 0 10px;">{{t('pdf.offer.total_price')}}</th>
             </tr>
           </thead>
           <tbody>
             {% if resource.positions %}
               {% for  key, position in resource.positions %}
                 <tr class="position-row">
-                  <td class="" style="text-align: left;">{{ position.service.name ?? "" }} </td>
+                  <td class="" style="text-align: left; width: 1px;">{{ position.service.name ?? "" }} </td>
                   <td class="" style="text-align: left;">{{ position.description ?? "" }}</td>
-                  <td class="" style="text-align: right;">{{ position.quantity ?? "" }}</td>
-                      <td class="" style="text-align: right;">{{ position.single_price ?? "" }} &#8364</td>
-                  <td class="" style="text-align: right;">{{ position.total_price ?? "" }}&#8364</td>
+                  <td class="" style="text-align: right;  width: 1px;">{{ position.quantity ?? "" }}</td>
+                      <td class="" style="text-align: right;  width: 1px;">{{ position.single_price ?? "" }} &#8364</td>
+                  <td class="" style="text-align: right;  width: 1px;">{{ position.total_price ?? "" }}&#8364</td>
                 </tr>
               {% endfor %}
             {% endif %}
@@ -171,39 +236,26 @@
         </table>
       </section>
       <section>
-        <p>
-         {{t('pdf.offer.para3')}}
-        </p>
-        <p style="border:2px solid black; font-weight:bold" >
-         {{t('pdf.offer.para4')}}: <span style="text-align:right;">{{resource.price_total}}</span> &#8364
-        </p>
+          <div style="float: right;">
+              <table>
+                  <tr>
+                      <td style="padding-right: 0.5cm;">{{t('pdf.offer.net_price')}}</td>
+                      <td style="text-align: right;">{{resource.price_net}}&#8364</td>
+                  </tr>
+                  <tr>
+                      <td style="padding-right: 0.5cm;">{{t('pdf.offer.taxrate')}} ({{ resource.taxrate }}%)</td>
+                      <td style="text-align: right;">{{resource.tax_amount}} &#8364</td>
+                  </tr>
+                  <tr>
+                      <td style="padding-right: 0.5cm;"><b>{{t('pdf.offer.total_price')}}</b></td>
+                      <td style="text-align: right;"><b>{{resource.price_total}} &#8364</b></td>
+                  </tr>
+              </table>
+          </div>
       </section>
-      <section class="section_content_location">
-        <table class="positions" style="margin-top:15mm";>
-          <thead>
-            <tr class="tables-location" style="width: 100%; ">
-              <th style="width:50%;text-align:left;border:none;" >{{t('pdf.offer.place')}}:  </th>
-              <th style="width: 50%;text-align:left;border:none;">{{t('pdf.offer.the_one')}}, </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td style="border:none;">
-                {{resource.customer.invoice_city}}<br>{{resource.customer.invoice_zip}}
-              </td>
-              <td style="border:none;";>{{resource.customer.name}}</td>
-            </tr>
-          </tbody>
-        </table>
-          <br>
-        <table class="positions">
-          <tbody>
-            <tr>
-              <td style="width:50%; border:none;text-decoration: overline;">{{t('pdf.offer.message1')}} </td>
-              <td style="width:50%; border:none;text-decoration: overline;">{{t('pdf.offer.message2')}}</td>
-            </tr>
-          </tbody>
-        </table>
+      <section class="section_content_location" style="clear: both;">
+          <p style="font-weight:bold;">{{t('pdf.offer.para4')}}</p>
+          <p>{{resource.pdf_info_text}}</p>
       </section>
     </body>
 </html>

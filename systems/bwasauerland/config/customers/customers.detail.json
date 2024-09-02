@@ -20,11 +20,39 @@
                 {
                   "type": "field_group",
                   "options": {
-                    "fields": ["customer_id", "name", "email", "phone_mobile"]
+                    "fields": ["customer_id", "name", "email", "phone_mobile", "phone_landline"]
                   }
                 }
               ]
             },
+            {
+              "span": 12,
+              "components": [
+                {
+                  "type": "headline",
+                  "options": {
+                    "identifier": "invoice_address",
+                    "icon": "environment"
+                  }
+                },
+                {
+                  "type": "field_group",
+                  "options": {
+                    "fields": [
+                      "invoice_address_line_1",
+                      "invoice_address_line_2",
+                      "invoice_street",
+                      "invoice_zip",
+                      "invoice_city"
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "cols": [
             {
               "span": 12,
               "components": [
@@ -39,10 +67,11 @@
                   "type": "field_group",
                   "options": {
                     "fields": [
-                      "phone_landline",
-                      "invoice_address",
-                      "invoice_zip",
-                      "invoice_city"
+                      "address_line_1",
+                      "address_line_2",
+                      "address_street",
+                      "address_zip",
+                      "address_city"
                     ]
                   }
                 }
