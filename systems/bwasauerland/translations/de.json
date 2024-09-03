@@ -332,7 +332,8 @@
         "price_net": "Netto-Preis",
         "price_total": "Brutto-Preis",
         "quantity_type": "Einheit",
-        "tax_amount": "Steuerbetrag"
+        "tax_amount": "Steuerbetrag",
+        "separately_billed": "Separate Rechnung"
       },
       "choice": {
         "quantity_type": {
@@ -630,7 +631,8 @@
             "price_net": "Netto-Preis",
             "price_total": "Brutto-Preis",
             "quantity_type": "Einheit",
-            "tax_amount": "Steuerbetrag"
+            "tax_amount": "Steuerbetrag",
+            "separately_billed": "Separate Rechnung"
           },
           "choice": {
             "quantity_type": {

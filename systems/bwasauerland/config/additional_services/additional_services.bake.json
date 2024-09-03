@@ -18,6 +18,10 @@
           }
         },
         {
+          "identifier": "separately_billed",
+          "type": "checkbox"
+        },
+        {
           "identifier": "project",
           "type": "select",
           "options": {

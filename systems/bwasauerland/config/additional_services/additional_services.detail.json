@@ -19,7 +19,7 @@
                   "type": "field_group",
                   "options": {
                     "vertical_labels": false,
-                    "fields": ["process", "project", "added_by"]
+                    "fields": ["process", "project", "added_by", "separately_billed"]
                   }
                 }
               ]

@@ -168,7 +168,7 @@
       "type": "action/redirect",
       "options": {
         "url": "",
-        "fill": true,
+        "fill": false,
         "http": null,
         "swap": false,
         "action": "module.show",

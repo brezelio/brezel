@@ -40,6 +40,10 @@
                         }
                       },
                       {
+                        "identifier": "separately_billed",
+                        "type": "checkbox"
+                      },
+                      {
                         "identifier": "timestamp",
                         "type": "datetime"
                       },
