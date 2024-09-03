@@ -180,7 +180,13 @@
             },
             "in": {},
             "set": {},
-            "to": {},
+            "to": {
+                "default": {
+                    "ProjectSourceEntities": [
+                        "default"
+                    ]
+                }
+            },
             "meta": {
                 "position": [
                     3718,
@@ -226,7 +232,8 @@
                     "positions": "$resource.services",
                     "invoice_status": "'open'\t",
                     "project_amount": "$resource.price_total",
-                    "previously_invoiced": "$resource.previously_invoiced"
+                    "previously_invoiced": "$resource.previously_invoiced",
+                    "partial_pay": "$modal.amount"
                 }
             },
             "in": {},
@@ -309,10 +316,10 @@
                 "values": [],
                 "process": false,
                 "recipes": {
-                    "project": "$resource.project_number",
                     "invoice_status": "'paid'",
                     "project_amount": "$resource.price_total",
-                    "previously_invoiced": "$resource.previously_invoiced"
+                    "previously_invoiced": "$resource.previously_invoiced",
+                    "partial_pay": "$modal.amount"
                 }
             },
             "in": {},
@@ -390,7 +397,7 @@
             "set": {},
             "to": {
                 "default": {
-                    "white-impala-74": [
+                    "SaveNewInvoice": [
                         "default"
                     ]
                 }
@@ -403,7 +410,7 @@
             }
         },
         {
-            "name": "white-impala-74",
+            "name": "SaveNewInvoice",
             "type": "action/save",
             "options": {
                 "skip_recipes": false,
@@ -422,6 +429,103 @@
             "meta": {
                 "position": [
                     3380,
+                    -104.5
+                ]
+            }
+        },
+        {
+            "name": "ProjectSourceEntities",
+            "type": "source/entities",
+            "options": {
+                "with": [],
+                "first": false,
+                "limit": null,
+                "fields": [],
+                "global": false,
+                "having": [],
+                "module": "projects",
+                "offset": null,
+                "scopes": [],
+                "filters": [
+                    [
+                        {
+                            "left": {
+                                "type": "field",
+                                "value": "id"
+                            },
+                            "right": {
+                                "type": "recipe",
+                                "value": "$newInvoiceData.project.id"
+                            },
+                            "operator": "="
+                        }
+                    ]
+                ],
+                "groupBy": [],
+                "orderBy": [],
+                "distinct": false,
+                "listItems": null,
+                "permissions": false,
+                "withTrashed": false,
+                "autoDistinct": true
+            },
+            "in": {},
+            "set": {},
+            "to": {
+                "default": {
+                    "SetPreviouslyInvoicedValues": [
+                        "default"
+                    ]
+                }
+            },
+            "meta": {
+                "position": [
+                    4056,
+                    -162
+                ]
+            }
+        },
+        {
+            "name": "SetPreviouslyInvoicedValues",
+            "type": "op/set",
+            "options": {
+                "copy": "",
+                "values": [],
+                "process": false,
+                "recipes": {
+                    "previously_invoiced": "$resource.previously_invoiced + $newInvoiceData.partial_pay"
+                }
+            },
+            "in": {},
+            "set": {},
+            "to": {
+                "default": {
+                    "SavePreviouslyInvoiced": [
+                        "default"
+                    ]
+                }
+            },
+            "meta": {
+                "position": [
+                    4394,
+                    -104.5
+                ]
+            }
+        },
+        {
+            "name": "SavePreviouslyInvoiced",
+            "type": "action/save",
+            "options": {
+                "triggerEvents": false,
+                "skip_recipes": false,
+                "continueIfInvalid": false
+            },
+            "in": {},
+            "set": {},
+            "to": {},
+            "meta": {
+                "position": [
+                    4732,
                     -104.5
                 ]
             }

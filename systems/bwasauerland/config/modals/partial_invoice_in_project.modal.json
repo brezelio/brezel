@@ -177,6 +177,10 @@
                         "type":"currency"
                       },
                       {
+                        "identifier":"partial_pay",
+                        "type":"currency"
+                      },
+                      {
                         "identifier": "previously_invoiced",
                         "type": "currency",
                         "options": {
