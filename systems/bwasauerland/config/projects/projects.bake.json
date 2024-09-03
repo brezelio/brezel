@@ -23,6 +23,13 @@
           "trigger": "GeneratePartialInvoiceWebhook",
           "style": "primary",
           "show_in": ["module.show"]
+        },
+        "create_additional_service": {
+          "hidden": true,
+          "icon": "bank",
+          "trigger": "CreateAdditionalService",
+          "style": "primary",
+          "show_in": ["module.show"]
         }
       },
       "fields": [
@@ -159,6 +166,16 @@
                 }
               },
               {
+                "identifier": "quantity_type",
+                "type": "choice",
+                "options": {
+                  "values": [
+                    "hourly",
+                    "flat_price"
+                  ]
+                }
+              },
+              {
                 "identifier": "quantity",
                 "type": "number",
                 "options": {
@@ -225,6 +242,13 @@
     "resource": {
       "identifier": "partial_invoice_in_project.modal",
       "spec": "${jsonFile('config/modals/partial_invoice_in_project.modal.json', true)}"
+    }
+  },
+  {
+    "resource_layout": "create_additional_service_modal",
+    "resource": {
+      "identifier": "create_additional_service.modal",
+      "spec": "${jsonFile('config/modals/create_additional_service.modal.json', true)}"
     }
   }
 ]

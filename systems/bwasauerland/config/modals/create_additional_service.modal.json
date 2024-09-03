@@ -1,0 +1,215 @@
+{
+  "tabs": [
+    {
+      "identifier": "create_additional_service",
+      "rows": [
+        {
+          "cols": [
+            {
+              "options": {
+                "borderless": true
+              },
+              "span": 12,
+              "components": [
+                {
+                  "type": "field_group",
+                  "options": {
+                    "vertical_labels": true,
+                    "no_padding": true,
+                    "fields": [
+                      {
+                        "identifier": "process",
+                        "type": "select",
+                        "options": {
+                          "rules": "required",
+                          "references": "processes"
+                        }
+                      },
+                      {
+                        "identifier": "project",
+                        "type": "select",
+                        "options": {
+                          "references": "projects"
+                        }
+                      },
+                      {
+                        "identifier": "added_by",
+                        "type": "select",
+                        "options": {
+                          "references": "customers"
+                        }
+                      },
+                      {
+                        "identifier": "timestamp",
+                        "type": "datetime"
+                      },
+                      {
+                        "identifier": "reason",
+                        "type": "text"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "options": {
+                "borderless": true
+              },
+              "span": 12,
+              "components": [
+                {
+                  "type": "field_group",
+                  "options": {
+                    "vertical_labels": true,
+                    "no_padding": true,
+                    "fields": [
+
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "options": {
+                "borderless": true
+              },
+              "span": 24,
+              "components": [
+                {
+                  "type": "field_group",
+                  "options": {
+                    "vertical_labels": true,
+                    "no_padding": true,
+                    "fields": [
+                      {
+                        "identifier": "services",
+                        "type": "list",
+                        "options": {
+                          "show_ordering": true,
+                          "fields": [
+                            {
+                              "identifier": "service",
+                              "type": "select",
+                              "options": {
+                                "references": "services",
+                                "add_options": true,
+                                "events": {
+                                  "on_change": ["OnChangeService"]
+                                }
+                              }
+                            },
+                            {
+                              "identifier": "description",
+                              "type": "text"
+                            },
+                            {
+                              "identifier": "single_price",
+                              "type": "currency"
+                            },
+                            {
+                              "identifier": "quantity_type",
+                              "type": "choice",
+                              "options": {
+                                "values": [
+                                  "hourly",
+                                  "flat_price"
+                                ]
+                              }
+                            },
+                            {
+                              "identifier": "quantity",
+                              "type": "number",
+                              "options": {
+                                "default": 1
+                              }
+                            },
+                            {
+                              "identifier": "total_price",
+                              "type": "currency",
+                              "recipe": "single_price * quantity"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "options": {
+                "borderless": true
+              },
+              "span": 12,
+              "components": [
+                {
+                  "type": "field_group",
+                  "options": {
+                    "vertical_labels": true,
+                    "no_padding": true,
+                    "fields": [
+                      {
+                        "identifier": "attachments",
+                        "type": "list",
+                        "options": {
+                          "show_ordering": true,
+                          "fields": [
+                            {
+                              "identifier": "file",
+                              "type": "upload"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "options": {
+                "borderless": true
+              },
+              "span": 12,
+              "components": [
+                {
+                  "type": "field_group",
+                  "options": {
+                    "vertical_labels": true,
+                    "no_padding": true,
+                    "fields": [
+                      {
+                        "identifier": "taxrate",
+                        "type": "number",
+                        "options": {
+                          "default": 19,
+                          "readonly": true
+                        }
+                      },
+                      {
+                        "identifier": "tax_amount",
+                        "type": "currency",
+                        "recipe": "price_net * (taxrate / 100)"
+                      },
+                      {
+                        "identifier": "price_net",
+                        "type": "currency",
+                        "recipe": "sum(services[*].total_price)"
+                      },
+                      {
+                        "identifier": "price_total",
+                        "type": "currency",
+                        "recipe": "price_net+(price_net* (taxrate / 100))"
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
