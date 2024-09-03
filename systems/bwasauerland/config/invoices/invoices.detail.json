@@ -87,6 +87,7 @@
                     "vertical_labels": false,
                     "fields": [
                       "project_amount",
+                      "partial_pay",
                       "previously_invoiced",
                       "invoice_open_position"
                     ]
