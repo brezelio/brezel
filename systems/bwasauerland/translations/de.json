@@ -254,7 +254,8 @@
       "title": "Projekte",
       "headlines": {
         "general": "Allgemein",
-        "info": "Infos"
+        "info": "Infos",
+        "positions": "Leistungen"
       },
       "fields": {
         "project_number": "Projektnummer",
@@ -304,7 +305,8 @@
       "title": "Zusätzliche Dienstleistungen",
       "headlines": {
         "general": "Allgemein",
-        "info": "Infos"
+        "info": "Infos",
+        "services": "Leistungen"
       },
       "fields": {
         "process": "Prozess",
@@ -317,9 +319,19 @@
         "description": "Beschreibung",
         "single_price": "Einzelpreis",
         "quantity": "Anzahl",
-        "total_price": "Gesamtpreis",
         "attachments": "Anhänge",
-        "file": "Anhang"
+        "file": "Anhang",
+        "total_price": "Gesamtpreis",
+        "taxrate": "Steuersatz",
+        "price_net": "Netto-Preis",
+        "price_total": "Brutto-Preis",
+        "quantity_type": "Einheit"
+      },
+      "choice": {
+        "quantity_type": {
+          "hourly": "Stündlich",
+          "flat_price": "Pauschalpreis"
+        }
       }
     },
     "proof_of_work": {
@@ -342,7 +354,8 @@
       "title": "Rechnungen",
       "headlines": {
         "basic": "Grundlegend",
-        "address": "Anschrift"
+        "address": "Anschrift",
+        "positions": "Leistungen"
       },
       "fields": {
         "process": "Prozess",
@@ -366,7 +379,8 @@
         "price_total": "Brutto-Preis",
         "project_amount": "Projektbetrag",
         "previously_invoiced": "Bisher in Rechnung gestellt",
-        "invoice_open_position": "Offene Position der Rechnung"
+        "invoice_open_position": "Offene Position der Rechnung",
+        "partial_invoice": "Teilrechnung"
       },
       "choice": {
         "type": {
@@ -474,6 +488,9 @@
             "end_date": "Abschlussdatum",
             "total_worktime": "Arbeitszeit Total",
             "status": "Status",
+            "positions": "Leistungen"
+          },
+          "headlines": {
             "positions": "Leistungen"
           },
           "choice": {

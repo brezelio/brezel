@@ -124,17 +124,14 @@
           </thead>
           <tbody>
                 <tr class="position-row">
-                  <td class="border-none">{{resource.customer.name}}
-                  <br>{{resource.customer.invoice_address_line_1 }} {{resource.customer.invoice_address_line_2 }} <br> {{resource.customer.invoice_street }} <br>{{resource.customer.invoice_zip}} {{resource.customer.invoice_city}} <br><br>
+                  <td class="border-none" style="vertical-align: top;">
+                      <br>{{resource.customer.address_line_1 }} {{resource.customer.address_line_2 }} <br> {{resource.customer.address_street }} <br>{{resource.customer.address_zip}} {{resource.customer.address_city}} <br><br>
                   {{t('pdf.offer.landline')}}: {{resource.customer.phone_landline}}<br>
                   {{t('pdf.offer.mobile')}}: {{resource.customer.phone_mobile}}<br>
                   {{t('pdf.offer.email')}}: {{resource.customer.email}}
                   </td>
-                    <td class="border-none">{{resource.customer.name}}
-                        <br>{{resource.customer.invoice_address_line_1 }} {{resource.customer.invoice_address_line_2 }} <br> {{resource.customer.invoice_street }} <br>{{resource.customer.invoice_zip}} {{resource.customer.invoice_city}} <br><br>
-                        {{t('pdf.offer.landline')}}: {{resource.customer.phone_landline}}<br>
-                        {{t('pdf.offer.mobile')}}: {{resource.customer.phone_mobile}}<br>
-                        {{t('pdf.offer.email')}}: {{resource.customer.email}}
+                    <td class="border-none" style="vertical-align: top;">
+                        <br>{{resource.object.address_line_1 }} {{resource.object.address_line_2 }} <br> {{resource.object.address_street }} <br>{{resource.object.address_zip}} {{resource.object.address_city}} <br><br>
                     </td>
                 </tr>
           </tbody>

@@ -20,7 +20,7 @@
                 {
                   "type": "field_group",
                   "options": {
-                    "fields": ["customer", "name", "email", "mobile"]
+                    "fields": ["customer", "name", "email", "mobile", "landline"]
                   }
                 }
               ]
@@ -39,10 +39,11 @@
                   "type": "field_group",
                   "options": {
                     "fields": [
-                      "landline",
-                      "address",
-                      "zip",
-                      "city"
+                      "address_line_1",
+                      "address_line_2",
+                      "address_street",
+                      "address_zip",
+                      "address_city"
                     ]
                   }
                 }

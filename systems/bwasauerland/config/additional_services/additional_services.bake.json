@@ -62,14 +62,24 @@
               },
               {
                 "identifier": "single_price",
-                "type": "currency",
+                "type": "currency"
+              },
+              {
+                "identifier": "quantity_type",
+                "type": "choice",
                 "options": {
-                  "readonly": true
+                  "values": [
+                    "hourly",
+                    "flat_price"
+                  ]
                 }
               },
               {
                 "identifier": "quantity",
-                "type": "number"
+                "type": "number",
+                "options": {
+                  "default": 1
+                }
               },
               {
                 "identifier": "total_price",
@@ -78,6 +88,29 @@
               }
             ]
           }
+        },
+        {
+          "identifier": "taxrate",
+          "type": "number",
+          "options": {
+            "default": 19,
+            "readonly": true
+          }
+        },
+        {
+          "identifier": "tax_amount",
+          "type": "currency",
+          "recipe": "price_net * (taxrate / 100)"
+        },
+        {
+          "identifier": "price_net",
+          "type": "currency",
+          "recipe": "sum(services[*].total_price)"
+        },
+        {
+          "identifier": "price_total",
+          "type": "currency",
+          "recipe": "price_net+(price_net* (taxrate / 100))"
         },
         {
           "identifier": "attachments",

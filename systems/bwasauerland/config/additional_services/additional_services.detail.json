@@ -18,7 +18,7 @@
                 {
                   "type": "field_group",
                   "options": {
-                    "vertical_labels": true,
+                    "vertical_labels": false,
                     "fields": ["process", "project", "added_by"]
                   }
                 }
@@ -37,7 +37,7 @@
                 {
                   "type": "field_group",
                   "options": {
-                    "vertical_labels": true,
+                    "vertical_labels": false,
                     "fields": ["timestamp", "reason"]
                   }
                 }
@@ -49,8 +49,15 @@
             {
               "components": [
                 {
+                  "type": "headline",
                   "options": {
-                    "vertical_labels": true,
+                    "identifier": "services"
+                  }
+                },
+                {
+                  "options": {
+                    "vertical_labels": false,
+                    "no_labels": true,
                     "fields": ["services"]
                   },
                   "type": "field_group"
@@ -66,13 +73,29 @@
               "components": [
                 {
                   "options": {
-                    "vertical_labels": true,
+                    "vertical_labels": false,
                     "fields": ["attachments"]
                   },
                   "type": "field_group"
                 }
               ],
               "span": 12
+            },
+            {
+              "span": 12,
+              "components": [
+                {
+                  "type": "field_group",
+                  "options": {
+                    "fields": [
+                      "taxrate",
+                      "tax_amount",
+                      "price_net",
+                      "price_total"
+                    ]
+                  }
+                }
+              ]
             }
           ]
         }

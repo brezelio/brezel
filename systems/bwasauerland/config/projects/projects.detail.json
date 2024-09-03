@@ -19,7 +19,7 @@
                 {
                   "type": "field_group",
                   "options": {
-                    "vertical_labels": true,
+                    "vertical_labels": false,
                     "fields": [
                       "project_number",
                       "process",
@@ -48,7 +48,7 @@
                 {
                   "type": "field_group",
                   "options": {
-                    "vertical_labels": true,
+                    "vertical_labels": false,
                     "fields": [
                       "room_temperature",
                       "room_humidity",
@@ -73,8 +73,15 @@
             {
               "components": [
                 {
+                  "type": "headline",
                   "options": {
-                    "vertical_labels": true,
+                    "identifier": "positions"
+                  }
+                },
+                {
+                  "options": {
+                    "vertical_labels": false,
+                    "no_labels": true,
                     "fields": ["services"]
                   },
                   "type": "field_group"
@@ -102,7 +109,7 @@
               "components": [
                 {
                   "options": {
-                    "vertical_labels": true,
+                    "vertical_labels": false,
                     "fields": ["taxrate", "price_net", "price_total","previously_invoiced","invoice_open_position"]
                   },
                   "type": "field_group"

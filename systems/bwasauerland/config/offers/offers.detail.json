@@ -56,8 +56,7 @@
                       "level",
                       "floor_material",
                       "strip_foundation",
-                      "seals_done_in_the_past",
-                      "pdf_info_text"
+                      "seals_done_in_the_past"
                     ]
                   }
                 }
@@ -93,7 +92,9 @@
               "components": [
                 {
                   "options": {
-                    "fields": []
+                    "fields": [
+                      "pdf_info_text"
+                    ]
                   },
                   "type": "field_group"
                 }

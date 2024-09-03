@@ -14,7 +14,7 @@
                                 {
                                     "type": "field_group",
                                     "options": {
-                                        "vertical_labels": true,
+                                        "vertical_labels": false,
                                         "no_padding": true,
                                         "fields": [
                                             {
@@ -43,11 +43,20 @@
                                             },
                                             {
                                                 "identifier": "start_date",
-                                                "type": "date"
+                                                "type": "date",
+                                                "options": {
+                                                  "fullDay": true,
+                                                  "recipes": {
+                                                    "default": "date()"
+                                                  }
+                                                }
                                               },
                                               {
                                                 "identifier": "end_date",
-                                                "type": "date"
+                                                "type": "date",
+                                                "options": {
+                                                  "fullDay": true
+                                                }
                                               },
                                               {
                                                 "identifier": "total_worktime",
@@ -82,7 +91,7 @@
                                 {
                                     "type": "field_group",
                                     "options": {
-                                        "vertical_labels": true,
+                                        "vertical_labels": false,
                                         "no_padding": true,
                                         "fields": [
                                             {
@@ -143,10 +152,17 @@
                             },
                             "span": 24,
                             "components": [
+                              {
+                                "type": "headline",
+                                "options": {
+                                  "identifier": "positions"
+                                }
+                              },
                                 {
                                     "type": "field_group",
                                     "options": {
-                                        "vertical_labels": true,
+                                        "vertical_labels": false,
+                                        "no_labels": true,
                                         "no_padding": true,
                                         "fields": [
                                             {
@@ -207,10 +223,10 @@
                                 {
                                     "type": "field_group",
                                     "options": {
-                                        "vertical_labels": true,
+                                        "vertical_labels": false,
                                         "no_padding": true,
                                         "fields": [
-                                            
+
                                         ]
                                     }
                                 }
@@ -225,7 +241,7 @@
                                 {
                                     "type": "field_group",
                                     "options": {
-                                        "vertical_labels": true,
+                                        "vertical_labels": false,
                                         "no_padding": true,
                                         "fields": [
                                             {
@@ -251,7 +267,7 @@
                                 }
                             ]
                         }
-                        
+
                     ]
                 }
             ]

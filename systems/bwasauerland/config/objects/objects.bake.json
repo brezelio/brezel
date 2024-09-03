@@ -31,24 +31,29 @@
           "type": "email"
         },
         {
-          "identifier": "address",
+          "identifier": "address_street",
           "type": "text",
           "options": {
-            "rules": "required"
           }
         },
         {
-          "identifier": "zip",
+          "identifier": "address_line_1",
+          "type": "text"
+        },
+        {
+          "identifier": "address_line_2",
+          "type": "text"
+        },
+        {
+          "identifier": "address_zip",
           "type": "text",
           "options": {
-            "rules": "required"
           }
         },
         {
-          "identifier": "city",
+          "identifier": "address_city",
           "type": "text",
           "options": {
-            "rules": "required"
           }
         },
         {
