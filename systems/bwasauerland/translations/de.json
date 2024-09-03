@@ -4,7 +4,7 @@
     "create_partner": "Partner erstellen",
     "add_item_to_product": "Aritkel hinzufügen",
     "create_invoice": "Rechnung erstellen",
-    "generate_partial_invoice":"Teilrechnung erstellen"
+    "generate_partial_invoice": "Teilrechnung erstellen"
   },
   "notifications": {},
   "modules": {
@@ -257,7 +257,7 @@
         "info": "Infos"
       },
       "fields": {
-        "project_number":"Projektnummer",
+        "project_number": "Projektnummer",
         "process": "Prozess",
         "date": "Datum",
         "created_by": "Erstellt von",
@@ -347,8 +347,8 @@
       "fields": {
         "process": "Prozess",
         "invoice_number": "Rechnungsnummer",
-        "project":"Projekt",
-        "customer":"Kunde",
+        "project": "Projekt",
+        "customer": "Kunde",
         "type": "Typ",
         "status": "Status",
         "address": "Anschrift",
@@ -517,6 +517,66 @@
               "final": "Endgültig"
             },
             "status": {
+              "open": "Öffnen Sie",
+              "paid": "Bezahlt"
+            }
+          }
+        }
+      }
+    },
+    "GeneratePartialInvoiceWebhook": {
+      "ProjectModalConfirm": {
+        "modal": {
+          "title": "Sind sie sicher?",
+          "fields": {
+            "select_amount": "Anteil",
+            "amount": "Betrag(brutto)",
+            "open_position": "Offener Rechnungsbetrag"
+          },
+          "choice": {
+            "select_amount": {
+              "a2": "1/2",
+              "a3": "1/3",
+              "a4": "1/4",
+              "a5": "1/5",
+              "rest": "Restbetrag"
+            }
+          }
+        }
+      },
+      "ParticalInvoiceModal": {
+        "modal": {
+          "title": "Bestätigen Sie die Rechnungsdaten",
+          "fields": {
+            "process": "Prozess",
+            "invoice_number": "Rechnungsnummer",
+            "project": "Projekt",
+            "customer": "Kunde",
+            "type": "Typ",
+            "invoice_status": "Status",
+            "address": "Anschrift",
+            "zip": "PLZ",
+            "city": "Stadt",
+            "phone": "Telefon",
+            "positions": "Positionen",
+            "service": "Leistung",
+            "description": "Beschreibung",
+            "single_price": "Einzelpreis",
+            "quantity": "Anzahl",
+            "total_price": "Gesamtpreis",
+            "taxrate": "Steuersatz",
+            "price_net": "Netto-Preis",
+            "price_total": "Brutto-Preis",
+            "project_amount": "Projektbetrag",
+            "previously_invoiced": "Bisher in Rechnung gestellt",
+            "invoice_open_position": "Offene Position der Rechnung"
+          },
+          "choice": {
+            "type": {
+              "partial": "Teilweise",
+              "final": "Endgültig"
+            },
+            "invoice_status": {
               "open": "Öffnen Sie",
               "paid": "Bezahlt"
             }

@@ -3,7 +3,7 @@
     "Create Project": "Create Project",
     "Export_as_PDF": "Export as PDF",
     "create_invoice": "Create Invoice",
-    "generate_partial_invoice":"Generate Partial Invoice"
+    "generate_partial_invoice": "Generate Partial Invoice"
   },
   "notifications": {},
   "modules": {
@@ -324,6 +324,18 @@
           "fields": {
             "invoice_status": "Status"
           }
+        }
+      }
+    },
+    "GeneratePartialInvoiceWebhook": {
+      "ProjectModalConfirm": {
+        "modal": {
+          "title": "Are you sure?"
+        }
+      },
+      "ParticalInvoiceModal": {
+        "modal": {
+          "title": "Confirm invoice data"
         }
       }
     }

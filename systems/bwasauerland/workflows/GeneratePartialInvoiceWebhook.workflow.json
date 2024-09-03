@@ -1,0 +1,442 @@
+{
+    "identifier": "GeneratePartialInvoiceWebhook",
+    "title": "Generating partial invoices in projects",
+    "description": null,
+    "async": false,
+    "debug": false,
+    "entry": "GeneratePartialInvoiceWebhook",
+    "elements": [
+        {
+            "name": "GeneratePartialInvoiceWebhook",
+            "type": "event/webhook",
+            "options": {
+                "async": false,
+                "roles": null,
+                "title": "",
+                "module": "projects",
+                "public": false
+            },
+            "in": {},
+            "set": {
+                "resource": "default:"
+            },
+            "to": {
+                "default": {
+                    "SetLocale": [
+                        "default"
+                    ],
+                    "CalculateOpenPosition": [
+                        "default"
+                    ]
+                }
+            },
+            "meta": {
+                "position": [
+                    0,
+                    -274
+                ]
+            }
+        },
+        {
+            "name": "ProjectModalConfirm",
+            "type": "action/modal",
+            "options": {
+                "hard": false,
+                "type": "confirm",
+                "title": {
+                    ".recipe": "t('workflows.GeneratePartialInvoiceWebhook.ProjectModalConfirm.modal.title')"
+                },
+                "fields": [
+                    {
+                        "type": "choice",
+                        "options": {
+                            "mode": "buttons",
+                            "events": {
+                                "on_change": [
+                                    "OnChangeSelectAmount"
+                                ]
+                            },
+                            "values": [
+                                "a2",
+                                "a3",
+                                "a4",
+                                "a5",
+                                "rest"
+                            ]
+                        },
+                        "identifier": "select_amount"
+                    },
+                    {
+                        "type": "number",
+                        "options": [],
+                        "identifier": "amount"
+                    },
+                    {
+                        "type": "currency",
+                        "options": [],
+                        "identifier": "open_position"
+                    }
+                ],
+                "layout": null,
+                "checkpoint": true,
+                "autosave_key": null
+            },
+            "in": {},
+            "set": {
+                "modal": "confirm:"
+            },
+            "to": {
+                "confirm": {
+                    "SetInvoiceData": [
+                        "default"
+                    ]
+                }
+            },
+            "meta": {
+                "position": [
+                    1014,
+                    -191.5
+                ]
+            }
+        },
+        {
+            "name": "setData",
+            "type": "op/set",
+            "options": {
+                "copy": "$resource",
+                "values": [],
+                "process": false,
+                "recipes": {
+                    "open_position": "$calculated_open_position"
+                }
+            },
+            "in": {
+                "default": "$resource"
+            },
+            "set": {},
+            "to": {
+                "default": {
+                    "ProjectModalConfirm": [
+                        "default"
+                    ]
+                }
+            },
+            "meta": {
+                "position": [
+                    676,
+                    -116.5
+                ]
+            }
+        },
+        {
+            "name": "SetInvoiceData",
+            "type": "op/set",
+            "options": {
+                "copy": "$resource",
+                "values": {
+                    "status": "open"
+                },
+                "process": false,
+                "recipes": {
+                    "type": "(($modal.open_position - $modal.amount) > 0) ? \"partial\" : \"final\"",
+                    "process": "$resource.process",
+                    "project": "$resource",
+                    "customer": "$resource.customer",
+                    "positions": "$resource.services"
+                }
+            },
+            "in": {},
+            "set": {
+                "new_invoice": "default:"
+            },
+            "to": {
+                "default": {
+                    "CheckInvoiceType": [
+                        "default"
+                    ]
+                }
+            },
+            "meta": {
+                "position": [
+                    1352,
+                    -116.5
+                ]
+            }
+        },
+        {
+            "name": "RedirectToInvoices",
+            "type": "action/redirect",
+            "options": {
+                "url": {
+                    ".recipe": "\"/\"+$locale+\"/customers/\"+$resource.customer.id+\"?path=customers.detail.invoices\""
+                },
+                "fill": true,
+                "http": null,
+                "swap": false,
+                "action": "module",
+                "module": "invoices",
+                "target": null,
+                "queryParams": []
+            },
+            "in": {},
+            "set": {},
+            "to": {},
+            "meta": {
+                "position": [
+                    3718,
+                    -162
+                ]
+            }
+        },
+        {
+            "name": "CheckInvoiceType",
+            "type": "flow/if",
+            "options": {
+                "condition": "this.type == \"partial\""
+            },
+            "in": {},
+            "set": {},
+            "to": {
+                "default": {
+                    "SetDataIfTypePartical": [
+                        "default"
+                    ]
+                },
+                "else": {
+                    "SetDataIfTypeFinal": [
+                        "default"
+                    ]
+                }
+            },
+            "meta": {
+                "position": [
+                    1690,
+                    -129.5
+                ]
+            }
+        },
+        {
+            "name": "SetDataIfTypePartical",
+            "type": "op/set",
+            "options": {
+                "copy": ":default",
+                "values": [],
+                "process": false,
+                "recipes": {
+                    "positions": "$resource.services",
+                    "invoice_status": "'open'\t",
+                    "project_amount": "$resource.price_total",
+                    "previously_invoiced": "$resource.previously_invoiced"
+                }
+            },
+            "in": {},
+            "set": {},
+            "to": {
+                "default": {
+                    "ParticalInvoiceModal": [
+                        "default"
+                    ]
+                }
+            },
+            "meta": {
+                "position": [
+                    2028,
+                    -209
+                ]
+            }
+        },
+        {
+            "name": "CalculateOpenPosition",
+            "type": "op/recipe",
+            "options": {
+                "recipe": "round($resource.price_total\t - $resource.previously_invoiced,2)"
+            },
+            "in": {},
+            "set": {
+                "calculated_open_position": "default:"
+            },
+            "to": {
+                "default": {
+                    "setData": [
+                        "default"
+                    ]
+                }
+            },
+            "meta": {
+                "position": [
+                    338,
+                    -233
+                ]
+            }
+        },
+        {
+            "name": "ParticalInvoiceModal",
+            "type": "action/modal",
+            "options": {
+                "hard": false,
+                "type": "confirm",
+                "title": {
+                    ".recipe": "t('workflows.GeneratePartialInvoiceWebhook.ParticalInvoiceModal.modal.title')"
+                },
+                "fields": [],
+                "layout": "partial_invoice_in_project.modal",
+                "checkpoint": true,
+                "autosave_key": null
+            },
+            "in": {},
+            "set": {
+                "newInvoiceData": "confirm:"
+            },
+            "to": {
+                "confirm": {
+                    "CreateNewInvoice": [
+                        "default"
+                    ]
+                }
+            },
+            "meta": {
+                "position": [
+                    2366,
+                    -191.5
+                ]
+            }
+        },
+        {
+            "name": "SetDataIfTypeFinal",
+            "type": "op/set",
+            "options": {
+                "copy": null,
+                "values": [],
+                "process": false,
+                "recipes": {
+                    "project": "$resource.project_number",
+                    "invoice_status": "'paid'",
+                    "project_amount": "$resource.price_total",
+                    "previously_invoiced": "$resource.previously_invoiced"
+                }
+            },
+            "in": {},
+            "set": {},
+            "to": {
+                "default": {
+                    "ParticalInvoiceModal": [
+                        "default"
+                    ]
+                }
+            },
+            "meta": {
+                "position": [
+                    2028,
+                    0
+                ]
+            }
+        },
+        {
+            "name": "CreateNewInvoice",
+            "type": "source/new",
+            "options": {
+                "client": null,
+                "module": "invoices",
+                "values": null
+            },
+            "in": {},
+            "set": {
+                "invoice": "default:"
+            },
+            "to": {
+                "default": {
+                    "SetNewInvoiceData": [
+                        "default"
+                    ]
+                }
+            },
+            "meta": {
+                "position": [
+                    2704,
+                    -149
+                ]
+            }
+        },
+        {
+            "name": "SetLocale",
+            "type": "op/recipe",
+            "options": {
+                "recipe": "locale()"
+            },
+            "in": {},
+            "set": {
+                "locale": "default:"
+            },
+            "to": {},
+            "meta": {
+                "position": [
+                    338,
+                    0
+                ]
+            }
+        },
+        {
+            "name": "SetNewInvoiceData",
+            "type": "op/set",
+            "options": {
+                "copy": "$newInvoiceData",
+                "values": [],
+                "process": false,
+                "recipes": {
+                    "positions": "$newInvoiceData.positions.map(position => {\"service\": position.service,\"description\": position.description,\"single_price\": position.single_price,\"quantity\": position.quantity, \"total_price\": position.total_price})"
+                }
+            },
+            "in": {},
+            "set": {},
+            "to": {
+                "default": {
+                    "white-impala-74": [
+                        "default"
+                    ]
+                }
+            },
+            "meta": {
+                "position": [
+                    3042,
+                    -104.5
+                ]
+            }
+        },
+        {
+            "name": "white-impala-74",
+            "type": "action/save",
+            "options": {
+                "skip_recipes": false,
+                "triggerEvents": false,
+                "continueIfInvalid": false
+            },
+            "in": {},
+            "set": {},
+            "to": {
+                "default": {
+                    "RedirectToInvoices": [
+                        "default"
+                    ]
+                }
+            },
+            "meta": {
+                "position": [
+                    3380,
+                    -104.5
+                ]
+            }
+        }
+    ],
+    "events": [
+        {
+            "identifier": "GeneratePartialInvoiceWebhook",
+            "type": "webhook",
+            "module": "projects",
+            "async": false,
+            "roles": null,
+            "title": "",
+            "public": false
+        }
+    ],
+    "comments": []
+}

@@ -20,7 +20,7 @@
         "generate_partial_invoice": {
           "hidden": true,
           "icon": "bank",
-          "trigger": "GeneratePartialInvoice",
+          "trigger": "GeneratePartialInvoiceWebhook",
           "style": "primary",
           "show_in": ["module.show"]
         }
