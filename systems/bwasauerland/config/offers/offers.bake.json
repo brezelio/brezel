@@ -170,9 +170,18 @@
                 }
               },
               {
+                "identifier": "discount",
+                "type": "number",
+                "options": {
+                    "suffix": "%",
+                    "decimal_digits": 2,
+                    "default": 0
+                }
+              },
+              {
                 "identifier": "total_price",
                 "type": "currency",
-                "recipe": "single_price * quantity"
+                "recipe": "(discount > 0) ? ((single_price * quantity)-((single_price * quantity) * (discount / 100))) : (single_price * quantity)"
               }
             ]
           },
@@ -194,7 +203,16 @@
         {
           "identifier": "price_net",
           "type": "currency",
-          "recipe": "sum(positions[*].total_price)"
+          "recipe": "(overall_discount > 0) ? (sum(positions[*].total_price) - (sum(positions[*].total_price) * (overall_discount / 100))) : sum(positions[*].total_price)"
+        },
+        {
+          "identifier": "overall_discount",
+          "type": "number",
+          "options": {
+              "suffix": "%",
+              "decimal_digits": 2,
+              "default": 0
+          }
         },
         {
           "identifier": "price_total",
