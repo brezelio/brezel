@@ -19,7 +19,8 @@
     "pestphp/pest": "0.3.*",
     "pestphp/pest-plugin-laravel": "0.3.*",
     "phpstan/phpstan": "^0.12.38",
-    "phpunit/phpunit": "^9.0"
+    "phpunit/phpunit": "^9.0",
+    "nunomaduro/phpinsights": "^2.0"
   },
   "scripts": {
     "post-create-project-cmd": [
