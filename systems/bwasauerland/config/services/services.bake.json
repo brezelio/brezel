@@ -12,6 +12,10 @@
         },
         "fields": [
           {
+            "identifier":"number",
+            "type":"number"
+          },
+          {
             "identifier": "name",
             "type": "text",
             "options":{

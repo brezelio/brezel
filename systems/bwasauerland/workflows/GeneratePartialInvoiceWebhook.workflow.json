@@ -3,7 +3,7 @@
     "title": "Generating partial invoices in projects",
     "description": null,
     "async": false,
-    "debug": false,
+    "debug": true,
     "entry": "GeneratePartialInvoiceWebhook",
     "elements": [
         {
@@ -23,6 +23,9 @@
             "to": {
                 "default": {
                     "SetLocale": [
+                        "default"
+                    ],
+                    "ServiceEntities": [
                         "default"
                     ],
                     "CalculateOpenPosition": [
@@ -87,7 +90,7 @@
             },
             "to": {
                 "confirm": {
-                    "SetInvoiceData": [
+                    "ValidatePartialInvoice": [
                         "default"
                     ]
                 }
@@ -158,8 +161,8 @@
             },
             "meta": {
                 "position": [
-                    1352,
-                    -116.5
+                    1690,
+                    -296
                 ]
             }
         },
@@ -189,7 +192,7 @@
             },
             "meta": {
                 "position": [
-                    3718,
+                    4056,
                     -162
                 ]
             }
@@ -216,7 +219,7 @@
             },
             "meta": {
                 "position": [
-                    1690,
+                    2028,
                     -129.5
                 ]
             }
@@ -225,15 +228,16 @@
             "name": "SetDataIfTypePartical",
             "type": "op/set",
             "options": {
-                "copy": ":default",
+                "copy": "",
                 "values": [],
                 "process": false,
                 "recipes": {
-                    "positions": "$resource.services",
+                    "positions": " [{\"service\": $part_invoice_service, \"description\": \"This is a Partial Invoice\", \"quantity\": 1,\"single_price\": $modal.amount}]",
+                    "partial_pay": "$modal.amount",
                     "invoice_status": "'open'\t",
                     "project_amount": "$resource.price_total",
                     "previously_invoiced": "$resource.previously_invoiced",
-                    "partial_pay": "$modal.amount"
+                    "invoice_open_position": "$resource.invoice_open_position - $modal.amount"
                 }
             },
             "in": {},
@@ -247,7 +251,7 @@
             },
             "meta": {
                 "position": [
-                    2028,
+                    2366,
                     -209
                 ]
             }
@@ -272,7 +276,7 @@
             "meta": {
                 "position": [
                     338,
-                    -233
+                    174
                 ]
             }
         },
@@ -303,7 +307,7 @@
             },
             "meta": {
                 "position": [
-                    2366,
+                    2704,
                     -191.5
                 ]
             }
@@ -316,10 +320,11 @@
                 "values": [],
                 "process": false,
                 "recipes": {
+                    "partial_pay": "$modal.amount",
                     "invoice_status": "'paid'",
                     "project_amount": "$resource.price_total",
                     "previously_invoiced": "$resource.previously_invoiced",
-                    "partial_pay": "$modal.amount"
+                    "invoice_open_position": "$resource.invoice_open_position - $modal.amount"
                 }
             },
             "in": {},
@@ -333,7 +338,7 @@
             },
             "meta": {
                 "position": [
-                    2028,
+                    2366,
                     0
                 ]
             }
@@ -359,7 +364,7 @@
             },
             "meta": {
                 "position": [
-                    2704,
+                    3042,
                     -149
                 ]
             }
@@ -378,7 +383,7 @@
             "meta": {
                 "position": [
                     338,
-                    0
+                    -59
                 ]
             }
         },
@@ -404,7 +409,7 @@
             },
             "meta": {
                 "position": [
-                    3042,
+                    3380,
                     -104.5
                 ]
             }
@@ -428,7 +433,7 @@
             },
             "meta": {
                 "position": [
-                    3380,
+                    3718,
                     -104.5
                 ]
             }
@@ -480,7 +485,7 @@
             },
             "meta": {
                 "position": [
-                    4056,
+                    4394,
                     -162
                 ]
             }
@@ -507,7 +512,7 @@
             },
             "meta": {
                 "position": [
-                    4394,
+                    4732,
                     -104.5
                 ]
             }
@@ -516,8 +521,8 @@
             "name": "SavePreviouslyInvoiced",
             "type": "action/save",
             "options": {
-                "triggerEvents": false,
                 "skip_recipes": false,
+                "triggerEvents": false,
                 "continueIfInvalid": false
             },
             "in": {},
@@ -525,8 +530,136 @@
             "to": {},
             "meta": {
                 "position": [
-                    4732,
+                    5070,
                     -104.5
+                ]
+            }
+        },
+        {
+            "name": "ValidatePartialInvoice",
+            "type": "action/validate",
+            "options": {
+                "recipes": {
+                    "amount": "($modal.amount<=$resource.invoice_open_position)"
+                },
+                "markFailedFields": null,
+                "runModuleValidations": null
+            },
+            "in": {},
+            "set": {},
+            "to": {
+                "valid": {
+                    "SetInvoiceData": [
+                        "default"
+                    ]
+                },
+                "invalid": {
+                    "NotifyMessage": [
+                        "default"
+                    ]
+                }
+            },
+            "meta": {
+                "position": [
+                    1352,
+                    -154.5
+                ]
+            }
+        },
+        {
+            "name": "NotifyMessage",
+            "type": "action/notify",
+            "options": {
+                "sms": {
+                    "to": null,
+                    "body": null,
+                    "from": null
+                },
+                "mail": {
+                    "cc": null,
+                    "to": null,
+                    "bcc": null,
+                    "from": null,
+                    "subject": null,
+                    "attachments": null
+                },
+                "toast": {
+                    "type": "error",
+                    "message": {
+                        ".recipe": "t('workflows.GeneratePartialInvoiceWebhook.NotifyMessage.toast.title')"
+                    },
+                    "duration": 4.5,
+                    "description": {
+                        ".recipe": "t('workflows.GeneratePartialInvoiceWebhook.NotifyMessage.toast.message') +\" \"+ $resource.invoice_open_position"
+                    }
+                },
+                "notification": {
+                    "icon": null,
+                    "type": null,
+                    "image": null,
+                    "title": "",
+                    "entity": null,
+                    "actions": null,
+                    "message": null,
+                    "icon-color": null,
+                    "recipients": null
+                }
+            },
+            "in": {},
+            "set": {},
+            "to": {},
+            "meta": {
+                "position": [
+                    1690,
+                    -63
+                ]
+            }
+        },
+        {
+            "name": "ServiceEntities",
+            "type": "source/entities",
+            "options": {
+                "with": [],
+                "first": true,
+                "limit": null,
+                "fields": [],
+                "global": false,
+                "having": [],
+                "module": "services",
+                "offset": null,
+                "scopes": [],
+                "filters": [
+                    [
+                        {
+                            "left": {
+                                "type": "field",
+                                "value": "number"
+                            },
+                            "right": {
+                                "type": "any",
+                                "value": "10000"
+                            },
+                            "operator": "="
+                        }
+                    ]
+                ],
+                "groupBy": [],
+                "orderBy": [],
+                "distinct": false,
+                "listItems": null,
+                "permissions": false,
+                "withTrashed": false,
+                "autoDistinct": true
+            },
+            "in": {},
+            "set": {
+                "part_invoice_service": "default:"
+            },
+            "to": {},
+            "meta": {
+                "position": [
+                    338,
+                    -407
                 ]
             }
         }

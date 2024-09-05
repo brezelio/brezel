@@ -387,6 +387,7 @@
         "price_total": "Brutto-Preis",
         "project_amount": "Projektbetrag",
         "previously_invoiced": "Bisher in Rechnung gestellt",
+        "partial_pay":"Teilweise Bezahlung",
         "invoice_open_position": "Offene Position der Rechnung",
         "partial_invoice": "Teilrechnung"
       },
@@ -593,6 +594,7 @@
             "price_net": "Netto-Preis",
             "price_total": "Brutto-Preis",
             "project_amount": "Projektbetrag",
+            "partial_pay":"Teilweise Bezahlung",
             "previously_invoiced": "Bisher in Rechnung gestellt",
             "invoice_open_position": "Offene Position der Rechnung"
           },
@@ -606,6 +608,12 @@
               "paid": "Bezahlt"
             }
           }
+        }
+      },
+      "NotifyMessage":{
+        "toast":{
+          "title":"Warnmeldung",
+          "message":"Sie müssen nur zahlen"
         }
       }
     },

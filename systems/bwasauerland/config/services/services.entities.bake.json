@@ -1,0 +1,15 @@
+[
+    {
+        "resource_entity": "partial_invoice",
+        "depends_on": "resource_module.services",
+        "resource": {
+            "module": "services",
+            "client": "${resource_client.global}",
+            "fields": {
+                "enabled": true,
+                "name": "Partical Invoice",
+                "number": 10000
+            }
+        }
+    }
+]

@@ -7,7 +7,7 @@
       "icon": "bank",
       "layouts": {
         "detail": "${file('/config/invoices/invoices.detail.json')}",
-        "index":"${file('/config/invoices/invoices.index.json')}"
+        "index": "${file('/config/invoices/invoices.index.json')}"
       },
       "fields": [
         {
@@ -27,10 +27,10 @@
           }
         },
         {
-          "identifier":"project",
-          "type":"select",
-          "options":{
-            "references":"projects"
+          "identifier": "project",
+          "type": "select",
+          "options": {
+            "references": "projects"
           }
         },
         {
@@ -113,9 +113,9 @@
         {
           "identifier": "taxrate",
           "type": "number",
-          "options":{
-            "default":19,
-            "readonly":true
+          "options": {
+            "default": 19,
+            "readonly": true
           }
         },
         {
@@ -129,32 +129,21 @@
           "recipe": "price_net+(price_net* (taxrate / 100))"
         },
         {
-          "identifier":"project_amount",
-          "type":"currency"
-        },
-        {
-          "identifier":"partial_pay",
-          "type":"currency"
+          "identifier": "project_amount",
+          "type": "currency"
         },
         {
           "identifier": "previously_invoiced",
-          "type": "currency",
-          "options": {
-              "recipes": {
-                  "frontend_disabled": "false"
-              },
-              "events": {
-                  "on_load": [
-                      "CalculateInvoicedAmount"
-                  ]
-              }
-          }
-      },
-      {
+          "type": "currency"
+        },
+        {
+          "identifier": "partial_pay",
+          "type": "currency"
+        },
+        {
           "identifier": "invoice_open_position",
-          "type": "currency",
-          "recipe": "round((price_total - previously_invoiced)*100)/100"
-      }
+          "type": "currency"
+        }
       ]
     }
   },

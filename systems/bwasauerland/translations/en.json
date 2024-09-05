@@ -337,6 +337,12 @@
         "modal": {
           "title": "Confirm invoice data"
         }
+      },
+      "NotifyMessage":{
+        "toast":{
+          "title":"Warning Message",
+          "message":"You have to pay only"
+        }
       }
     }
   },

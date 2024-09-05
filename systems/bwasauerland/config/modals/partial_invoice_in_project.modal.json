@@ -177,24 +177,16 @@
                         "type":"currency"
                       },
                       {
-                        "identifier":"partial_pay",
-                        "type":"currency"
-                      },
-                      {
                         "identifier": "previously_invoiced",
-                        "type": "currency",
-                        "options": {
-                            "events": {
-                                "on_load": [
-                                    "CalculateInvoicedAmount"
-                                ]
-                            }
-                        }
+                        "type": "currency"
+                    },
+                    {
+                      "identifier":"partial_pay",
+                      "type":"currency"
                     },
                     {
                         "identifier": "invoice_open_position",
-                        "type": "currency",
-                        "recipe": "round((price_total - previously_invoiced)*100)/100"
+                        "type": "currency"
                     }
                     ]
                   }
