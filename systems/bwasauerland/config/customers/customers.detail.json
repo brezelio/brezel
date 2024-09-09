@@ -267,6 +267,7 @@
                       "display": [
                         "process",
                         "invoice_number",
+                        "project",
                         "customer",
                         "type",
                         "status"

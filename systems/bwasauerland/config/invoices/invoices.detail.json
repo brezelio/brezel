@@ -88,6 +88,7 @@
                     "fields": [
                       "project_amount",
                       "partial_pay",
+                      "tax_portion",
                       "previously_invoiced",
                       "invoice_open_position"
                     ]
@@ -102,7 +103,12 @@
                   "type": "field_group",
                   "options": {
                     "vertical_labels": false,
-                    "fields": ["taxrate", "price_net", "price_total"]
+                    "fields": [
+                      "price_net",
+                      "taxrate",
+                      "tax_amount",
+                      "price_total"
+                    ]
                   }
                 }
               ]

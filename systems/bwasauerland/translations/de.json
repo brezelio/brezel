@@ -284,6 +284,7 @@
         "quantity": "Anzahl",
         "total_price": "Gesamtpreis",
         "taxrate": "Steuersatz",
+        "tax_amount": "Steuerbetrag",
         "price_net": "Netto-Preis",
         "price_total": "Brutto-Preis",
         "start_date": "Startdatum",
@@ -383,11 +384,13 @@
         "quantity": "Anzahl",
         "total_price": "Gesamtpreis",
         "taxrate": "Steuersatz",
+        "tax_amount": "Steuerbetrag",
+        "tax_portion": "Steueranteil",
         "price_net": "Netto-Preis",
         "price_total": "Brutto-Preis",
         "project_amount": "Projektbetrag",
         "previously_invoiced": "Bisher in Rechnung gestellt",
-        "partial_pay":"Teilweise Bezahlung",
+        "partial_pay": "Teilweise Bezahlung",
         "invoice_open_position": "Offene Position der Rechnung",
         "partial_invoice": "Teilrechnung"
       },
@@ -519,6 +522,7 @@
           "fields": {
             "process": "Prozess",
             "invoice_number": "Rechnungsnummer",
+            "project": "Projekt",
             "customer": "Kunde",
             "type": "Typ",
             "invoice_status": "Status",
@@ -533,8 +537,14 @@
             "quantity": "Anzahl",
             "total_price": "Gesamtpreis",
             "taxrate": "Steuersatz",
+            "tax_amount": "Steuerbetrag",
+            "tax_portion": "Steueranteil",
             "price_net": "Netto-Preis",
             "price_total": "Brutto-Preis",
+            "project_amount": "Projektbetrag",
+            "partial_pay": "Teilweise Bezahlung",
+            "previously_invoiced": "Bisher in Rechnung gestellt",
+            "invoice_open_position": "Offene Position der Rechnung",
             "services": "Leistungen"
           },
           "choice": {
@@ -591,10 +601,12 @@
             "quantity": "Anzahl",
             "total_price": "Gesamtpreis",
             "taxrate": "Steuersatz",
+            "tax_amount": "Steuerbetrag",
+            "tax_portion": "Steueranteil",
             "price_net": "Netto-Preis",
             "price_total": "Brutto-Preis",
             "project_amount": "Projektbetrag",
-            "partial_pay":"Teilweise Bezahlung",
+            "partial_pay": "Teilweise Bezahlung",
             "previously_invoiced": "Bisher in Rechnung gestellt",
             "invoice_open_position": "Offene Position der Rechnung"
           },
@@ -610,10 +622,10 @@
           }
         }
       },
-      "NotifyMessage":{
-        "toast":{
-          "title":"Warnmeldung",
-          "message":"Sie müssen nur zahlen"
+      "NotifyMessage": {
+        "toast": {
+          "title": "Warnmeldung",
+          "message": "Sie müssen nur zahlen"
         }
       }
     },

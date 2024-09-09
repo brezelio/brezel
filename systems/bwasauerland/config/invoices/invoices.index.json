@@ -25,6 +25,7 @@
                                         "module": "invoices",
                                         "columns": [
                                             "invoice_number",
+                                            "project",
                                             "process",
                                             "customer",
                                             "type",
