@@ -2,7 +2,7 @@
   "tabs": [
     {
       "identifier": "projects",
-      "icon":"container",
+      "icon": "container",
       "rows": [
         {
           "cols": [
@@ -110,7 +110,14 @@
                 {
                   "options": {
                     "vertical_labels": false,
-                    "fields": ["taxrate", "price_net", "price_total","previously_invoiced","invoice_open_position"]
+                    "fields": [
+                      "price_net",
+                      "taxrate",
+                      "tax_amount",
+                      "price_total",
+                      "previously_invoiced",
+                      "invoice_open_position"
+                    ]
                   },
                   "type": "field_group"
                 }

@@ -34,6 +34,13 @@
                         }
                       },
                       {
+                        "identifier": "project",
+                        "type": "select",
+                        "options": {
+                          "references": "projects"
+                        }
+                      },
+                      {
                         "identifier": "customer",
                         "type": "select",
                         "options": {
@@ -164,7 +171,43 @@
                   "options": {
                     "vertical_labels": true,
                     "no_padding": true,
-                    "fields": []
+                    "fields": [
+                      {
+                        "identifier": "project_amount",
+                        "type": "currency",
+                        "options": {
+                          "readonly": true
+                        }
+                      },
+                      {
+                        "identifier": "previously_invoiced",
+                        "type": "currency",
+                        "options": {
+                          "readonly": true
+                        }
+                      },
+                      {
+                        "identifier": "partial_pay",
+                        "type": "currency",
+                        "options": {
+                          "readonly": true
+                        }
+                      },
+                      {
+                        "identifier": "tax_portion",
+                        "type": "currency",
+                        "options": {
+                          "readonly": true
+                        }
+                      },
+                      {
+                        "identifier": "invoice_open_position",
+                        "type": "currency",
+                        "options": {
+                          "readonly": true
+                        }
+                      }
+                    ]
                   }
                 }
               ]
@@ -182,17 +225,23 @@
                     "no_padding": true,
                     "fields": [
                       {
+                        "identifier": "price_net",
+                        "type": "currency",
+                        "recipe": "sum(services[*].total_price)"
+                      },
+                      {
                         "identifier": "taxrate",
                         "type": "number",
                         "options": {
                           "readonly": true,
-                          "default": 19
+                          "default": 19,
+                          "suffix": "%"
                         }
                       },
                       {
-                        "identifier": "price_net",
+                        "identifier": "tax_amount",
                         "type": "currency",
-                        "recipe": "sum(services[*].total_price)"
+                        "recipe": "(price_net* (taxrate / 100))"
                       },
                       {
                         "identifier": "price_total",

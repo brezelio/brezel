@@ -3,7 +3,7 @@
     "title": "Generating partial invoices in projects",
     "description": null,
     "async": false,
-    "debug": true,
+    "debug": false,
     "entry": "GeneratePartialInvoiceWebhook",
     "elements": [
         {
@@ -145,7 +145,8 @@
                     "process": "$resource.process",
                     "project": "$resource",
                     "customer": "$resource.customer",
-                    "positions": "$resource.services"
+                    "positions": "$resource.services",
+                    "tax_portion": "($resource.tax_amount/$resource.price_total)*$modal.amount"
                 }
             },
             "in": {},
@@ -232,7 +233,7 @@
                 "values": [],
                 "process": false,
                 "recipes": {
-                    "positions": " [{\"service\": $part_invoice_service, \"description\": \"This is a Partial Invoice\", \"quantity\": 1,\"single_price\": $modal.amount}]",
+                    "positions": "[{\"service\": $part_invoice_service, \"description\": \"This is a Partial Invoice\", \"quantity\": 1,\"single_price\": $modal.amount - $new_invoice.tax_portion}]",
                     "partial_pay": "$modal.amount",
                     "invoice_status": "'open'\t",
                     "project_amount": "$resource.price_total",

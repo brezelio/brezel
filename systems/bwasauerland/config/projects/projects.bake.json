@@ -169,10 +169,7 @@
                 "identifier": "quantity_type",
                 "type": "choice",
                 "options": {
-                  "values": [
-                    "hourly",
-                    "flat_price"
-                  ]
+                  "values": ["hourly", "flat_price"]
                 }
               },
               {
@@ -193,17 +190,23 @@
           "type": "list"
         },
         {
+          "identifier": "price_net",
+          "type": "currency",
+          "recipe": "sum(services[*].total_price)"
+        },
+        {
           "identifier": "taxrate",
           "type": "number",
           "options": {
             "readonly": true,
-            "default": 19
+            "default": 19,
+            "suffix": "%"
           }
         },
         {
-          "identifier": "price_net",
+          "identifier": "tax_amount",
           "type": "currency",
-          "recipe": "sum(services[*].total_price)"
+          "recipe": "(price_net* (taxrate / 100))"
         },
         {
           "identifier": "price_total",
@@ -214,9 +217,7 @@
           "identifier": "previously_invoiced",
           "type": "currency",
           "options": {
-            "recipes": {
-              "frontend_disabled": "false"
-            },
+            "readonly":true,
             "events": {
               "on_load": ["CalculateInvoicedAmount"]
             }
