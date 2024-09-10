@@ -127,6 +127,41 @@
           ]
         }
       ]
+    },
+    {
+      "identifier": "invoices",
+      "icon": "bank",
+      "rows": [
+        {
+          "cols": [
+            {
+              "span": 24,
+              "components": [
+                {
+                  "type": "resource_table",
+                  "options": {
+                    "module": "invoices",
+                    "columns": [
+                      "process",
+                      "invoice_number",
+                      "project",
+                      "customer",
+                      "status"
+                    ],
+                    "pre_filters": [
+                      {
+                        "column": "customer.id",
+                        "operator": "=",
+                        "field": "customer.id"
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
     }
   ]
 }

@@ -6,7 +6,7 @@
       "module": "clients",
       "global": true,
       "fields": {
-        "title": "BKM Client"
+        "title": "BWA Sauerland"
       },
       "hostnames": ["bwasauerland"]
     }
@@ -18,7 +18,7 @@
       "module": "clients",
       "global": false,
       "fields": {
-        "title": "BKW Client"
+        "title": "BWA Sauerland"
       },
       "hostnames": ["bkw"]
     }

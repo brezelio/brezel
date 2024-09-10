@@ -61,7 +61,14 @@
           "type": "select",
           "options": {
             "references": "objects",
-            "rules": "required"
+            "rules": "required",
+            "pre_filters": [
+              {
+                "column": "customer.id",
+                "operator": "=",
+                "field": "customer.id"
+              }
+            ]
           }
         },
         {

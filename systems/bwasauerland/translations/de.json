@@ -258,6 +258,10 @@
         "info": "Infos",
         "positions": "Leistungen"
       },
+      "tabs": {
+        "invoices": "Rechnungen",
+        "projects": "Daten"
+      },
       "fields": {
         "project_number": "Projektnummer",
         "process": "Prozess",
