@@ -68,7 +68,7 @@ resource "scaleway_rdb_privilege" "bwasauerland" {
 
 module "bwasauerland" {
   source            = "gitlab.kiwis-and-brownies.de/kibro/brezel-instance/kubernetes//brezel-instance"
-  version           = "1.1.10"
+  version           = "1.2.1"
   namespace         = kubernetes_namespace.branch.metadata[0].name
   cluster_issuer    = "letsencrypt"
   app_env           = var.app_env
