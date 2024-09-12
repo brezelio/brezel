@@ -36,7 +36,7 @@
             "meta": {
                 "position": [
                     0,
-                    -274
+                    -273.5
                 ]
             }
         },
@@ -97,8 +97,8 @@
             },
             "meta": {
                 "position": [
-                    1014,
-                    -191.5
+                    987,
+                    -191
                 ]
             }
         },
@@ -126,8 +126,8 @@
             },
             "meta": {
                 "position": [
-                    676,
-                    -116.5
+                    658,
+                    -116
                 ]
             }
         },
@@ -141,7 +141,11 @@
                 },
                 "process": false,
                 "recipes": {
+                    "zip": "$resource.customer.invoice_zip",
+                    "city": "$resource.customer.invoice_city",
                     "type": "(($modal.open_position - $modal.amount) > 0) ? \"partial\" : \"final\"",
+                    "phone": "$resource.customer.phone_mobile",
+                    "address": "$resource.customer.invoice_address_line_1 +\" \"+$resource.customer.invoice_address_line_2 +\" \" +$resource.customer.invoice_street",
                     "process": "$resource.process",
                     "project": "$resource",
                     "customer": "$resource.customer",
@@ -162,8 +166,8 @@
             },
             "meta": {
                 "position": [
-                    1690,
-                    -296
+                    1645,
+                    -295
                 ]
             }
         },
@@ -193,8 +197,8 @@
             },
             "meta": {
                 "position": [
-                    4056,
-                    -162
+                    3948,
+                    -161.5
                 ]
             }
         },
@@ -220,8 +224,8 @@
             },
             "meta": {
                 "position": [
-                    2028,
-                    -129.5
+                    1974,
+                    -129
                 ]
             }
         },
@@ -252,8 +256,8 @@
             },
             "meta": {
                 "position": [
-                    2366,
-                    -209
+                    2303,
+                    -208
                 ]
             }
         },
@@ -276,8 +280,8 @@
             },
             "meta": {
                 "position": [
-                    338,
-                    174
+                    329,
+                    173.5
                 ]
             }
         },
@@ -308,8 +312,8 @@
             },
             "meta": {
                 "position": [
-                    2704,
-                    -191.5
+                    2632,
+                    -191
                 ]
             }
         },
@@ -325,7 +329,8 @@
                     "invoice_status": "'paid'",
                     "project_amount": "$resource.price_total",
                     "previously_invoiced": "$resource.previously_invoiced",
-                    "invoice_open_position": "$resource.invoice_open_position - $modal.amount"
+                    "invoice_open_position": "$resource.invoice_open_position - $modal.amount",
+                    "status": "'paid'"
                 }
             },
             "in": {},
@@ -339,7 +344,7 @@
             },
             "meta": {
                 "position": [
-                    2366,
+                    2303,
                     0
                 ]
             }
@@ -365,8 +370,8 @@
             },
             "meta": {
                 "position": [
-                    3042,
-                    -149
+                    2961,
+                    -148.5
                 ]
             }
         },
@@ -383,8 +388,8 @@
             "to": {},
             "meta": {
                 "position": [
-                    338,
-                    -59
+                    329,
+                    -58.5
                 ]
             }
         },
@@ -410,8 +415,8 @@
             },
             "meta": {
                 "position": [
-                    3380,
-                    -104.5
+                    3290,
+                    -104
                 ]
             }
         },
@@ -434,8 +439,8 @@
             },
             "meta": {
                 "position": [
-                    3718,
-                    -104.5
+                    3619,
+                    -104
                 ]
             }
         },
@@ -486,8 +491,8 @@
             },
             "meta": {
                 "position": [
-                    4394,
-                    -162
+                    4277,
+                    -161.5
                 ]
             }
         },
@@ -513,8 +518,8 @@
             },
             "meta": {
                 "position": [
-                    4732,
-                    -104.5
+                    4606,
+                    -104
                 ]
             }
         },
@@ -531,8 +536,8 @@
             "to": {},
             "meta": {
                 "position": [
-                    5070,
-                    -104.5
+                    4935,
+                    -104
                 ]
             }
         },
@@ -562,8 +567,8 @@
             },
             "meta": {
                 "position": [
-                    1352,
-                    -154.5
+                    1316,
+                    -154
                 ]
             }
         },
@@ -611,7 +616,7 @@
             "to": {},
             "meta": {
                 "position": [
-                    1690,
+                    1645,
                     -63
                 ]
             }
@@ -659,8 +664,8 @@
             "to": {},
             "meta": {
                 "position": [
-                    338,
-                    -407
+                    329,
+                    -405.5
                 ]
             }
         }
