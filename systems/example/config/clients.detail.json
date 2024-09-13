@@ -20,23 +20,9 @@
                                     "options": {
                                         "fields": [
                                             "title",
-                                            "currency",
                                             "description",
-                                            "color"
-                                        ]
-                                    }
-                                },
-                                {
-                                    "type": "field_group",
-                                    "options": {
-                                        "fields": [
-                                            "mail_host",
-                                            "mail_port",
-                                            "mail_username",
-                                            "mail_password",
-                                            "mail_encryption",
-                                            "mail_from_address",
-                                            "mail_from_name"
+                                            "color",
+                                            "background_color"
                                         ]
                                     }
                                 }
