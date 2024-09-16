@@ -5,7 +5,8 @@
     "add_item_to_product": "Aritkel hinzufügen",
     "create_invoice": "Rechnung erstellen",
     "generate_partial_invoice": "Teilrechnung erstellen",
-    "create_additional_service": "Zusätzliche Dienstleistung eintragen"
+    "create_additional_service": "Zusätzliche Dienstleistung eintragen",
+    "generate_PDF":"PDF erzeugen"
   },
   "notifications": {},
   "modules": {
@@ -466,6 +467,19 @@
       "net_price": "Nettopreis ",
       "taxrate": "MwSt",
       "total_price": "Bruttopreis"
+    },
+    "invoice": {
+      "customer_id": "Kunden-ID",
+      "project_number": "Projektnummer",
+      "invoice_number": "Rechnungsnummer",
+      "service": "Leistung",
+      "description": "Beschreibung",
+      "single_price": "Einzelpreis",
+      "quantity": "Anzahl",
+      "total_price": "Total price",
+      "price_net": "Netto-Preis",
+      "taxrate": "MwSt",
+      "price_total": "Brutto-Preis"
     }
   },
   "workflows": {

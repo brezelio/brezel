@@ -13,6 +13,19 @@
     }
   },
   {
+    "resource_view": "invoice_content",
+    "depends_on": "resource_module.views",
+    "resource": {
+      "module": "views",
+      "client": "${resource_client.global}",
+      "fields": {
+        "name": "invoice content",
+        "type": "twig",
+        "code": "${file('views/pdf/invoices/invoiceContent.twig')}"
+      }
+    }
+  },
+  {
     "resource_view": "proof_of_work_pdf",
     "depends_on": "resource_module.views",
     "resource": {

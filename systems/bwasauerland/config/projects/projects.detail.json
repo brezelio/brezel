@@ -150,9 +150,9 @@
                     ],
                     "pre_filters": [
                       {
-                        "column": "customer.id",
+                        "column": "project.id",
                         "operator": "=",
-                        "field": "customer.id"
+                        "field": "id"
                       }
                     ]
                   }

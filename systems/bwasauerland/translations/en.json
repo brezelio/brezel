@@ -253,8 +253,8 @@
         "quantity": "Quantity",
         "total_price": "Total price",
         "taxrate": "Taxrate",
-        "tax_amount":"Tax amount",
-        "tax_portion":"Tax portion",
+        "tax_amount": "Tax amount",
+        "tax_portion": "Tax portion",
         "price_net": "Price net",
         "price_total": "Price total",
         "project_amount": "Project amount",
@@ -305,6 +305,19 @@
       "the_one": "The one",
       "message1": "BKM Mannesmann specialized company",
       "message2": "Signature of the customer"
+    },
+    "invoice": {
+      "customer_id": "Customer ID",
+      "project_number": "Project Number",
+      "invoice_number": "Invoice Number",
+      "service": "Service",
+      "description": "Description",
+      "single_price": "Single price",
+      "quantity": "Quantity",
+      "total_price": "Total price",
+      "price_net": "Price net",
+      "taxrate": "Taxrate",
+      "price_total": "Price total"
     }
   },
   "mails": {},
@@ -340,10 +353,10 @@
           "title": "Confirm invoice data"
         }
       },
-      "NotifyMessage":{
-        "toast":{
-          "title":"Warning Message",
-          "message":"You have to pay only"
+      "NotifyMessage": {
+        "toast": {
+          "title": "Warning Message",
+          "message": "You have to pay only"
         }
       }
     }

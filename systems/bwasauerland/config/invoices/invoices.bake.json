@@ -9,6 +9,15 @@
         "detail": "${file('/config/invoices/invoices.detail.json')}",
         "index": "${file('/config/invoices/invoices.index.json')}"
       },
+      "buttons":{
+        "generate_PDF": {
+          "trigger": "GenerateInvoicePDFWebhook",
+          "hidden":true,
+          "icon":"file-pdf",
+          "style": "primary",
+          "show_in": ["module.show"]
+        }
+      },
       "fields": [
         {
           "identifier": "process",
