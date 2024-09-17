@@ -1,226 +1,326 @@
 {
   "identifier": "createAdditionalService",
   "title": "createAdditionalService",
+  "description": null,
   "async": false,
+  "queue": null,
+  "debug": true,
+  "entry": "createAdditionalService",
   "elements": [
-    {
-      "name": "createAdditionalService",
-      "type": "event/webhook",
-      "options": {
-        "module": null,
-        "title": "createAdditionalService",
-        "async": false,
-        "roles": null,
-        "public": false
+      {
+          "name": "createAdditionalService",
+          "type": "event/webhook",
+          "options": {
+              "async": false,
+              "roles": null,
+              "title": "createAdditionalService",
+              "module": null,
+              "public": false
+          },
+          "in": {},
+          "set": {
+              "resource": "default:"
+          },
+          "to": {
+              "default": {
+                  "setLocale": [
+                      "default"
+                  ],
+                  "prefillFields": [
+                      "default"
+                  ]
+              }
+          },
+          "meta": {
+              "position": [
+                  24.88671875,
+                  98.265625
+              ]
+          }
       },
-      "in": {},
-      "set": {
-        "resource": "default:"
+      {
+          "name": "setLocale",
+          "type": "op/recipe",
+          "options": {
+              "recipe": "locale()"
+          },
+          "in": {},
+          "set": {
+              "locale": "default:"
+          },
+          "to": {},
+          "meta": {
+              "position": [
+                  571.21875,
+                  6.25
+              ]
+          }
       },
-      "to": {
-        "default": {
-          "setLocale": [
-            "default"
-          ],
-          "prefillFields": [
-            "default"
-          ]
-        }
+      {
+          "name": "createAdditionalServiceModal",
+          "type": "action/modal",
+          "options": {
+              "hard": false,
+              "type": "confirm",
+              "title": {
+                  ".recipe": "t('workflows.createAdditionalService.createAdditionalServiceModal.modal.title')"
+              },
+              "fields": [],
+              "layout": "create_additional_service.modal",
+              "checkpoint": true,
+              "autosave_key": null
+          },
+          "in": {},
+          "set": {
+              "modalData": "confirm:"
+          },
+          "to": {
+              "confirm": {
+                  "checkBilledIsTrue": [
+                      "default"
+                  ],
+                  "createNewAdditionalService": [
+                      "default"
+                  ]
+              }
+          },
+          "meta": {
+              "position": [
+                  582.3984375,
+                  202.33984375
+              ]
+          }
       },
-      "meta": {
-        "position": [
-          24.88671875,
-          98.265625
-        ]
+      {
+          "name": "createNewAdditionalService",
+          "type": "source/new",
+          "options": {
+              "client": null,
+              "module": "additional_services",
+              "values": null
+          },
+          "in": {},
+          "set": {
+              "addServiceNew": "default:"
+          },
+          "to": {
+              "default": {
+                  "smart-cheetah-30": [
+                      "default"
+                  ]
+              }
+          },
+          "meta": {
+              "position": [
+                  890.8831294738143,
+                  96.95595542102055
+              ]
+          }
+      },
+      {
+          "name": "smart-cheetah-30",
+          "type": "op/set",
+          "options": {
+              "copy": "$modalData",
+              "values": [],
+              "process": false,
+              "recipes": {
+                  "services": "$modalData.services.map(position => {\"service\": position.service,\"description\": position.description,\"single_price\": position.single_price,\"quantity\": position.quantity, \"total_price\": position.total_price, \"quantity_type\": position.quantity_type})",
+                  "additional_service_status": "$modalData.additional_service_status"
+              }
+          },
+          "in": {},
+          "set": {},
+          "to": {
+              "default": {
+                  "bad-newt-25": [
+                      "default"
+                  ]
+              }
+          },
+          "meta": {
+              "position": [
+                  1171.08534919366,
+                  99.46910475434646
+              ]
+          }
+      },
+      {
+          "name": "bad-newt-25",
+          "type": "action/save",
+          "options": {
+              "skip_recipes": false,
+              "triggerEvents": false,
+              "continueIfInvalid": false
+          },
+          "in": {},
+          "set": {
+              "savedEntity": "default:"
+          },
+          "to": {
+              "default": {
+                  "redirectToAdditionalServices": [
+                      "default"
+                  ]
+              }
+          },
+          "meta": {
+              "position": [
+                  1462.8784365751396,
+                  99.76969671578654
+              ]
+          }
+      },
+      {
+          "name": "redirectToAdditionalServices",
+          "type": "action/redirect",
+          "options": {
+              "url": "",
+              "fill": false,
+              "http": null,
+              "swap": false,
+              "action": "module.show",
+              "module": "additional_services",
+              "target": null,
+              "queryParams": []
+          },
+          "in": {
+              "resource": "$savedEntity"
+          },
+          "set": {},
+          "to": {},
+          "meta": {
+              "position": [
+                  1766.7950221822898,
+                  23.406417179999977
+              ]
+          }
+      },
+      {
+          "name": "prefillFields",
+          "type": "op/recipe",
+          "options": {
+              "recipe": "{...$resource, \"project\": $resource, \"added_by\": user(), \"process\": $resource.process, \"timestamp\": now()}"
+          },
+          "in": {},
+          "set": {},
+          "to": {
+              "default": {
+                  "createAdditionalServiceModal": [
+                      "default"
+                  ]
+              }
+          },
+          "meta": {
+              "position": [
+                  333.1015625,
+                  240.81640625
+              ]
+          }
+      },
+      {
+          "name": "checkBilledIsTrue",
+          "type": "flow/if",
+          "options": {
+              "condition": "separately_billed"
+          },
+          "in": {},
+          "set": {},
+          "to": {
+              "default": {
+                  "createNewInvoice": [
+                      "default"
+                  ]
+              }
+          },
+          "meta": {
+              "position": [
+                  892.7496172573266,
+                  323.03542638215316
+              ]
+          }
+      },
+      {
+          "name": "createNewInvoice",
+          "type": "source/new",
+          "options": {
+              "client": null,
+              "module": "invoices",
+              "values": null
+          },
+          "in": {},
+          "set": {
+              "addInvoiceNew": "default:"
+          },
+          "to": {
+              "default": {
+                  "massive-fox-48": [
+                      "default"
+                  ]
+              }
+          },
+          "meta": {
+              "position": [
+                  1174.7385148290532,
+                  319.9293336706676
+              ]
+          }
+      },
+      {
+          "name": "massive-fox-48",
+          "type": "op/set",
+          "options": {
+              "copy": "$modalData",
+              "recipes": {
+                  "positions": "$modalData.services.map(position => {\"service\": position.service,\"description\": position.description,\"single_price\": position.single_price,\"quantity\": position.quantity, \"total_price\": position.total_price, \"quantity_type\": position.quantity_type})",
+                  "added_by": "$modalData.customer",
+                  "type": "'final'",
+                  "status": "'paid'"
+              },
+              "values": [],
+              "process": false
+          },
+          "in": {},
+          "set": {},
+          "to": {
+              "default": {
+                  "orange-dingo-16": [
+                      "default"
+                  ]
+              }
+          },
+          "meta": {
+              "position": [
+                  1468.6292501020669,
+                  339.99403107264726
+              ]
+          }
+      },
+      {
+          "name": "orange-dingo-16",
+          "type": "action/save",
+          "options": {},
+          "in": {},
+          "set": {},
+          "to": {},
+          "meta": {
+              "position": [
+                  1737.3537829329252,
+                  341.58329734657644
+              ]
+          }
       }
-    },
-    {
-      "name": "setLocale",
-      "type": "op/recipe",
-      "options": {
-        "recipe": "locale()"
-      },
-      "in": {},
-      "set": {
-        "locale": "default:"
-      },
-      "to": {},
-      "meta": {
-        "position": [
-          571.21875,
-          6.25
-        ]
-      }
-    },
-    {
-      "name": "createAdditionalServiceModal",
-      "type": "action/modal",
-      "options": {
-        "hard": false,
-        "type": "confirm",
-        "title": {
-          ".recipe": "t('workflows.createAdditionalService.createAdditionalServiceModal.modal.title')"
-        },
-        "fields": [],
-        "layout": "create_additional_service.modal",
-        "checkpoint": true,
-        "autosave_key": null
-      },
-      "in": {},
-      "set": {
-        "modalData": "confirm:"
-      },
-      "to": {
-        "confirm": {
-          "createNewAdditionalService": [
-            "default"
-          ]
-        }
-      },
-      "meta": {
-        "position": [
-          582.3984375,
-          202.33984375
-        ]
-      }
-    },
-    {
-      "name": "createNewAdditionalService",
-      "type": "source/new",
-      "options": {
-        "module": "additional_services",
-        "values": null,
-        "client": null
-      },
-      "in": {},
-      "set": {
-        "addServiceNew": "default:"
-      },
-      "to": {
-        "default": {
-          "smart-cheetah-30": [
-            "default"
-          ]
-        }
-      },
-      "meta": {
-        "position": [
-          850.04296875,
-          209.8671875
-        ]
-      }
-    },
-    {
-      "name": "smart-cheetah-30",
-      "type": "op/set",
-      "options": {
-        "copy": "$modalData",
-        "values": [],
-        "process": false,
-        "recipes": {
-          "services": "$modalData.services.map(position => {\"service\": position.service,\"description\": position.description,\"single_price\": position.single_price,\"quantity\": position.quantity, \"total_price\": position.total_price, \"quantity_type\": position.quantity_type})"
-        }
-      },
-      "in": {},
-      "set": {},
-      "to": {
-        "default": {
-          "bad-newt-25": [
-            "default"
-          ]
-        }
-      },
-      "meta": {
-        "position": [
-          1139.05859375,
-          214.765625
-        ]
-      }
-    },
-    {
-      "name": "bad-newt-25",
-      "type": "action/save",
-      "options": {
-        "triggerEvents": false,
-        "skip_recipes": false,
-        "continueIfInvalid": false
-      },
-      "in": {},
-      "set": {
-        "savedEntity": "default:"
-      },
-      "to": {
-        "default": {
-          "redirectToAdditionalServices": [
-            "default"
-          ]
-        }
-      },
-      "meta": {
-        "position": [
-          1402.828125,
-          213.46484375
-        ]
-      }
-    },
-    {
-      "name": "redirectToAdditionalServices",
-      "type": "action/redirect",
-      "options": {
-        "url": "",
-        "fill": false,
-        "http": null,
-        "swap": false,
-        "action": "module.show",
-        "module": "additional_services",
-        "target": null,
-        "queryParams": []
-      },
-      "in": {
-        "resource": "$savedEntity"
-      },
-      "set": {},
-      "to": {},
-      "meta": {
-        "position": [
-          1666.7114546263344,
-          188.34443394128112
-        ]
-      }
-    },
-    {
-      "name": "prefillFields",
-      "type": "op/recipe",
-      "options": {
-        "recipe": "{...$resource, \"project\": $resource, \"added_by\": user(), \"process\": $resource.process, \"timestamp\": now()}"
-      },
-      "in": {},
-      "set": {},
-      "to": {
-        "default": {
-          "createAdditionalServiceModal": [
-            "default"
-          ]
-        }
-      },
-      "meta": {
-        "position": [
-          333.1015625,
-          240.81640625
-        ]
-      }
-    }
   ],
   "events": [
-    {
-      "identifier": "createAdditionalService",
-      "type": "webhook",
-      "module": null,
-      "title": "createAdditionalService",
-      "async": false,
-      "roles": null,
-      "public": false
-    }
+      {
+          "identifier": "createAdditionalService",
+          "type": "webhook",
+          "module": null,
+          "async": false,
+          "roles": null,
+          "title": "createAdditionalService",
+          "public": false
+      }
   ],
   "comments": []
 }

@@ -162,6 +162,46 @@
           ]
         }
       ]
+    },
+    {
+      "identifier": "additional_services",
+      "icon": "bank",
+      "rows": [
+        {
+          "cols": [
+            {
+              "span": 24,
+              "components": [
+                {
+                  "type": "resource_table",
+                  "options": {
+                    "module": "additional_services",
+                    "columns": [
+                      "process",
+                      "project",
+                      "status",
+                      "added_by",
+                      "timestamp",
+                      "reason",
+                      "taxrate",
+                      "tax_amount",
+                      "price_net",
+                      "price_total"
+                    ],
+                    "pre_filters": [
+                      {
+                        "column": "project.id",
+                        "operator": "=",
+                        "field": "project.id"
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
     }
   ]
 }

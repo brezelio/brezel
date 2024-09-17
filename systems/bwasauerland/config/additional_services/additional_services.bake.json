@@ -36,6 +36,15 @@
           }
         },
         {
+          "identifier": "additional_service_status",
+          "type": "choice",
+          "readonly": true,
+          "recipe": "separately_billed ? 'closed':'open'",
+          "options": {
+            "values": ["open", "closed"]
+          }
+        },
+        {
           "identifier": "timestamp",
           "type": "datetime"
         },
