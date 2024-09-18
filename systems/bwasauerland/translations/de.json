@@ -670,7 +670,8 @@
             "price_total": "Brutto-Preis",
             "quantity_type": "Einheit",
             "tax_amount": "Steuerbetrag",
-            "separately_billed": "Separate Rechnung"
+            "separately_billed": "Separate Rechnung",
+            "additional_service_status": "Zusätzliche Dienstleistung Status"
           },
           "choice": {
             "quantity_type": {

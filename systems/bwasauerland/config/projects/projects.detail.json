@@ -192,7 +192,7 @@
                       {
                         "column": "project.id",
                         "operator": "=",
-                        "field": "project.id"
+                        "field": "id"
                       }
                     ]
                   }
