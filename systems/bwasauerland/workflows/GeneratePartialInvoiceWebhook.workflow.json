@@ -25,6 +25,9 @@
                     "SetLocale": [
                         "default"
                     ],
+                    "InvoiceEntities": [
+                        "default"
+                    ],
                     "ServiceEntities": [
                         "default"
                     ],
@@ -237,7 +240,7 @@
                 "values": [],
                 "process": false,
                 "recipes": {
-                    "positions": "[{\"service\": $part_invoice_service, \"description\": \"This is a Partial Invoice\", \"quantity\": 1,\"single_price\": $modal.amount - $new_invoice.tax_portion}]",
+                    "positions": "[{\"headline\": t('workflows.GeneratePartialInvoiceWebhook.SetDataIfTypePartical.recipes.partialInvoice'),\"sec_pos\":[{\"service\": $part_invoice_service, \"description\": \"This is a Partial Invoice\", \"quantity\": 1,\"single_price\": $modal.amount - $new_invoice.tax_portion}]}]",
                     "partial_pay": "$modal.amount",
                     "invoice_status": "'open'\t",
                     "project_amount": "$resource.price_total",
@@ -257,7 +260,7 @@
             "meta": {
                 "position": [
                     2303,
-                    -208
+                    -209.9884931044299
                 ]
             }
         },
@@ -281,7 +284,7 @@
             "meta": {
                 "position": [
                     329,
-                    173.5
+                    347
                 ]
             }
         },
@@ -325,12 +328,13 @@
                 "values": [],
                 "process": false,
                 "recipes": {
+                    "status": "'paid'",
+                    "positions": "[...$resource.positions, {\"index\":99, \"headline\": t('workflows.GeneratePartialInvoiceWebhook.SetDataIfTypeFinal.recipes.partialInvoice'), \"sec_pos\": $invoices.map(invoice => {\"service\": $part_invoice_service, \"description\": \"This is a Partial Invoice\", \"quantity\": 1, \"single_price\":invoice.price_net})}, {\"index\":100,\"headline\":t('workflows.GeneratePartialInvoiceWebhook.SetDataIfTypeFinal.recipes.positions'),\"sec_pos\":$resource.services},{\"index\":101,\"headline\":t('workflows.GeneratePartialInvoiceWebhook.SetDataIfTypeFinal.recipes.additionalServices')}]",
                     "partial_pay": "$modal.amount",
                     "invoice_status": "'paid'",
                     "project_amount": "$resource.price_total",
                     "previously_invoiced": "$resource.previously_invoiced",
-                    "invoice_open_position": "$resource.invoice_open_position - $modal.amount",
-                    "status": "'paid'"
+                    "invoice_open_position": "$resource.invoice_open_position - $modal.amount"
                 }
             },
             "in": {},
@@ -389,7 +393,7 @@
             "meta": {
                 "position": [
                     329,
-                    -58.5
+                    -232
                 ]
             }
         },
@@ -400,9 +404,7 @@
                 "copy": "$newInvoiceData",
                 "values": [],
                 "process": false,
-                "recipes": {
-                    "positions": "$newInvoiceData.positions.map(position => {\"service\": position.service,\"description\": position.description,\"single_price\": position.single_price,\"quantity\": position.quantity, \"total_price\": position.total_price})"
-                }
+                "recipes": []
             },
             "in": {},
             "set": {},
@@ -665,7 +667,55 @@
             "meta": {
                 "position": [
                     329,
-                    -405.5
+                    0
+                ]
+            }
+        },
+        {
+            "name": "InvoiceEntities",
+            "type": "source/entities",
+            "options": {
+                "with": [],
+                "first": false,
+                "limit": null,
+                "fields": [],
+                "global": false,
+                "having": [],
+                "module": "invoices",
+                "offset": null,
+                "scopes": [],
+                "filters": [
+                    [
+                        {
+                            "left": {
+                                "type": "field",
+                                "value": "project.project_number"
+                            },
+                            "right": {
+                                "type": "recipe",
+                                "value": "$resource.project_number"
+                            },
+                            "operator": "="
+                        }
+                    ]
+                ],
+                "groupBy": [],
+                "orderBy": [],
+                "distinct": false,
+                "listItems": null,
+                "permissions": false,
+                "withTrashed": false,
+                "autoDistinct": true
+            },
+            "in": {},
+            "set": {
+                "invoices": "default:"
+            },
+            "to": {},
+            "meta": {
+                "position": [
+                    329,
+                    -579
                 ]
             }
         }

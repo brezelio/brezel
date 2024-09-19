@@ -358,6 +358,18 @@
           "title": "Warning Message",
           "message": "You have to pay only"
         }
+      },
+      "SetDataIfTypePartical": {
+        "recipes": {
+          "partialInvoice": "PartialInvoice"
+        }
+      },
+      "SetDataIfTypeFinal": {
+        "recipes": {
+          "partialInvoice": "PartialInvoice",
+          "positions": "Positions",
+          "additionalServices": "Additional Services"
+        }
       }
     }
   },

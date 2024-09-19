@@ -9,11 +9,11 @@
         "detail": "${file('/config/invoices/invoices.detail.json')}",
         "index": "${file('/config/invoices/invoices.index.json')}"
       },
-      "buttons":{
+      "buttons": {
         "generate_PDF": {
           "trigger": "GenerateInvoicePDFWebhook",
-          "hidden":true,
-          "icon":"file-pdf",
+          "hidden": true,
+          "icon": "file-pdf",
           "style": "primary",
           "show_in": ["module.show"]
         }
@@ -84,37 +84,74 @@
           "type": "list",
           "options": {
             "show_ordering": true,
+            "mode": "tabs",
+            "title_field": "headline",
             "fields": [
               {
-                "identifier": "service",
-                "type": "select",
-                "options": {
-                  "references": "services",
-                  "add_options": true,
-                  "events": {
-                    "on_change": ["OnChangeService"]
-                  }
-                }
-              },
-              {
-                "identifier": "description",
+                "identifier": "headline",
                 "type": "text"
               },
               {
-                "identifier": "single_price",
-                "type": "currency",
+                "identifier": "sec_pos",
+                "type": "list",
                 "options": {
-                  "readonly": true
+                  "show_ordering": true,
+                  "fields": [
+                    {
+                      "identifier": "service",
+                      "type": "select",
+                      "options": {
+                        "references": "services",
+                        "events": {
+                          "on_change": ["OnChangeService"]
+                        }
+                      }
+                    },
+
+                    {
+                      "identifier": "description",
+                      "type": "textarea",
+                      "options": {
+                        "fullscreenButton": true,
+                        "list_item_min_width": "200px"
+                      }
+                    },
+                    {
+                      "identifier": "quantity",
+                      "type": "number",
+                      "options": {
+                        "decimal_digits": 3
+                      }
+                    },
+                    {
+                      "identifier": "unit",
+                      "type": "select",
+                      "options": {
+                        "references": "product_units",
+                        "table_select": false,
+                        "list_item_max_width": "150px"
+                      }
+                    },
+                    {
+                      "identifier": "single_price",
+                      "type": "currency"
+                    },
+                    {
+                      "identifier": "total_price",
+                      "type": "currency",
+                      "recipe": "(single_price * quantity)"
+                    }
+                  ]
                 }
               },
               {
-                "identifier": "quantity",
-                "type": "number"
+                "identifier": "use_subtotal",
+                "type": "checkbox"
               },
               {
-                "identifier": "total_price",
+                "identifier": "subtotal",
                 "type": "currency",
-                "recipe": "single_price * quantity"
+                "recipe": "round(sum(sec_pos[*].total_price) * 100) / 100"
               }
             ]
           }
@@ -136,7 +173,7 @@
         {
           "identifier": "price_net",
           "type": "currency",
-          "recipe": "sum(positions[*].total_price)"
+          "recipe": "sum(positions[*].subtotal)"
         },
         {
           "identifier": "price_total",

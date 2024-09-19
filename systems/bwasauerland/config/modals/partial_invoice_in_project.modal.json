@@ -51,14 +51,20 @@
                         "identifier": "type",
                         "type": "choice",
                         "options": {
-                          "values": ["partial", "final"]
+                          "values": [
+                            "partial",
+                            "final"
+                          ]
                         }
                       },
                       {
                         "identifier": "invoice_status",
                         "type": "choice",
                         "options": {
-                          "values": ["open", "paid"]
+                          "values": [
+                            "open",
+                            "paid"
+                          ]
                         }
                       }
                     ]
@@ -113,47 +119,72 @@
                     "fields": [
                       {
                         "identifier": "positions",
+                        "type": "list",
                         "options": {
                           "show_ordering": true,
+                          "mode": "tabs",
+                          "title_field": "headline",
                           "fields": [
                             {
-                              "identifier": "service",
-                              "type": "select",
-                              "options": {
-                                "references": "services",
-                                "add_options": true,
-                                "events": {
-                                  "on_change": ["OnChangeService"]
-                                }
-                              }
-                            },
-                            {
-                              "identifier": "description",
+                              "identifier": "headline",
                               "type": "text"
                             },
                             {
-                              "identifier": "single_price",
-                              "type": "currency",
+                              "identifier": "sec_pos",
+                              "type": "list",
                               "options": {
-                                "readonly": true
+                                "show_ordering": true,
+                                "fields": [
+                                  {
+                                    "identifier": "service",
+                                    "type": "select",
+                                    "options": {
+                                      "references": "services",
+                                      "events": {
+                                        "on_change": [
+                                          "OnChangeService"
+                                        ]
+                                      }
+                                    }
+                                  },
+                                  {
+                                    "identifier": "description",
+                                    "type": "textarea",
+                                    "options": {
+                                      "fullscreenButton": true,
+                                      "list_item_min_width": "200px"
+                                    }
+                                  },
+                                  {
+                                    "identifier": "single_price",
+                                    "type": "currency",
+                                    "options": {
+                                      "readonly": true
+                                    }
+                                  },
+                                  {
+                                    "identifier": "quantity",
+                                    "type": "number"
+                                  },
+                                  {
+                                    "identifier": "total_price",
+                                    "type": "currency",
+                                    "recipe": "single_price * quantity"
+                                  }
+                                ]
                               }
                             },
                             {
-                              "identifier": "quantity",
-                              "type": "number",
-                              "options": {
-                                "decimal_digits": 2,
-                                "min": 1
-                              }
+                              "identifier": "use_subtotal",
+                              "type": "checkbox"
                             },
                             {
-                              "identifier": "total_price",
+                              "identifier": "subtotal",
                               "type": "currency",
-                              "recipe": "single_price * quantity"
+                              "recipe": "round(sum(sec_pos[*].total_price) * 100) / 100"
                             }
                           ]
-                        },
-                        "type": "list"
+                        }
                       }
                     ]
                   }
@@ -227,7 +258,7 @@
                       {
                         "identifier": "price_net",
                         "type": "currency",
-                        "recipe": "sum(positions[*].total_price)"
+                        "recipe": "sum(positions[*].subtotal)"
                       },
                       {
                         "identifier": "taxrate",

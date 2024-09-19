@@ -6,7 +6,7 @@
     "create_invoice": "Rechnung erstellen",
     "generate_partial_invoice": "Teilrechnung erstellen",
     "create_additional_service": "Zusätzliche Dienstleistung eintragen",
-    "generate_PDF":"PDF erzeugen"
+    "generate_PDF": "PDF erzeugen"
   },
   "notifications": {},
   "modules": {
@@ -644,6 +644,18 @@
         "toast": {
           "title": "Warnmeldung",
           "message": "Sie müssen nur zahlen"
+        }
+      },
+      "SetDataIfTypePartical": {
+        "recipes": {
+          "partialInvoice": "Teilrechnung"
+        }
+      },
+      "SetDataIfTypeFinal": {
+        "recipes": {
+          "partialInvoice": "Teilrechnung",
+          "positions": "Positionen",
+          "additionalServices": "Zusätzliche Dienste"
         }
       }
     },
