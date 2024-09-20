@@ -179,7 +179,7 @@
                     "columns": [
                       "process",
                       "project",
-                      "status",
+                      "additional_service_status",
                       "added_by",
                       "timestamp",
                       "reason",
