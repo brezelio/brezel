@@ -3,6 +3,7 @@
     "title": "Generating partial invoices in projects",
     "description": null,
     "async": false,
+    "queue": null,
     "debug": false,
     "entry": "GeneratePartialInvoiceWebhook",
     "elements": [
@@ -39,7 +40,7 @@
             "meta": {
                 "position": [
                     0,
-                    -273.5
+                    -274.5
                 ]
             }
         },
@@ -100,7 +101,7 @@
             },
             "meta": {
                 "position": [
-                    987,
+                    989,
                     -191
                 ]
             }
@@ -129,8 +130,8 @@
             },
             "meta": {
                 "position": [
-                    658,
-                    -116
+                    660,
+                    -220
                 ]
             }
         },
@@ -169,7 +170,7 @@
             },
             "meta": {
                 "position": [
-                    1645,
+                    1647,
                     -295
                 ]
             }
@@ -200,8 +201,8 @@
             },
             "meta": {
                 "position": [
-                    3948,
-                    -161.5
+                    3950,
+                    -162.5
                 ]
             }
         },
@@ -220,6 +221,9 @@
                     ]
                 },
                 "else": {
+                    "additionalServicesEntities": [
+                        "default"
+                    ],
                     "SetDataIfTypeFinal": [
                         "default"
                     ]
@@ -227,7 +231,7 @@
             },
             "meta": {
                 "position": [
-                    1974,
+                    1976,
                     -129
                 ]
             }
@@ -259,8 +263,8 @@
             },
             "meta": {
                 "position": [
-                    2303,
-                    -209.9884931044299
+                    2309.8040078218546,
+                    -225.7889632183316
                 ]
             }
         },
@@ -284,7 +288,7 @@
             "meta": {
                 "position": [
                     329,
-                    347
+                    -755.5
                 ]
             }
         },
@@ -315,8 +319,8 @@
             },
             "meta": {
                 "position": [
-                    2632,
-                    -191
+                    2626.794018810355,
+                    -231.92126659832587
                 ]
             }
         },
@@ -329,7 +333,7 @@
                 "process": false,
                 "recipes": {
                     "status": "'paid'",
-                    "positions": "[...$resource.positions, {\"index\":99, \"headline\": t('workflows.GeneratePartialInvoiceWebhook.SetDataIfTypeFinal.recipes.partialInvoice'), \"sec_pos\": $invoices.map(invoice => {\"service\": $part_invoice_service, \"description\": \"This is a Partial Invoice\", \"quantity\": 1, \"single_price\":invoice.price_net})}, {\"index\":100,\"headline\":t('workflows.GeneratePartialInvoiceWebhook.SetDataIfTypeFinal.recipes.positions'),\"sec_pos\":$resource.services},{\"index\":101,\"headline\":t('workflows.GeneratePartialInvoiceWebhook.SetDataIfTypeFinal.recipes.additionalServices')}]",
+                    "positions": "[...$resource.positions, {\"index\":99, \"headline\": t('workflows.GeneratePartialInvoiceWebhook.SetDataIfTypeFinal.recipes.partialInvoice'), \"sec_pos\": $invoices.map(invoice => {\"service\": $part_invoice_service, \"description\": \"This is a Partial Invoice\", \"quantity\": 1, \"single_price\":invoice.price_net})}, {\"index\":100,\"headline\":t('workflows.GeneratePartialInvoiceWebhook.SetDataIfTypeFinal.recipes.positions'),\"sec_pos\":$resource.services},{\"index\":101,\"headline\":t('workflows.GeneratePartialInvoiceWebhook.SetDataIfTypeFinal.recipes.additionalServices'), \"sec_pos\": $addServices.flatMap(addServ =>addServ.services.map(serv => {\"service\": serv.service, \"description\": \"This is a Additional service\", \"quantity\": serv.quantity, \"single_price\":serv.single_price})\n)\n}]",
                     "partial_pay": "$modal.amount",
                     "invoice_status": "'paid'",
                     "project_amount": "$resource.price_total",
@@ -348,8 +352,8 @@
             },
             "meta": {
                 "position": [
-                    2303,
-                    0
+                    2306.957283983652,
+                    -31.852568022856516
                 ]
             }
         },
@@ -374,8 +378,8 @@
             },
             "meta": {
                 "position": [
-                    2961,
-                    -148.5
+                    2963,
+                    -149.5
                 ]
             }
         },
@@ -393,7 +397,7 @@
             "meta": {
                 "position": [
                     329,
-                    -232
+                    -523.5
                 ]
             }
         },
@@ -417,7 +421,7 @@
             },
             "meta": {
                 "position": [
-                    3290,
+                    3292,
                     -104
                 ]
             }
@@ -441,7 +445,7 @@
             },
             "meta": {
                 "position": [
-                    3619,
+                    3621,
                     -104
                 ]
             }
@@ -493,8 +497,8 @@
             },
             "meta": {
                 "position": [
-                    4277,
-                    -161.5
+                    4279,
+                    -162.5
                 ]
             }
         },
@@ -520,7 +524,7 @@
             },
             "meta": {
                 "position": [
-                    4606,
+                    4608,
                     -104
                 ]
             }
@@ -538,7 +542,7 @@
             "to": {},
             "meta": {
                 "position": [
-                    4935,
+                    4937,
                     -104
                 ]
             }
@@ -569,7 +573,7 @@
             },
             "meta": {
                 "position": [
-                    1316,
+                    1318,
                     -154
                 ]
             }
@@ -618,7 +622,7 @@
             "to": {},
             "meta": {
                 "position": [
-                    1645,
+                    1647,
                     -63
                 ]
             }
@@ -667,7 +671,7 @@
             "meta": {
                 "position": [
                     329,
-                    0
+                    57.5
                 ]
             }
         },
@@ -696,6 +700,17 @@
                                 "value": "$resource.project_number"
                             },
                             "operator": "="
+                        },
+                        {
+                            "left": {
+                                "type": "field",
+                                "value": "type"
+                            },
+                            "operator": "=",
+                            "right": {
+                                "type": "recipe",
+                                "value": "\"partial\""
+                            }
                         }
                     ]
                 ],
@@ -715,7 +730,68 @@
             "meta": {
                 "position": [
                     329,
-                    -579
+                    -291.5
+                ]
+            }
+        },
+        {
+            "name": "additionalServicesEntities",
+            "type": "source/entities",
+            "options": {
+                "with": [
+                    "services.service"
+                ],
+                "first": false,
+                "limit": null,
+                "fields": [],
+                "global": false,
+                "having": [],
+                "module": "additional_services",
+                "offset": null,
+                "scopes": [],
+                "filters": [
+                    [
+                        {
+                            "left": {
+                                "type": "field",
+                                "value": "project.project_number"
+                            },
+                            "right": {
+                                "type": "recipe",
+                                "value": "$resource.project_number"
+                            },
+                            "operator": "="
+                        },
+                        {
+                            "left": {
+                                "type": "field",
+                                "value": "additional_service_status"
+                            },
+                            "operator": "=",
+                            "right": {
+                                "type": "recipe",
+                                "value": "\"open\""
+                            }
+                        }
+                    ]
+                ],
+                "groupBy": [],
+                "orderBy": [],
+                "distinct": false,
+                "listItems": null,
+                "permissions": false,
+                "withTrashed": false,
+                "autoDistinct": true
+            },
+            "in": {},
+            "set": {
+                "addServices": "default:"
+            },
+            "to": {},
+            "meta": {
+                "position": [
+                    2127.750313294923,
+                    127.02464712312482
                 ]
             }
         }

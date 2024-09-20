@@ -40,16 +40,13 @@
                         }
                       },
                       {
-                        "identifier": "separately_billed",
-                        "type": "checkbox"
-                      },
-                      {
                         "identifier": "additional_service_status",
                         "type": "choice",
-                        "readonly": true,
-                        "recipe": "separately_billed ? 'closed':'open'",
+                        "readonly": false,
                         "options": {
-                          "values": ["open", "closed"]
+                          "mode": "buttons",
+                          "values": ["open", "closed"],
+                          "default": "open"
                         }
                       },
                       {
