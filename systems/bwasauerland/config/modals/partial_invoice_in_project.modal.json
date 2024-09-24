@@ -144,7 +144,8 @@
                                         "on_change": [
                                           "OnChangeService"
                                         ]
-                                      }
+                                      },
+                                      "readonly": true
                                     }
                                   },
                                   {
@@ -152,7 +153,8 @@
                                     "type": "textarea",
                                     "options": {
                                       "fullscreenButton": true,
-                                      "list_item_min_width": "200px"
+                                      "list_item_min_width": "200px",
+                                      "readonly": true
                                     }
                                   },
                                   {
@@ -164,7 +166,10 @@
                                   },
                                   {
                                     "identifier": "quantity",
-                                    "type": "number"
+                                    "type": "number",
+                                    "options": {
+                                      "readonly": true
+                                    }
                                   },
                                   {
                                     "identifier": "total_price",

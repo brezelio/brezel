@@ -221,10 +221,10 @@
                     ]
                 },
                 "else": {
-                    "additionalServicesEntities": [
+                    "SetDataIfTypeFinal": [
                         "default"
                     ],
-                    "SetDataIfTypeFinal": [
+                    "additionalServicesEntities": [
                         "default"
                     ]
                 }
@@ -333,7 +333,7 @@
                 "process": false,
                 "recipes": {
                     "status": "'paid'",
-                    "positions": "[...$resource.positions, {\"index\":99, \"headline\": t('workflows.GeneratePartialInvoiceWebhook.SetDataIfTypeFinal.recipes.partialInvoice'), \"sec_pos\": $invoices.map(invoice => {\"service\": $part_invoice_service, \"description\": \"This is a Partial Invoice\", \"quantity\": 1, \"single_price\":invoice.price_net})}, {\"index\":100,\"headline\":t('workflows.GeneratePartialInvoiceWebhook.SetDataIfTypeFinal.recipes.positions'),\"sec_pos\":$resource.services},{\"index\":101,\"headline\":t('workflows.GeneratePartialInvoiceWebhook.SetDataIfTypeFinal.recipes.additionalServices'), \"sec_pos\": $addServices.flatMap(addServ =>addServ.services.map(serv => {\"service\": serv.service, \"description\": \"This is a Additional service\", \"quantity\": serv.quantity, \"single_price\":serv.single_price})\n)\n}]",
+                    "positions": "[...$resource.positions, {\"index\":101, \"headline\": t('workflows.GeneratePartialInvoiceWebhook.SetDataIfTypeFinal.recipes.partialInvoice'), \"sec_pos\": $invoices.map(invoice => {\"service\": $part_invoice_service, \"description\": \"This is a Partial Invoice\", \"quantity\": 1, \"single_price\": -(invoice.price_net)})}, {\"index\":99,\"headline\":t('workflows.GeneratePartialInvoiceWebhook.SetDataIfTypeFinal.recipes.positions'),\"sec_pos\":$resource.services},{\"index\":100,\"headline\":t('workflows.GeneratePartialInvoiceWebhook.SetDataIfTypeFinal.recipes.additionalServices'), \"sec_pos\": $addServices.flatMap(addServ =>addServ.services.map(serv => {\"service\": serv.service, \"description\": \"This is a Additional service\", \"quantity\": serv.quantity, \"single_price\":serv.single_price})\n)\n}]",
                     "partial_pay": "$modal.amount",
                     "invoice_status": "'paid'",
                     "project_amount": "$resource.price_total",
@@ -706,11 +706,11 @@
                                 "type": "field",
                                 "value": "type"
                             },
-                            "operator": "=",
                             "right": {
                                 "type": "recipe",
                                 "value": "\"partial\""
-                            }
+                            },
+                            "operator": "="
                         }
                     ]
                 ],
@@ -767,11 +767,11 @@
                                 "type": "field",
                                 "value": "additional_service_status"
                             },
-                            "operator": "=",
                             "right": {
                                 "type": "recipe",
                                 "value": "\"open\""
-                            }
+                            },
+                            "operator": "="
                         }
                     ]
                 ],
