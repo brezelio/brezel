@@ -168,13 +168,17 @@
             <tbody>
                 {% if resource.positions %}
                 {% for key, position in resource.positions %}
+                {% if position.sec_pos  %}
+                {% for key, pos in position.sec_pos %}
                 <tr class="position-row">
-                    <td class="" style="text-align: left; ">{{ position.service.name ?? "" }} </td>
-                    <td class="" style="text-align: left;">{{ position.description ?? "" }}</td>
-                    <td class="" style="text-align: right;">{{ position.single_price ?? "" }} &#8364</td>
-                    <td class="" style="text-align: right;">{{ position.quantity ?? "" }}</td>
-                    <td class="" style="text-align: right;">{{ position.total_price ?? "" }}&#8364</td>
+                    <td class="" style="text-align: left; ">{{ pos.service.name ?? "" }} </td>
+                    <td class="" style="text-align: left;">{{ pos.description ?? "" }}</td>
+                    <td class="" style="text-align: right;">{{ pos.single_price ?? "" }} &#8364</td>
+                    <td class="" style="text-align: right;">{{ pos.quantity ?? "" }}</td>
+                    <td class="" style="text-align: right;">{{ pos.total_price ?? "" }}&#8364</td>
                 </tr>
+                {% endfor %}
+                {% endif %}
                 {% endfor %}
                 {% endif %}
             </tbody>
