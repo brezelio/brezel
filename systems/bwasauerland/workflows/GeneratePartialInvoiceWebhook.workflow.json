@@ -32,7 +32,7 @@
                     "ServiceEntities": [
                         "default"
                     ],
-                    "CalculateOpenPosition": [
+                    "additionalServicesEntities": [
                         "default"
                     ]
                 }
@@ -223,9 +223,6 @@
                 "else": {
                     "SetDataIfTypeFinal": [
                         "default"
-                    ],
-                    "additionalServicesEntities": [
-                        "default"
                     ]
                 }
             },
@@ -287,8 +284,8 @@
             },
             "meta": {
                 "position": [
-                    329,
-                    -755.5
+                    662.8871811458573,
+                    -532.542477763671
                 ]
             }
         },
@@ -347,13 +344,16 @@
                 "default": {
                     "ParticalInvoiceModal": [
                         "default"
+                    ],
+                    "bad-jellyfish-43": [
+                        "default"
                     ]
                 }
             },
             "meta": {
                 "position": [
-                    2306.957283983652,
-                    -31.852568022856516
+                    2302.564120202102,
+                    -45.032102626724416
                 ]
             }
         },
@@ -397,7 +397,7 @@
             "meta": {
                 "position": [
                     329,
-                    -523.5
+                    -555.3510864550041
                 ]
             }
         },
@@ -729,8 +729,8 @@
             "to": {},
             "meta": {
                 "position": [
-                    329,
-                    -291.5
+                    330.0982959892182,
+                    -204.733401829878
                 ]
             }
         },
@@ -787,11 +787,31 @@
             "set": {
                 "addServices": "default:"
             },
+            "to": {
+                "default": {
+                    "CalculateOpenPosition": [
+                        "default"
+                    ]
+                }
+            },
+            "meta": {
+                "position": [
+                    318.5597437694365,
+                    -836.3391225629849
+                ]
+            }
+        },
+        {
+            "name": "bad-jellyfish-43",
+            "type": "action/log",
+            "options": {},
+            "in": {},
+            "set": {},
             "to": {},
             "meta": {
                 "position": [
-                    2127.750313294923,
-                    127.02464712312482
+                    2630.511837225403,
+                    109.74269369302348
                 ]
             }
         }
