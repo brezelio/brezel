@@ -10,6 +10,9 @@
         "index": "${file('/config/invoices/invoices.index.json')}"
       },
       "buttons": {
+        "print": {
+          "display": false
+        },
         "generate_PDF": {
           "trigger": "GenerateInvoicePDFWebhook",
           "hidden": true,
@@ -33,6 +36,17 @@
           "options": {
             "incrementing_default": 0,
             "incrementing_format": "TEXT%INV-|DATE%Y|DATE%m|TEXT%-|INCREMENTING_VALUE%3"
+          }
+        },
+        {
+          "identifier": "invoice_date",
+          "type": "date",
+          "options": {
+            "fullDay": true,
+            "default": "NOW",
+            "recipes": {
+              "default": "date()"
+            }
           }
         },
         {
