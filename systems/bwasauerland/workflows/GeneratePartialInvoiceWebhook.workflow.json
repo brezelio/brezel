@@ -344,9 +344,6 @@
                 "default": {
                     "ParticalInvoiceModal": [
                         "default"
-                    ],
-                    "bad-jellyfish-43": [
-                        "default"
                     ]
                 }
             },
@@ -396,8 +393,8 @@
             "to": {},
             "meta": {
                 "position": [
-                    329,
-                    -555.3510864550041
+                    323.395334388882,
+                    -383.20703505358847
                 ]
             }
         },
@@ -491,6 +488,9 @@
             "to": {
                 "default": {
                     "SetPreviouslyInvoicedValues": [
+                        "default"
+                    ],
+                    "closingAdditionalServices": [
                         "default"
                     ]
                 }
@@ -796,22 +796,37 @@
             },
             "meta": {
                 "position": [
-                    318.5597437694365,
-                    -836.3391225629849
+                    321.7629126668762,
+                    -648.9544599333022
                 ]
             }
         },
         {
-            "name": "bad-jellyfish-43",
-            "type": "action/log",
-            "options": {},
-            "in": {},
+            "name": "closingAdditionalServices",
+            "type": "op/set",
+            "options": {
+                "copy": null,
+                "recipes": {
+                    "additional_service_status": "\"closed\""
+                },
+                "values": [],
+                "process": false
+            },
+            "in": {
+                "default": "$addServices"
+            },
             "set": {},
-            "to": {},
+            "to": {
+                "default": {
+                    "SavePreviouslyInvoiced": [
+                        "default"
+                    ]
+                }
+            },
             "meta": {
                 "position": [
-                    2630.511837225403,
-                    109.74269369302348
+                    4606.947181095292,
+                    49.561156980603286
                 ]
             }
         }
