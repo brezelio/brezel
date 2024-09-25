@@ -146,7 +146,11 @@
               },
               {
                 "identifier": "use_subtotal",
-                "type": "checkbox"
+                "type": "checkbox",
+                "options": {
+                  "hidden_from_frontend": true,
+                  "dev_comment_remove_this": "as far as i can see, this has no usage? I'm hiding it for now. -Sebastian"
+                }
               },
               {
                 "identifier": "subtotal",

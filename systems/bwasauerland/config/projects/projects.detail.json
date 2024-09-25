@@ -143,6 +143,7 @@
                     "module": "invoices",
                     "columns": [
                       "process",
+                      "type",
                       "invoice_number",
                       "project",
                       "customer",
