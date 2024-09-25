@@ -103,7 +103,10 @@
             "fields": [
               {
                 "identifier": "headline",
-                "type": "text"
+                "type": "text",
+                "options": {
+                  "hidden_from_frontend": true
+                }
               },
               {
                 "identifier": "sec_pos",

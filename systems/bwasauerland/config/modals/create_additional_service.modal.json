@@ -9,12 +9,12 @@
               "options": {
                 "borderless": true
               },
-              "span": 12,
+              "span": 24,
               "components": [
                 {
                   "type": "field_group",
                   "options": {
-                    "vertical_labels": true,
+                    "vertical_labels": false,
                     "no_padding": true,
                     "fields": [
                       {
@@ -71,7 +71,7 @@
                 {
                   "type": "field_group",
                   "options": {
-                    "vertical_labels": true,
+                    "vertical_labels": false,
                     "no_padding": true,
                     "fields": [
 
@@ -87,9 +87,16 @@
               "span": 24,
               "components": [
                 {
+                  "type": "headline",
+                  "options": {
+                    "identifier": "services",
+                    "no_padding": true
+                  }
+                },
+                {
                   "type": "field_group",
                   "options": {
-                    "vertical_labels": true,
+                    "no_labels": true,
                     "no_padding": true,
                     "fields": [
                       {
@@ -186,7 +193,7 @@
                 {
                   "type": "field_group",
                   "options": {
-                    "vertical_labels": true,
+                    "vertical_labels": false,
                     "no_padding": true,
                     "fields": [
                       {

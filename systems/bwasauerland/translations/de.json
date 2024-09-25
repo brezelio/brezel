@@ -340,12 +340,17 @@
         "price_total": "Brutto-Preis",
         "quantity_type": "Einheit",
         "tax_amount": "Steuerbetrag",
-        "separately_billed": "Separate Rechnung"
+        "separately_billed": "Separate Rechnung",
+        "additional_service_status": "Status"
       },
       "choice": {
         "quantity_type": {
           "hourly": "Stündlich",
           "flat_price": "Pauschalpreis"
+        },
+        "additional_service_status": {
+          "open": "Offen",
+          "closed": "Abgeschlossen"
         }
       }
     },
@@ -368,7 +373,7 @@
     "invoices": {
       "title": "Rechnungen",
       "headlines": {
-        "basic": "Grundlegend",
+        "basic": "Allgemeine Informationen",
         "address": "Anschrift",
         "positions": "Leistungen"
       },
@@ -398,7 +403,9 @@
         "previously_invoiced": "Bisher in Rechnung gestellt",
         "partial_pay": "Teilweise Bezahlung",
         "invoice_open_position": "Offene Position der Rechnung",
-        "partial_invoice": "Teilrechnung"
+        "partial_invoice": "Teilrechnung",
+        "sec_pos": "Positionen",
+        "subtotal": "Netto-Preis"
       },
       "choice": {
         "type": {
@@ -665,6 +672,9 @@
       "createAdditionalServiceModal": {
         "modal": {
           "title": "Zusätzliche Dienstleistung eintragen",
+          "headlines": {
+            "services": "Leistungen"
+          },
           "fields": {
             "process": "Prozess",
             "project": "Projekt",
@@ -685,12 +695,16 @@
             "quantity_type": "Einheit",
             "tax_amount": "Steuerbetrag",
             "separately_billed": "Separate Rechnung",
-            "additional_service_status": "Zusätzliche Dienstleistung Status"
+            "additional_service_status": "Status"
           },
           "choice": {
             "quantity_type": {
               "hourly": "Stündlich",
               "flat_price": "Pauschalpreis"
+            },
+            "additional_service_status": {
+              "open": "Offen",
+              "closed": "Abgeschlossen"
             }
           }
         }
