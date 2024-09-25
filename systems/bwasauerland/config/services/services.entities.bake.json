@@ -7,7 +7,7 @@
             "client": "${resource_client.global}",
             "fields": {
                 "enabled": true,
-                "name": "Partical Invoice",
+                "name": "Teilrechnung",
                 "number": 10000
             }
         }

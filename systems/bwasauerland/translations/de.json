@@ -261,7 +261,8 @@
       },
       "tabs": {
         "invoices": "Rechnungen",
-        "projects": "Daten"
+        "projects": "Daten",
+        "additional_services": "Zusätzliche Dienstleistungen"
       },
       "fields": {
         "project_number": "Projektnummer",
@@ -305,7 +306,7 @@
         "status": {
           "planned": "Geplant",
           "in_progress": "in Arbeit",
-          "finished": "fertig"
+          "finished": "Abgeschlossen"
         },
         "quantity_type": {
           "hourly": "Stündlich",
@@ -401,11 +402,11 @@
       },
       "choice": {
         "type": {
-          "partial": "Teilweise",
-          "final": "Endgültig"
+          "partial": "Teilrechnung",
+          "final": "Schlussrechnung"
         },
         "status": {
-          "open": "Öffnen Sie",
+          "open": "Offen",
           "paid": "Bezahlt"
         }
       }
@@ -453,7 +454,7 @@
       "floor_material": "Bodenplatte",
       "strip_foundation": "Streifenfundament",
       "para1": "Abdichtungen in der Vergangenheit?",
-      "para2": "Heirmit beauftrageich die  BWA Sauerland GmbH mit der Durchfuhrung folgender Arbeiten",
+      "para2": "Hiermit beauftrage ich die  BWA Sauerland GmbH mit der Durchfuhrung folgender Arbeiten",
       "service": "Leistung",
       "description": "Beschreibung",
       "quantity": "Anzahl",
@@ -527,7 +528,7 @@
             "status": {
               "planned": "Geplant",
               "in_progress": "in Arbeit",
-              "finished": "fertig"
+              "finished": "Abgeschlossen"
             }
           }
         }
@@ -567,11 +568,11 @@
           },
           "choice": {
             "type": {
-              "partial": "Teilweise",
-              "final": "Endgültig"
+              "partial": "Teilrechnung",
+              "final": "Schlussrechnung"
             },
             "status": {
-              "open": "Öffnen Sie",
+              "open": "Offen",
               "paid": "Bezahlt"
             }
           }
@@ -581,7 +582,7 @@
     "GeneratePartialInvoiceWebhook": {
       "ProjectModalConfirm": {
         "modal": {
-          "title": "Sind sie sicher?",
+          "title": "Sind Sie sicher?",
           "fields": {
             "select_amount": "Anteil",
             "amount": "Betrag(brutto)",
@@ -600,7 +601,7 @@
       },
       "ParticalInvoiceModal": {
         "modal": {
-          "title": "Bestätigen Sie die Rechnungsdaten",
+          "title": "Teilrechnung erstellen",
           "fields": {
             "process": "Prozess",
             "invoice_number": "Rechnungsnummer",
@@ -626,7 +627,8 @@
             "project_amount": "Projektbetrag",
             "partial_pay": "Teilweise Bezahlung",
             "previously_invoiced": "Bisher in Rechnung gestellt",
-            "invoice_open_position": "Offene Position der Rechnung"
+            "invoice_open_position": "Offene Position der Rechnung",
+            "sec_pos": "Positionen"
           },
           "choice": {
             "type": {
@@ -634,7 +636,7 @@
               "final": "Endgültig"
             },
             "invoice_status": {
-              "open": "Öffnen Sie",
+              "open": "Offen",
               "paid": "Bezahlt"
             }
           }
