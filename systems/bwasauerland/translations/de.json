@@ -405,7 +405,8 @@
         "invoice_open_position": "Offene Position der Rechnung",
         "partial_invoice": "Teilrechnung",
         "sec_pos": "Positionen",
-        "subtotal": "Netto-Preis"
+        "subtotal": "Netto-Preis",
+        "unit": "Einheit"
       },
       "choice": {
         "type": {

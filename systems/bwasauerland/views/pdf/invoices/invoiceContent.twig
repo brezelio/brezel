@@ -228,7 +228,7 @@
                     <td class="" style="text-align: left; ">{{ pos.service.name ?? "" }} </td>
                     <td class="" style="text-align: left;">{{ pos.description ?? "" }}</td>
                     <td class="" style="text-align: right;">{{ pos.single_price ? pos.single_price|format_number({fraction_digit:2}, locale='de') : "" }}&#8364</td>
-                    <td class="" style="text-align: right;">{{ pos.quantity ? pos.quantity|format_number({fraction_digit:2}) : ""}}</td>
+                    <td class="" style="text-align: right;">{{ pos.quantity ? pos.quantity|format_number({fraction_digit:0}, locale='de') : ""}}</td>
                     <td class="" style="text-align: right;">{{ pos.total_price ? pos.single_price|format_number({fraction_digit:2}, locale='de') : "" }}&#8364</td>
                 </tr>
             {% endfor %}
