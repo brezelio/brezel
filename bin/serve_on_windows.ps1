@@ -6,7 +6,7 @@ param (
 $maximizedAndOwnWindow = "-M -w 0"
 $brezelRoot = $PSScriptRoot -replace ".{4}$"
 $cdBrezel = "cd $brezelRoot"
-$cdBrezelTools = "cd C:\Code\brezel"
+$cdBrezelTools = "cd X:\_KiBro\_Brezel"
 $title = "--title"
 # powershell that will not exit the pane after command completion
 $pwsh = "pwsh -noexit -c"
