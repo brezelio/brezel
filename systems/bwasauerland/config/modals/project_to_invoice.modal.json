@@ -84,7 +84,7 @@
                       },
                       {
                         "identifier": "zip",
-                        "type": "number"
+                        "type": "text"
                       },
                       {
                         "identifier": "city",
