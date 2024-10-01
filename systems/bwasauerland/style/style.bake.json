@@ -5,7 +5,8 @@
         "resource": {
             "identifier": "styles",
             "public": true,
-            "code": "${file('style/style.css')}"
+            "code": "${file('style/style.css')}",
+            "client": "${resource_client.global}"
         }
     }
 ]
