@@ -1,0 +1,57 @@
+{
+  "tabs": [
+    {
+      "identifier": "project_steps",
+      "icon": "rocket",
+      "rows": [
+        {
+          "cols": [
+            {
+              "span": 12,
+              "components": [
+                {
+                  "type": "headline",
+                  "options": {
+                    "identifier": "basic",
+                    "icon": "user"
+                  }
+                },
+                {
+                  "type": "field_group",
+                  "options": {
+                    "vertical_labels": false,
+                    "fields": [
+                      "process_number",
+                      "project",
+                      "customer",
+                      "object"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "span": 12,
+              "components": [
+                {
+                  "type": "headline",
+                  "options": {
+                    "identifier": "info",
+                    "icon": "environment"
+                  }
+                },
+                {
+                  "type": "field_group",
+                  "options": {
+                    "vertical_labels": false,
+                    "fields": ["employees", "start_date", "end_date"]
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

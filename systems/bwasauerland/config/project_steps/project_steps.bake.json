@@ -1,0 +1,60 @@
+[
+  {
+    "resource_module": "project_steps",
+    "import": true,
+    "resource": {
+      "identifier": "project_steps",
+      "title": "",
+      "icon": "rocket",
+      "layouts": {
+        "detail": "${file('config/project_steps/project_steps.detail.json')}",
+        "index": "${file('config/project_steps/project_steps.index.json')}"
+      },
+      "fields": [
+        {
+          "identifier": "process_number",
+          "type": "select",
+          "options": {
+            "references": "processes"
+          }
+        },
+        {
+          "identifier": "project",
+          "type": "select",
+          "options": {
+            "references": "projects"
+          }
+        },
+        {
+          "identifier": "customer",
+          "type": "select",
+          "options": {
+            "references": "customers"
+          }
+        },
+        {
+          "identifier": "object",
+          "type": "select",
+          "options": {
+            "references": "objects"
+          }
+        },
+        {
+          "identifier": "employees",
+          "type": "multiselect",
+          "options": {
+            "references": "employee"
+          }
+        },
+        {
+          "identifier": "start_date",
+          "type": "date"
+        },
+        {
+          "identifier": "end_date",
+          "type": "date"
+        }
+      ]
+    }
+  }
+]

@@ -1,0 +1,33 @@
+{
+  "tabs": [
+    {
+      "identifier": "employee",
+      "icon": "user",
+      "rows": [
+        {
+          "cols": [
+            {
+              "span": 12,
+              "components": [
+                {
+                  "type": "headline",
+                  "options": {
+                    "identifier": "basic",
+                    "icon": "user"
+                  }
+                },
+                {
+                  "type": "field_group",
+                  "options": {
+                    "vertical_labels": false,
+                    "fields": ["first_name", "last_name", "hourly_wage"]
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

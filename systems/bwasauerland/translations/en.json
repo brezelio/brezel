@@ -261,6 +261,33 @@
         "previously_invoiced": "Previously invoiced",
         "invoice_open_position": "Invoice open position"
       }
+    },
+    "employee": {
+      "title": "Employee",
+      "headlines": {
+        "basic": "Basic"
+      },
+      "fields": {
+        "first_name":"First name",
+        "last_name":"Last name",
+        "hourly_wage":"Hourly wage"
+      }
+    },
+    "project_steps":{
+      "title":"Project steps",
+      "headlines":{
+        "basic":"Basic",
+        "info":"Info"
+      },
+      "fields":{
+        "process_number":"Process number",
+        "project":"Project",
+        "customer":"Customer",
+        "object":"Object",
+        "employees":"Employees",
+        "start_date":"Start date",
+        "end_date":"End date"
+      }
     }
   },
   "widgets": {},
@@ -372,10 +399,10 @@
         }
       }
     },
-    "createAdditionalService":{
-      "createAdditionalServiceModal":{
-        "modal":{
-          "title":"Enter Additional Services"
+    "createAdditionalService": {
+      "createAdditionalServiceModal": {
+        "modal": {
+          "title": "Enter Additional Services"
         }
       }
     }

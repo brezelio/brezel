@@ -430,6 +430,34 @@
     },
     "system_settings": {
       "title": "Systemeinstellungen"
+    },
+    "employee": {
+      "title": "Mitarbeiter",
+      "headlines": {
+        "basic": "Grundlagen",
+        "address": "Anschrift"
+      },
+      "fields": {
+        "first_name":"Vornamen",
+        "last_name":"Nachname",
+        "hourly_wage":"Stundenlohn"
+      }
+    },
+    "project_steps":{
+      "title":"Project steps",
+      "headlines":{
+        "basic":"Grundlagen",
+        "info":"Infos"
+      },
+      "fields":{
+        "process_number":"Prozess-Nummer",
+        "project":"Projekt",
+        "customer":"Kunde",
+        "object":"Objekt",
+        "employees":"Mitarbeiter",
+        "start_date":"Startdatum",
+        "end_date":"Abschlussdatum"
+      }
     }
   },
   "widgets": {},

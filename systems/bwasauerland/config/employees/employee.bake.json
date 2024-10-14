@@ -1,0 +1,34 @@
+[
+    {
+      "resource_module": "employee",
+      "import": true,
+      "resource": {
+        "identifier": "employee",
+        "title": "first_name",
+        "icon": "user",
+        "layouts": {
+          "detail": "${file('config/employees/employee.detail.json')}",
+          "index": "${file('config/employees/employee.index.json')}"
+  
+        },
+        "fields": [
+          {
+            "identifier": "first_name",
+            "type": "text"
+          },
+          {
+            "identifier": "last_name",
+            "type": "text"
+            
+          },
+          {
+            "identifier": "hourly_wage",
+            "type": "number"
+          }
+         
+          
+        ]
+      }
+    }
+  ]
+  

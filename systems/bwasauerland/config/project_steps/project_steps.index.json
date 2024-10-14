@@ -1,0 +1,43 @@
+{
+  "type": "index",
+  "tabs": [
+    {
+      "identifier": "project_steps",
+      "icon": "user",
+      "position": 0,
+      "rows": [
+        {
+          "cols": [
+            {
+              "options": {},
+              "components": [
+                {
+                  "type": "headline",
+                  "options": {
+                    "identifier": "project_steps",
+                    "icon": "rocket"
+                  }
+                },
+                {
+                  "type": "resource_table",
+                  "options": {
+                    "module": "project_steps",
+                    "columns": [
+                      "process_number",
+                      "project",
+                      "customer",
+                      "object",
+                      "employees",
+                      "start_date",
+                      "end_date"
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
