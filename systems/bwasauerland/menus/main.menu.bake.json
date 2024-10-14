@@ -10,14 +10,15 @@
           "icon": "mdi:briefcase-outline",
           "elements": [
             {
-              "name":"processes",
-              "icon":"setting"
+              "name": "processes",
+              "icon": "setting"
             },
             "offers",
             "projects",
             "additional_services",
             "proof_of_work",
-            "invoices"
+            "invoices",
+            "project_steps"
           ]
         },
         {
@@ -38,33 +39,30 @@
               "icon": "setting"
             },
             {
-              "name":"building_types",
-              "icon":"setting"
-            }
+              "name": "building_types",
+              "icon": "setting"
+            },
+            "employee"
           ]
         },
         {
           "name": "system_settings",
           "type": "submenu",
           "icon": "setting",
-          "elements": [
-            "users",
-            "clients",
-            "roles"
-          ]
+          "elements": ["users", "clients", "roles"]
         },
         {
           "name": "sale",
           "type": "submenu",
           "icon": "lucide:warehouse",
           "elements": [
-              "create_order",
-              {
-                  "name": "products",
-                  "icon": "fluent-mdl2:product"
-              },
-              "orders",
-              "products_categories"
+            "create_order",
+            {
+              "name": "products",
+              "icon": "fluent-mdl2:product"
+            },
+            "orders",
+            "products_categories"
           ]
         }
       ]
