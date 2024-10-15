@@ -3,7 +3,8 @@
     "Create Project": "Create Project",
     "Export_as_PDF": "Export as PDF",
     "create_invoice": "Create Invoice",
-    "generate_partial_invoice": "Generate Partial Invoice"
+    "generate_partial_invoice": "Generate Partial Invoice",
+    "create_project_steps":"Create Project Steps"
   },
   "notifications": {},
   "modules": {
@@ -252,6 +253,7 @@
         "single_price": "Single price",
         "quantity": "Quantity",
         "total_price": "Total price",
+        "subtotal":"Sub total",
         "taxrate": "Taxrate",
         "tax_amount": "Tax amount",
         "tax_portion": "Tax portion",
@@ -286,7 +288,18 @@
         "object":"Object",
         "employees":"Employees",
         "start_date":"Start date",
-        "end_date":"End date"
+        "end_date":"End date",
+        "positions":"Positions",
+        "sec_pos":"Sec pos",
+        "service":"Service",
+        "description":"Description",
+        "quantity":"Quantity",
+        "unit":"Unit",
+        "single_price":"Single price",
+        "total_price":"Total price",
+        "subtotal":"Sub total",
+        "steps_title":"Steps title",
+        "project_step":"Project step"
       }
     }
   },

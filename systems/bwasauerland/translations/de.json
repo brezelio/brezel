@@ -6,7 +6,8 @@
     "create_invoice": "Rechnung erstellen",
     "generate_partial_invoice": "Teilrechnung erstellen",
     "create_additional_service": "Zusätzliche Dienstleistung eintragen",
-    "generate_PDF": "PDF erzeugen"
+    "generate_PDF": "PDF erzeugen",
+    "create_project_steps":"Projektschritte erstellen"
   },
   "notifications": {},
   "modules": {
@@ -444,10 +445,11 @@
       }
     },
     "project_steps":{
-      "title":"Project steps",
+      "title":"Projekt-Schritte",
       "headlines":{
         "basic":"Grundlagen",
-        "info":"Infos"
+        "info":"Infos",
+        "positions":"Leistungen"
       },
       "fields":{
         "process_number":"Prozess-Nummer",
@@ -456,7 +458,17 @@
         "object":"Objekt",
         "employees":"Mitarbeiter",
         "start_date":"Startdatum",
-        "end_date":"Abschlussdatum"
+        "end_date":"Abschlussdatum",
+        "positions":"Positionen",
+        "sec_pos":"Positionen",
+        "service":"Leistung",
+        "description":"Beschreibung",
+        "quantity":"Anzahl",
+        "single_price":"Einzelpreis",
+        "total_price":"Gesamtpreis",
+        "subtotal":"Netto-Preis",
+        "steps_title":"Schritte Titel",
+        "project_step":"Projektschritt"
       }
     }
   },

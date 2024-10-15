@@ -21,10 +21,12 @@
                   "options": {
                     "vertical_labels": false,
                     "fields": [
+                      "project_step",
+                      "steps_title",
                       "process_number",
                       "project",
                       "customer",
-                      "object"
+                      "dateRange"
                     ]
                   }
                 }
@@ -44,7 +46,30 @@
                   "type": "field_group",
                   "options": {
                     "vertical_labels": false,
-                    "fields": ["employees", "start_date", "end_date"]
+                    "fields": ["employees", "object"]
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "cols": [
+            {
+              "span": 24,
+              "components": [
+                {
+                  "type": "headline",
+                  "options": {
+                    "identifier": "positions"
+                  }
+                },
+                {
+                  "type": "field_group",
+                  "options": {
+                    "vertical_labels": true,
+                    "no_labels": true,
+                    "fields": ["positions"]
                   }
                 }
               ]

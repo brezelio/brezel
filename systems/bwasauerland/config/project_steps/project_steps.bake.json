@@ -4,13 +4,43 @@
     "import": true,
     "resource": {
       "identifier": "project_steps",
-      "title": "",
+      "title": "project_step",
       "icon": "rocket",
       "layouts": {
         "detail": "${file('config/project_steps/project_steps.detail.json')}",
         "index": "${file('config/project_steps/project_steps.index.json')}"
       },
       "fields": [
+        {
+          "identifier": "project_step",
+          "type": "incrementing",
+          "options": {
+            "incrementing_default": 0,
+            "incrementing_format": "TEXT%PROSTP-|DATE%Y|DATE%m|TEXT%-|INCREMENTING_VALUE%3"
+          }
+        },
+        {
+          "identifier":"steps_title",
+          "type":"text",
+          "options":{
+            "recipes": {
+              "default": "project.project_number",
+              "hidden_from_frontend":false
+            }
+          }
+        },
+        {
+          "identifier": "dateRange",
+          "type": "dateRange",
+          "options": {
+              "rules": "required",
+              "quick_create_in_calendar": true,
+              "create_in_calendar": true,
+              "show_in_calendar": true,
+              "calendar_title": "steps_title",
+              "full_day": true
+          }
+      },
         {
           "identifier": "process_number",
           "type": "select",
@@ -47,12 +77,71 @@
           }
         },
         {
-          "identifier": "start_date",
-          "type": "date"
-        },
-        {
-          "identifier": "end_date",
-          "type": "date"
+          "identifier": "positions",
+          "type": "list",
+          "options": {
+            "show_ordering": true,
+            "mode": "tabs",
+            "title_field": "headline",
+            "fields": [
+              {
+                "identifier": "headline",
+                "type": "text",
+                "options": {
+                  "hidden_from_frontend": true
+                }
+              },
+              {
+                "identifier": "sec_pos",
+                "type": "list",
+                "options": {
+                  "show_ordering": true,
+                  "fields": [
+                    {
+                      "identifier": "service",
+                      "type": "select",
+                      "options": {
+                        "references": "services",
+                        "events": {
+                          "on_change": ["OnChangeService"]
+                        }
+                      }
+                    },
+
+                    {
+                      "identifier": "description",
+                      "type": "textarea",
+                      "options": {
+                        "fullscreenButton": true,
+                        "list_item_min_width": "200px"
+                      }
+                    },
+                    {
+                      "identifier": "quantity",
+                      "type": "number",
+                      "options": {
+                        "decimal_digits": 3
+                      }
+                    },
+                    {
+                      "identifier": "single_price",
+                      "type": "currency"
+                    },
+                    {
+                      "identifier": "total_price",
+                      "type": "currency",
+                      "recipe": "(single_price * quantity)"
+                    }
+                  ]
+                }
+              },
+              {
+                "identifier": "subtotal",
+                "type": "currency",
+                "recipe": "round(sum(sec_pos[*].total_price) * 100) / 100"
+              }
+            ]
+          }
         }
       ]
     }

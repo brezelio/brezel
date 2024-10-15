@@ -23,13 +23,12 @@
                   "options": {
                     "module": "project_steps",
                     "columns": [
+                      "project_step",
                       "process_number",
                       "project",
                       "customer",
                       "object",
-                      "employees",
-                      "start_date",
-                      "end_date"
+                      "employees"
                     ]
                   }
                 }

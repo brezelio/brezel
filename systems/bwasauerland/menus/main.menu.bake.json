@@ -4,6 +4,7 @@
     "resource": {
       "name": "main",
       "elements": [
+        "calendar",
         {
           "name": "project_management",
           "type": "submenu",
