@@ -6,7 +6,9 @@
       "identifier": "offers",
       "icon": "shop",
       "layouts": {
-        "detail": "${file('config/offers/offers.detail.json')}"
+        "detail": "${file('config/offers/offers.detail.json')}",
+        "index": "${file('config/offers/offers.index.json')}"
+
       },
       "buttons": {
         "Create Project": {
@@ -227,6 +229,13 @@
           }
         }
       ]
+    }
+  },
+  {
+    "resource_layout": "manually_offer_to_project_modal",
+    "resource": {
+      "identifier": "manually_offer_to_project.modal",
+      "spec": "${jsonFile('config/modals/manually_offer_to_project.modal.json', true)}"
     }
   }
 ]
