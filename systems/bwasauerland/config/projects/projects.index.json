@@ -2,8 +2,8 @@
   "type": "index",
   "tabs": [
     {
-      "identifier": "project_steps",
-      "icon": "rocket",
+      "identifier": "projects",
+      "icon": "container",
       "position": 0,
       "rows": [
         {
@@ -14,21 +14,24 @@
                 {
                   "type": "headline",
                   "options": {
-                    "identifier": "project_steps",
-                    "icon": "rocket"
+                    "identifier": "projects",
+                    "icon": "container"
                   }
                 },
                 {
                   "type": "resource_table",
                   "options": {
-                    "module": "project_steps",
+                    "module": "projects",
                     "columns": [
-                      "project_step",
-                      "process_number",
-                      "project",
+                      "project_number",
+                      "process",
                       "customer",
                       "object",
-                      "employees"
+                      "status",
+                      "problem",
+                      "price_total",
+                      "previously_invoiced",
+                      "invoice_open_position"
                     ]
                   }
                 }

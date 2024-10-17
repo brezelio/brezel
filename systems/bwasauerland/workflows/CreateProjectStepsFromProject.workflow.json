@@ -1,0 +1,210 @@
+{
+    "identifier": "CreateProjectStepsFromProject",
+    "title": "Creating a ProjectSteps from Project",
+    "description": null,
+    "async": false,
+    "debug": false,
+    "elements": [
+        {
+            "name": "CreateProjectStepsFromProject",
+            "type": "event/webhook",
+            "options": {
+                "async": false,
+                "roles": null,
+                "title": "test",
+                "module": "projects",
+                "public": false
+            },
+            "in": {},
+            "set": {
+                "resource": "default:"
+            },
+            "to": {
+                "default": {
+                    "PreFillData": [
+                        "default"
+                    ]
+                }
+            },
+            "meta": {
+                "position": [
+                    0,
+                    -273.5
+                ]
+            }
+        },
+        {
+            "name": "ProjectStepsModal",
+            "type": "action/modal",
+            "options": {
+                "hard": false,
+                "type": "confirm",
+                "title": {
+                    ".recipe": "t('workflows.CreateProjectStepsFromProject.ProjectStepsModal.modal.title')"
+                },
+                "fields": [],
+                "layout": "project_to_project_steps.modal",
+                "checkpoint": true,
+                "autosave_key": null
+            },
+            "in": {},
+            "set": {
+                "modalData": "confirm:"
+            },
+            "to": {
+                "confirm": {
+                    "NewProject": [
+                        "default"
+                    ]
+                }
+            },
+            "meta": {
+                "position": [
+                    658,
+                    -191
+                ]
+            }
+        },
+        {
+            "name": "RedirectToProjectSteps",
+            "type": "action/redirect",
+            "options": {
+                "url": null,
+                "fill": false,
+                "http": null,
+                "swap": false,
+                "action": "module",
+                "module": "project_steps",
+                "target": null,
+                "queryParams": []
+            },
+            "in": {},
+            "set": {},
+            "to": {},
+            "meta": {
+                "position": [
+                    1974,
+                    -161.5
+                ]
+            }
+        },
+        {
+            "name": "PreFillData",
+            "type": "op/recipe",
+            "options": {
+                "recipe": "{...$resource, \"project\": $resource, \"process_number\": $resource.process,\"positions\":$resource.services}"
+            },
+            "in": {
+                "default": "$resource"
+            },
+            "set": {},
+            "to": {
+                "default": {
+                    "ProjectStepsModal": [
+                        "default"
+                    ]
+                }
+            },
+            "meta": {
+                "position": [
+                    329,
+                    -116
+                ]
+            }
+        },
+        {
+            "name": "NewProject",
+            "type": "source/new",
+            "options": {
+                "client": null,
+                "module": "project_steps",
+                "values": null
+            },
+            "in": {},
+            "set": {
+                "newProjectSteps": "default:"
+            },
+            "to": {
+                "default": {
+                    "SetData": [
+                        "default"
+                    ]
+                }
+            },
+            "meta": {
+                "position": [
+                    987,
+                    -148.5
+                ]
+            }
+        },
+        {
+            "name": "SetData",
+            "type": "op/set",
+            "options": {
+                "copy": "$modalData",
+                "values": [],
+                "process": false,
+                "recipes": {
+                    "object": "$resource.object",
+                    "project": "$resource",
+                    "customer": "$resource.customer",
+                    "dateRange": "$modalData.dateRange",
+                    "positions": "$modalData.positions.map(position => {\"service\": position.service,\"description\": position.description,\"single_price\": position.single_price,\"quantity\": position.quantity, \"total_price\": position.total_price, \"quantity_type\": position.quantity_type})",
+                    "process_number": "$resource.process"
+                }
+            },
+            "in": {},
+            "set": {},
+            "to": {
+                "default": {
+                    "SaveData": [
+                        "default"
+                    ]
+                }
+            },
+            "meta": {
+                "position": [
+                    1316,
+                    -104
+                ]
+            }
+        },
+        {
+            "name": "SaveData",
+            "type": "action/save",
+            "options": {
+                "skip_recipes": false,
+                "triggerEvents": false,
+                "continueIfInvalid": false
+            },
+            "in": {},
+            "set": {},
+            "to": {
+                "default": {
+                    "RedirectToProjectSteps": [
+                        "default"
+                    ]
+                }
+            },
+            "meta": {
+                "position": [
+                    1645,
+                    -104
+                ]
+            }
+        }
+    ],
+    "events": [
+        {
+            "identifier": "CreateProjectStepsFromProject",
+            "type": "webhook",
+            "module": "projects",
+            "async": false,
+            "roles": null,
+            "title": "test",
+            "public": false
+        }
+    ],
+    "comments": []
+}

@@ -68,8 +68,7 @@
                   "type": "field_group",
                   "options": {
                     "vertical_labels": true,
-                    "no_labels": true,
-                    "fields": ["positions"]
+                    "fields": ["positions","subtotal"]
                   }
                 }
               ]

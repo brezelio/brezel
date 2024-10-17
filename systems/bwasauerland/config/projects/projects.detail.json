@@ -203,6 +203,43 @@
           ]
         }
       ]
+    },
+    {
+      "identifier": "project_steps",
+      "icon": "rocket",
+      "position": 0,
+      "rows": [
+        {
+          "cols": [
+            {
+              "options": {},
+              "components": [
+                {
+                  "type": "resource_table",
+                  "options": {
+                    "module": "project_steps",
+                    "columns": [
+                      "project_step",
+                      "process_number",
+                      "project",
+                      "customer",
+                      "object",
+                      "employees"
+                    ],
+                    "pre_filters": [
+                      {
+                        "column": "project.id",
+                        "operator": "=",
+                        "field": "id"
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
     }
   ]
 }

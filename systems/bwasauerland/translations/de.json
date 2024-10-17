@@ -7,7 +7,7 @@
     "generate_partial_invoice": "Teilrechnung erstellen",
     "create_additional_service": "Zusätzliche Dienstleistung eintragen",
     "generate_PDF": "PDF erzeugen",
-    "create_project_steps":"Projektschritte erstellen"
+    "create_project_steps": "Projektschritte erstellen"
   },
   "notifications": {},
   "modules": {
@@ -42,6 +42,7 @@
       "title": "Kunden",
       "headlines": {
         "customers": "Kunden",
+        "objects": "Objekt",
         "general": "Allgemein",
         "invoice_address": "Rechnungsanschrift",
         "address": "Anschrift",
@@ -247,10 +248,24 @@
     "processes": {
       "title": "Prozesse",
       "headlines": {
-        "general": "Allgemein"
+        "general": "Allgemein",
+        "offers": "Angebote",
+        "projects": "Projekte",
+        "additional_services": "Zusätzliche Dienstleistungen",
+        "proof_of_work": "Nachweis der Arbeit",
+        "invoices": "Rechnungen"
+      },
+      "tabs": {
+        "processes": "Prozesse",
+        "offers": "Angebote",
+        "projects": "Projekte",
+        "additional_services": "Zusätzliche Dienstleistungen",
+        "proof_of_work": "Nachweis der Arbeit",
+        "invoices": "Rechnungen"
       },
       "fields": {
-        "process_id": "Prozess-Nr"
+        "process_id": "Prozess-Nr",
+        "name": "Prozess-Name"
       }
     },
     "projects": {
@@ -263,7 +278,8 @@
       "tabs": {
         "invoices": "Rechnungen",
         "projects": "Daten",
-        "additional_services": "Zusätzliche Dienstleistungen"
+        "additional_services": "Zusätzliche Dienstleistungen",
+        "project_steps": "Projekt-Schritte"
       },
       "fields": {
         "project_number": "Projektnummer",
@@ -439,36 +455,35 @@
         "address": "Anschrift"
       },
       "fields": {
-        "first_name":"Vornamen",
-        "last_name":"Nachname",
-        "hourly_wage":"Stundenlohn"
+        "first_name": "Vornamen",
+        "last_name": "Nachname",
+        "hourly_wage": "Stundenlohn"
       }
     },
-    "project_steps":{
-      "title":"Projekt-Schritte",
-      "headlines":{
-        "basic":"Grundlagen",
-        "info":"Infos",
-        "positions":"Leistungen"
+    "project_steps": {
+      "title": "Projekt-Schritte",
+      "headlines": {
+        "basic": "Grundlagen",
+        "info": "Infos",
+        "positions": "Leistungen"
       },
-      "fields":{
-        "process_number":"Prozess-Nummer",
-        "project":"Projekt",
-        "customer":"Kunde",
-        "object":"Objekt",
-        "employees":"Mitarbeiter",
-        "start_date":"Startdatum",
-        "end_date":"Abschlussdatum",
-        "positions":"Positionen",
-        "sec_pos":"Positionen",
-        "service":"Leistung",
-        "description":"Beschreibung",
-        "quantity":"Anzahl",
-        "single_price":"Einzelpreis",
-        "total_price":"Gesamtpreis",
-        "subtotal":"Netto-Preis",
-        "steps_title":"Schritte Titel",
-        "project_step":"Projektschritt"
+      "fields": {
+        "process_number": "Prozess-Nummer",
+        "project": "Projekt",
+        "customer": "Kunde",
+        "object": "Objekt",
+        "employees": "Mitarbeiter",
+        "dateRange":"Datumsbereich",
+        "positions": "Positionen",
+        "sec_pos": "Positionen",
+        "service": "Leistung",
+        "description": "Beschreibung",
+        "quantity": "Anzahl",
+        "single_price": "Einzelpreis",
+        "total_price": "Gesamtpreis",
+        "subtotal": "Netto-Preis",
+        "steps_title": "Schritte Titel",
+        "project_step": "Projektschritt"
       }
     }
   },
@@ -747,6 +762,36 @@
               "open": "Offen",
               "closed": "Abgeschlossen"
             }
+          }
+        }
+      }
+    },
+    "CreateProjectStepsFromProject": {
+      "ProjectStepsModal": {
+        "modal": {
+          "title": "Projekt-Schritte eingeben",
+          "headlines": {
+            "basic": "Grundlagen",
+            "info": "Infos",
+            "positions": "Leistungen"
+          },
+          "fields": {
+            "process_number": "Prozess-Nummer",
+            "project": "Projekt",
+            "customer": "Kunde",
+            "object": "Objekt",
+            "employees": "Mitarbeiter",
+            "dateRange":"Datumsbereich",
+            "positions": "Positionen",
+            "sec_pos": "Positionen",
+            "service": "Leistung",
+            "description": "Beschreibung",
+            "quantity": "Anzahl",
+            "single_price": "Einzelpreis",
+            "total_price": "Gesamtpreis",
+            "subtotal": "Netto-Preis",
+            "steps_title": "Schritte Titel",
+            "project_step": "Projektschritt"
           }
         }
       }

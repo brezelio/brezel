@@ -7,7 +7,9 @@
       "icon": "container",
       "title": "project_number",
       "layouts": {
-        "detail": "${file('config/projects/projects.detail.json')}"
+        "detail": "${file('config/projects/projects.detail.json')}",
+        "index": "${file('config/projects/projects.index.json')}"
+
       },
       "buttons": {
         "create_invoice": {
@@ -30,6 +32,13 @@
           "trigger": "CreateAdditionalService",
           "style": "primary",
           "show_in": ["module.show"]
+        },
+        "create_project_steps":{
+          "hidden":true,
+          "icon":"rocket",
+          "trigger":"CreateProjectStepsFromProject",
+          "style":"primary",
+          "show_in":["module.show"]
         }
       },
       "fields": [
@@ -257,6 +266,13 @@
     "resource": {
       "identifier": "create_additional_service.modal",
       "spec": "${jsonFile('config/modals/create_additional_service.modal.json', true)}"
+    }
+  },
+  {
+    "resource_layout": "project_to_project_steps_modal",
+    "resource": {
+      "identifier": "project_to_project_steps.modal",
+      "spec": "${jsonFile('config/modals/project_to_project_steps.modal.json', true)}"
     }
   }
 ]

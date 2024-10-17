@@ -418,7 +418,14 @@
           "title": "Enter Additional Services"
         }
       }
+    },
+    "CreateProjectStepsFromProject":{
+    "ProjectStepsModal":{
+      "modal":{
+        "title":"Enter Project Steps"
+      }
     }
+  }
   },
   "calendar": {
     "events": "Events",

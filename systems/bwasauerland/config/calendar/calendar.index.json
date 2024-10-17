@@ -30,7 +30,7 @@
                                                 "color": "#444",
                                                 "quick_create": true,
                                                 "recipes": {
-                                                    "title": "this.title + project"
+                                                    "title": "this.title"
                                                 }
                                             }
                                         ]
