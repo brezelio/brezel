@@ -189,6 +189,20 @@
                       "price_net",
                       "price_total"
                     ],
+                    "buttons": [
+                        {
+                            "title": "",
+                            "icon": "file-done",
+                            "type": "primary",
+                            "event": "offerAdditionalServices",
+                            "help": "generate_offer",
+                            "options": {
+                                "recipes": {
+                                    "hidden_from_frontend": "additional_service_status == 'closed' ? true : false"
+                                }
+                            }
+                        }
+                    ],
                     "pre_filters": [
                       {
                         "column": "project.id",

@@ -6,7 +6,8 @@
       "identifier": "additional_services",
       "icon": "contacts",
       "layouts": {
-        "detail": "${file('config/additional_services/additional_services.detail.json')}"
+        "detail": "${file('config/additional_services/additional_services.detail.json')}",
+        "index": "${file('config/additional_services/additional_services.index.json')}"
       },
       "fields": [
         {
@@ -21,6 +22,7 @@
           "identifier": "project",
           "type": "select",
           "options": {
+            "rules": "required",
             "references": "projects"
           }
         },
@@ -122,6 +124,15 @@
           "recipe": "price_net+(price_net* (taxrate / 100))"
         },
         {
+          "identifier": "signature",
+          "type": "signature",
+          "options": {
+            "show_in": [
+                "module.show"
+            ]
+          }
+        },
+        {
           "identifier": "attachments",
           "type": "list",
           "options": {
@@ -135,6 +146,13 @@
           }
         }
       ]
+    }
+  },
+  {
+    "resource_layout": "generate_signature_from_additional_service_modal",
+    "resource": {
+      "identifier": "generate_signature_from_additional_service.modal",
+      "spec": "${jsonFile('config/modals/generate_signature_from_additional_service.modal.json', true)}"
     }
   }
 ]

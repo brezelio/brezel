@@ -63,5 +63,19 @@
         "code": "${file('views/pdf/footer.blade.php')}"
       }
     }
+  },
+  {
+    "resource_view": "signature_additional_services",
+    "depends_on": "resource_module.views",
+    "policy": "sync",
+    "resource": {
+        "module": "views",
+        "client": "${resource_client.global}",
+        "fields": {
+            "name": "signature_additional_services.widget",
+            "code": "${file('views/widgets/signature_additional_services.vue')}",
+            "type": "twig"
+        }
+    }
   }
 ]

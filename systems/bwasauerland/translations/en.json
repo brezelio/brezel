@@ -214,6 +214,18 @@
         "total_price": "Total price",
         "attachments": "Attachments",
         "file": "File"
+      },
+      "widget": {
+        "service": "Service",
+        "description": "Description",
+        "single_price": "Single price",
+        "quantity": "Quantity",
+        "price_net": "Net Price",
+        "price_total": "Grand Total",
+        "total_price": "Total price",
+        "taxrate": "Tax rate",
+        "quantity_type": "Quantity type",
+        "tax_amount": "Tax amount"
       }
     },
     "proof_of_work": {
@@ -370,6 +382,17 @@
             "positions": "Services"
           }
         }
+      }
+    },
+    "OfferAdditionalServices": {
+      "AdditionalServicesSignatureModal": {
+        "modal": {
+          "title": "Confirm Additional Services"
+        }
+      },
+      "notifyingOnUpdation": {
+        "title": "Success",
+        "message": "Signed Successfully"
       }
     },
     "ProjectsToInvoiceWebhook": {

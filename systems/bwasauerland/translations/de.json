@@ -358,7 +358,20 @@
         "quantity_type": "Einheit",
         "tax_amount": "Steuerbetrag",
         "separately_billed": "Separate Rechnung",
-        "additional_service_status": "Status"
+        "additional_service_status": "Status",
+        "signature": "Unterschrift"
+      },
+      "widget": {
+        "service": "Leistung",
+        "description": "Beschreibung",
+        "single_price": "Einzelpreis",
+        "quantity": "Anzahl",
+        "price_net": "Netto-Preis",
+        "price_total": "Brutto-Preis",
+        "total_price": "Gesamtpreis",
+        "taxrate": "Steuersatz",
+        "quantity_type": "Einheit",
+        "tax_amount": "Steuerbetrag"
       },
       "choice": {
         "quantity_type": {
@@ -547,6 +560,17 @@
     }
   },
   "workflows": {
+    "OfferAdditionalServices": {
+      "AdditionalServicesSignatureModal": {
+        "modal": {
+          "title": "Bestätigen Sie zusätzliche Dienste"
+        }
+      },
+      "notifyingOnUpdation": {
+        "title": "Erfolg",
+        "message": "Erfolgreich signiert"
+      }
+    },
     "OffersToProjectWebhook": {
       "OfferToProjectModal": {
         "modal": {

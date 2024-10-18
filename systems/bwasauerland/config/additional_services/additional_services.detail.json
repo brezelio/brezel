@@ -73,13 +73,25 @@
               "components": [
                 {
                   "options": {
-                    "vertical_labels": false,
+                    "vertical_labels": true,
                     "fields": ["attachments"]
                   },
                   "type": "field_group"
                 }
               ],
-              "span": 12
+              "span": 6
+            },
+            {
+              "components": [
+                {
+                  "options": {
+                    "vertical_labels": true,
+                    "fields": ["signature"]
+                  },
+                  "type": "field_group"
+                }
+              ],
+              "span": 6
             },
             {
               "span": 12,
