@@ -1,34 +1,51 @@
 {
-  "name": "brezel/example",
-  "version": "1.0.0",
-  "description": "description",
-  "type": "project",
-  "minimum-stability": "dev",
-  "prefer-stable": true,
-  "license": "proprietary",
-  "require": {
-    "brezel/api": "dev-1.0.0-next.14"
-  },
-  "require-dev": {
-    "barryvdh/laravel-ide-helper": "*",
-    "nunomaduro/collision": "*",
-    "pestphp/pest": "*",
-    "pestphp/pest-plugin-laravel": "*",
-    "spatie/laravel-ignition": "*"
-  },
-  "config": {
-    "optimize-autoloader": true,
-    "allow-plugins": {
-      "endroid/installer": true,
-      "pestphp/pest-plugin": true,
-      "php-http/discovery": true
+    "name": "brezel/example",
+    "version": "1.0.0",
+    "description": "description",
+    "type": "project",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "license": "proprietary",
+    "require": {
+        "brezel/api": "dev-1.0.0-next.14"
     },
-    "gitlab-domains": ["gitlab.kiwis-and-brownies.de"]
-  },
-  "repositories": {
-    "gitlab.kiwis-and-brownies.de/7": {
-      "type": "composer",
-      "url": "https://gitlab.kiwis-and-brownies.de/api/v4/group/7/-/packages/composer/packages.json"
+    "require-dev": {
+        "barryvdh/laravel-ide-helper": "*",
+        "nunomaduro/collision": "*",
+        "pestphp/pest": "*",
+        "pestphp/pest-plugin-laravel": "*",
+        "spatie/laravel-ignition": "*"
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "allow-plugins": {
+            "endroid/installer": true,
+            "pestphp/pest-plugin": true,
+            "php-http/discovery": true
+        },
+        "gitlab-domains": [
+            "gitlab.kiwis-and-brownies.de"
+        ]
+    },
+    "scripts": {
+        "pre-install-cmd": [
+            "@composer check-platform-reqs"
+        ],
+        "pre-update-cmd": [
+            "@composer check-platform-reqs"
+        ],
+        "post-autoload-dump": [
+            "@cleanup-dependencies"
+        ],
+        "cleanup-dependencies": [
+            "@putenv COMPOSER=vendor/brezel/api/composer.json",
+            "@composer cleanup-dependencies"
+        ]
+    },
+    "repositories": {
+        "gitlab.kiwis-and-brownies.de/7": {
+            "type": "composer",
+            "url": "https://gitlab.kiwis-and-brownies.de/api/v4/group/7/-/packages/composer/packages.json"
+        }
     }
-  }
 }
