@@ -4,7 +4,10 @@
     "Export_as_PDF": "Export as PDF",
     "create_invoice": "Create Invoice",
     "generate_partial_invoice": "Generate Partial Invoice",
-    "create_project_steps":"Create Project Steps"
+    "create_project_steps":"Create Project Steps",
+    "confirm_additional_services": {
+      "help": "Confirm Additional Services"
+    }
   },
   "notifications": {},
   "modules": {

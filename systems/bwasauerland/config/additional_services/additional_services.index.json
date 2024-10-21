@@ -23,19 +23,28 @@
                     "options": {
                       "module": "additional_services",
                       "buttons": [
-                            {
-                                "title": "",
-                                "icon": "file-done",
-                                "type": "primary",
-                                "event": "offerAdditionalServices",
-                                "help": "generate_offer",
-                                "options": {
-                                    "recipes": {
-                                        "hidden_from_frontend": "additional_service_status == 'closed' ? true : false"
-                                    }
-                                }
-                            }
-                        ]
+                        {
+                          "identifier": "confirm_additional_services",
+                          "icon": "file-done",
+                          "type": "primary",
+                          "event": "offerAdditionalServices",
+                          "help": "buttons.confirm_additional_services.help",
+                          "options": {
+                              "recipes": {
+                                  "hidden_from_frontend": "additional_service_status == 'closed' ? true : false"
+                              }
+                          }
+                        }
+                      ],
+                      "columns": [
+                        "process",
+                        "project",
+                        "additional_service_status",
+                        "signature",
+                        "timestamp",
+                        "price_total",
+                        "reason"
+                      ]
                     }
                   }
                 ]

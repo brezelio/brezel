@@ -181,21 +181,18 @@
                       "process",
                       "project",
                       "additional_service_status",
-                      "added_by",
+                      "signature",
                       "timestamp",
-                      "reason",
-                      "taxrate",
-                      "tax_amount",
-                      "price_net",
-                      "price_total"
+                      "price_total",
+                      "reason"
                     ],
                     "buttons": [
                         {
-                            "title": "",
+                            "identifier": "manuallyConfirmOffer",
                             "icon": "file-done",
                             "type": "primary",
                             "event": "offerAdditionalServices",
-                            "help": "generate_offer",
+                            "help": "buttons.confirm_additional_services.help",
                             "options": {
                                 "recipes": {
                                     "hidden_from_frontend": "additional_service_status == 'closed' ? true : false"

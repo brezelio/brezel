@@ -7,7 +7,10 @@
     "generate_partial_invoice": "Teilrechnung erstellen",
     "create_additional_service": "Zusätzliche Dienstleistung eintragen",
     "generate_PDF": "PDF erzeugen",
-    "create_project_steps": "Projektschritte erstellen"
+    "create_project_steps": "Projektschritte erstellen",
+    "confirm_additional_services": {
+      "help": "Zusatzleistungen bestätigen"
+    }
   },
   "notifications": {},
   "modules": {
