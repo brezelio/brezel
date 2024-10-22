@@ -1,9 +1,15 @@
-ARG PHP_VERSION=8.3-fpm
+# syntax=docker/dockerfile:1.10.0
+
+# Args for the build
+ARG SYSTEM
 ARG PHP_MEMORY_LIMIT=1G
 
-# First, we build a layer with the system dependencies and php extensions.
+# Technical Args
+ARG PHP_VERSION=8.3-fpm
 ARG PHP_BASE_IMAGE=php:${PHP_VERSION}-alpine
-FROM $PHP_BASE_IMAGE as system
+
+# First, we build a layer with the system dependencies and php extensions.
+FROM $PHP_BASE_IMAGE AS system
 
 # Install dependencies
 RUN apk add --no-cache \
@@ -12,7 +18,11 @@ RUN apk add --no-cache \
     # Installs the mysql client to interact with the database
     mysql-client \
     # Needed to connect to mysql 8
-    mariadb-connector-c-dev
+    mariadb-connector-c-dev \
+    # Needed for supervisor
+    supervisor \
+    # For nginx
+    nginx
 
 # System level application dependencies for php extensions
 RUN apk add --no-cache \
@@ -83,7 +93,7 @@ RUN apk del .build-deps
 RUN rm -rf /tmp/pear
 
 # Now we build the composer layer
-FROM system as composer
+FROM system AS composer
 
 # Create workdir and set permissions
 WORKDIR /app
@@ -96,8 +106,14 @@ COPY --chown=www-data:www-data composer.lock composer.lock
 # Set the user to www-data temporarily for running composer
 USER www-data
 
-# Install dependencies without dev
-RUN composer install --no-interaction --no-scripts --no-dev --optimize-autoloader
+# Get composer token (and validate that one was passed to the build using --secret id=COMPOSER_TOKEN )
+RUN --mount=type=secret,id=COMPOSER_TOKEN,env=COMPOSER_TOKEN \
+    test -n "$COMPOSER_TOKEN" || (echo "Build secret \"COMPOSER_TOKEN\" needs to be set. See https://docs.docker.com/build/building/secrets" && false)
+
+# Set the composer token and install dependencies without dev deps
+RUN --mount=type=secret,id=COMPOSER_TOKEN,env=COMPOSER_TOKEN \
+    composer config gitlab-token.gitlab.kiwis-and-brownies.de "$COMPOSER_TOKEN" && \
+    composer install --no-interaction --no-scripts --no-dev --optimize-autoloader
 
 # Now run composer cleanup script to cleanup dependencies e.g. remove 100MB of Google apis...
 RUN composer run cleanup-dependencies --no-interaction
@@ -105,11 +121,13 @@ RUN composer run cleanup-dependencies --no-interaction
 # Switch back to root user
 USER root
 
-FROM composer as final
+FROM composer AS final
 
 # Increase memory limit by reusing the arg defined above
 ARG PHP_MEMORY_LIMIT
 RUN echo "memory_limit = $PHP_MEMORY_LIMIT" >> /usr/local/etc/php/conf.d/docker-php-memlimit.ini;
+
+WORKDIR /app
 
 # Copy the the application files
 COPY --chown=www-data:www-data --chmod=0755 bin bin
@@ -121,28 +139,41 @@ COPY --chown=www-data:www-data public public
 COPY --chown=www-data:www-data server.php server.php
 COPY --chown=www-data:www-data README.md README.md
 
+# Get nginx configuration
+COPY docker/api.nginx.conf nginx.conf
+
+# Configure php-fpm
+RUN echo "pm = dynamic" >> /usr/local/etc/php-fpm.conf && \
+    echo "pm.max_children = 300" >> /usr/local/etc/php-fpm.conf && \
+    echo "pm.start_servers = 20" >> /usr/local/etc/php-fpm.conf && \
+    echo "pm.min_spare_servers = 20" >> /usr/local/etc/php-fpm.conf && \
+    echo "pm.max_spare_servers = 50" >> /usr/local/etc/php-fpm.conf && \
+    echo "pm.process_idle_timeout = 15s" >> /usr/local/etc/php-fpm.conf && \
+    echo "pm.max_requests = 300" >> /usr/local/etc/php-fpm.conf
+
 # Remove .env to only use passed ones
 RUN rm .env || true
+
+# Register cron
+RUN mkdir -p /etc/cron
+RUN echo "* * * * * cd /app && BREZEL_ENV_DIR=storage php bakery schedule >> /dev/null 2>&1" > /etc/cron/crontab
+RUN chmod 0644 /etc/cron/crontab
+RUN crontab -u www-data /etc/cron/crontab
 
 # Expose port 9000 for php-fpm
 EXPOSE 9000
 
-# Register cron
-RUN echo "* * * * * www-data cd /app && BREZEL_ENV_DIR=storage /usr/local/bin/php bakery schedule >> /dev/null 2>&1" > /etc/cron.d/cron
-RUN chmod 0644 /etc/cron.d/cron
-RUN crontab /etc/cron.d/cron
+# Expose port 80 for nginx
+EXPOSE 80
 
-# Set the user to www-data
-USER www-data
+# Reuse SYSTEM build arg
+ARG SYSTEM
 
-# Run migrations & co, register supervisor config and then php-fpm
-CMD php bakery init --force && \
-    php bakery migrate --force && \
-    php bakery system create example && \
-    php bakery apply && \
-    php bakery load --force && \
-    mkdir -p storage/app storage/framework storage/logs && \
-    chown -R www-data:www-data storage && \
-    php bakery make:supervisor && \
-    /usr/bin/supervisord -c /app/supervisord.conf && \
-    php-fpm
+# Validate that the system build arg is set
+RUN test -n "SYSTEM" || (echo "build-arg \"SYSTEM\" needs to be set to identify which system is supposed to run in here" && false)
+
+# Get the start script
+COPY --chmod=0755 ../docker/start.sh start.sh
+
+# Start the system
+CMD ["ash", "start.sh", "${SYSTEM}"]
