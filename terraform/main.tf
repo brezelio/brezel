@@ -25,12 +25,12 @@ data "scaleway_rdb_instance" "brezel" {
 
 resource "scaleway_rdb_database" "system_meta" {
   instance_id = data.scaleway_rdb_instance.brezel.instance_id
-  name        = "brezel_system_${var.branch}_meta"
+  name        = "brezel_${local.system}_${var.branch}_meta"
 }
 
 resource "scaleway_rdb_database" "system" {
   instance_id = data.scaleway_rdb_instance.brezel.instance_id
-  name        = "brezel_system_${var.branch}"
+  name        = "brezel_${local.system}_${var.branch}"
 }
 
 resource "random_password" "db_meta_password" {
