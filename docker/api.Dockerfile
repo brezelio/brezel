@@ -188,8 +188,11 @@ ARG SYSTEM
 # Validate that the system build arg is set
 RUN test -n "SYSTEM" || (echo "build-arg \"SYSTEM\" needs to be set to identify which system is supposed to run in here" && false)
 
+# Write the system identifier to a file to be reused by the start script
+RUN echo "$SYSTEM" > /app/.system
+
 # Get the start script
 COPY --chmod=0755 ../docker/start.sh start.sh
 
 # Start the system
-CMD ["ash", "start.sh", "${SYSTEM}"]
+CMD ["ash", "start.sh"]

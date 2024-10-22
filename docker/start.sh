@@ -1,4 +1,8 @@
-#!/bin/bash
+#!/bin/ash
+
+# Read system name from .system file in this directory
+system=$(cat .system)
+echo "Running system '$system'"
 
 echo "Starting cron..."
 crond
@@ -14,7 +18,7 @@ php bakery init --force
 php bakery migrate --force
 
 # Create system if it does not exist
-php bakery system create ${1}
+php bakery system create $system
 
 # Apply the plan
 php bakery apply
@@ -25,12 +29,6 @@ php bakery load --force
 # Make sure the storage directory exists
 mkdir -p storage/app storage/framework storage/logs
 chown -R www-data:www-data storage
-
-# Output the php-fpm listen directive
-echo "php-fpm is configured to listen on:"
-php-fpm -tt
-echo "now greped"
-php-fpm -tt | grep -E "^listen\s*="
 
 # Start php-fpm in the background
 php-fpm -D
