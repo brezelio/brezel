@@ -5,6 +5,7 @@ resource "random_password" "dev_password" {
 
 locals {
   system      = "example"
+  system_repo = "registry.kiwis-and-brownies.de/kibro/basedonbrezel/your-brezel-repo"
   branch_slug = replace(var.branch, "[^a-zA-Z0-9-]", "-")
   base_host   = "${local.branch_slug}.${local.system}.review.brezel.cloud"
   app_url     = "http${var.secure ? "s" : ""}://${local.base_host}"
@@ -78,8 +79,8 @@ module "example" {
   pma_hostname      = "pma.${local.base_host}"
   brotcast_hostname = "brotcast.${local.base_host}"
   export_hostname   = "export.staging.cluster-sw.brezel.io"
-  image             = "registry.kiwis-and-brownies.de/kibro/basedonbrezel/your-brezel-repo:${local.branch_slug}"
-  spa_image         = "registry.kiwis-and-brownies.de/kibro/basedonbrezel/your-brezel-repo:${local.branch_slug}-spa"
+  image             = "${local.system_repo}:${local.branch_slug}"
+  spa_image         = "${local.system_repo}:${local.branch_slug}-spa"
   secure            = var.secure
   storage           = "10G"
   api_replicas      = 1
