@@ -105,7 +105,7 @@ module "system" {
   }
 
   env = {
-    BREZEL_JOBS_SUPERVISOR_CONF           = "workers.supervisord.conf"
+    BREZEL_JOBS_SUPERVISOR_CONF           = "/app/storage/workers.supervisord.conf"
     BREZEL_JOBS_SUPERVISOR_COMMAND        = "php bakery work --sleep=3 --tries=1"
     MAIL_DRIVER                           = "smtp"
     MAIL_HOST                             = var.mail_host
