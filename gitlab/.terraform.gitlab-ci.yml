@@ -5,6 +5,10 @@ include:
 # It will first build the Docker images for the API and SPA, then deploy them to a cluster.
 # Each branch gets deployed and is available at https://<branch-name>.example.review.brezel.cloud
 
+# Set the SYSTEM variable to the name of your system in your normal .gitlab-ci.yml. It will overwrite it here.
+variables:
+    SYSTEM: example
+
 stages:
     - build
     - deploy
@@ -35,7 +39,7 @@ build review spa:
         - npm ci
     script:
         - export VITE_APP_API_URL="https://api.$CI_COMMIT_REF_SLUG.example.review.brezel.cloud"
-        - export VITE_APP_SYSTEM=example
+        - export VITE_APP_SYSTEM=$SYSTEM
         - npm run build
 
 build review api:
@@ -71,7 +75,7 @@ build docker api:
         - export BRANCH_TAG=$CI_COMMIT_REF_SLUG
         - docker info
         - docker pull $CI_REGISTRY_IMAGE:$BRANCH_TAG || true
-        - docker build -f docker/api.Dockerfile --cache-from $CI_REGISTRY_IMAGE:$BRANCH_TAG --tag $CI_REGISTRY_IMAGE:$BRANCH_TAG .
+        - docker build -f docker/api.Dockerfile --cache-from $CI_REGISTRY_IMAGE:$BRANCH_TAG --tag $CI_REGISTRY_IMAGE:$BRANCH_TAG --build-arg SYSTEM=$SYSTEM --secret id=COMPOSER_TOKEN .
         - docker push $CI_REGISTRY_IMAGE:$BRANCH_TAG
 
 build docker spa:
