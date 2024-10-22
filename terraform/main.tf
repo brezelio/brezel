@@ -123,7 +123,7 @@ module "example" {
   }
 
   system_envs = {
-    "example" = {
+    "${local.system}" = {
       MANAGE_CONNECTION = "false"
       DB_DATABASE       = scaleway_rdb_database.example.name
       DB_USER           = scaleway_rdb_user.example.name
