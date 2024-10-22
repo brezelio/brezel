@@ -4,8 +4,8 @@ resource "random_password" "dev_password" {
 }
 
 locals {
-  system      = "example"
-  system_repo = "registry.kiwis-and-brownies.de/kibro/basedonbrezel/your-brezel-repo"
+  system      = "lemikos"
+  system_repo = "registry.kiwis-and-brownies.de/kibro/basedonbrezel/lemikos"
   branch_slug = replace(var.branch, "[^a-zA-Z0-9-]", "-")
   base_host   = "${local.branch_slug}.${local.system}.review.brezel.cloud"
   app_url     = "http${var.secure ? "s" : ""}://${local.base_host}"
@@ -43,7 +43,7 @@ resource "random_password" "db_password" {
 
 resource "scaleway_rdb_user" "system_meta" {
   instance_id = data.scaleway_rdb_instance.brezel.instance_id
-  name        = "brezel_system_${var.branch}_meta"
+  name        = "brezel_${local.system}_${var.branch}_meta"
   password    = random_password.db_meta_password.result
 }
 
@@ -56,7 +56,7 @@ resource "scaleway_rdb_privilege" "system_meta" {
 
 resource "scaleway_rdb_user" "system" {
   instance_id = data.scaleway_rdb_instance.brezel.instance_id
-  name        = "brezel_system_${var.branch}"
+  name        = "brezel_${local.system}_${var.branch}"
   password    = random_password.db_password.result
 }
 
