@@ -42,24 +42,9 @@ build review spa:
         - export VITE_APP_SYSTEM=$SYSTEM
         - npm run build
 
-build review api:
-    image: registry.kiwis-and-brownies.de/kibro/brezel/api:php-7.4
-    stage: build
-    rules:
-        - if: $CI_PIPELINE_SOURCE != "merge_request_event" # && $CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH
-    artifacts:
-        expire_in: 1 week
-        paths:
-            - vendor
-    before_script:
-        - composer config gitlab-token.gitlab.kiwis-and-brownies.de $PACKAGE_TOKEN_USER $PACKAGE_TOKEN
-    script:
-        - composer install
-
 build docker api:
     image: docker:git
     stage: build
-    needs: [ "build review api" ]
     variables:
         DOCKER_HOST: tcp://docker:2376
         DOCKER_TLS_CERTDIR: "/certs"
@@ -75,7 +60,7 @@ build docker api:
         - export BRANCH_TAG=$CI_COMMIT_REF_SLUG
         - docker info
         - docker pull $CI_REGISTRY_IMAGE:$BRANCH_TAG || true
-        - docker build -f docker/api.Dockerfile --cache-from $CI_REGISTRY_IMAGE:$BRANCH_TAG --tag $CI_REGISTRY_IMAGE:$BRANCH_TAG --build-arg SYSTEM=$SYSTEM --secret id=COMPOSER_TOKEN .
+        - docker build -f docker/api.Dockerfile --cache-from $CI_REGISTRY_IMAGE:$BRANCH_TAG --tag $CI_REGISTRY_IMAGE:$BRANCH_TAG --target=final --build-arg SYSTEM=$SYSTEM --secret id=COMPOSER_TOKEN .
         - docker push $CI_REGISTRY_IMAGE:$BRANCH_TAG
 
 build docker spa:
@@ -107,7 +92,7 @@ infra:update:
         entrypoint:
             - ""
     stage: deploy
-    needs: [ "build docker api", "build docker spa" ]
+    needs: [ "build docker api", "build docker ws","build docker spa" ]
     rules:
         - if: $CI_PIPELINE_SOURCE != "merge_request_event" # && $CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH
     before_script:
@@ -122,7 +107,7 @@ infra:review:
     image: registry.gitlab.com/gitlab-org/terraform-images/stable:latest
     extends: .terraform:build
     stage: deploy
-    needs: [ "build docker api", "build docker spa" ]
+    needs: [ "build docker api", "build docker ws","build docker spa" ]
     rules:
         - if: $CI_PIPELINE_SOURCE != "merge_request_event" # && $CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH
     variables:
@@ -174,5 +159,5 @@ stop review:
         - export KUBECONFIG="$HOME/.kube/config"
     script:
         - export BRANCH_TAG=$CI_COMMIT_REF_SLUG
-        - kubectl delete ns review-example-$BRANCH_TAG
+        - kubectl delete ns review-$SYSTEM-$BRANCH_TAG
 
