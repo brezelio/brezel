@@ -60,7 +60,7 @@ build docker api:
         - export BRANCH_TAG=$CI_COMMIT_REF_SLUG
         - docker info
         - docker pull $CI_REGISTRY_IMAGE:$BRANCH_TAG || true
-        - docker build -f docker/api.Dockerfile --cache-from $CI_REGISTRY_IMAGE:$BRANCH_TAG --tag $CI_REGISTRY_IMAGE:$BRANCH_TAG --target=final --build-arg SYSTEM=$SYSTEM --secret id=COMPOSER_TOKEN .
+        - docker build -f docker/api.Dockerfile --cache-from $CI_REGISTRY_IMAGE:$BRANCH_TAG --tag $CI_REGISTRY_IMAGE:$BRANCH_TAG --target=final --build-arg SYSTEM=$SYSTEM --build-arg COMPOSER_USER=$PACKAGE_TOKEN_USER --secret id=COMPOSER_TOKEN,env=PACKAGE_TOKEN .
         - docker push $CI_REGISTRY_IMAGE:$BRANCH_TAG
 
 build docker ws:
@@ -81,7 +81,7 @@ build docker ws:
         - export BRANCH_TAG=$CI_COMMIT_REF_SLUG
         - docker info
         - docker pull $CI_REGISTRY_IMAGE:$BRANCH_TAG || true
-        - docker build -f docker/api.Dockerfile --cache-from $CI_REGISTRY_IMAGE:$BRANCH_TAG --tag $CI_REGISTRY_IMAGE:$BRANCH_TAG --target=brotcast --build-arg SYSTEM=$SYSTEM --secret id=COMPOSER_TOKEN .
+        - docker build -f docker/api.Dockerfile --cache-from $CI_REGISTRY_IMAGE:$BRANCH_TAG --tag $CI_REGISTRY_IMAGE:$BRANCH_TAG-brotcast --target=brotcast --build-arg SYSTEM=$SYSTEM --build-arg COMPOSER_USER=$PACKAGE_TOKEN_USER --secret id=COMPOSER_TOKEN,env=PACKAGE_TOKEN .
         - docker push $CI_REGISTRY_IMAGE:$BRANCH_TAG-brotcast
 
 build docker spa:

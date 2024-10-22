@@ -3,6 +3,7 @@
 # Args for the build
 ARG SYSTEM
 ARG PHP_MEMORY_LIMIT=1G
+ARG COMPOSER_USER
 
 # Technical Args
 ARG PHP_VERSION=8.3-fpm
@@ -95,6 +96,9 @@ RUN rm -rf /tmp/pear
 # Now we build the composer layer
 FROM system AS composer
 
+# Will be used if set to define the user composer should use to access brezel/api
+ARG COMPOSER_USER
+
 # Create workdir and set permissions
 WORKDIR /app
 RUN chown -R www-data:www-data /app
@@ -112,7 +116,7 @@ RUN --mount=type=secret,id=COMPOSER_TOKEN,env=COMPOSER_TOKEN \
 
 # Set the composer token and install dependencies without dev deps
 RUN --mount=type=secret,id=COMPOSER_TOKEN,env=COMPOSER_TOKEN \
-    composer config gitlab-token.gitlab.kiwis-and-brownies.de "$COMPOSER_TOKEN" && \
+    composer config gitlab-token.gitlab.kiwis-and-brownies.de $COMPOSER_USER "$COMPOSER_TOKEN" && \
     composer install --no-interaction --no-scripts --no-dev --optimize-autoloader
 
 # Now run composer cleanup script to cleanup dependencies e.g. remove 100MB of Google apis...
