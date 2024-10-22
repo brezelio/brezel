@@ -23,14 +23,14 @@ data "scaleway_rdb_instance" "brezel" {
   instance_id = var.scw_rdb_instance_id
 }
 
-resource "scaleway_rdb_database" "example_meta" {
+resource "scaleway_rdb_database" "system_meta" {
   instance_id = data.scaleway_rdb_instance.brezel.instance_id
-  name        = "brezel_example_${var.branch}_meta"
+  name        = "brezel_system_${var.branch}_meta"
 }
 
-resource "scaleway_rdb_database" "example" {
+resource "scaleway_rdb_database" "system" {
   instance_id = data.scaleway_rdb_instance.brezel.instance_id
-  name        = "brezel_example_${var.branch}"
+  name        = "brezel_system_${var.branch}"
 }
 
 resource "random_password" "db_meta_password" {
@@ -41,39 +41,39 @@ resource "random_password" "db_password" {
   length = 32
 }
 
-resource "scaleway_rdb_user" "example_meta" {
+resource "scaleway_rdb_user" "system_meta" {
   instance_id = data.scaleway_rdb_instance.brezel.instance_id
-  name        = "brezel_example_${var.branch}_meta"
+  name        = "brezel_system_${var.branch}_meta"
   password    = random_password.db_meta_password.result
 }
 
-resource "scaleway_rdb_privilege" "example_meta" {
+resource "scaleway_rdb_privilege" "system_meta" {
   instance_id   = data.scaleway_rdb_instance.brezel.instance_id
-  database_name = scaleway_rdb_database.example_meta.name
-  user_name     = scaleway_rdb_user.example_meta.name
+  database_name = scaleway_rdb_database.system_meta.name
+  user_name     = scaleway_rdb_user.system_meta.name
   permission    = "all"
 }
 
-resource "scaleway_rdb_user" "example" {
+resource "scaleway_rdb_user" "system" {
   instance_id = data.scaleway_rdb_instance.brezel.instance_id
-  name        = "brezel_example_${var.branch}"
+  name        = "brezel_system_${var.branch}"
   password    = random_password.db_password.result
 }
 
-resource "scaleway_rdb_privilege" "example" {
+resource "scaleway_rdb_privilege" "system" {
   instance_id   = data.scaleway_rdb_instance.brezel.instance_id
-  database_name = scaleway_rdb_database.example.name
-  user_name     = scaleway_rdb_user.example.name
+  database_name = scaleway_rdb_database.system.name
+  user_name     = scaleway_rdb_user.system.name
   permission    = "all"
 }
 
-module "example" {
+module "system" {
   source            = "gitlab.kiwis-and-brownies.de/kibro/brezel-instance/kubernetes//brezel-instance"
   version           = "2.0.1"
   namespace         = kubernetes_namespace.branch.metadata[0].name
   cluster_issuer    = "letsencrypt"
   app_env           = var.app_env
-  default_system    = "${local.system}"
+  default_system    = local.system
   api_hostnames     = ["api.${local.base_host}"]
   hostnames         = [local.base_host]
   pma_hostname      = "pma.${local.base_host}"
@@ -90,8 +90,8 @@ module "example" {
   with_database_pod = false
   db_host           = data.scaleway_rdb_instance.brezel.endpoint_ip
   db_port           = data.scaleway_rdb_instance.brezel.endpoint_port
-  db_name           = scaleway_rdb_database.example_meta.name
-  db_user           = scaleway_rdb_user.example_meta.name
+  db_name           = scaleway_rdb_database.system_meta.name
+  db_user           = scaleway_rdb_user.system_meta.name
   db_password       = random_password.db_meta_password.result
 
   brezel_resources = {
@@ -125,8 +125,8 @@ module "example" {
   system_envs = {
     "${local.system}" = {
       MANAGE_CONNECTION = "false"
-      DB_DATABASE       = scaleway_rdb_database.example.name
-      DB_USER           = scaleway_rdb_user.example.name
+      DB_DATABASE       = scaleway_rdb_database.system.name
+      DB_USER           = scaleway_rdb_user.system.name
       DB_PASSWORD       = random_password.db_password.result
       ROOT_PASSWORD     = random_password.dev_password.result
 
