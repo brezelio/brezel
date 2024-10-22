@@ -1,0 +1,30 @@
+[
+  {
+    "resource_module": "users",
+    "resource": {
+      "identifier": "users",
+      "type": "users",
+      "icon": "user",
+      "fields": [
+        {
+          "identifier": "name",
+          "type": "text"
+        },
+        {
+          "identifier": "email",
+          "type": "email"
+        },
+        {
+          "identifier": "password",
+          "type": "password",
+          "options": {
+            "ignore_when_empty": true
+          }
+        }
+      ],
+      "layouts": {
+        "detail": "${file('/config/users.detail.json')}"
+      }
+    }
+  }
+]

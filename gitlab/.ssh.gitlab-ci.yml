@@ -1,9 +1,10 @@
+image: node:20
+
 stages:
   - build
   - deploy
 
 .build frontend base:
-  image: node:16
   stage: build
   artifacts:
     expire_in: 1 week
@@ -13,9 +14,14 @@ stages:
     - paths:
         - node_modules
   script:
-    - 'echo "//gitlab.com/api/v4/packages/npm/:_authToken=${CI_JOB_TOKEN}" > ~/.npmrc'
-    - npm config set @kibro:registry https://gitlab.com/api/v4/packages/npm/
-    - npm install -f
+    - npm config set @kibro:registry https://gitlab.kiwis-and-brownies.de/api/v4/packages/npm/
+    - 'echo "//gitlab.kiwis-and-brownies.de/api/v4/packages/npm/:_authToken=${CI_JOB_TOKEN}" >> ~/.npmrc'
+    - 'echo "//gitlab.kiwis-and-brownies.de/api/v4/projects/15/packages/npm/:_authToken=${CI_JOB_TOKEN}" >> ~/.npmrc'
+    - 'echo "//gitlab.kiwis-and-brownies.de/api/v4/projects/18/packages/npm/:_authToken=${CI_JOB_TOKEN}" >> ~/.npmrc'
+    - 'echo "//gitlab.kiwis-and-brownies.de/api/v4/projects/19/packages/npm/:_authToken=${CI_JOB_TOKEN}" >> ~/.npmrc'
+    - 'echo "//gitlab.kiwis-and-brownies.de/api/v4/projects/44/packages/npm/:_authToken=${CI_JOB_TOKEN}" >> ~/.npmrc'
+    - 'echo "//gitlab.kiwis-and-brownies.de/api/v4/projects/58/packages/npm/:_authToken=${CI_JOB_TOKEN}" >> ~/.npmrc'
+    - npm ci
     - npm run build
 
 .deploy frontend base:
@@ -33,7 +39,7 @@ stages:
     - scp -P $DEPLOY_PORT spa.htaccess $DEPLOY_USER@$DEPLOY_HOST:$DEPLOY_PATH/dist/.htaccess
 
 .deploy backend base:
-  image: registry.gitlab.com/kibro/brezel/api
+  image: registry.kiwis-and-brownies.de/kibro/brezel/api:php-7.4
   stage: deploy
   script:
     # ssh connect
@@ -42,67 +48,67 @@ stages:
     - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
     - ssh-add <(echo "$PRIVATE_KEY")
     - ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST "cd $DEPLOY_PATH && (git clone $CI_REPOSITORY_URL . || (git reset --hard HEAD && git pull))"
-    - ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST "cd $DEPLOY_PATH && composer config --auth gitlab-token.gitlab.com "$BREZEL_API_READ_TOKEN" --no-ansi --no-interaction"
+    - ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST "cd $DEPLOY_PATH && composer config --auth gitlab-token.gitlab.kiwis-and-brownies.de $PACKAGE_TOKEN_USER "$PACKAGE_TOKEN" --no-ansi --no-interaction"
     - ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST "cd $DEPLOY_PATH && composer install --no-interaction --no-dev"
     - ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST "cd $DEPLOY_PATH && php bakery init --force"
     - ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST "cd $DEPLOY_PATH && php bakery migrate --force"
     - ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST "cd $DEPLOY_PATH && php bakery apply"
     - ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST "cd $DEPLOY_PATH && php bakery load --force"
 
-#build frontend:
-#  extends: .build frontend base
-#  only:
-#    - main
-#
-#deploy frontend:
-#  extends: .deploy frontend base
-#  stage: deploy
-#  needs:
-#    - build frontend
-#  only:
-#    - main
-#  variables:
-#    DEPLOY_HOST: $PROD_HOST
-#    DEPLOY_PORT: $PROD_PORT
-#    DEPLOY_USER: $PROD_USER
-#    DEPLOY_PATH: $PROD_PATH
-#
-#deploy backend:
-#  extends: .deploy backend base
-#  only:
-#    - main
-#  variables:
-#    DEPLOY_HOST: $PROD_HOST
-#    DEPLOY_PORT: $PROD_PORT
-#    DEPLOY_USER: $PROD_USER
-#    DEPLOY_PATH: $PROD_PATH
-#
-#deploy backend staging:
-#  extends: .deploy backend base
-#  only:
-#    - staging
-#  variables:
-#    DEPLOY_HOST: $STAGING_HOST
-#    DEPLOY_PORT: $STAGING_PORT
-#    DEPLOY_USER: $STAGING_USER
-#    DEPLOY_PATH: $STAGING_PATH
-#
-#build frontend staging:
-#  extends: .build frontend base
-#  only:
-#    - staging
-#  variables:
-#    VUE_APP_API_URL: $STAGING_API_URL
-#    VUE_APP_SYSTEM: $STAGING_SYSTEM
-#
-#deploy frontend staging:
-#  extends: .deploy frontend base
-#  only:
-#    - staging
-#  needs:
-#    - build frontend staging
-#  variables:
-#    DEPLOY_HOST: $STAGING_HOST
-#    DEPLOY_PORT: $STAGING_PORT
-#    DEPLOY_USER: $STAGING_USER
-#    DEPLOY_PATH: $STAGING_PATH
+build frontend:
+  extends: .build frontend base
+  only:
+    - main
+
+deploy frontend:
+  extends: .deploy frontend base
+  stage: deploy
+  needs:
+    - build frontend
+  only:
+    - main
+  variables:
+    DEPLOY_HOST: $PROD_HOST
+    DEPLOY_PORT: $PROD_PORT
+    DEPLOY_USER: $PROD_USER
+    DEPLOY_PATH: $PROD_PATH
+
+deploy backend:
+  extends: .deploy backend base
+  only:
+    - main
+  variables:
+    DEPLOY_HOST: $PROD_HOST
+    DEPLOY_PORT: $PROD_PORT
+    DEPLOY_USER: $PROD_USER
+    DEPLOY_PATH: $PROD_PATH
+
+deploy backend staging:
+  extends: .deploy backend base
+  only:
+    - staging
+  variables:
+    DEPLOY_HOST: $STAGING_HOST
+    DEPLOY_PORT: $STAGING_PORT
+    DEPLOY_USER: $STAGING_USER
+    DEPLOY_PATH: $STAGING_PATH
+
+build frontend staging:
+  extends: .build frontend base
+  only:
+    - staging
+  variables:
+    VUE_APP_API_URL: $STAGING_API_URL
+    VUE_APP_SYSTEM: $STAGING_SYSTEM
+
+deploy frontend staging:
+  extends: .deploy frontend base
+  only:
+    - staging
+  needs:
+    - build frontend staging
+  variables:
+    DEPLOY_HOST: $STAGING_HOST
+    DEPLOY_PORT: $STAGING_PORT
+    DEPLOY_USER: $STAGING_USER
+    DEPLOY_PATH: $STAGING_PATH

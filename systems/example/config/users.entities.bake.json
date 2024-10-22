@@ -1,0 +1,15 @@
+[
+  {
+    "resource_user": "admin",
+    "resource": {
+      "module": "users",
+      "client": "${resource_client.global}",
+      "root": true,
+      "fields": {
+        "email": "dev@ki-bro.com",
+        "password": "secret",
+        "name": "Admin"
+      }
+    }
+  }
+]

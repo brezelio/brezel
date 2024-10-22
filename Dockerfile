@@ -24,15 +24,13 @@ RUN apt-get install -y libkrb5-dev
 RUN apt-get install -y rsync
 RUN apt-get install -y supervisor
 RUN apt-get install -y nginx
-RUN apt-get install -y libicu-dev
 
 # Install PHP and composer dependencies
 RUN apt-get install -qq git curl libmcrypt-dev libjpeg-dev libpng-dev libfreetype6-dev libbz2-dev libjpeg62-turbo-dev
 
 # Install needed extensions
 RUN docker-php-ext-configure imap --with-kerberos --with-imap-ssl
-RUN docker-php-ext-configure intl
-RUN docker-php-ext-install pdo_mysql zip exif pcntl gd bcmath sockets imap intl
+RUN docker-php-ext-install pdo_mysql zip exif pcntl gd bcmath sockets imap
 
 # Install composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer

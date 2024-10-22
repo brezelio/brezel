@@ -1,0 +1,15 @@
+[
+    {
+        "resource_menu": "main",
+        "resource": {
+            "name": "main",
+            "elements": [
+                "users",
+                "clients"
+            ]
+        }
+    }
+]
+
+
+

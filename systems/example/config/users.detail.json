@@ -1,0 +1,35 @@
+{
+    "tabs": [
+        {
+            "identifier": "",
+            "icon": "",
+            "rows": [
+                {
+                    "cols": [
+                        {
+                            "span": 24,
+                            "components": [
+                                {
+                                    "type": "headline",
+                                    "options": {
+                                        "identifier": "basic"
+                                    }
+                                },
+                                {
+                                    "type": "field_group",
+                                    "options": {
+                                        "fields": [
+                                            "name",
+                                            "email",
+                                            "password"
+                                        ]
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

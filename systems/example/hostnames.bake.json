@@ -1,0 +1,8 @@
+[
+  {
+    "resource_hostname": "example",
+    "resource": {
+      "hostname": "example"
+    }
+  }
+]
