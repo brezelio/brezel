@@ -124,6 +124,7 @@
     "offers": {
       "title": "Angebote",
       "headlines": {
+        "offers": "Angebote",
         "general": "Allgemein",
         "info": "Infos",
         "positions": "Positionen"
@@ -514,7 +515,7 @@
       "mobile": "Mobil",
       "email": "E-Mail",
       "order_data": "Auftragsdaten",
-      "what_is_the_problem": "Welches Problem liegt vor?",
+      "what_is_the_problem": "Problem",
       "horizontal_humidity": "Horizontale Feuchte",
       "surface_moisture": "Flächen Feuchte",
       "mold": "Schimmel",
