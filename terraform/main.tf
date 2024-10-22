@@ -69,7 +69,7 @@ resource "scaleway_rdb_privilege" "example" {
 
 module "example" {
   source            = "gitlab.kiwis-and-brownies.de/kibro/brezel-instance/kubernetes//brezel-instance"
-  version           = "1.2.1"
+  version           = "2.0.1"
   namespace         = kubernetes_namespace.branch.metadata[0].name
   cluster_issuer    = "letsencrypt"
   app_env           = var.app_env
@@ -81,6 +81,7 @@ module "example" {
   export_hostname   = "export.staging.cluster-sw.brezel.io"
   image             = "${local.system_repo}:${local.branch_slug}"
   spa_image         = "${local.system_repo}:${local.branch_slug}-spa"
+  brotcast_image    = "${local.system_repo}:${local.branch_slug}-brotcast"
   secure            = var.secure
   storage           = "10G"
   api_replicas      = 1

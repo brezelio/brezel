@@ -63,6 +63,27 @@ build docker api:
         - docker build -f docker/api.Dockerfile --cache-from $CI_REGISTRY_IMAGE:$BRANCH_TAG --tag $CI_REGISTRY_IMAGE:$BRANCH_TAG --target=final --build-arg SYSTEM=$SYSTEM --secret id=COMPOSER_TOKEN .
         - docker push $CI_REGISTRY_IMAGE:$BRANCH_TAG
 
+build docker ws:
+    image: docker:git
+    stage: build
+    variables:
+        DOCKER_HOST: tcp://docker:2376
+        DOCKER_TLS_CERTDIR: "/certs"
+        DOCKER_TLS_VERIFY: 1
+        DOCKER_CERT_PATH: "$DOCKER_TLS_CERTDIR/client"
+    rules:
+        - if: $CI_PIPELINE_SOURCE != "merge_request_event" # && $CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH
+    services:
+        - docker:dind
+    before_script:
+        - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    script:
+        - export BRANCH_TAG=$CI_COMMIT_REF_SLUG
+        - docker info
+        - docker pull $CI_REGISTRY_IMAGE:$BRANCH_TAG || true
+        - docker build -f docker/api.Dockerfile --cache-from $CI_REGISTRY_IMAGE:$BRANCH_TAG --tag $CI_REGISTRY_IMAGE:$BRANCH_TAG --target=brotcast --build-arg SYSTEM=$SYSTEM --secret id=COMPOSER_TOKEN .
+        - docker push $CI_REGISTRY_IMAGE:$BRANCH_TAG-brotcast
+
 build docker spa:
     image: docker:git
     stage: build

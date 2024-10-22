@@ -121,12 +121,19 @@ RUN composer run cleanup-dependencies --no-interaction
 # Switch back to root user
 USER root
 
-FROM composer AS final
+FROM composer AS brotcast
 
-# Increase memory limit by reusing the arg defined above
-ARG PHP_MEMORY_LIMIT
-RUN echo "memory_limit = $PHP_MEMORY_LIMIT" >> /usr/local/etc/php/conf.d/docker-php-memlimit.ini;
+WORKDIR /app
 
+# Copy files relevant for the brotcast service via reverb
+COPY --chown=www-data:www-data bakery bakery
+COPY --chown=www-data:www-data bootstrap bootstrap
+
+EXPOSE 8086
+
+CMD ["php", "bakery", "brotcast:start"]
+
+FROM composer AS system-files
 WORKDIR /app
 
 # Copy the the application files
@@ -139,8 +146,13 @@ COPY --chown=www-data:www-data public public
 COPY --chown=www-data:www-data server.php server.php
 COPY --chown=www-data:www-data README.md README.md
 
-# Get nginx configuration
-COPY docker/api.nginx.conf nginx.conf
+# Remove .env to only use passed values
+RUN rm .env || true
+
+FROM system-files AS final
+# Increase memory limit by reusing the arg defined above
+ARG PHP_MEMORY_LIMIT
+RUN echo "memory_limit = $PHP_MEMORY_LIMIT" >> /usr/local/etc/php/conf.d/docker-php-memlimit.ini;
 
 # Configure php-fpm
 RUN echo "pm = dynamic" >> /usr/local/etc/php-fpm.conf && \
@@ -151,8 +163,8 @@ RUN echo "pm = dynamic" >> /usr/local/etc/php-fpm.conf && \
     echo "pm.process_idle_timeout = 15s" >> /usr/local/etc/php-fpm.conf && \
     echo "pm.max_requests = 300" >> /usr/local/etc/php-fpm.conf
 
-# Remove .env to only use passed ones
-RUN rm .env || true
+# Get nginx configuration
+COPY docker/api.nginx.conf nginx.conf
 
 # Register cron
 RUN mkdir -p /etc/cron
