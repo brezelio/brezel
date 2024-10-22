@@ -1,0 +1,32 @@
+[
+    {
+        "resource_module": "views",
+        "resource": {
+            "layouts": {
+                "detail": "${file('config/views.detail.json')}"
+            },
+            "type": "views",
+            "identifier": "views",
+            "title": "name",
+            "icon": "eyes",
+            "fields": [
+                {
+                    "identifier": "name",
+                    "type": "text",
+                    "options": {
+                        "rules": "required"
+                    }
+                },
+                {
+                    "identifier": "code",
+                    "type": "code",
+                    "options": {
+                        "rules": "required",
+                        "show_in_resource_table": false,
+                        "show_in_export": false
+                    }
+                }
+            ]
+        }
+    }
+]

@@ -1,0 +1,15 @@
+[
+    {
+      "resource_module": "create_order",
+      "import": true,
+      "resource": {
+        "identifier": "create_order",
+        "icon": "mdi:shopping-cart-outline",
+        "title": "'Bestellung'",
+        "layouts": {
+          "index": "${file('config/create_order/create_order.index.json')}"
+        }
+      }
+    }
+  ]
+  

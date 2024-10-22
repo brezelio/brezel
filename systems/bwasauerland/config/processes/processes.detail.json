@@ -1,0 +1,285 @@
+{
+  "tab_position": "right",
+  "tabs": [
+    {
+      "identifier": "processes",
+      "icon": "setting",
+      "rows": [
+        {
+          "cols": [
+            {
+              "span": 12,
+              "components": [
+                {
+                  "type": "headline",
+                  "options": {
+                    "identifier": "general",
+                    "icon": "user"
+                  }
+                },
+                {
+                  "type": "field_group",
+                  "options": {
+                    "fields": ["process_id", "name"]
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "identifier": "offers",
+      "options": {
+        "recipes": {
+          "hidden_from_frontend": "!id"
+        },
+        "show_in": ["module.show"]
+      },
+      "icon": "shop",
+      "rows": [
+        {
+          "cols": [
+            {
+              "span": 24,
+              "components": [
+                {
+                  "type": "headline",
+                  "options": {
+                    "identifier": "offers",
+                    "icon": "shop"
+                  }
+                },
+                {
+                  "type": "resource_table",
+                  "options": {
+                    "module": "offers",
+                    "columns": [
+                      "process",
+                      "date",
+                      "created_by",
+                      "customer",
+                      "object",
+                      "problem",
+                      "room_temperature",
+                      "room_humidity"
+                    ],
+                    "pre_filters": [
+                      {
+                        "column": "process.id",
+                        "operator": "=",
+                        "field": "id"
+                      }
+                    ],
+                    "create_in_modal": true,
+                    "edit_in_modal": true
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "identifier": "projects",
+      "options": {
+        "recipes": {
+          "hidden_from_frontend": "!id"
+        },
+        "show_in": ["module.show"]
+      },
+      "icon": "container",
+      "rows": [
+        {
+          "cols": [
+            {
+              "span": 24,
+              "components": [
+                {
+                  "type": "headline",
+                  "options": {
+                    "identifier": "projects",
+                    "icon": "container"
+                  }
+                },
+                {
+                  "type": "resource_table",
+                  "options": {
+                    "module": "projects",
+                    "columns": [
+                      "project_number",
+                      "process",
+                      "customer",
+                      "object",
+                      "start_date",
+                      "end_date",
+                      "total_worktime",
+                      "status",
+                      "problem"
+                    ],
+                    "pre_filters": [
+                      {
+                        "column": "process.id",
+                        "operator": "=",
+                        "field": "id"
+                      }
+                    ],
+                    "create_in_modal": true,
+                    "edit_in_modal": true
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "identifier": "additional_services",
+      "options": {
+        "recipes": {
+          "hidden_from_frontend": "!id"
+        },
+        "show_in": ["module.show"]
+      },
+      "icon": "contacts",
+      "rows": [
+        {
+          "cols": [
+            {
+              "span": 24,
+              "components": [
+                {
+                  "type": "headline",
+                  "options": {
+                    "identifier": "additional_services",
+                    "icon": "contacts"
+                  }
+                },
+                {
+                  "type": "resource_table",
+                  "options": {
+                    "module": "additional_services",
+                    "columns": [
+                      "process",
+                      "project",
+                      "added_by",
+                      "additional_service_status",
+                      "timestamp"
+                    ],
+                    "pre_filters": [
+                      {
+                        "column": "process.id",
+                        "operator": "=",
+                        "field": "id"
+                      }
+                    ],
+                    "create_in_modal": true,
+                    "edit_in_modal": true
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "identifier": "proof_of_work",
+      "options": {
+        "recipes": {
+          "hidden_from_frontend": "!id"
+        },
+        "show_in": ["module.show"]
+      },
+      "icon": "rocket",
+      "rows": [
+        {
+          "cols": [
+            {
+              "span": 24,
+              "components": [
+                {
+                  "type": "headline",
+                  "options": {
+                    "identifier": "proof_of_work",
+                    "icon": "rocket"
+                  }
+                },
+                {
+                  "type": "resource_table",
+                  "options": {
+                    "module": "proof_of_work",
+                    "columns": ["project", "timestamp"],
+                    "create_in_modal": true,
+                    "edit_in_modal": true
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "identifier": "invoices",
+      "options": {
+        "recipes": {
+          "hidden_from_frontend": "!id"
+        },
+        "show_in": ["module.show"]
+      },
+      "icon": "bank",
+      "rows": [
+        {
+          "cols": [
+            {
+              "options": {},
+              "components": [
+                {
+                  "type": "headline",
+                  "options": {
+                    "identifier": "invoices",
+                    "icon": "bank"
+                  }
+                },
+                {
+                  "type": "resource_table",
+                  "options": {
+                    "module": "invoices",
+                    "columns": [
+                      "invoice_number",
+                      "project",
+                      "process",
+                      "customer",
+                      "type",
+                      "status",
+                      "address",
+                      "zip",
+                      "city",
+                      "phone",
+                      "taxrate",
+                      "price_net",
+                      "price_total"
+                    ],
+                    "pre_filters": [
+                      {
+                        "column": "process.id",
+                        "operator": "=",
+                        "field": "id"
+                      }
+                    ],
+                    "create_in_modal": true,
+                    "edit_in_modal": true
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

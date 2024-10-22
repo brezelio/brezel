@@ -1,0 +1,31 @@
+[
+  {
+    "resource_user": "admin",
+    "resource": {
+      "module": "users",
+      "client": "${resource_client.global}",
+      "root": true,
+      "fields": {
+        "email": "dev@ki-bro.com",
+        "password": "${env('ROOT_PASSWORD')}",
+        "name": "Admin"
+      }
+    }
+  },
+  {
+    "resource_user": "bkw_admin",
+    "resource": {
+      "module": "users",
+      "client": "${resource_client.bkw}",
+      "root": false,
+      "fields": {
+        "email": "admin@bkw.com",
+        "password": "${env('ROOT_PASSWORD')}",
+        "name": "BKW Admin",
+        "roles": [
+            "${resource_entity.role_admin}"
+        ]
+      }
+    }
+  }
+]

@@ -1,0 +1,261 @@
+{
+  "tabs": [
+    {
+      "identifier": "project_to_invoice",
+      "rows": [
+        {
+          "cols": [
+            {
+              "options": {
+                "borderless": true
+              },
+              "span": 12,
+              "components": [
+                {
+                  "type": "field_group",
+                  "options": {
+                    "vertical_labels": true,
+                    "no_padding": true,
+                    "fields": [
+                      {
+                        "identifier": "process",
+                        "type": "select",
+                        "options": {
+                          "references": "processes",
+                          "rules": "required"
+                        }
+                      },
+                      {
+                        "identifier": "invoice_number",
+                        "type": "incrementing",
+                        "options": {
+                          "incrementing_default": 0,
+                          "incrementing_format": "TEXT%INV-|DATE%Y|DATE%m|TEXT%-|INCREMENTING_VALUE%3"
+                        }
+                      },
+                      {
+                        "identifier": "project",
+                        "type": "select",
+                        "options": {
+                          "references": "projects"
+                        }
+                      },
+                      {
+                        "identifier": "customer",
+                        "type": "select",
+                        "options": {
+                          "references": "customers"
+                        }
+                      },
+                      {
+                        "identifier": "type",
+                        "type": "choice",
+                        "options": {
+                          "values": ["partial", "final"]
+                        }
+                      },
+                      {
+                        "identifier": "invoice_status",
+                        "type": "choice",
+                        "options": {
+                          "values": ["open", "paid"]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "options": {
+                "borderless": true
+              },
+              "span": 12,
+              "components": [
+                {
+                  "type": "field_group",
+                  "options": {
+                    "vertical_labels": true,
+                    "no_padding": true,
+                    "fields": [
+                      {
+                        "identifier": "address",
+                        "type": "text"
+                      },
+                      {
+                        "identifier": "zip",
+                        "type": "text"
+                      },
+                      {
+                        "identifier": "city",
+                        "type": "text"
+                      },
+                      {
+                        "identifier": "phone",
+                        "type": "tel"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "options": {
+                "borderless": true
+              },
+              "span": 24,
+              "components": [
+                {
+                  "type": "field_group",
+                  "options": {
+                    "vertical_labels": true,
+                    "no_padding": true,
+                    "fields": [
+                      {
+                        "identifier": "services",
+                        "options": {
+                          "show_ordering": true,
+                          "fields": [
+                            {
+                              "identifier": "service",
+                              "type": "select",
+                              "options": {
+                                "references": "services",
+                                "add_options": true,
+                                "events": {
+                                  "on_change": ["OnChangeService"]
+                                }
+                              }
+                            },
+                            {
+                              "identifier": "description",
+                              "type": "text"
+                            },
+                            {
+                              "identifier": "single_price",
+                              "type": "currency",
+                              "options": {
+                                "readonly": true
+                              }
+                            },
+                            {
+                              "identifier": "quantity",
+                              "type": "number",
+                              "options": {
+                                "decimal_digits": 2,
+                                "min": 1
+                              }
+                            },
+                            {
+                              "identifier": "total_price",
+                              "type": "currency",
+                              "recipe": "single_price * quantity"
+                            }
+                          ]
+                        },
+                        "type": "list"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "options": {
+                "borderless": true
+              },
+              "span": 12,
+              "components": [
+                {
+                  "type": "field_group",
+                  "options": {
+                    "vertical_labels": true,
+                    "no_padding": true,
+                    "fields": [
+                      {
+                        "identifier": "project_amount",
+                        "type": "currency",
+                        "options": {
+                          "readonly": true
+                        }
+                      },
+                      {
+                        "identifier": "previously_invoiced",
+                        "type": "currency",
+                        "options": {
+                          "readonly": true
+                        }
+                      },
+                      {
+                        "identifier": "partial_pay",
+                        "type": "currency",
+                        "options": {
+                          "readonly": true
+                        }
+                      },
+                      {
+                        "identifier": "tax_portion",
+                        "type": "currency",
+                        "options": {
+                          "readonly": true
+                        }
+                      },
+                      {
+                        "identifier": "invoice_open_position",
+                        "type": "currency",
+                        "options": {
+                          "readonly": true
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "options": {
+                "borderless": true
+              },
+              "span": 12,
+              "components": [
+                {
+                  "type": "field_group",
+                  "options": {
+                    "vertical_labels": true,
+                    "no_padding": true,
+                    "fields": [
+                      {
+                        "identifier": "price_net",
+                        "type": "currency",
+                        "recipe": "sum(services[*].total_price)"
+                      },
+                      {
+                        "identifier": "taxrate",
+                        "type": "number",
+                        "options": {
+                          "readonly": true,
+                          "default": 19,
+                          "suffix": "%"
+                        }
+                      },
+                      {
+                        "identifier": "tax_amount",
+                        "type": "currency",
+                        "recipe": "(price_net* (taxrate / 100))"
+                      },
+                      {
+                        "identifier": "price_total",
+                        "type": "currency",
+                        "recipe": "price_net+(price_net* (taxrate / 100))"
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,72 @@
+[
+  {
+    "resource_menu": "main",
+    "resource": {
+      "name": "main",
+      "elements": [
+        "calendar",
+        {
+          "name": "project_management",
+          "type": "submenu",
+          "icon": "mdi:briefcase-outline",
+          "elements": [
+            {
+              "name": "processes",
+              "icon": "setting"
+            },
+            "offers",
+            "projects",
+            "additional_services",
+            "proof_of_work",
+            "invoices",
+            "project_steps"
+          ]
+        },
+        {
+          "name": "default_data",
+          "type": "submenu",
+          "icon": "user",
+          "elements": [
+            {
+              "name": "customers",
+              "icon": "user"
+            },
+            {
+              "name": "services",
+              "icon": "service"
+            },
+            {
+              "name": "problems",
+              "icon": "setting"
+            },
+            {
+              "name": "building_types",
+              "icon": "setting"
+            },
+            "employee"
+          ]
+        },
+        {
+          "name": "system_settings",
+          "type": "submenu",
+          "icon": "setting",
+          "elements": ["users", "clients", "roles"]
+        },
+        {
+          "name": "sale",
+          "type": "submenu",
+          "icon": "lucide:warehouse",
+          "elements": [
+            "create_order",
+            {
+              "name": "products",
+              "icon": "fluent-mdl2:product"
+            },
+            "orders",
+            "products_categories"
+          ]
+        }
+      ]
+    }
+  }
+]

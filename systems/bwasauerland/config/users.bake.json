@@ -1,0 +1,58 @@
+[
+  {
+    "resource_module": "users",
+    "resource": {
+      "identifier": "users",
+      "type": "users",
+      "title":"name",
+      "icon": "user",
+      "options": {
+        "shared": true
+      },
+      "fields": [
+        {
+          "identifier": "name",
+          "type": "text"
+        },
+        {
+          "identifier": "email",
+          "type": "email"
+        },
+        {
+          "identifier": "password",
+          "type": "password",
+          "options": {
+            "ignore_when_empty": true
+          }
+        },
+        {
+          "identifier": "roles",
+          "type": "multiselect",
+          "options": {
+            "references": "roles"
+          }
+        },
+        {
+          "identifier": "address",
+          "type": "text"
+        },
+        {
+          "identifier": "zip",
+          "type": "text"
+        },
+        {
+          "identifier": "city",
+          "type": "text"
+        },
+        {
+          "identifier": "phone",
+          "type": "tel"
+        }
+      ],
+      "layouts": {
+        "detail": "${file('/config/users.detail.json')}",
+        "index": "${file('/config/users.index.json')}"
+      }
+    }
+  }
+]

@@ -1,0 +1,46 @@
+{
+    "affix": {
+        "cols": []
+    },
+    "tabs": [
+        {
+            "identifier": "appointments",
+            "rows": [
+                {
+                    "cols": [
+                        {
+                            "span": 24,
+                            "components": [
+                                {
+                                    "type": "calendar",
+                                    "options": {
+                                        "available_views": [
+                                            "year",
+                                            "month",
+                                            "week",
+                                            "day"
+                                        ],
+                                        "editable": true,
+                                        "week_numbers": true,
+                                        "events": [
+                                            {
+                                                "identifier": "events",
+                                                "module": "project_steps",
+                                                "field": "steps_title",
+                                                "color": "#444",
+                                                "quick_create": true,
+                                                "recipes": {
+                                                    "title": "this.title"
+                                                }
+                                            }
+                                        ]
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,268 @@
+{% extends "default.pdf.base" %}
+
+{% block styles %}
+    .header_content {
+    width: 100%;
+    box-sizing: border-box;
+    height: 80mm;
+    line-height: 1.1;
+    }
+
+    .header-left {
+    float: left;
+    left: 0;
+    top: 0;
+    }
+
+    .header-right {
+    float: right;
+    right: 0;
+    top: 0;
+    width: 70mm;
+    }
+
+    table.info {
+    width: 100%;
+    }
+
+    table.info th {
+    border-bottom: 2px solid black;
+    font-weight: normal;
+    text-align: left;
+    padding: 2mm 2mm;
+    white-space: nowrap;
+    font-weight: bold;
+    }
+
+    tbody.positions td {
+    padding: 2mm 2mm;
+    }
+
+    tr.descr td {
+    padding: 0 2mm 4mm;
+    }
+
+    .positions tr:nth-child(even):not(.subtotal) {
+    background-color: #e4e8ea;
+    }
+
+    table.info tfoot > tr > td, .divider {
+    border-top: 2px solid black;
+    }
+
+    table.total_info {
+    width: 100%;
+    margin-top: 5mm;
+    }
+
+    table.total_info th {
+    font-weight: normal;
+    text-align: left;
+    font-size: 12pt;
+    }
+
+    table.total_info td {
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    }
+
+    table .border-none {
+    border:none;
+    text-align:left;
+    }
+
+    table .noborder td {
+        border: none;
+    }
+
+    table .positions td {
+        padding: 2mm 2mm;
+    }
+
+    .positions tr:nth-child(even):not(.subtotal) {
+    background-color: #e4e8ea;
+    }
+
+
+    .number-td {
+    white-space: nowrap;
+    text-align: right;
+    }
+
+    .mini {
+    width: 1px;
+    white-space: nowrap;
+    }
+
+    .small {
+    font-size: 10pt;
+    }
+    .page_break {
+    page-break-after:always;
+    }
+
+    #offer_info tr td tr td {
+    padding-right: 1cm;
+    }
+{% endblock %}
+
+{% block header_content %}
+    <div class="header_content">
+        <div class="header-left">
+            <div style="font-size: 8pt;">
+                BWA Sauerland GmbH Peter-Dassis-Ring 40a 57482 Wenden
+            </div>
+            <div style="font-size: 12pt;">
+                <p>
+                    {{resource.customer.name }}
+                    {% if resource.customer.name is not null %}
+                        <br/>{% endif %}
+                    {{resource.customer.invoice_address_line_1}}
+                    {% if resource.customer.invoice_address_line_2 is not null %}<br/>{% endif %}
+                    {{resource.customer.invoice_address_line_2}}
+                    {% if resource.customer.invoice_address_line_2 is not null %}<br/>{% endif %}
+                    {{resource.customer.invoice_street}}
+                    {% if resource.customer.invoice_street is not null %}<br/>{% endif %}
+                    {{resource.customer.invoice_city}} {{resource.customer.invoice_zip}}
+                    {% if resource.customer.invoice_city is not null or resource.customer.invoice_zip is not null %}<br/>{% endif %}
+                </p>
+            </div>
+            <div style="font-size: 18pt; margin-top: 25mm">
+                <p>
+                    Angebot
+                </p>
+            </div>
+        </div>
+        <div class="header-right">
+            <div>
+                <table class="noborder" style="font-size: 10pt;width: 100%">
+                    <tr>
+                        <td>Angebotsdatum</td>
+                        <td class="number-td"><b>{{ date(resource.date)|date('d.m.Y') }}</b></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block document_content %}
+    <br>
+    <section class="table-responsive" style="overflow-x: auto; border-collapse: collapse;">
+        <table class="positions noborder" style="border-collapse: collapse;">
+            <thead>
+            <tr class="positions-head" style="width: 100%; border-bottom: solid 2px black;">
+                <th style="width: 1px; padding: 0 10px 0 0; text-align: left;">{{t('pdf.offer.service')}}</th>
+                <th style="text-align: left; padding: 0 10px 0 10px;">{{t('pdf.offer.description')}}</th>
+                <th style="width: 1px; padding: 0 10px 0 10px; text-align: right;">{{t('pdf.offer.quantity')}}</th>
+                <th style="width: 1px; padding: 0 10px 0 10px; text-align: right;">{{t('pdf.offer.single_price')}}</th>
+                <th style="width: 1px; padding: 0 0 0 10px; text-align: right;">{{t('pdf.offer.total_price')}}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% if resource.positions %}
+                {% for  key, position in resource.positions %}
+                    <tr class="position-row">
+                        <td class="" style="text-align: left; width: 1px; padding: 0 10px 0 0;">{{ position.service.name ?? "" }} </td>
+                        <td class="" style="text-align: left; padding: 0 10px 0 10px;">{{ position.description ?? "" }}</td>
+                        <td class="" style="text-align: right;  width: 1px; padding: 0 10px 0 10px;">{{ position.quantity ?? "" }}</td>
+                        <td class="" style="text-align: right;  width: 1px; padding: 0 10px 0 10px;">{{ position.single_price ?? "" }} &#8364</td>
+                        <td class="" style="text-align: right;  width: 1px; padding: 0 0 0 10px;">{{ position.total_price ?? "" }}&#8364</td>
+                    </tr>
+                {% endfor %}
+            {% endif %}
+            </tbody>
+        </table>
+    </section>
+    <section>
+        <div style="float: right;">
+            <table class="noborder">
+                <tr>
+                    <td style="padding-right: 0.5cm;">{{t('pdf.offer.net_price')}}</td>
+                    <td style="text-align: right;">{{resource.price_net}}&#8364</td>
+                </tr>
+                <tr>
+                    <td style="padding-right: 0.5cm;">{{t('pdf.offer.taxrate')}} ({{ resource.taxrate }}%)</td>
+                    <td style="text-align: right;">{{resource.tax_amount}} &#8364</td>
+                </tr>
+                <tr>
+                    <td style="padding-right: 0.5cm;"><b>{{t('pdf.offer.total_price')}}</b></td>
+                    <td style="text-align: right;"><b>{{resource.price_total}} &#8364</b></td>
+                </tr>
+            </table>
+        </div>
+    </section>
+    <section class="section_content_location" style="clear: both;">
+        <p style="font-weight:bold;">{{t('pdf.offer.para4')}}</p>
+        <p>{{resource.pdf_info_text}}</p>
+    </section>
+    <div class="page_break"></div>
+    <div style="font-size: 18pt; margin-top: 25mm">
+        <p>
+            Anhang
+        </p>
+    </div>
+    <section>
+        <b>{{t('pdf.offer.order_data')}}:</b>
+        <table style="width: 100%;" id="offer_info" class="noborder positions">
+            <tr>
+                <td style="vertical-align: top;"><table>
+                        <tr>
+                            <td>{{t('pdf.offer.what_is_the_problem')}}</td>
+                            <td>{{t('pdf.offer.horizontal_humidity')}}</td>
+                        </tr>
+                        <tr>
+                            <td>{{t('pdf.offer.surface_moisture')}}</td>
+                            <td>{{t('pdf.offer.mold')}}</td>
+                        </tr>
+                        <tr>
+                            <td>{{t('pdf.offer.room_temperature')}}</td>
+                            <td>{{resource.room_temperature}}</td>
+                        </tr>
+                        <tr>
+                            <td>{{t('pdf.offer.room_humidity')}}</td>
+                            <td>{{resource.room_humidity}}</td>
+                        </tr>
+                        <tr>
+                            <td>{{t('pdf.offer.surface_temperature')}}</td>
+                            <td>{{resource.surface_temperature}}</td>
+                        </tr>
+                        <tr>
+                            <td>{{t('pdf.offer.construction_year')}}</td>
+                            <td>{{resource.construction_year}}</td>
+                        </tr>
+                    </table></td>
+                <td style="vertical-align: top;"><table>
+                        <tr>
+                            <td>{{t('pdf.offer.wall_material')}}</td>
+                            <td>{{resource.wall_material}}</td>
+                        </tr>
+                        <tr>
+                            <td>{{t('pdf.offer.wall_thickness')}}</td>
+                            <td>{{resource.wall_thickness}}</td>
+                        </tr>
+                        <tr>
+                            <td>{{t('pdf.offer.building_type')}}</td>
+                            <td>{{resource.building_type}} {{ resource.level }}</td>
+                        </tr>
+                        <tr>
+                            <td>{{t('pdf.offer.floor_material')}}</td>
+                            <td>{{resource.floor_material}}</td>
+                        </tr>
+                        <tr>
+                            <td>{{t('pdf.offer.strip_foundation')}}</td>
+                            <td>{{resource.strip_foundation}}</td>
+                        </tr>
+                        <tr>
+                            <td>{{t('pdf.offer.para1')}}</td>
+                            <td>{% if resource.seals_done_in_the_past == true %}
+                                    Ja
+                                {%else%}
+                                    Nein
+                                {% endif %}</td>
+                        </tr>
+                    </table></td>
+            </tr>
+        </table>
+    </section>
+{% endblock %}

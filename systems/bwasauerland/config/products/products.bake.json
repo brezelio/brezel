@@ -1,0 +1,90 @@
+[
+    {
+      "resource_module": "products",
+      "import": true,
+      "resource": {
+        "identifier": "products",
+        "icon": "fluent-mdl2:product-variant",
+        "title": "name",
+        "options": {
+            "shared": true
+        },
+        "layouts": {
+          "detail": "${file('config/products/products.detail.json')}",
+          "index": "${file('config/products/products.index.json')}"
+        },
+        "fields": [
+          {
+            "identifier": "name",
+            "type": "text"
+          },
+          {
+            "identifier": "product_type",
+            "type": "choice",
+            "options": {
+              "allow_clear": false,
+                "values": [
+                    "group",
+                    "single"
+                ],
+                "default": "single"
+            }
+          },
+          {
+            "identifier": "product_category",
+            "type": "multiselect",
+            "options": {
+              "rules": "required",
+              "references": "products_categories"
+            }
+          },
+          {
+            "identifier": "item_number",
+            "type": "text",
+            "options":{
+                "recipes": {
+                  "hidden_from_frontend": "product_type == 'group'"
+                }
+            }
+          },
+          {
+            "identifier": "description",
+            "type": "textarea"
+          },
+          {
+            "identifier": "price_netto",
+            "type": "currency",
+            "options": {
+                "span": 12
+            }
+          },
+          {
+            "identifier": "parent",
+            "type": "select",
+            "options": {
+                "references": "products",
+                "pre_filters": [
+                    {
+                        "column": "id",
+                        "operator": "!=",
+                        "field": "id"
+                    }
+                ]
+            }
+          },
+          {
+            "identifier": "image",
+            "type": "file",
+            "options": {
+                "references": "files",
+                "path": "products",
+                "recipes": {
+                  "hidden_from_frontend": "product_type == 'group'"
+                }
+            }  
+          }
+        ]
+      }
+    }
+  ]
+  

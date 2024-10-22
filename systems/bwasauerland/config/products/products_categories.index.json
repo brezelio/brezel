@@ -1,0 +1,38 @@
+{
+    "type": "index",
+    "tabs": [
+        {
+            "identifier": "products_categories",
+            "icon": "bank",
+            "position": 0,
+            "rows": [
+                {
+                    "cols": [
+                        {
+                            "options": {
+                            },
+                            "components": [
+                                {
+                                    "type": "headline",
+                                    "options": {
+                                        "identifier": "categories",
+                                        "icon": "bx:category-alt"
+                                    }
+                                },
+                                {
+                                    "type": "resource_table",
+                                    "options": {
+                                        "module": "products_categories",
+                                        "columns": [
+                                            "name"
+                                        ]
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,241 @@
+[
+  {
+    "resource_module": "offers",
+    "import": true,
+    "resource": {
+      "identifier": "offers",
+      "icon": "shop",
+      "layouts": {
+        "detail": "${file('config/offers/offers.detail.json')}",
+        "index": "${file('config/offers/offers.index.json')}"
+
+      },
+      "buttons": {
+        "Create Project": {
+          "trigger": "OffersToProjectWebhook",
+          "style": "primary",
+          "show_in": ["module.show"]
+        },
+        "Export_as_PDF": {
+          "trigger": "OfferPDFWebhook",
+          "icon": "file-pdf",
+          "show_in": ["module.show"]
+        }
+      },
+      "fields": [
+        {
+          "identifier": "process",
+          "type": "select",
+          "options": {
+            "references": "processes",
+            "add_options": true
+          }
+        },
+        {
+          "identifier": "date",
+          "type": "date",
+          "options": {
+            "fullDay": true,
+            "rules": "required",
+            "default": "NOW",
+            "recipes": {
+              "default": "date()"
+            }
+          }
+        },
+        {
+          "identifier": "created_by",
+          "type": "select",
+          "options": {
+            "references": "users",
+            "rules": "required",
+            "recipes": {
+              "default": "user()"
+            }
+          }
+        },
+        {
+          "identifier": "customer",
+          "type": "select",
+          "options": {
+            "references": "customers",
+            "rules": "required"
+          }
+        },
+        {
+          "identifier": "object",
+          "type": "select",
+          "options": {
+            "references": "objects",
+            "add_options": true
+          }
+        },
+        {
+          "identifier": "problem",
+          "type": "select",
+          "options": {
+            "references": "problems",
+            "rules": "required"
+          }
+        },
+        {
+          "identifier": "room_temperature",
+          "type": "number"
+        },
+        {
+          "identifier": "room_humidity",
+          "type": "number"
+        },
+        {
+          "identifier": "surface_temperature",
+          "type": "number"
+        },
+        {
+          "identifier": "construction_year",
+          "type": "text"
+        },
+        {
+          "identifier": "wall_material",
+          "type": "text"
+        },
+        {
+          "identifier": "wall_thickness",
+          "type": "number"
+        },
+        {
+          "identifier": "building_type",
+          "type": "select",
+          "options": {
+            "references": "building_types"
+          }
+        },
+        {
+          "identifier": "level",
+          "type": "text"
+        },
+        {
+          "identifier": "floor_material",
+          "type": "text"
+        },
+        {
+          "identifier": "strip_foundation",
+          "type": "text"
+        },
+        {
+          "identifier": "seals_done_in_the_past",
+          "type": "checkbox"
+        },
+        {
+          "identifier": "positions",
+          "options": {
+            "show_ordering": true,
+            "fields": [
+              {
+                "identifier": "service",
+                "type": "select",
+                "options": {
+                  "references": "services",
+                  "add_options": true,
+                  "events": {
+                    "on_change": ["OnChangeService"]
+                  }
+                }
+              },
+              {
+                "identifier": "description",
+                "type": "text"
+              },
+              {
+                "identifier": "single_price",
+                "type": "currency",
+                "options": {
+                  "readonly": false
+                }
+              },
+              {
+                "identifier": "quantity_type",
+                "type": "choice",
+                "options": {
+                  "values": [
+                    "hourly",
+                    "flat_price"
+                  ]
+                }
+              },
+              {
+                "identifier": "quantity",
+                "type": "number",
+                "options": {
+                  "decimal_digits": 2,
+                  "min": 1,
+                  "default": 1
+                }
+              },
+              {
+                "identifier": "discount",
+                "type": "number",
+                "options": {
+                    "suffix": "%",
+                    "decimal_digits": 2,
+                    "default": 0
+                }
+              },
+              {
+                "identifier": "total_price",
+                "type": "currency",
+                "recipe": "(discount > 0) ? ((single_price * quantity)-((single_price * quantity) * (discount / 100))) : (single_price * quantity)"
+              }
+            ]
+          },
+          "type": "list"
+        },
+        {
+          "identifier": "taxrate",
+          "type": "number",
+          "options": {
+            "default": 19,
+            "readonly": true
+          }
+        },
+        {
+          "identifier": "tax_amount",
+          "type": "currency",
+          "recipe": "price_net * (taxrate / 100)"
+        },
+        {
+          "identifier": "price_net",
+          "type": "currency",
+          "recipe": "(overall_discount > 0) ? (sum(positions[*].total_price) - (sum(positions[*].total_price) * (overall_discount / 100))) : sum(positions[*].total_price)"
+        },
+        {
+          "identifier": "overall_discount",
+          "type": "number",
+          "options": {
+              "suffix": "%",
+              "decimal_digits": 2,
+              "default": 0
+          }
+        },
+        {
+          "identifier": "price_total",
+          "type": "currency",
+          "recipe": "price_net+(price_net* (taxrate / 100))"
+        },
+        {
+          "identifier": "pdf_info_text",
+          "type": "textarea",
+          "options": {
+            "default": "Das o.g Angebot beinhaltet keinen Druckwasserschaden. Dieser wird separat pro Packer mit 120,00€(brutto) berechnet. Eine Überwanderung ist ebenfalls nicht enthalten. Hier muss ggf. die Horizontalsperre erganzt werden (auf eine doppellagige Horizontalsperre) oder sogar durch eine Flächensperre. Nach einer angemessenen Trocknungszeit,sollte der jetzt Salz belastete Putz durch einen geeigneten Putz ersetzt werden."
+          }
+        }
+      ]
+    }
+  },
+  {
+    "resource_layout": "manually_offer_to_project_modal",
+    "resource": {
+      "identifier": "manually_offer_to_project.modal",
+      "spec": "${jsonFile('config/modals/manually_offer_to_project.modal.json', true)}"
+    }
+  }
+]

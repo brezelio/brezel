@@ -1,0 +1,45 @@
+{
+  "type": "index",
+  "tabs": [
+    {
+      "identifier": "projects",
+      "icon": "container",
+      "position": 0,
+      "rows": [
+        {
+          "cols": [
+            {
+              "options": {},
+              "components": [
+                {
+                  "type": "headline",
+                  "options": {
+                    "identifier": "projects",
+                    "icon": "container"
+                  }
+                },
+                {
+                  "type": "resource_table",
+                  "options": {
+                    "module": "projects",
+                    "columns": [
+                      "project_number",
+                      "process",
+                      "customer",
+                      "object",
+                      "status",
+                      "problem",
+                      "price_total",
+                      "previously_invoiced",
+                      "invoice_open_position"
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,68 @@
+[
+  {
+    "resource_view": "offer_content",
+    "depends_on": "resource_module.views",
+    "resource": {
+      "module": "views",
+      "client": "${resource_client.global}",
+      "fields": {
+        "name": "offer content",
+        "type": "twig",
+        "code": "${file('views/pdf/offerpdf/offerContent.twig')}"
+      }
+    }
+  },
+  {
+    "resource_view": "invoice_content",
+    "depends_on": "resource_module.views",
+    "resource": {
+      "module": "views",
+      "client": "${resource_client.global}",
+      "fields": {
+        "name": "invoice content",
+        "type": "twig",
+        "code": "${file('views/pdf/invoices/invoiceContent.twig')}"
+      }
+    }
+  },
+  {
+    "resource_view": "proof_of_work_pdf",
+    "depends_on": "resource_module.views",
+    "resource": {
+      "module": "views",
+      "client": "${resource_client.global}",
+      "fields": {
+        "name": "proof_of_work_pdf",
+        "type": "twig",
+        "code": "${file('views/pdf/proofOfWorkPdf.twig')}"
+      }
+    }
+  },
+  {
+    "resource_view": "pdf_base",
+    "depends_on": "resource_module.views",
+    "resource": {
+      "module": "views",
+      "client": "${resource_client.global}",
+      "fields": {
+        "name": "default.pdf.base",
+        "type": "twig",
+        "code": "${file('views/pdf/base.twig')}"
+      }
+    }
+  },
+  {
+    "resource_view": "signature_additional_services",
+    "depends_on": "resource_module.views",
+    "policy": "sync",
+    "resource": {
+        "module": "views",
+        "client": "${resource_client.global}",
+        "fields": {
+            "name": "signature_additional_services.widget",
+            "code": "${file('views/widgets/signature_additional_services.vue')}",
+            "type": "twig"
+        }
+    }
+  }
+]

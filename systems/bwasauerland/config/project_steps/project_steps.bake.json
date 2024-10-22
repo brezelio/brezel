@@ -1,0 +1,139 @@
+[
+  {
+    "resource_module": "project_steps",
+    "import": true,
+    "resource": {
+      "identifier": "project_steps",
+      "title": "project_step",
+      "icon": "rocket",
+      "layouts": {
+        "detail": "${file('config/project_steps/project_steps.detail.json')}",
+        "index": "${file('config/project_steps/project_steps.index.json')}"
+      },
+      "fields": [
+        {
+          "identifier": "project_step",
+          "type": "incrementing",
+          "options": {
+            "incrementing_default": 0,
+            "incrementing_format": "TEXT%PROSTP-|DATE%Y|DATE%m|TEXT%-|INCREMENTING_VALUE%3"
+          }
+        },
+        {
+          "identifier": "steps_title",
+          "type": "text",
+          "options": {
+            "recipes": {
+              "default": "project.project_number",
+              "hidden_from_frontend": false
+            }
+          }
+        },
+        {
+          "identifier": "dateRange",
+          "type": "dateRange",
+          "options": {
+            "rules": "required",
+            "quick_create_in_calendar": true,
+            "create_in_calendar": true,
+            "show_in_calendar": true,
+            "calendar_title": "steps_title",
+            "full_day": true
+          }
+        },
+        {
+          "identifier": "process_number",
+          "type": "select",
+          "options": {
+            "references": "processes"
+          }
+        },
+        {
+          "identifier": "project",
+          "type": "select",
+          "options": {
+            "references": "projects"
+          }
+        },
+        {
+          "identifier": "customer",
+          "type": "select",
+          "options": {
+            "references": "customers"
+          }
+        },
+        {
+          "identifier": "object",
+          "type": "select",
+          "options": {
+            "references": "objects"
+          }
+        },
+        {
+          "identifier": "employees",
+          "type": "multiselect",
+          "options": {
+            "references": "employee"
+          }
+        },
+        {
+          "identifier": "positions",
+          "options": {
+            "show_ordering": true,
+            "fields": [
+              {
+                "identifier": "service",
+                "type": "select",
+                "options": {
+                  "references": "services",
+                  "add_options": true,
+                  "events": {
+                    "on_change": ["OnChangeService"]
+                  }
+                }
+              },
+              {
+                "identifier": "description",
+                "type": "text"
+              },
+              {
+                "identifier": "single_price",
+                "type": "currency",
+                "options": {
+                  "readonly": false
+                }
+              },
+              {
+                "identifier": "quantity_type",
+                "type": "choice",
+                "options": {
+                  "values": ["hourly", "flat_price"]
+                }
+              },
+              {
+                "identifier": "quantity",
+                "type": "number",
+                "options": {
+                  "decimal_digits": 2,
+                  "min": 1,
+                  "default": 1
+                }
+              },
+              {
+                "identifier": "total_price",
+                "type": "currency",
+                "recipe": "single_price * quantity"
+              }
+            ]
+          },
+          "type": "list"
+        },
+        {
+          "identifier": "subtotal",
+          "type": "currency",
+          "recipe": "round(sum(positions[*].total_price) * 100) / 100"
+        }
+      ]
+    }
+  }
+]

@@ -1,0 +1,47 @@
+[
+    {
+        "resource_module": "files",
+        "import": true,
+        "resource": {
+            "identifier": "files",
+            "type": "files",
+            "title": "name",
+            "icon": "file",
+            "fields": [
+                {
+                    "identifier": "name",
+                    "type": "text",
+                    "options": {
+                        "autofocus": true,
+                        "rules": "required"
+                    }
+                },
+                {
+                    "identifier": "path",
+                    "type": "text",
+                    "options": {
+                        "rules": "required"
+                    }
+                },
+                {
+                    "identifier": "mime_type",
+                    "type": "text",
+                    "options": {
+                        "readonly": true
+                    }
+                },
+                {
+                    "identifier": "size",
+                    "type": "number",
+                    "options": {
+                        "rules": "required",
+                        "readonly": true
+                    }
+                }
+            ],
+            "layouts": {
+                "detail": "${file('config/files.detail.json')}"
+            }
+        }
+    }
+]

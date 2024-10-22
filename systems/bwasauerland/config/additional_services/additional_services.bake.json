@@ -1,0 +1,158 @@
+[
+  {
+    "resource_module": "additional_services",
+    "import": true,
+    "resource": {
+      "identifier": "additional_services",
+      "icon": "contacts",
+      "layouts": {
+        "detail": "${file('config/additional_services/additional_services.detail.json')}",
+        "index": "${file('config/additional_services/additional_services.index.json')}"
+      },
+      "fields": [
+        {
+          "identifier": "process",
+          "type": "select",
+          "options": {
+            "rules": "required",
+            "references": "processes"
+          }
+        },
+        {
+          "identifier": "project",
+          "type": "select",
+          "options": {
+            "rules": "required",
+            "references": "projects"
+          }
+        },
+        {
+          "identifier": "added_by",
+          "type": "select",
+          "options": {
+            "references": "customers"
+          }
+        },
+        {
+          "identifier": "additional_service_status",
+          "type": "choice",
+          "options": {
+            "mode": "buttons",
+            "values": ["open", "closed"],
+            "default": "open"
+          }
+        },
+        {
+          "identifier": "timestamp",
+          "type": "datetime"
+        },
+        {
+          "identifier": "reason",
+          "type": "text"
+        },
+        {
+          "identifier": "services",
+          "type": "list",
+          "options": {
+            "show_ordering": true,
+            "fields": [
+              {
+                "identifier": "service",
+                "type": "select",
+                "options": {
+                  "references": "services",
+                  "add_options": true,
+                  "events": {
+                    "on_change": ["OnChangeService"]
+                  }
+                }
+              },
+              {
+                "identifier": "description",
+                "type": "text"
+              },
+              {
+                "identifier": "single_price",
+                "type": "currency"
+              },
+              {
+                "identifier": "quantity_type",
+                "type": "choice",
+                "options": {
+                  "values": [
+                    "hourly",
+                    "flat_price"
+                  ]
+                }
+              },
+              {
+                "identifier": "quantity",
+                "type": "number",
+                "options": {
+                  "default": 1
+                }
+              },
+              {
+                "identifier": "total_price",
+                "type": "currency",
+                "recipe": "single_price * quantity"
+              }
+            ]
+          }
+        },
+        {
+          "identifier": "taxrate",
+          "type": "number",
+          "options": {
+            "default": 19,
+            "readonly": true
+          }
+        },
+        {
+          "identifier": "tax_amount",
+          "type": "currency",
+          "recipe": "price_net * (taxrate / 100)"
+        },
+        {
+          "identifier": "price_net",
+          "type": "currency",
+          "recipe": "sum(services[*].total_price)"
+        },
+        {
+          "identifier": "price_total",
+          "type": "currency",
+          "recipe": "price_net+(price_net* (taxrate / 100))"
+        },
+        {
+          "identifier": "signature",
+          "type": "signature",
+          "options": {
+            "show_in": [
+                "module.show"
+            ]
+          }
+        },
+        {
+          "identifier": "attachments",
+          "type": "list",
+          "options": {
+            "show_ordering": true,
+            "fields": [
+              {
+                "identifier": "file",
+                "type": "upload"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  {
+    "resource_layout": "generate_signature_from_additional_service_modal",
+    "resource": {
+      "identifier": "generate_signature_from_additional_service.modal",
+      "spec": "${jsonFile('config/modals/generate_signature_from_additional_service.modal.json', true)}"
+    }
+  }
+]

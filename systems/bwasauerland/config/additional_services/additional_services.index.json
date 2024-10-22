@@ -1,0 +1,58 @@
+{
+    "type": "index",
+    "tabs": [
+      {
+        "identifier": "additional_services",
+        "icon": "contacts",
+        "position": 0,
+        "rows": [
+          {
+            "cols": [
+              {
+                "options": {},
+                "components": [
+                  {
+                    "type": "headline",
+                    "options": {
+                      "identifier": "additional_services",
+                      "icon": "contacts"
+                    }
+                  },
+                  {
+                    "type": "resource_table",
+                    "options": {
+                      "module": "additional_services",
+                      "buttons": [
+                        {
+                          "identifier": "confirm_additional_services",
+                          "icon": "file-done",
+                          "type": "primary",
+                          "event": "offerAdditionalServices",
+                          "help": "buttons.confirm_additional_services.help",
+                          "options": {
+                              "recipes": {
+                                  "hidden_from_frontend": "additional_service_status == 'closed' ? true : false"
+                              }
+                          }
+                        }
+                      ],
+                      "columns": [
+                        "process",
+                        "project",
+                        "additional_service_status",
+                        "signature",
+                        "timestamp",
+                        "price_total",
+                        "reason"
+                      ]
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+  

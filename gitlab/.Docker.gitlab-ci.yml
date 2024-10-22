@@ -1,10 +1,11 @@
-image: node:20
+image: node:14.15
 
 stages:
   - build
   - deploy
 
 build frontend:
+  image: node:16
   stage: build
   only:
     - master

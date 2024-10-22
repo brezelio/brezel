@@ -1,0 +1,200 @@
+{
+    "identifier": "OfferAdditionalServices",
+    "title": "Additional services signed",
+    "description": null,
+    "async": false,
+    "queue": null,
+    "debug": false,
+    "entry": "offerAdditionalServices",
+    "elements": [
+        {
+            "name": "offerAdditionalServices",
+            "type": "event/webhook",
+            "options": {
+                "async": false,
+                "roles": null,
+                "title": "Generate Signature",
+                "module": null,
+                "public": false
+            },
+            "in": {},
+            "set": {
+                "addnServices": "default:"
+            },
+            "to": {
+                "default": {
+                    "setLocale": [
+                        "default"
+                    ],
+                    "AdditionalServicesSignatureModal": [
+                        "default"
+                    ]
+                }
+            },
+            "meta": {
+                "position": [
+                    167.1999969482422,
+                    291.2000062465668
+                ]
+            }
+        },
+        {
+            "name": "setLocale",
+            "type": "op/recipe",
+            "options": {
+                "recipe": "locale()"
+            },
+            "in": {},
+            "set": {
+                "locale": "default:"
+            },
+            "to": {},
+            "meta": {
+                "position": [
+                    543.9937744140625,
+                    197.6461639404297
+                ]
+            }
+        },
+        {
+            "name": "AdditionalServicesSignatureModal",
+            "type": "action/modal",
+            "options": {
+                "hard": false,
+                "type": "confirm",
+                "title": {
+                    ".recipe": "t('workflows.OfferAdditionalServices.AdditionalServicesSignatureModal.modal.title')"
+                },
+                "fields": [],
+                "layout": "generate_signature_from_additional_service.modal",
+                "checkpoint": true,
+                "autosave_key": null
+            },
+            "in": {},
+            "set": {
+                "modalData": "confirm:"
+            },
+            "to": {
+                "confirm": {
+                    "updatingAdditionalServicesEntity": [
+                        "default"
+                    ]
+                }
+            },
+            "meta": {
+                "position": [
+                    544.7656369071137,
+                    371.9784915999501
+                ]
+            }
+        },
+        {
+            "name": "updatingAdditionalServicesEntity",
+            "type": "action/update",
+            "options": {
+                "global": false,
+                "module": "additional_services",
+                "scopes": [],
+                "values": {
+                    "signature": "$modalData.signature"
+                },
+                "filters": [
+                    [
+                        {
+                            "left": {
+                                "type": "field",
+                                "value": "id"
+                            },
+                            "right": {
+                                "type": "recipe",
+                                "value": "$modalData.id"
+                            },
+                            "operator": "="
+                        }
+                    ]
+                ],
+                "listItems": null,
+                "logComment": null,
+                "logUpdates": true,
+                "permissions": false,
+                "withTrashed": false
+            },
+            "in": {},
+            "set": {},
+            "to": {
+                "default": {
+                    "notifyingOnUpdation": [
+                        "default"
+                    ]
+                }
+            },
+            "meta": {
+                "position": [
+                    850.9212186371167,
+                    427.0436738030612
+                ]
+            }
+        },
+        {
+            "name": "notifyingOnUpdation",
+            "type": "action/notify",
+            "options": {
+                "sms": {
+                    "to": null,
+                    "body": null,
+                    "from": null
+                },
+                "mail": {
+                    "cc": null,
+                    "to": null,
+                    "bcc": null,
+                    "from": null,
+                    "subject": null,
+                    "attachments": null
+                },
+                "toast": {
+                    "type": "success",
+                    "message": {
+                        ".recipe": "t('workflows.OfferAdditionalServices.notifyingOnUpdation.title')"
+                    },
+                    "duration": 4.5,
+                    "description": {
+                        ".recipe": "t('workflows.OfferAdditionalServices.notifyingOnUpdation.message')"
+                    }
+                },
+                "notification": {
+                    "icon": null,
+                    "type": null,
+                    "image": null,
+                    "title": null,
+                    "entity": null,
+                    "actions": null,
+                    "message": null,
+                    "icon-color": null,
+                    "recipients": null
+                }
+            },
+            "in": {},
+            "set": {},
+            "to": {},
+            "meta": {
+                "position": [
+                    1159.8684522061524,
+                    263.86511269186303
+                ]
+            }
+        }
+    ],
+    "events": [
+        {
+            "identifier": "offerAdditionalServices",
+            "type": "webhook",
+            "module": null,
+            "async": false,
+            "roles": null,
+            "title": "Generate Signature",
+            "public": false
+        }
+    ],
+    "comments": []
+}

@@ -1,0 +1,100 @@
+{
+    "identifier": "GenerateInvoicePDF",
+    "title": "Generating the Invoice PDF ",
+    "description": null,
+    "async": false,
+    "debug": true,
+    "entry": "GenerateInvoicePDFWebhook",
+    "elements": [
+        {
+            "name": "GenerateInvoicePDFWebhook",
+            "type": "event/webhook",
+            "options": {
+                "async": false,
+                "roles": null,
+                "title": "PDF",
+                "module": "invoices",
+                "public": false
+            },
+            "in": {},
+            "set": {
+                "invoice": "default:"
+            },
+            "to": {
+                "default": {
+                    "ExportPDF": [
+                        "default"
+                    ]
+                }
+            },
+            "meta": {
+                "position": [
+                    0,
+                    -273.5
+                ]
+            }
+        },
+        {
+            "name": "ExportPDF",
+            "type": "action/export",
+            "options": {
+                "path": "\"/\"",
+                "type": "pdf",
+                "view": "invoice content",
+                "export": [],
+                "footer": null,
+                "header": null,
+                "merged": false,
+                "content": null,
+                "version": "2.0",
+                "filename": "Invoice PDF",
+                "view_data": {
+                    "resource": "$invoice"
+                },
+                "view_module": "views",
+                "store_module": "files"
+            },
+            "in": {},
+            "set": {},
+            "to": {
+                "default": {
+                    "ViewPDF": [
+                        "default"
+                    ]
+                }
+            },
+            "meta": {
+                "position": [
+                    329,
+                    -194
+                ]
+            }
+        },
+        {
+            "name": "ViewPDF",
+            "type": "action/viewFile",
+            "options": {},
+            "in": {},
+            "set": {},
+            "to": {},
+            "meta": {
+                "position": [
+                    658,
+                    -104
+                ]
+            }
+        }
+    ],
+    "events": [
+        {
+            "identifier": "GenerateInvoicePDFWebhook",
+            "type": "webhook",
+            "module": "invoices",
+            "async": false,
+            "roles": null,
+            "title": "PDF",
+            "public": false
+        }
+    ],
+    "comments": []
+}

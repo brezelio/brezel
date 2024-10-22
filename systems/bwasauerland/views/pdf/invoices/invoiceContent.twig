@@ -1,0 +1,209 @@
+{% extends "default.pdf.base" %}
+
+{% block styles %}
+    .header_content {
+    width: 100%;
+    box-sizing: border-box;
+    height: 80mm;
+    line-height: 1.1;
+    }
+
+    .header-left {
+    float: left;
+    left: 0;
+    top: 0;
+    }
+
+    .header-right {
+    float: right;
+    right: 0;
+    top: 0;
+    width: 70mm;
+    }
+
+    table.info {
+    width: 100%;
+    }
+
+    table.info th {
+    border-bottom: 2px solid black;
+    font-weight: normal;
+    text-align: left;
+    padding: 2mm 2mm;
+    white-space: nowrap;
+    font-weight: bold;
+    }
+
+    tbody.positions td {
+    padding: 2mm 2mm;
+    }
+
+    tr.descr td {
+    padding: 0 2mm 4mm;
+    }
+
+    .positions tr:nth-child(even):not(.subtotal) {
+    background-color: #e4e8ea;
+    }
+
+    table.info tfoot > tr > td, .divider {
+    border-top: 2px solid black;
+    }
+
+    table.total_info {
+    width: 100%;
+    margin-top: 5mm;
+    }
+
+    table.total_info th {
+    font-weight: normal;
+    text-align: left;
+    font-size: 12pt;
+    }
+
+    table.total_info td {
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    }
+
+    .number-td {
+    white-space: nowrap;
+    text-align: right;
+    }
+
+    .mini {
+    width: 1px;
+    white-space: nowrap;
+    }
+
+    .small {
+    font-size: 10pt;
+    }
+    .page_break {
+    page-break-after:always;
+    }
+{% endblock %}
+
+{% block header_content %}
+    <div class="header_content">
+        <div class="header-left">
+            <div style="font-size: 8pt;">
+                BWA Sauerland GmbH Peter-Dassis-Ring 40a 57482 Wenden
+            </div>
+            <div style="font-size: 12pt;">
+                <p>
+                    {{resource.customer.name }}
+                    {% if resource.customer.name is not null %}
+                        <br/>{% endif %}
+                    {{resource.customer.invoice_address_line_1}}
+                    {% if resource.customer.invoice_address_line_2 is not null %}<br/>{% endif %}
+                    {{resource.customer.invoice_address_line_2}}
+                    {% if resource.customer.invoice_address_line_2 is not null %}<br/>{% endif %}
+                    {{resource.customer.invoice_street}}
+                    {% if resource.customer.invoice_street is not null %}<br/>{% endif %}
+                    {{resource.customer.invoice_city}} {{resource.customer.invoice_zip}}
+                    {% if resource.customer.invoice_city is not null or resource.customer.invoice_zip is not null %}<br/>{% endif %}
+                </p>
+            </div>
+            <div style="font-size: 18pt; margin-top: 25mm">
+                <p>
+                    {% if resource.type is not null %}
+                        {{ t('modules.invoices.choice.type.' ~ resource.type, null, 'de') }}
+                    {% else %}
+                        Rechnung
+                    {% endif %}
+                    <br/>
+                    {{ resource.invoice_number }}
+                </p>
+            </div>
+        </div>
+        <div class="header-right">
+            <div>
+                <table class="noborder" style="font-size: 10pt;width: 100%">
+                    <tr>
+                        <td>
+                            Rechnungsdatum
+                        </td>
+                        <td class="number-td"><b>{{ date(resource.invoice_date)|date('d.m.Y') }}</b></td>
+                    </tr>
+                    {% if resource.project %}
+                        <tr>
+                            <td>Projektnummer</td>
+                            <td class="number-td"><b>{{ resource.project.project_number }}</b></td>
+                        </tr>
+                    {% endif %}
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block document_content %}
+    <div class="divider"></div>
+    <table class="info noborder">
+        <thead>
+        <tr>
+            <th>Leistung</th>
+            <th>Beschreibung</th>
+            <th style="text-align: right;">Einzelpreis</th>
+            <th style="text-align: right;">Anzahl</th>
+            <th style="text-align: right;">Gesamtpreis</th>
+        </tr>
+        </thead>
+        <tbody class="positions">
+        {% if resource.positions %}
+            {% for key, position in resource.positions %}
+                {% if position.sec_pos  %}
+                    {% for key, pos in position.sec_pos %}
+                        <tr class="position-row">
+                            <td class="" style="text-align: left; ">{{ pos.service.name ?? "" }} </td>
+                            <td class="" style="text-align: left;">{{ pos.description ?? "" }}</td>
+                            <td class="" style="text-align: right;">{{ pos.single_price ? pos.single_price|format_number({fraction_digit:2}, locale='de') : "" }}&#8364</td>
+                            <td class="" style="text-align: right;">{{ pos.quantity ? pos.quantity|format_number({fraction_digit:0}, locale='de') : ""}}</td>
+                            <td class="" style="text-align: right;">{{ pos.total_price ? pos.single_price|format_number({fraction_digit:2}, locale='de') : "" }}&#8364</td>
+                        </tr>
+                    {% endfor %}
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+    </table>
+    <br/>
+    <div class="divider"></div>
+    <table class="info noborder" style="margin-top: 0">
+        <tbody>
+        <tr>
+            <td colspan="3" style="width:42.85%;">
+                <br/>
+                <table class="noborder small">
+                    <tr></tr>
+                </table>
+            </td>
+            <td colspan="4" style="vertical-align: top;">
+                <br/>
+                <table class="noborder" style="width:100%;">
+                    <tr style="padding-bottom: 5mm">
+                        <td>Rechnungsbetrag netto</td>
+                        <td class="number-td">{{ resource.price_net|format_number({fraction_digit:2}, locale='de') }}
+                            €
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>zzgl. MwSt {{ resource.taxrate|format_number({fraction_digit:0}, locale='de') }}%</td>
+                        <td class="number-td">{{ resource.tax_amount|format_number({fraction_digit:2}, locale='de') }}
+                            €
+                        </td>
+                    </tr>
+                    <tr style="font-weight: bold; padding: 5mm 0; border-top: 1px solid black">
+                        <td>Rechnungsbetrag brutto</td>
+                        <td class="number-td">{{resource.price_total|format_number({fraction_digit:2}, locale='de') }}
+                            €
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <br/>
+    <div style="padding: 0 0;">{{ t('pdf.offer.para4') }}</div>
+{% endblock %}

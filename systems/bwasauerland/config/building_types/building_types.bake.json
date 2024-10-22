@@ -1,0 +1,24 @@
+[
+    {
+      "resource_module": "building_types",
+      "import": true,
+      "resource": {
+        "identifier": "building_types",
+        "title": "name",
+        "icon": "setting",
+        "layouts": {
+          "detail": "${file('config/building_types/building_types.detail.json')}"
+        },
+        "fields": [
+          {
+            "identifier": "name",
+            "type": "text",
+            "options":{
+              "rules":"required"
+            }
+          }
+        ]
+      }
+    }
+  ]
+  

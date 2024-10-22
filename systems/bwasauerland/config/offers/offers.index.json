@@ -1,0 +1,53 @@
+{
+  "identifier": "offers.index",
+  "type": "index",
+  "tabs": [
+    {
+      "identifier": "offers",
+      "icon": "shop",
+      "position": 0,
+      "rows": [
+        {
+          "cols": [
+            {
+              "options": {},
+              "components": [
+                {
+                  "type": "headline",
+                  "options": {
+                    "identifier": "offers",
+                    "icon": "shop"
+                  }
+                },
+                {
+                  "type": "resource_table",
+                  "options": {
+                    "module": "offers",
+                    "columns": [
+                      "process",
+                      "date",
+                      "created_by",
+                      "customer",
+                      "object",
+                      "problem",
+                      "price_total"
+                    ],
+                    "buttons": [
+                      {
+                        "identifier": "manuallyConfirmOffer",
+                        "icon": "file-done",
+                        "event": "manuallyConfirmOffer",
+                        "type": "primary",
+                        "help": "manually_confirm_offer"
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

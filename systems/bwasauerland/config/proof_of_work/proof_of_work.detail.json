@@ -1,0 +1,84 @@
+{
+    "tabs": [
+      {
+        "identifier": "proof_of_work",
+        "rows": [
+          {
+            "cols": [
+              {
+                "span": 12,
+                "components": [
+                  {
+                    "type": "headline",
+                    "options": {
+                      "identifier": "general",
+                      "icon": "user"
+                    }
+                  },
+                  {
+                    "type": "field_group",
+                    "options": {
+                      "vertical_labels": true,
+                      "fields": [ "project"]
+                    }
+                  }
+                ]
+              },
+              {
+                "span": 12,
+                "components": [
+                  {
+                    "type": "headline",
+                    "options": {
+                      "identifier": "info",
+                      "icon": "user"
+                    }
+                  },
+                  {
+                    "type": "field_group",
+                    "options": {
+                      "vertical_labels": true,
+                      "fields": ["timestamp"]
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "cols": [
+              {
+                "components": [
+                  {
+                    "options": {
+                      "vertical_labels": true,
+                      "fields": ["work_done"]
+                    },
+                    "type": "field_group"
+                  }
+                ],
+                "span": 24
+              }
+            ]
+          },
+          {
+            "cols": [
+              {
+                "components": [
+                  {
+                    "options": {
+                      "vertical_labels": true,
+                      "fields": ["attachments"]
+                    },
+                    "type": "field_group"
+                  }
+                ],
+                "span": 12
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+  

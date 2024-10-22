@@ -1,0 +1,294 @@
+{
+  "tab_position": "right",
+  "tabs": [
+    {
+      "identifier": "general",
+      "icon": "user",
+      "rows": [
+        {
+          "cols": [
+            {
+              "span": 12,
+              "components": [
+                {
+                  "type": "headline",
+                  "options": {
+                    "identifier": "general",
+                    "icon": "user"
+                  }
+                },
+                {
+                  "type": "field_group",
+                  "options": {
+                    "fields": ["customer_id", "name", "email", "phone_mobile", "phone_landline"]
+                  }
+                }
+              ]
+            },
+            {
+              "span": 12,
+              "components": [
+                {
+                  "type": "headline",
+                  "options": {
+                    "identifier": "invoice_address",
+                    "icon": "environment"
+                  }
+                },
+                {
+                  "type": "field_group",
+                  "options": {
+                    "fields": [
+                      "invoice_address_line_1",
+                      "invoice_address_line_2",
+                      "invoice_street",
+                      "invoice_zip",
+                      "invoice_city"
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "cols": [
+            {
+              "span": 12,
+              "components": [
+                {
+                  "type": "headline",
+                  "options": {
+                    "identifier": "address",
+                    "icon": "environment"
+                  }
+                },
+                {
+                  "type": "field_group",
+                  "options": {
+                    "fields": [
+                      "address_line_1",
+                      "address_line_2",
+                      "address_street",
+                      "address_zip",
+                      "address_city"
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "identifier": "objects",
+      "options": {
+        "recipes": {
+          "hidden_from_frontend": "!id"
+        },
+        "show_in": ["module.show"]
+      },
+      "icon": "sliders",
+      "rows": [
+        {
+          "cols": [
+            {
+              "span": 24,
+              "components": [
+                {
+                  "type": "headline",
+                  "options": {
+                    "identifier": "objects",
+                    "icon": "sliders"
+                  }
+                },
+
+                {
+                  "type": "resource_table",
+                  "options": {
+                    "module": "objects",
+                    "columns": {
+                      "display": ["customer", "name", "email"],
+                      "fetch": ["customer", "name", "email"]
+                    },
+                    "pre_filters": [
+                      {
+                        "column": "customer.id",
+                        "operator": "=",
+                        "field": "id"
+                      }
+                    ],
+                    "create_in_modal": true,
+                    "edit_in_modal": true
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "identifier": "offers",
+      "options": {
+        "recipes": {
+          "hidden_from_frontend": "!id"
+        },
+        "show_in": ["module.show"]
+      },
+      "icon": "shop",
+      "rows": [
+        {
+          "cols": [
+            {
+              "span": 24,
+              "components": [
+                {
+                  "type": "headline",
+                  "options": {
+                    "identifier": "offers",
+                    "icon": "shop"
+                  }
+                },
+                {
+                  "type": "resource_table",
+                  "options": {
+                    "module": "offers",
+                    "columns": [
+                      "process",
+                      "date",
+                      "created_by",
+                      "customer",
+                      "object",
+                      "problem",
+                      "room_temperature",
+                      "room_humidity"
+                    ],
+                    "pre_filters": [
+                      {
+                        "column": "customer.id",
+                        "operator": "=",
+                        "field": "id"
+                      }
+                    ],
+                    "create_in_modal": true,
+                    "edit_in_modal": true,
+                    "related": ["customer"]
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "identifier": "projects",
+      "options": {
+        "recipes": {
+          "hidden_from_frontend": "!id"
+        },
+        "show_in": ["module.show"]
+      },
+      "icon": "container",
+      "rows": [
+        {
+          "cols": [
+            {
+              "span": 24,
+              "components": [
+                {
+                  "type": "headline",
+                  "options": {
+                    "identifier": "projects",
+                    "icon": "container"
+                  }
+                },
+                {
+                  "type": "resource_table",
+                  "options": {
+                    "module": "projects",
+                    "columns": [
+                      "process",
+                      "customer",
+                      "object",
+                      "problem",
+                      "start_date",
+                      "end_date",
+                      "status",
+                      "room_temperature",
+                      "room_humidity"
+                    ],
+                    "pre_filters": [
+                      {
+                        "column": "customer.id",
+                        "operator": "=",
+                        "field": "id"
+                      }
+                    ],
+                    "create_in_modal": true,
+                    "edit_in_modal": true
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "identifier": "invoices",
+      "options": {
+        "recipes": {
+          "hidden_from_frontend": "!id"
+        },
+        "show_in": ["module.show"]
+      },
+      "icon": "bank",
+      "rows": [
+        {
+          "cols": [
+            {
+              "span": 24,
+              "components": [
+                {
+                  "type": "headline",
+                  "options": {
+                    "identifier": "invoices",
+                    "icon": "bank"
+                  }
+                },
+                {
+                  "type": "resource_table",
+                  "options": {
+                    "module": "invoices",
+                    "columns": {
+                      "display": [
+                        "process",
+                        "invoice_number",
+                        "project",
+                        "customer",
+                        "type",
+                        "status"
+                      ]
+                    },
+                    "pre_filters": [
+                      {
+                        "column": "customer.id",
+                        "operator": "=",
+                        "field": "id"
+                      }
+                    ],
+                    "create_in_modal": true,
+                    "edit_in_modal": true
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

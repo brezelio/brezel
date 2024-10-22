@@ -1,0 +1,238 @@
+{
+    "identifier": "ProjectsToInvoiceWebhook",
+    "title": "Create a invoice from Projects",
+    "description": null,
+    "async": false,
+    "debug": false,
+    "entry": "ProjectsToInvoiceWebhook",
+    "elements": [
+        {
+            "name": "ProjectsToInvoiceWebhook",
+            "type": "event/webhook",
+            "options": {
+                "async": false,
+                "roles": null,
+                "title": "",
+                "module": null,
+                "public": false,
+                "show_in_button_bar": false
+            },
+            "in": {},
+            "set": {
+                "resource": "default:"
+            },
+            "to": {
+                "default": {
+                    "setLocale": [
+                        "default"
+                    ],
+                    "SetProjectData": [
+                        "default"
+                    ]
+                }
+            },
+            "meta": {
+                "position": [
+                    0,
+                    -273.5
+                ]
+            }
+        },
+        {
+            "name": "ProjectToInvoiceModal",
+            "type": "action/modal",
+            "options": {
+                "hard": false,
+                "type": "confirm",
+                "title": {
+                    ".recipe": "t('workflows.ProjectsToInvoiceWebhook.ProjectToInvoiceModal.modal.title')"
+                },
+                "fields": [],
+                "layout": "project_to_invoice.modal",
+                "checkpoint": true,
+                "autosave_key": null
+            },
+            "in": {},
+            "set": {
+                "modalData": "confirm:"
+            },
+            "to": {
+                "confirm": {
+                    "CreateNewInvoice": [
+                        "default"
+                    ]
+                }
+            },
+            "meta": {
+                "position": [
+                    658,
+                    -191
+                ]
+            }
+        },
+        {
+            "name": "CreateNewInvoice",
+            "type": "source/new",
+            "options": {
+                "client": null,
+                "module": "invoices",
+                "values": null
+            },
+            "in": {},
+            "set": {
+                "newInvoice": "default:"
+            },
+            "to": {
+                "default": {
+                    "SetData": [
+                        "default"
+                    ]
+                }
+            },
+            "meta": {
+                "position": [
+                    987,
+                    -148.5
+                ]
+            }
+        },
+        {
+            "name": "SetData",
+            "type": "op/set",
+            "options": {
+                "copy": "$modalData",
+                "values": [],
+                "process": false,
+                "recipes": {}
+            },
+            "in": {},
+            "set": {},
+            "to": {
+                "default": {
+                    "orange-earwig-97": [
+                        "default"
+                    ]
+                }
+            },
+            "meta": {
+                "position": [
+                    1316,
+                    -104
+                ]
+            }
+        },
+        {
+            "name": "RedirectToInvoices",
+            "type": "action/redirect",
+            "options": {
+                "url": {
+                    ".recipe": "\"/\"+$locale+\"/customers/\"+$resource.customer.id+\"?path=customers.detail.invoices\""
+                },
+                "fill": true,
+                "http": null,
+                "swap": false,
+                "action": "module.create",
+                "module": "invoices",
+                "target": null,
+                "queryParams": []
+            },
+            "in": {},
+            "set": {},
+            "to": {},
+            "meta": {
+                "position": [
+                    1974,
+                    -161.5
+                ]
+            }
+        },
+        {
+            "name": "orange-earwig-97",
+            "type": "action/save",
+            "options": {
+                "skip_recipes": false,
+                "triggerEvents": false,
+                "continueIfInvalid": false
+            },
+            "in": {},
+            "set": {},
+            "to": {
+                "default": {
+                    "RedirectToInvoices": [
+                        "default"
+                    ]
+                }
+            },
+            "meta": {
+                "position": [
+                    1645,
+                    -104
+                ]
+            }
+        },
+        {
+            "name": "setLocale",
+            "type": "op/recipe",
+            "options": {
+                "recipe": "locale()"
+            },
+            "in": {},
+            "set": {
+                "locale": "default:"
+            },
+            "to": {},
+            "meta": {
+                "position": [
+                    329,
+                    -12
+                ]
+            }
+        },
+        {
+            "name": "SetProjectData",
+            "type": "op/set",
+            "options": {
+                "copy": "$resource",
+                "recipes": {
+                    "address": "$resource.customer.invoice_address_line_1 +\" \"+$resource.customer.invoice_address_line_2 +\" \" +$resource.customer.invoice_street",
+                    "zip": "$resource.customer.invoice_zip",
+                    "city": "$resource.customer.invoice_city",
+                    "phone": "$resource.customer.phone_mobile",
+                    "project_amount": "$resource.price_total",
+                    "type": "'final'",
+                    "invoice_status": "'paid'"
+                },
+                "values": [],
+                "process": false
+            },
+            "in": {},
+            "set": {},
+            "to": {
+                "default": {
+                    "ProjectToInvoiceModal": [
+                        "default"
+                    ]
+                }
+            },
+            "meta": {
+                "position": [
+                    329,
+                    -220
+                ]
+            }
+        }
+    ],
+    "events": [
+        {
+            "identifier": "ProjectsToInvoiceWebhook",
+            "type": "webhook",
+            "module": null,
+            "async": false,
+            "roles": null,
+            "title": "",
+            "public": false,
+            "show_in_button_bar": false
+        }
+    ],
+    "comments": []
+}

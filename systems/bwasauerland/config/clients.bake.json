@@ -1,0 +1,99 @@
+[
+  {
+    "resource_module": "clients",
+    "resource": {
+      "identifier": "clients",
+      "type": "clients",
+      "title":"title",
+      "icon": "setting",
+      "options": {
+          "global_login": "sameSite"
+      },
+      "fields": [
+        {
+          "identifier": "title",
+          "type": "text",
+          "options": {
+            "autofocus": true,
+            "rules": "required"
+          }
+        },
+        {
+          "identifier": "currency",
+          "type": "text"
+        },
+        {
+          "identifier": "description",
+          "type": "textarea"
+        },
+        {
+          "identifier": "color",
+          "type": "text"
+        },
+        {
+          "identifier": "mail_host",
+          "type": "text"
+        },
+        {
+          "identifier": "mail_port",
+          "type": "number"
+        },
+        {
+          "identifier": "mail_username",
+          "type": "text"
+        },
+        {
+          "identifier": "mail_password",
+          "type": "text"
+        },
+        {
+          "identifier": "mail_encryption",
+          "type": "text"
+        },
+        {
+          "identifier": "mail_from_address",
+          "type": "email"
+        },
+        {
+          "identifier": "mail_from_name",
+          "type": "text"
+        },
+        {
+          "identifier": "company",
+          "type": "text"
+        },
+        {
+          "identifier": "additional_info",
+          "type": "text"
+        },
+        {
+          "identifier": "address",
+          "type": "text"
+        },
+        {
+          "identifier": "zip",
+          "type": "text"
+        },
+        {
+          "identifier": "city",
+          "type": "text"
+        },
+        {
+          "identifier": "bank_name",
+          "type": "text"
+        },
+        {
+          "identifier": "bank_iban",
+          "type": "text"
+        },
+        {
+          "identifier": "bank_bic",
+          "type": "text"
+        }
+      ],
+      "layouts": {
+        "detail": "${file('/config/clients.detail.json')}"
+      }
+    }
+  }
+]

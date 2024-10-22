@@ -1,0 +1,33 @@
+{
+    "type": "index",
+    "tabs": [
+        {
+            "identifier": "services",
+            "icon": "sliders",
+            "position": 0,
+            "rows": [
+                {
+                    "cols": [
+                        {
+                            "options": {
+                            },
+                            "components": [
+                                {
+                                    "type": "resource_table",
+                                    "options": {
+                                        "module": "services",
+                                        "columns": [
+                                            "name",
+                                            "billing_type",
+                                            "price"
+                                        ]
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,102 @@
+{
+    "identifier": "GenerateOfferPDF",
+    "title": "Generating the Offer PDF ",
+    "description": null,
+    "async": false,
+    "debug": true,
+    "entry": "OfferPDFWebhook",
+    "elements": [
+        {
+            "name": "OfferPDFWebhook",
+            "type": "event/webhook",
+            "options": {
+                "async": false,
+                "roles": null,
+                "title": "PDF",
+                "module": "offers",
+                "public": false,
+                "show_in_button_bar": false
+            },
+            "in": {},
+            "set": {
+                "offer": "default:"
+            },
+            "to": {
+                "default": {
+                    "ExpoetPDF": [
+                        "default"
+                    ]
+                }
+            },
+            "meta": {
+                "position": [
+                    0,
+                    -274
+                ]
+            }
+        },
+        {
+            "name": "ExpoetPDF",
+            "type": "action/export",
+            "options": {
+                "path": "\"/\"",
+                "type": "pdf",
+                "view": "offer content",
+                "export": [],
+                "footer": null,
+                "header": null,
+                "merged": false,
+                "content": null,
+                "version": "2.0",
+                "filename": "offer PDF",
+                "view_data": {
+                    "resource": "$offer"
+                },
+                "view_module": "views",
+                "store_module": "files"
+            },
+            "in": {},
+            "set": {},
+            "to": {
+                "default": {
+                    "ViewOfferPDF": [
+                        "default"
+                    ]
+                }
+            },
+            "meta": {
+                "position": [
+                    338,
+                    -194.5
+                ]
+            }
+        },
+        {
+            "name": "ViewOfferPDF",
+            "type": "action/viewFile",
+            "options": {},
+            "in": {},
+            "set": {},
+            "to": {},
+            "meta": {
+                "position": [
+                    676,
+                    -104.5
+                ]
+            }
+        }
+    ],
+    "events": [
+        {
+            "identifier": "OfferPDFWebhook",
+            "type": "webhook",
+            "module": "offers",
+            "async": false,
+            "roles": null,
+            "title": "PDF",
+            "public": false,
+            "show_in_button_bar": false
+        }
+    ],
+    "comments": []
+}

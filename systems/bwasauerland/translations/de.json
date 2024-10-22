@@ -1,0 +1,840 @@
+{
+  "buttons": {
+    "Create Project": "Projekt erstellen",
+    "create_partner": "Partner erstellen",
+    "add_item_to_product": "Aritkel hinzufügen",
+    "create_invoice": "Rechnung erstellen",
+    "generate_partial_invoice": "Teilrechnung erstellen",
+    "create_additional_service": "Zusätzliche Dienstleistung eintragen",
+    "generate_PDF": "PDF erzeugen",
+    "create_project_steps": "Projektschritte erstellen",
+    "confirm_additional_services": {
+      "help": "Zusatzleistungen bestätigen"
+    }
+  },
+  "notifications": {},
+  "modules": {
+    "clients": {
+      "title": "Mandanten",
+      "fields": {
+        "title": "Titel",
+        "description": "Beschreibung"
+      }
+    },
+    "users": {
+      "title": "Nutzer",
+      "headlines": {
+        "address": "Anschrift",
+        "basic": "Grundlagen"
+      },
+      "fields": {
+        "name": "Name",
+        "email": "E-Mail",
+        "password": "Passwort",
+        "role": "Rolle",
+        "address": "Anschrift",
+        "zip": "PLZ",
+        "city": "Stadt",
+        "phone": "Telefon"
+      }
+    },
+    "create_order": {
+      "title": "Angebote"
+    },
+    "customers": {
+      "title": "Kunden",
+      "headlines": {
+        "customers": "Kunden",
+        "objects": "Objekt",
+        "general": "Allgemein",
+        "invoice_address": "Rechnungsanschrift",
+        "address": "Anschrift",
+        "offers": "Angebote",
+        "projects": "Projekte",
+        "invoices": "Rechnungen"
+      },
+      "fields": {
+        "customer_id": "Kundennummer",
+        "name": "Name",
+        "email": "E-Mail",
+        "invoice_street": "Anschrift",
+        "invoice_address_line_1": "Adresszeile 1",
+        "invoice_address_line_2": "Adresszeile 2",
+        "invoice_zip": "PLZ",
+        "invoice_city": "Stadt",
+        "address_street": "Anschrift",
+        "address_line_1": "Adresszeile 1",
+        "address_line_2": "Adresszeile 2",
+        "address_zip": "PLZ",
+        "address_city": "Stadt",
+        "phone_landline": "Festnetznummer",
+        "phone_mobile": "Mobilnummer"
+      },
+      "tabs": {
+        "general": "Allgemein",
+        "objects": "Objekte",
+        "offers": "Angebote",
+        "projects": "Projekte",
+        "invoices": "Rechnungen"
+      }
+    },
+    "objects": {
+      "title": "Objekte",
+      "headlines": {
+        "general": "Allgemein",
+        "address": "Anschrift"
+      },
+      "fields": {
+        "customer": "Kunde",
+        "name": "Name",
+        "email": "E-Mail",
+        "address": "Anschrift",
+        "zip": "PLZ",
+        "city": "Stadt",
+        "landline": "Festnetznummer",
+        "mobile": "Mobilnummer"
+      }
+    },
+    "services": {
+      "title": "Dienste",
+      "headlines": {
+        "general": "Allgemein"
+      },
+      "fields": {
+        "name": "Name",
+        "billing_type": "Einheit",
+        "price": "Preis"
+      },
+      "choice": {
+        "billing_type": {
+          "hourly": "Stündlich",
+          "flat_price": "Pauschalpreis"
+        }
+      }
+    },
+    "building_types": {
+      "title": "Gebäudetypen",
+      "headlines": {
+        "general": "Allgemein"
+      },
+      "fields": {
+        "name": "Name"
+      }
+    },
+    "offers": {
+      "title": "Angebote",
+      "headlines": {
+        "offers": "Angebote",
+        "general": "Allgemein",
+        "info": "Infos",
+        "positions": "Positionen"
+      },
+      "fields": {
+        "process": "Prozess",
+        "customer": "Kunde",
+        "object": "Objekt",
+        "start_date": "Startdatum",
+        "end_date": "Abschlussdatum",
+        "total_worktime": "Arbeitszeit Total",
+        "status": "Status",
+        "problem": "Problem",
+        "room_temperature": "Raumtemperatur",
+        "room_humidity": "Luftfeuchte",
+        "surface_temperature": "Oberflächentemperatur",
+        "construction_year": "Baujahr",
+        "wall_material": "Wandbaustoff",
+        "wall_thickness": "Wandstärke",
+        "building_type": "Bauart",
+        "level": "Stockwerk",
+        "floor_material": "Bodenplatte",
+        "strip_foundation": "Streifenfundament",
+        "seals_done_in_the_past": "Nachträgliche Abdichtungen in der Vergangenheit?",
+        "positions": "Positionen",
+        "service": "Leistung",
+        "description": "Beschreibung",
+        "single_price": "Einzelpreis",
+        "quantity": "Anzahl",
+        "total_price": "Gesamtpreis",
+        "taxrate": "Steuersatz",
+        "price_net": "Netto-Preis",
+        "price_total": "Brutto-Preis",
+        "date": "Datum",
+        "created_by": "Erstellt von",
+        "quantity_type": "Einheit",
+        "tax_amount": "Steuerbetrag",
+        "pdf_info_text": "PDF-Infotext"
+      },
+      "choice": {
+        "quantity_type": {
+          "hourly": "Stündlich",
+          "flat_price": "Pauschalpreis"
+        }
+      }
+    },
+    "orders": {
+      "title": "Bestellungen",
+      "headlines": {
+        "orders": "Bestellungen",
+        "order": "Bestellung",
+        "items": "Produkte",
+        "pricing": "Rechnungsdaten"
+      },
+      "fields": {
+        "ordered_by": "Besteller",
+        "order_date": "Bestelldatum",
+        "order_number": "Bestellnummer",
+        "items": "Artikel",
+        "status": "Bestellstatus",
+        "product": "Produkt",
+        "amount": "Anzahl",
+        "unit_price": "Stückpreis",
+        "unit_total": "Gesamtpreis",
+        "items_total": "Gesampreis"
+      },
+      "choice": {
+        "status": {
+          "pending": "Bestellung aufgegeben",
+          "processing": "In Bearbeitung",
+          "shipped": "Versandt",
+          "delivered": "Zugestellt",
+          "cancelled": "Storniert",
+          "returned": "Zurückgesendet"
+        }
+      }
+    },
+    "problems": {
+      "title": "Probleme",
+      "headlines": {
+        "general": "Allgemein"
+      },
+      "fields": {
+        "name": "Name"
+      }
+    },
+    "products": {
+      "title": "Produkte",
+      "headlines": {
+        "general": "Allgemein",
+        "products": "Produkte",
+        "pricing": "Preisangaben",
+        "description": "Beschreibung",
+        "technical": "Technische Daten",
+        "child_products": "Artikel"
+      },
+      "fields": {
+        "name": "Artikel Name",
+        "item_number": "Artikel Nummer",
+        "description": "Beschreibung",
+        "price_netto": "Netto Preis",
+        "price_brutto": "Brutto Preis",
+        "image": "Artikel Bild",
+        "parent": "Artikel Zugehörigkeit",
+        "product_type": "Artikel Typ",
+        "product_category": "Kategorie"
+      },
+      "choice": {
+        "product_type": {
+          "single": "Einzelartikel",
+          "group": "Artikel Gruppe"
+        }
+      }
+    },
+    "products_categories": {
+      "title": "Produktkategorien",
+      "headlines": {
+        "category": "Kategorie",
+        "categories": "Kategorien"
+      },
+      "fields": {
+        "name": "Kategorie Name"
+      }
+    },
+    "processes": {
+      "title": "Prozesse",
+      "headlines": {
+        "general": "Allgemein",
+        "offers": "Angebote",
+        "projects": "Projekte",
+        "additional_services": "Zusätzliche Dienstleistungen",
+        "proof_of_work": "Arbeitsnachweise",
+        "invoices": "Rechnungen"
+      },
+      "tabs": {
+        "processes": "Prozesse",
+        "offers": "Angebote",
+        "projects": "Projekte",
+        "additional_services": "Zusätzliche Dienstleistungen",
+        "proof_of_work": "Arbeitsnachweise",
+        "invoices": "Rechnungen"
+      },
+      "fields": {
+        "process_id": "Prozess-Nr",
+        "name": "Prozess-Name"
+      }
+    },
+    "projects": {
+      "title": "Projekte",
+      "headlines": {
+        "general": "Allgemein",
+        "info": "Infos",
+        "positions": "Leistungen"
+      },
+      "tabs": {
+        "invoices": "Rechnungen",
+        "projects": "Daten",
+        "additional_services": "Zusätzliche Dienstleistungen",
+        "project_steps": "Projekt-Schritte"
+      },
+      "fields": {
+        "project_number": "Projektnummer",
+        "process": "Prozess",
+        "date": "Datum",
+        "created_by": "Erstellt von",
+        "customer": "Kunde",
+        "object": "Objekt",
+        "problem": "Problem",
+        "room_temperature": "Raumtemperatur",
+        "room_humidity": "Luftfeuchte",
+        "surface_temperature": "Oberflächentemperatur",
+        "construction_year": "Baujahr",
+        "wall_material": "Wandbaustoff",
+        "wall_thickness": "Wandstärke",
+        "building_type": "Bauart",
+        "level": "Stockwerk",
+        "floor_material": "Bodenplatte",
+        "strip_foundation": "Streifenfundament",
+        "seals_done_in_the_past": "Nachträgliche Abdichtungen in der Vergangenheit?",
+        "services": "Leistungen",
+        "service": "Leistung",
+        "description": "Beschreibung",
+        "single_price": "Einzelpreis",
+        "quantity": "Anzahl",
+        "total_price": "Gesamtpreis",
+        "taxrate": "Steuersatz",
+        "tax_amount": "Steuerbetrag",
+        "price_net": "Netto-Preis",
+        "price_total": "Brutto-Preis",
+        "start_date": "Startdatum",
+        "end_date": "Abschlussdatum",
+        "total_worktime": "Arbeitszeit Total",
+        "status": "Status",
+        "positions": "Leistungen",
+        "previously_invoiced": "Bisher in Rechnung gestellt",
+        "invoice_open_position": "Offene Position der Rechnung",
+        "quantity_type": "Einheit"
+      },
+      "choice": {
+        "status": {
+          "planned": "Geplant",
+          "in_progress": "in Arbeit",
+          "finished": "Abgeschlossen"
+        },
+        "quantity_type": {
+          "hourly": "Stündlich",
+          "flat_price": "Pauschalpreis"
+        }
+      }
+    },
+    "additional_services": {
+      "title": "Zusätzliche Dienstleistungen",
+      "headlines": {
+        "general": "Allgemein",
+        "info": "Infos",
+        "services": "Leistungen"
+      },
+      "fields": {
+        "process": "Prozess",
+        "project": "Projekt",
+        "added_by": "Hinzugefügt von",
+        "timestamp": "Datum",
+        "reason": "Grund",
+        "services": "Leistungen",
+        "service": "Leistung",
+        "description": "Beschreibung",
+        "single_price": "Einzelpreis",
+        "quantity": "Anzahl",
+        "attachments": "Anhänge",
+        "file": "Anhang",
+        "total_price": "Gesamtpreis",
+        "taxrate": "Steuersatz",
+        "price_net": "Netto-Preis",
+        "price_total": "Brutto-Preis",
+        "quantity_type": "Einheit",
+        "tax_amount": "Steuerbetrag",
+        "separately_billed": "Separate Rechnung",
+        "additional_service_status": "Status",
+        "signature": "Unterschrift"
+      },
+      "widget": {
+        "service": "Leistung",
+        "description": "Beschreibung",
+        "single_price": "Einzelpreis",
+        "quantity": "Anzahl",
+        "price_net": "Netto-Preis",
+        "price_total": "Brutto-Preis",
+        "total_price": "Gesamtpreis",
+        "taxrate": "Steuersatz",
+        "quantity_type": "Einheit",
+        "tax_amount": "Steuerbetrag"
+      },
+      "choice": {
+        "quantity_type": {
+          "hourly": "Stündlich",
+          "flat_price": "Pauschalpreis"
+        },
+        "additional_service_status": {
+          "open": "Offen",
+          "closed": "Abgeschlossen"
+        }
+      }
+    },
+    "proof_of_work": {
+      "title": "Arbeitsnachweise",
+      "headlines": {
+        "general": "Allgemein",
+        "info": "Infos"
+      },
+      "fields": {
+        "project": "Projekt",
+        "timestamp": "Zeitstempel",
+        "work_done": "Durchgeführte Arbeiten",
+        "service": "Leistung",
+        "note": "Notiz",
+        "attachments": "Anhänge",
+        "file": "Anhang"
+      }
+    },
+    "invoices": {
+      "title": "Rechnungen",
+      "headlines": {
+        "basic": "Allgemeine Informationen",
+        "address": "Anschrift",
+        "positions": "Leistungen"
+      },
+      "fields": {
+        "process": "Prozess",
+        "invoice_number": "Rechnungsnummer",
+        "project": "Projekt",
+        "customer": "Kunde",
+        "type": "Typ",
+        "status": "Status",
+        "address": "Anschrift",
+        "zip": "PLZ",
+        "city": "Stadt",
+        "phone": "Telefon",
+        "positions": "Positionen",
+        "service": "Leistung",
+        "description": "Beschreibung",
+        "single_price": "Einzelpreis",
+        "quantity": "Anzahl",
+        "total_price": "Gesamtpreis",
+        "taxrate": "Steuersatz",
+        "tax_amount": "Steuerbetrag",
+        "tax_portion": "Steueranteil",
+        "price_net": "Netto-Preis",
+        "price_total": "Brutto-Preis",
+        "project_amount": "Projektbetrag",
+        "previously_invoiced": "Bisher in Rechnung gestellt",
+        "partial_pay": "Teilweise Bezahlung",
+        "invoice_open_position": "Offene Position der Rechnung",
+        "partial_invoice": "Teilrechnung",
+        "sec_pos": "Positionen",
+        "subtotal": "Netto-Preis",
+        "unit": "Einheit"
+      },
+      "choice": {
+        "type": {
+          "partial": "Teilrechnung",
+          "final": "Schlussrechnung"
+        },
+        "status": {
+          "open": "Offen",
+          "paid": "Bezahlt"
+        }
+      }
+    },
+    "sale": {
+      "title": "Verkauf"
+    },
+    "project_management": {
+      "title": "Projektverwaltung"
+    },
+    "default_data": {
+      "title": "Stammdaten"
+    },
+    "system_settings": {
+      "title": "Systemeinstellungen"
+    },
+    "employee": {
+      "title": "Mitarbeiter",
+      "headlines": {
+        "basic": "Grundlagen",
+        "address": "Anschrift"
+      },
+      "fields": {
+        "first_name": "Vornamen",
+        "last_name": "Nachname",
+        "hourly_wage": "Stundenlohn"
+      }
+    },
+    "project_steps": {
+      "title": "Projekt-Schritte",
+      "headlines": {
+        "basic": "Grundlagen",
+        "info": "Infos",
+        "positions": "Leistungen"
+      },
+      "fields": {
+        "process_number": "Prozess-Nummer",
+        "project": "Projekt",
+        "customer": "Kunde",
+        "object": "Objekt",
+        "employees": "Mitarbeiter",
+        "dateRange":"Datumsbereich",
+        "positions": "Positionen",
+        "sec_pos": "Positionen",
+        "service": "Leistung",
+        "description": "Beschreibung",
+        "quantity": "Anzahl",
+        "single_price": "Einzelpreis",
+        "total_price": "Gesamtpreis",
+        "subtotal": "Netto-Preis",
+        "steps_title": "Schritte Titel",
+        "project_step": "Projektschritt"
+      }
+    }
+  },
+  "widgets": {},
+  "pdf": {
+    "offer": {
+      "offer": "Angebot",
+      "order": "Auftrag",
+      "customer_address": "Kundenanschrift",
+      "property": "Liegenschaft",
+      "landline": "Festnetz",
+      "mobile": "Mobil",
+      "email": "E-Mail",
+      "order_data": "Auftragsdaten",
+      "what_is_the_problem": "Problem",
+      "horizontal_humidity": "Horizontale Feuchte",
+      "surface_moisture": "Flächen Feuchte",
+      "mold": "Schimmel",
+      "room_temperature": "Raumtemperatur",
+      "room_humidity": "Luftfeuchte",
+      "surface_temperature": "Oberflächentemperatur",
+      "construction_year": "Baujahr",
+      "wall_material": "Wandbaustoff",
+      "wall_thickness": "Wandstärke",
+      "building_type": "Bauart",
+      "EFH": "EFH",
+      "DHH": "DHH",
+      "RH": "RH",
+      "MFH": "MFH",
+      "level": "Stockwerk",
+      "floor_material": "Bodenplatte",
+      "strip_foundation": "Streifenfundament",
+      "para1": "Abdichtungen in der Vergangenheit?",
+      "para2": "Hiermit beauftrage ich die  BWA Sauerland GmbH mit der Durchfuhrung folgender Arbeiten",
+      "service": "Leistung",
+      "description": "Beschreibung",
+      "quantity": "Anzahl",
+      "single_price": "Einzelpreis",
+      "para3": "",
+      "para4": "Der Endpreis errechnet sich nach Aufmaß.",
+      "place": "ort",
+      "the_one": "Den",
+      "message1": "BKM Mannesmann Fachbetrieb",
+      "message2": "Unterschrift Auftraggeber",
+      "net_price": "Nettopreis ",
+      "taxrate": "MwSt",
+      "total_price": "Bruttopreis"
+    },
+    "invoice": {
+      "customer_id": "Kunden-ID",
+      "project_number": "Projektnummer",
+      "invoice_number": "Rechnungsnummer",
+      "service": "Leistung",
+      "description": "Beschreibung",
+      "single_price": "Einzelpreis",
+      "quantity": "Anzahl",
+      "total_price": "Total price",
+      "price_net": "Netto-Preis",
+      "taxrate": "MwSt",
+      "price_total": "Brutto-Preis"
+    }
+  },
+  "workflows": {
+    "OfferAdditionalServices": {
+      "AdditionalServicesSignatureModal": {
+        "modal": {
+          "title": "Bestätigen Sie zusätzliche Dienste"
+        }
+      },
+      "notifyingOnUpdation": {
+        "title": "Erfolg",
+        "message": "Erfolgreich signiert"
+      }
+    },
+    "OffersToProjectWebhook": {
+      "OfferToProjectModal": {
+        "modal": {
+          "title": "Projekt erstellen",
+          "fields": {
+            "process": "Prozess",
+            "date": "Datum",
+            "created_by": "Erstellt von",
+            "customer": "Kunde",
+            "object": "Objekt",
+            "problem": "Problem",
+            "room_temperature": "Raumtemperatur",
+            "room_humidity": "Luftfeuchte",
+            "surface_temperature": "Oberflächentemperatur",
+            "construction_year": "Baujahr",
+            "wall_material": "Wandbaustoff",
+            "wall_thickness": "Wandstärke",
+            "building_type": "Bauart",
+            "level": "Stockwerk",
+            "floor_material": "Bodenplatte",
+            "strip_foundation": "Streifenfundament",
+            "seals_done_in_the_past": "Nachträgliche Abdichtungen in der Vergangenheit?",
+            "services": "Leistungen",
+            "service": "Leistung",
+            "description": "Beschreibung",
+            "single_price": "Einzelpreis",
+            "quantity": "Anzahl",
+            "total_price": "Gesamtpreis",
+            "taxrate": "Steuersatz",
+            "price_net": "Netto-Preis",
+            "price_total": "Brutto-Preis",
+            "start_date": "Startdatum",
+            "end_date": "Abschlussdatum",
+            "total_worktime": "Arbeitszeit Total",
+            "status": "Status",
+            "positions": "Leistungen"
+          },
+          "headlines": {
+            "positions": "Leistungen"
+          },
+          "choice": {
+            "status": {
+              "planned": "Geplant",
+              "in_progress": "in Arbeit",
+              "finished": "Abgeschlossen"
+            }
+          }
+        }
+      }
+    },
+    "ProjectsToInvoiceWebhook": {
+      "ProjectToInvoiceModal": {
+        "modal": {
+          "title": "Rechnung erstellen",
+          "fields": {
+            "process": "Prozess",
+            "invoice_number": "Rechnungsnummer",
+            "project": "Projekt",
+            "customer": "Kunde",
+            "type": "Typ",
+            "invoice_status": "Status",
+            "address": "Anschrift",
+            "zip": "PLZ",
+            "city": "Stadt",
+            "phone": "Telefon",
+            "positions": "Positionen",
+            "service": "Leistung",
+            "description": "Beschreibung",
+            "single_price": "Einzelpreis",
+            "quantity": "Anzahl",
+            "total_price": "Gesamtpreis",
+            "taxrate": "Steuersatz",
+            "tax_amount": "Steuerbetrag",
+            "tax_portion": "Steueranteil",
+            "price_net": "Netto-Preis",
+            "price_total": "Brutto-Preis",
+            "project_amount": "Projektbetrag",
+            "partial_pay": "Teilweise Bezahlung",
+            "previously_invoiced": "Bisher in Rechnung gestellt",
+            "invoice_open_position": "Offene Position der Rechnung",
+            "services": "Leistungen"
+          },
+          "choice": {
+            "type": {
+              "partial": "Teilrechnung",
+              "final": "Schlussrechnung"
+            },
+            "status": {
+              "open": "Offen",
+              "paid": "Bezahlt"
+            }
+          }
+        }
+      }
+    },
+    "GeneratePartialInvoiceWebhook": {
+      "ProjectModalConfirm": {
+        "modal": {
+          "title": "Sind Sie sicher?",
+          "fields": {
+            "select_amount": "Anteil",
+            "amount": "Betrag(brutto)",
+            "open_position": "Offener Rechnungsbetrag"
+          },
+          "choice": {
+            "select_amount": {
+              "a2": "1/2",
+              "a3": "1/3",
+              "a4": "1/4",
+              "a5": "1/5",
+              "rest": "Restbetrag"
+            }
+          }
+        }
+      },
+      "ParticalInvoiceModal": {
+        "modal": {
+          "title": "Teilrechnung erstellen",
+          "fields": {
+            "process": "Prozess",
+            "invoice_number": "Rechnungsnummer",
+            "project": "Projekt",
+            "customer": "Kunde",
+            "type": "Typ",
+            "invoice_status": "Status",
+            "address": "Anschrift",
+            "zip": "PLZ",
+            "city": "Stadt",
+            "phone": "Telefon",
+            "positions": "Positionen",
+            "service": "Leistung",
+            "description": "Beschreibung",
+            "single_price": "Einzelpreis",
+            "quantity": "Anzahl",
+            "total_price": "Gesamtpreis",
+            "taxrate": "Steuersatz",
+            "tax_amount": "Steuerbetrag",
+            "tax_portion": "Steueranteil",
+            "price_net": "Netto-Preis",
+            "price_total": "Brutto-Preis",
+            "project_amount": "Projektbetrag",
+            "partial_pay": "Teilweise Bezahlung",
+            "previously_invoiced": "Bisher in Rechnung gestellt",
+            "invoice_open_position": "Offene Position der Rechnung",
+            "sec_pos": "Positionen"
+          },
+          "choice": {
+            "type": {
+              "partial": "Teilweise",
+              "final": "Endgültig"
+            },
+            "invoice_status": {
+              "open": "Offen",
+              "paid": "Bezahlt"
+            }
+          }
+        }
+      },
+      "NotifyMessage": {
+        "toast": {
+          "title": "Warnmeldung",
+          "message": "Sie müssen nur zahlen"
+        }
+      },
+      "SetDataIfTypePartical": {
+        "recipes": {
+          "partialInvoice": "Teilrechnung"
+        }
+      },
+      "SetDataIfTypeFinal": {
+        "recipes": {
+          "partialInvoice": "Teilrechnung",
+          "positions": "Positionen",
+          "additionalServices": "Zusätzliche Dienste"
+        }
+      }
+    },
+    "createAdditionalService": {
+      "createAdditionalServiceModal": {
+        "modal": {
+          "title": "Zusätzliche Dienstleistung eintragen",
+          "headlines": {
+            "services": "Leistungen"
+          },
+          "fields": {
+            "process": "Prozess",
+            "project": "Projekt",
+            "added_by": "Hinzugefügt von",
+            "timestamp": "Zeitstempel",
+            "reason": "Grund",
+            "services": "Leistungen",
+            "service": "Leistung",
+            "description": "Beschreibung",
+            "single_price": "Einzelpreis",
+            "quantity": "Anzahl",
+            "attachments": "Anhänge",
+            "file": "Anhang",
+            "total_price": "Gesamtpreis",
+            "taxrate": "Steuersatz",
+            "price_net": "Netto-Preis",
+            "price_total": "Brutto-Preis",
+            "quantity_type": "Einheit",
+            "tax_amount": "Steuerbetrag",
+            "separately_billed": "Separate Rechnung",
+            "additional_service_status": "Status"
+          },
+          "choice": {
+            "quantity_type": {
+              "hourly": "Stündlich",
+              "flat_price": "Pauschalpreis"
+            },
+            "additional_service_status": {
+              "open": "Offen",
+              "closed": "Abgeschlossen"
+            }
+          }
+        }
+      }
+    },
+    "CreateProjectStepsFromProject": {
+      "ProjectStepsModal": {
+        "modal": {
+          "title": "Projekt-Schritte eingeben",
+          "headlines": {
+            "basic": "Grundlagen",
+            "info": "Infos",
+            "positions": "Leistungen"
+          },
+          "fields": {
+            "process_number": "Prozess-Nummer",
+            "project": "Projekt",
+            "customer": "Kunde",
+            "object": "Objekt",
+            "employees": "Mitarbeiter",
+            "dateRange":"Datumsbereich",
+            "positions": "Positionen",
+            "sec_pos": "Positionen",
+            "service": "Leistung",
+            "description": "Beschreibung",
+            "quantity": "Anzahl",
+            "single_price": "Einzelpreis",
+            "total_price": "Gesamtpreis",
+            "subtotal": "Netto-Preis",
+            "steps_title": "Schritte Titel",
+            "project_step": "Projektschritt"
+          }
+        }
+      }
+    }
+  },
+  "calendar": {
+    "events": "Termine",
+    "employeeBirthdays": "Mitarbeiter-Geburtstage",
+    "employee_absence": "Abwesend",
+    "employee_sick": "Krank",
+    "employee_vacation": "Urlaub",
+    "employee_training": "Schulung",
+    "employee_overtime_reduction": "Überstundenabbau",
+    "employee_homeoffice": "Homeoffice",
+    "employee_vocational_school": "Berufsschule",
+    "holidays": "Feiertage"
+  }
+}
