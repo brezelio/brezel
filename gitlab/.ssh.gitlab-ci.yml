@@ -45,6 +45,7 @@ stages:
     - ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST "cd $DEPLOY_PATH && composer config --auth gitlab-token.gitlab.com "$BREZEL_API_READ_TOKEN" --no-ansi --no-interaction"
     - ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST "cd $DEPLOY_PATH && composer install --no-interaction --no-dev"
     - ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST "cd $DEPLOY_PATH && php bakery init --force"
+    - ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST "cd $DEPLOY_PATH && php bakery migrate --force"
     - ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST "cd $DEPLOY_PATH && php bakery apply"
     - ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST "cd $DEPLOY_PATH && php bakery load --force"
 
