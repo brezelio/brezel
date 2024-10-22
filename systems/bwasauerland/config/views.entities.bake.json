@@ -39,28 +39,15 @@
     }
   },
   {
-    "resource_view": "pdf_header",
+    "resource_view": "pdf_base",
     "depends_on": "resource_module.views",
     "resource": {
       "module": "views",
       "client": "${resource_client.global}",
       "fields": {
-        "name": "pdf header",
+        "name": "default.pdf.base",
         "type": "twig",
-        "code": "${file('views/pdf/header.blade.php')}"
-      }
-    }
-  },
-  {
-    "resource_view": "pdf_footer",
-    "depends_on": "resource_module.views",
-    "resource": {
-      "module": "views",
-      "client": "${resource_client.global}",
-      "fields": {
-        "name": "pdf footer",
-        "type": "twig",
-        "code": "${file('views/pdf/footer.blade.php')}"
+        "code": "${file('views/pdf/base.twig')}"
       }
     }
   },

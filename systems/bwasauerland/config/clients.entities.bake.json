@@ -6,7 +6,15 @@
       "module": "clients",
       "global": true,
       "fields": {
-        "title": "BWA Sauerland"
+        "title": "BWA Sauerland",
+        "company": "Los Pollos Hermanos",
+        "additional_info": "Blabla",
+        "address": "1 Chicken Ave",
+        "zip": "12345",
+        "city": "New Mexico",
+        "bank_name": "Sparkasse Albuquerque",
+        "bank_iban": "DE38 3845 0000 0100 1672 20",
+        "bank_bic": "WELADED1ALB"
       },
       "hostnames": ["bwasauerland"]
     }

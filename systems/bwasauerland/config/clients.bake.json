@@ -20,10 +20,7 @@
         },
         {
           "identifier": "currency",
-          "type": "text",
-          "options": {
-            "rules": "required"
-          }
+          "type": "text"
         },
         {
           "identifier": "description",
@@ -59,6 +56,38 @@
         },
         {
           "identifier": "mail_from_name",
+          "type": "text"
+        },
+        {
+          "identifier": "company",
+          "type": "text"
+        },
+        {
+          "identifier": "additional_info",
+          "type": "text"
+        },
+        {
+          "identifier": "address",
+          "type": "text"
+        },
+        {
+          "identifier": "zip",
+          "type": "text"
+        },
+        {
+          "identifier": "city",
+          "type": "text"
+        },
+        {
+          "identifier": "bank_name",
+          "type": "text"
+        },
+        {
+          "identifier": "bank_iban",
+          "type": "text"
+        },
+        {
+          "identifier": "bank_bic",
           "type": "text"
         }
       ],

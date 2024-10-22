@@ -255,7 +255,7 @@
         "offers": "Angebote",
         "projects": "Projekte",
         "additional_services": "Zusätzliche Dienstleistungen",
-        "proof_of_work": "Arbeitsnachweis",
+        "proof_of_work": "Arbeitsnachweise",
         "invoices": "Rechnungen"
       },
       "tabs": {
@@ -263,7 +263,7 @@
         "offers": "Angebote",
         "projects": "Projekte",
         "additional_services": "Zusätzliche Dienstleistungen",
-        "proof_of_work": "Arbeitsnachweis",
+        "proof_of_work": "Arbeitsnachweise",
         "invoices": "Rechnungen"
       },
       "fields": {
@@ -388,7 +388,7 @@
       }
     },
     "proof_of_work": {
-      "title": "Arbeitsnachweis",
+      "title": "Arbeitsnachweise",
       "headlines": {
         "general": "Allgemein",
         "info": "Infos"

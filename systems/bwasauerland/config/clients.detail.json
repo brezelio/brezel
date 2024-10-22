@@ -7,7 +7,7 @@
         {
           "cols": [
             {
-              "span": 24,
+              "span": 12,
               "components": [
                 {
                   "type": "headline",
@@ -32,6 +32,29 @@
                       "mail_encryption",
                       "mail_from_address",
                       "mail_from_name"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "span": 12,
+              "components": [
+                {
+                  "type": "headline",
+                  "options": {
+                    "identifier": "client_info"
+                  }
+                },
+                {
+                  "type": "field_group",
+                  "options": {
+                    "fields": [
+                      "company",
+                      "additional_info",
+                      "address",
+                      "zip",
+                      "city"
                     ]
                   }
                 }
