@@ -15,7 +15,10 @@
                     "type": "widget",
                     "options": {
                         "widget": "custom",
-                        "component": "ManuallyConfirmOffer"
+                        "component": "ManuallyConfirmOffer",
+                        "props": {
+                          "entity": "entity"
+                        }
                     }
                 }
               ]
