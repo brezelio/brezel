@@ -170,6 +170,9 @@ RUN echo "pm = dynamic" >> /usr/local/etc/php-fpm.conf && \
 # Get nginx configuration
 COPY docker/api.nginx.conf nginx.conf
 
+# Get supervisor
+COPY docker/supervisord.conf /app/supervisord.conf
+
 # Register cron
 RUN mkdir -p /etc/cron
 RUN echo "* * * * * cd /app && BREZEL_ENV_DIR=storage php bakery schedule >> /dev/null 2>&1" > /etc/cron/crontab

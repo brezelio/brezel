@@ -9,7 +9,7 @@ crond
 
 # Create supervisor config and start it
 php bakery make:supervisor
-supervisord -c supervisord.conf
+supervisord -c /app/supervisord.conf
 
 # Bakery init for keys and base migrations
 php bakery init --force
