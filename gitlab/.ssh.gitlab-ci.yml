@@ -1,11 +1,9 @@
-default:
-  image: node:20
-
 stages:
   - build
   - deploy
 
 .build frontend base:
+  image: node:20
   stage: build
   artifacts:
     expire_in: 1 week
@@ -28,31 +26,35 @@ stages:
 .deploy frontend base:
   image: alpine
   stage: deploy
-  script:
+  before_script:
+    # Add dependencies
     - apk add --no-cache rsync openssh
+    # ssh connect
     - mkdir -p ~/.ssh
     - eval $(ssh-agent -s)
     - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
     - ssh-add <(echo "$PRIVATE_KEY")
+  script:
     # This syncs only the dist directory
     - rsync -e "ssh -p $DEPLOY_PORT" -rav --delete dist $DEPLOY_USER@$DEPLOY_HOST:$DEPLOY_PATH
     # This line is not needed if you use nginx
     - scp -P $DEPLOY_PORT spa.htaccess $DEPLOY_USER@$DEPLOY_HOST:$DEPLOY_PATH/dist/.htaccess
 
 .deploy backend base:
-  image: registry.kiwis-and-brownies.de/kibro/brezel/api:php-7.4
+  image: alpine:latest
   stage: deploy
-  script:
+  before_script:
     # ssh connect
     - mkdir -p ~/.ssh
     - eval $(ssh-agent -s)
     - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
     - ssh-add <(echo "$PRIVATE_KEY")
+  script:
     - ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST "cd $DEPLOY_PATH && (git clone git@$CI_SERVER_HOST:$CI_PROJECT_PATH.git . || (git reset --hard HEAD && git pull))"
     - ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST "cd $DEPLOY_PATH && composer config --auth gitlab-token.gitlab.kiwis-and-brownies.de $PACKAGE_TOKEN_USER "$PACKAGE_TOKEN" --no-ansi --no-interaction"
     - ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST "cd $DEPLOY_PATH && composer install --no-interaction --no-dev"
     - ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST "cd $DEPLOY_PATH && php bakery init --force"
-    - ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST "cd $DEPLOY_PATH && php bakery migrate"
+    - ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST "cd $DEPLOY_PATH && php bakery migrate --force"
     - ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST "cd $DEPLOY_PATH && php bakery apply"
     - ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST "cd $DEPLOY_PATH && php bakery load --force"
 
