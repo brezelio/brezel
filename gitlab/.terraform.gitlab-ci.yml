@@ -5,9 +5,9 @@ include:
 # It will first build the Docker images for the API and SPA, then deploy them to a cluster.
 # Each branch gets deployed and is available at https://<branch-name>.example.review.brezel.cloud
 
-# Set the SYSTEM variable to the name of your system in your normal .gitlab-ci.yml. It will overwrite it here.
-variables:
-    SYSTEM: example
+# Set the SYSTEM variable to the name of your system in your normal .gitlab-ci.yml
+#variables:
+#  SYSTEM: example
 
 stages:
     - build
@@ -91,8 +91,8 @@ infra:update:
         - export KUBECONFIG="$HOME/.kube/config"
     script:
         - export BRANCH_TAG=$CI_COMMIT_REF_SLUG
-        - kubectl -n review-example-$BRANCH_TAG rollout restart deploy brezel-spa || true
-        - kubectl -n review-example-$BRANCH_TAG rollout restart statefulset brezel || true
+        - kubectl -n review-$SYSTEM-$BRANCH_TAG rollout restart deploy brezel-spa || true
+        - kubectl -n review-$SYSTEM-$BRANCH_TAG rollout restart statefulset brezel || true
 
 infra:review:
     image: registry.gitlab.com/gitlab-org/terraform-images/stable:latest
@@ -120,7 +120,7 @@ infra:deploy:
         - infra:review
     environment:
         name: $CI_COMMIT_REF_SLUG
-        url: https://$CI_ENVIRONMENT_SLUG.example.review.brezel.cloud
+        url: https://$CI_ENVIRONMENT_SLUG.$SYSTEM.review.brezel.cloud
         deployment_tier: development
         on_stop: "stop review"
     variables:
