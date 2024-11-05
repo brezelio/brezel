@@ -164,8 +164,7 @@ RUN echo "pm = dynamic" >> /usr/local/etc/php-fpm.conf && \
     echo "pm.start_servers = 20" >> /usr/local/etc/php-fpm.conf && \
     echo "pm.min_spare_servers = 20" >> /usr/local/etc/php-fpm.conf && \
     echo "pm.max_spare_servers = 50" >> /usr/local/etc/php-fpm.conf && \
-    echo "pm.process_idle_timeout = 15s" >> /usr/local/etc/php-fpm.conf && \
-    echo "pm.max_requests = 300" >> /usr/local/etc/php-fpm.conf
+    echo "pm.process_idle_timeout = 15s" >> /usr/local/etc/php-fpm.conf
 
 # Get nginx configuration
 COPY docker/api.nginx.conf nginx.conf
