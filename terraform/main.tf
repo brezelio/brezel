@@ -115,8 +115,8 @@ module "system" {
     MAIL_ENCRYPTION                       = var.mail_encryption
     MAIL_FROM_NAME                        = var.mail_from_name
     MAIL_FROM_ADDRESS                     = var.mail_from_address
-    BREZEL_JOBS_SUPERVISOR_STDOUT_LOGFILE = "/app/storage/worker.log"
-    BROADCAST_DRIVER                      = "pusher"
+    BREZEL_JOBS_SUPERVISOR_STDOUT_LOGFILE = "/app/storage/logs/worker.log"
+    BROADCAST_DRIVER                      = "reverb"
     VAPID_PRIVATE_KEY                     = var.vapid_private_key
     VAPID_PUBLIC_KEY                      = var.vapid_public_key
     OPENAI_API_KEY                        = var.openai_api_key
