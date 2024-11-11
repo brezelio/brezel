@@ -2,27 +2,40 @@
   "buttons": {
   },
   "notifications": {
-
   },
   "modules": {
-      "clients": {
-          "title": "Mandanten",
-          "fields": {
-              "title": "Titel",
-              "description": "Beschreibung"
-          }
+    "clients": {
+      "title": "Mandanten",
+      "fields": {
+        "title": "Titel",
+        "description": "Beschreibung",
+        "mail_host": "Host",
+        "mail_port": "Port",
+        "mail_username": "Benutzername",
+        "mail_password": "Passwort",
+        "mail_encryption": "Verschlüsselung",
+        "mail_from_address": "Absender Adresse",
+        "mail_from_name": "Absender Name",
+        "mail_footer": "Mail-Footer"
       },
-      "users": {
-          "title": "Nutzer",
-          "fields": {
-              "name": "Name",
-              "email": "E-Mail",
-              "password": "Passwort"
-          }
+      "choice": {
+        "mail_encryption": {
+          "tls": "TLS",
+          "ssl": "SSL",
+          "none": "Keine (nicht empfohlen)"
+        }
       }
+    },
+    "users": {
+      "title": "Nutzer",
+      "fields": {
+        "name": "Name",
+        "email": "E-Mail",
+        "password": "Passwort"
+      }
+    }
   },
   "widgets": {
-
   },
   "workflows": {
   },

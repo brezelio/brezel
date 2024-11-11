@@ -5,6 +5,9 @@
       "identifier": "clients",
       "type": "clients",
       "icon": "setting",
+      "layouts": {
+        "detail": "${file('/config/clients.detail.json')}"
+      },
       "fields": [
         {
           "identifier": "title",
@@ -43,11 +46,25 @@
         },
         {
           "identifier": "mail_password",
-          "type": "text"
+          "type": "text",
+          "options": {
+            "hide_value": true,
+            "show_in_resource_table": false,
+            "recipes": {
+              "hidden_from_frontend": "mail_auth_mode == 'XOAUTH2'"
+            }
+          }
         },
         {
           "identifier": "mail_encryption",
-          "type": "text"
+          "type": "choice",
+          "options": {
+            "values": [
+              "tls",
+              "ssl",
+              "none"
+            ]
+          }
         },
         {
           "identifier": "mail_from_address",
@@ -57,10 +74,7 @@
           "identifier": "mail_from_name",
           "type": "text"
         }
-      ],
-      "layouts": {
-        "detail": "${file('/config/clients.detail.json')}"
-      }
+      ]
     }
   }
 ]
