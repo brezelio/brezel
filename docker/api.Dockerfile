@@ -155,7 +155,7 @@ RUN rm .env || true
 
 FROM system-files AS final
 # Increase memory limit by reusing the arg defined above
-ARG PHP_MEMORY_LIMIT=1G
+ARG PHP_MEMORY_LIMIT
 RUN echo "memory_limit = $PHP_MEMORY_LIMIT" >> /usr/local/etc/php/conf.d/docker-php-memlimit.ini;
 
 # Configure php-fpm
