@@ -32,3 +32,6 @@ bin/assets/windows/nginx.conf
 nginxerrors.log
 
 dev-dist
+
+storage/framework/*
+storage/app/tenancy/tenants/*
