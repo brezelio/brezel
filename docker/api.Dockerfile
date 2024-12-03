@@ -6,7 +6,7 @@ ARG PHP_MEMORY_LIMIT=1G
 ARG COMPOSER_USER
 
 # Technical Args
-ARG PHP_VERSION=8.3-fpm
+ARG PHP_VERSION=8.4-fpm
 ARG PHP_BASE_IMAGE=php:${PHP_VERSION}-alpine
 
 # First, we build a layer with the system dependencies and php extensions.
@@ -51,11 +51,6 @@ RUN apk add --no-cache --virtual .build-deps \
 
 # base php extensions
 RUN docker-php-ext-install pdo_mysql mysqli zip exif pcntl bcmath sockets gmp sodium
-
-# imap
-RUN apk add --no-cache openssl-dev imap-dev krb5-dev \
-    && docker-php-ext-configure imap --with-kerberos --with-imap-ssl \
-    && docker-php-ext-install imap
 
 # intl
 RUN apk add --no-cache icu-dev \
