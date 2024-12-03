@@ -7,11 +7,11 @@
     "prefer-stable": true,
     "license": "proprietary",
     "require": {
-        "brezel/api": "dev-1.0.0-next.25"
+        "brezel/api": "dev-1.0.0-next.25",
+        "nunomaduro/collision": "*"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "*",
-        "nunomaduro/collision": "*",
         "pestphp/pest": "*",
         "pestphp/pest-plugin-laravel": "*",
         "spatie/laravel-ignition": "*"
