@@ -66,8 +66,9 @@ RUN apk add --no-cache freetype-dev libjpeg-turbo-dev libpng-dev \
 # Imagick is installed from the archive because regular installation fails
 # See: https://github.com/Imagick/imagick/issues/643#issuecomment-1834361716
 RUN apk add --no-cache imagemagick imagemagick-dev \
-    && curl -L -o /tmp/imagick.tar.gz https://github.com/Imagick/imagick/archive/7088edc353f53c4bc644573a79cdcd67a726ae16.tar.gz \
+    && curl -L -o /tmp/imagick.tar.gz https://github.com/Imagick/imagick/archive/tags/3.7.0.tar.gz \
     && tar --strip-components=1 -xf /tmp/imagick.tar.gz \
+    && sed -i 's/php_strtolower/zend_str_tolower/g' imagick.c \
     && phpize \
     && ./configure \
     && make \
