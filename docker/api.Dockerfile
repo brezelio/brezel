@@ -160,7 +160,10 @@ RUN echo "pm = dynamic" >> /usr/local/etc/php-fpm.conf && \
     echo "pm.start_servers = 10" >> /usr/local/etc/php-fpm.conf && \
     echo "pm.min_spare_servers = 10" >> /usr/local/etc/php-fpm.conf && \
     echo "pm.max_spare_servers = 20" >> /usr/local/etc/php-fpm.conf && \
-    echo "pm.process_idle_timeout = 15s" >> /usr/local/etc/php-fpm.conf
+    echo "pm.process_idle_timeout = 15s" >> /usr/local/etc/php-fpm.conf && \
+    # Don't print deprecation warnings. Needed because hyn/multi-tenant uses deprecated functions and we desperately need to update \
+    # TODO: Remove this once we do not depend on any deprecated deps like hyn/multi-tenant (or brezel/multi-tenant) anymore
+    echo "error_reporting = E_ALL & ~E_NOTICE & ~E_DEPRECATED" >> /usr/local/etc/php/php.ini
 
 # Get nginx configuration
 COPY docker/api.nginx.conf nginx.conf
