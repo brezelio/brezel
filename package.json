@@ -10,7 +10,7 @@
   },
   "type": "module",
   "dependencies": {
-    "@kibro/brezel-spa": "3.13.3",
+    "@kibro/brezel-spa": "4.14.0",
     "lodash-es": "*",
     "moment": "*",
     "tinycolor2": "*"
@@ -18,7 +18,8 @@
   "devDependencies": {
     "vite": "*",
     "vue": "*",
-    "workbox-window": "*"
+    "workbox-window": "*",
+    "sass": "*"
   },
   "browserslist": [
     "> 1%",
