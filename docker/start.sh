@@ -7,10 +7,6 @@ echo "Running system '$system'"
 echo "Starting cron..."
 crond
 
-# Create supervisor config and start it
-php bakery make:supervisor
-supervisord -c /app/supervisord.conf
-
 # Bakery init for keys and base migrations
 php bakery init --force
 
@@ -25,6 +21,10 @@ php bakery apply
 
 # Load the system (aka workflows)
 php bakery load --force
+
+# Create supervisor config and start it
+php bakery make:supervisor
+supervisord -c /app/supervisord.conf
 
 # Make sure the storage directory exists
 mkdir -p storage/app storage/framework storage/logs
