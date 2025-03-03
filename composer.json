@@ -7,7 +7,7 @@
     "prefer-stable": true,
     "license": "proprietary",
     "require": {
-        "brezel/api": "dev-1.0.0-next.27",
+        "brezel/api": "dev-1.0.0-next.30",
         "nunomaduro/collision": "*",
         "spatie/laravel-ignition": "*"
     },
@@ -28,10 +28,10 @@
     },
     "scripts": {
         "pre-install-cmd": [
-            "@composer check-platform-reqs"
+            "@php bin/check-platform.php"
         ],
         "pre-update-cmd": [
-            "@composer check-platform-reqs"
+            "@php bin/check-platform.php"
         ],
         "post-autoload-dump": [
             "@cleanup-dependencies"
