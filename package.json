@@ -10,10 +10,8 @@
   },
   "type": "module",
   "dependencies": {
-    "@kibro/brezel-spa": "4.14.0",
-    "lodash-es": "*",
-    "moment": "*",
-    "tinycolor2": "*"
+    "@kibro/brezel-spa": "4.27.0",
+    "lodash-es": "*"
   },
   "devDependencies": {
     "vite": "*",
