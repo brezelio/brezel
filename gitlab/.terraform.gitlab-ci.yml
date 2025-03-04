@@ -3,7 +3,7 @@ include:
 
 # This template will deploy your system on a Kubernetes cluster via Terraform.
 # It will first build the Docker images for the API and SPA, then deploy them to a cluster.
-# Each branch gets deployed and is available at https://<branch-name>.example.review.brezel.cloud
+# Each branch gets deployed and is available at https://<branch-name>.<system-name>.review.brezel.cloud
 
 # Set the SYSTEM variable to the name of your system in your normal .gitlab-ci.yml
 #variables:
@@ -31,7 +31,7 @@ build docker api:
         - export BRANCH_TAG=$CI_COMMIT_REF_SLUG
         - docker info
         - docker pull $CI_REGISTRY_IMAGE:$BRANCH_TAG || true
-        - docker build -f docker/api.Dockerfile --cache-from $CI_REGISTRY_IMAGE:$BRANCH_TAG --tag $CI_REGISTRY_IMAGE:$BRANCH_TAG --target=final --build-arg SYSTEM=$SYSTEM --build-arg COMPOSER_USER=$PACKAGE_TOKEN_USER --secret id=COMPOSER_TOKEN,env=PACKAGE_TOKEN .
+        - docker build -f docker/api.Dockerfile --cache-from $CI_REGISTRY_IMAGE:$BRANCH_TAG --tag $CI_REGISTRY_IMAGE:$BRANCH_TAG --target=final --build-arg SYSTEM=$SYSTEM --build-arg PHP_MEMORY_LIMIT=1G --build-arg COMPOSER_USER=$PACKAGE_TOKEN_USER --secret id=COMPOSER_TOKEN,env=PACKAGE_TOKEN .
         - docker push $CI_REGISTRY_IMAGE:$BRANCH_TAG
 
 build docker ws:
