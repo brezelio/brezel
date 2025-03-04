@@ -6,7 +6,6 @@ param (
 $maximizedAndOwnWindow = "-M -w 0"
 $brezelRoot = $PSScriptRoot -replace ".{4}$"
 $cdBrezel = "cd $brezelRoot"
-$cdBrezelTools = "cd X:\_KiBro\_Brezel"
 $title = "--title"
 # powershell that will not exit the pane after command completion
 $pwsh = "pwsh -noexit -c"
@@ -29,7 +28,7 @@ try {
 
 # Define Commands
 $runSpa = "npm run dev"
-$runBrotcast = "npm run start"
+$runBrotcast = "php bakery brotcast:start"
 $runQueue = "php bakery work --tries=1 --sleep=1"
 $runBrotcastQueue = "php bakery work --tries=1 --queue=broadcasts"
 $runCron = "./bin/cronPowershell.ps1"
@@ -52,9 +51,9 @@ if ($useNginx)
 # Define what will run in each pane
 $spa = "$title spa $pwshNP $cdBrezel && $runSpa"
 $apiDir = "$title api-dir $pwsh $cdBrezel"
-$brotcast = "$title brotcast $pwshNP $cdBrezelTools\brotcast-server && $runBrotcast"
-$queue = "$title queue $pwshNP $cdBrezel && 'Queue listening...' && $runQueue"
+$brotcast = "$title brotcast $pwshNP $cdBrezel && 'Running Brotcast WebSocket server...' && $runBrotcast"
 $brotcastQueue = "$title queue $pwshNP $cdBrezel && 'Brotcast queue listening...' && $runBrotcastQueue"
+$queue = "$title queue $pwshNP $cdBrezel && 'Queue listening...' && $runQueue"
 $cronScheduler = "$title cron-scheduler $pwshNP $cdBrezel && $runCron"
 if ($useNginx)
 {

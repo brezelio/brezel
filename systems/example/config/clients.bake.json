@@ -18,17 +18,6 @@
           }
         },
         {
-          "identifier": "currency",
-          "type": "text",
-          "options": {
-            "rules": "required"
-          }
-        },
-        {
-          "identifier": "description",
-          "type": "textarea"
-        },
-        {
           "identifier": "color",
           "type": "text"
         },

@@ -1,0 +1,154 @@
+include:
+    - template: "Terraform/Base.latest.gitlab-ci.yml"
+
+# This template will deploy your system on a Kubernetes cluster via Terraform.
+# It will first build the Docker images for the API and SPA, then deploy them to a cluster.
+# Each branch gets deployed and is available at https://<branch-name>.<system-name>.review.brezel.cloud
+
+# Set the SYSTEM variable to the name of your system in your normal .gitlab-ci.yml
+#variables:
+#  SYSTEM: example
+
+stages:
+    - build
+    - deploy
+
+build docker api:
+    image: docker:git
+    stage: build
+    variables:
+        DOCKER_HOST: tcp://docker:2376
+        DOCKER_TLS_CERTDIR: "/certs"
+        DOCKER_TLS_VERIFY: 1
+        DOCKER_CERT_PATH: "$DOCKER_TLS_CERTDIR/client"
+    rules:
+        - if: $CI_PIPELINE_SOURCE != "merge_request_event" # && $CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH
+    services:
+        - docker:dind
+    before_script:
+        - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    script:
+        - export BRANCH_TAG=$CI_COMMIT_REF_SLUG
+        - docker info
+        - docker pull $CI_REGISTRY_IMAGE:$BRANCH_TAG || true
+        - docker build -f docker/api.Dockerfile --cache-from $CI_REGISTRY_IMAGE:$BRANCH_TAG --tag $CI_REGISTRY_IMAGE:$BRANCH_TAG --target=final --build-arg SYSTEM=$SYSTEM --build-arg PHP_MEMORY_LIMIT=1G --build-arg COMPOSER_USER=$PACKAGE_TOKEN_USER --secret id=COMPOSER_TOKEN,env=PACKAGE_TOKEN .
+        - docker push $CI_REGISTRY_IMAGE:$BRANCH_TAG
+
+build docker ws:
+    image: docker:git
+    stage: build
+    variables:
+        DOCKER_HOST: tcp://docker:2376
+        DOCKER_TLS_CERTDIR: "/certs"
+        DOCKER_TLS_VERIFY: 1
+        DOCKER_CERT_PATH: "$DOCKER_TLS_CERTDIR/client"
+    rules:
+        - if: $CI_PIPELINE_SOURCE != "merge_request_event" # && $CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH
+    services:
+        - docker:dind
+    before_script:
+        - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    script:
+        - export BRANCH_TAG=$CI_COMMIT_REF_SLUG
+        - docker info
+        - docker pull $CI_REGISTRY_IMAGE:$BRANCH_TAG || true
+        - docker build -f docker/api.Dockerfile --cache-from $CI_REGISTRY_IMAGE:$BRANCH_TAG --tag $CI_REGISTRY_IMAGE:$BRANCH_TAG-brotcast --target=brotcast --build-arg SYSTEM=$SYSTEM --build-arg COMPOSER_USER=$PACKAGE_TOKEN_USER --secret id=COMPOSER_TOKEN,env=PACKAGE_TOKEN .
+        - docker push $CI_REGISTRY_IMAGE:$BRANCH_TAG-brotcast
+
+build docker spa:
+    image: docker:git
+    stage: build
+    variables:
+        DOCKER_HOST: tcp://docker:2376
+        DOCKER_TLS_CERTDIR: "/certs"
+        DOCKER_TLS_VERIFY: 1
+        DOCKER_CERT_PATH: "$DOCKER_TLS_CERTDIR/client"
+        API_URL: https://api.$CI_COMMIT_REF_SLUG.$SYSTEM.review.brezel.cloud
+    rules:
+        - if: $CI_PIPELINE_SOURCE != "merge_request_event" # && $CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH
+    services:
+        - docker:dind
+    before_script:
+        - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    script:
+        - export BRANCH_TAG=$CI_COMMIT_REF_SLUG
+        - docker info
+        - docker pull $CI_REGISTRY_IMAGE:$BRANCH_TAG-spa || true
+        - docker build -f docker/spa.Dockerfile --cache-from $CI_REGISTRY_IMAGE:$BRANCH_TAG-spa --tag $CI_REGISTRY_IMAGE:$BRANCH_TAG-spa --build-arg SYSTEM=$SYSTEM --build-arg API_URL=$API_URL --secret id=NPM_TOKEN,env=CI_JOB_TOKEN .
+        - docker push $CI_REGISTRY_IMAGE:$BRANCH_TAG-spa
+
+infra:update:
+    image:
+        name: bitnami/kubectl
+        entrypoint:
+            - ""
+    stage: deploy
+    needs: [ "build docker api", "build docker ws","build docker spa" ]
+    rules:
+        - if: $CI_PIPELINE_SOURCE != "merge_request_event" # && $CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH
+    before_script:
+        - cp $KUBE $HOME/.kube/config
+        - export KUBECONFIG="$HOME/.kube/config"
+    script:
+        - export BRANCH_TAG=$CI_COMMIT_REF_SLUG
+        - kubectl -n review-$SYSTEM-$BRANCH_TAG rollout restart deploy brezel-spa || true
+        - kubectl -n review-$SYSTEM-$BRANCH_TAG rollout restart statefulset brezel || true
+
+infra:review:
+    image: registry.gitlab.com/gitlab-org/terraform-images/stable:latest
+    extends: .terraform:build
+    stage: deploy
+    needs: [ "build docker api", "build docker ws","build docker spa" ]
+    rules:
+        - if: $CI_PIPELINE_SOURCE != "merge_request_event" # && $CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH
+    variables:
+        TF_ROOT: terraform
+        TF_STATE_NAME: brezel-scaleway
+    before_script:
+        - mkdir $HOME/.kube
+        - cp $KUBE $HOME/.kube/config
+        - export KUBECONFIG="$HOME/.kube/config"
+        - export TF_STATE_NAME="scaleway-$CI_COMMIT_REF_SLUG"
+        - export TF_VAR_branch=$CI_COMMIT_REF_SLUG
+    resource_group: tf:product
+
+infra:deploy:
+    image: registry.gitlab.com/gitlab-org/terraform-images/stable:latest
+    extends: .terraform:deploy
+    stage: deploy
+    needs:
+        - infra:review
+    environment:
+        name: $CI_COMMIT_REF_SLUG
+        url: https://$CI_ENVIRONMENT_SLUG.$SYSTEM.review.brezel.cloud
+        deployment_tier: development
+        on_stop: "stop review"
+    variables:
+        TF_ROOT: terraform
+    resource_group: tf:product
+    rules:
+        - if: $CI_PIPELINE_SOURCE != "merge_request_event" # && $CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH
+          when: manual
+    before_script:
+        - mkdir $HOME/.kube
+        - cp $KUBE $HOME/.kube/config
+        - export KUBECONFIG="$HOME/.kube/config"
+        - export TF_STATE_NAME="scaleway-$CI_COMMIT_REF_SLUG"
+        - export TF_VAR_branch=$CI_COMMIT_REF_SLUG
+
+stop review:
+    image: bitnami/kubectl
+    stage: deploy
+    environment:
+        name: $CI_COMMIT_REF_SLUG
+        action: stop
+    rules:
+        - if: $CI_PIPELINE_SOURCE != "merge_request_event" # && $CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH
+          when: manual
+    before_script:
+        - cp $KUBE $HOME/.kube/config
+        - export KUBECONFIG="$HOME/.kube/config"
+    script:
+        - export BRANCH_TAG=$CI_COMMIT_REF_SLUG
+        - kubectl delete ns review-$SYSTEM-$BRANCH_TAG
+
