@@ -12,6 +12,7 @@
         "spatie/laravel-ignition": "*"
     },
     "require-dev": {
+        "barryvdh/laravel-ide-helper": "*",
         "pestphp/pest": "*",
         "pestphp/pest-plugin-laravel": "*"
     },
