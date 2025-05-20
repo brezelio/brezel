@@ -79,11 +79,7 @@ build docker spa:
         - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     script:
         # If TF_VAR_host is set, use it as the API URL. Else, use the review API url.
-        - if [ -n "$TF_VAR_host" ]; then
-            export API_URL=https://api.$TF_VAR_host
-          else
-            export API_URL=https://api.$CI_COMMIT_REF_SLUG.$SYSTEM.$TF_VAR_base_domain
-          fi
+        - if [ -n "$TF_VAR_host" ]; then export API_URL="https://api.$TF_VAR_host"; else export API_URL="https://api.$CI_COMMIT_REF_SLUG.$SYSTEM.$TF_VAR_base_domain"; fi
         - export BRANCH_TAG=$CI_COMMIT_REF_SLUG
         - docker info
         - docker pull $CI_REGISTRY_IMAGE:$BRANCH_TAG-spa || true
@@ -105,11 +101,7 @@ infra:update:
     script:
         - export BRANCH_TAG=$CI_COMMIT_REF_SLUG
         # If TF_VAR_namespace is set, use it as the namespace. Else, use the review namespace.
-        - if [ -n "$TF_VAR_namespace" ]; then
-            export NAMESPACE=$TF_VAR_namespace
-          else
-            export NAMESPACE=review-$SYSTEM-$BRANCH_TAG
-          fi
+        - if [ -n "$TF_VAR_namespace" ]; then export NAMESPACE="$TF_VAR_namespace"; else export NAMESPACE="review-$SYSTEM-$BRANCH_TAG"; fi
         - kubectl -n $NAMESPACE rollout restart deploy brezel-spa || true
         - kubectl -n $NAMESPACE rollout restart statefulset brezel || true
 
@@ -117,6 +109,10 @@ infra:plan:
     image: registry.gitlab.com/gitlab-org/terraform-images/stable:latest
     extends: .terraform:build
     stage: deploy
+    needs:
+        - build docker api
+        - build docker spa
+        - build docker ws
     environment:
         name: review/$CI_COMMIT_REF_SLUG
         url: https://app-$CI_ENVIRONMENT_SLUG.$TF_VAR_base_domain
