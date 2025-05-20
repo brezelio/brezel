@@ -127,6 +127,7 @@ infra:plan:
         TF_ROOT: terraform
         TF_STATE_NAME: brezel-scaleway
         TF_VAR_registry_image: $CI_REGISTRY_IMAGE
+        TF_VAR_system: $SYSTEM
     before_script:
         - mkdir $HOME/.kube
         - cp $KUBE $HOME/.kube/config
