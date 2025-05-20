@@ -12,12 +12,14 @@ variable "base_domain" {
 
 variable "host" {
   type        = string
+  default = null
   nullable    = true
   description = "If not set, the host will be generated from the branch name, system, and base domain."
 }
 
 variable "namespace" {
   type     = string
+  default = null
   nullable = true
   description = "If not set, the namespace will be generated from the branch name and system."
 }
