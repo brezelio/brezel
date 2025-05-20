@@ -4,17 +4,17 @@ resource "random_password" "dev_password" {
 }
 
 locals {
-  system      = "lemikos"
-  system_repo = "registry.kiwis-and-brownies.de/kibro/basedonbrezel/lemikos"
+  system      = var.system
+  system_repo = var.registry_image
   branch_slug = replace(var.branch, "[^a-zA-Z0-9-]", "-")
-  base_host   = "${local.branch_slug}.${local.system}.review.brezel.cloud"
+  base_host   = coalesce(var.host, "${local.branch_slug}.${local.system}.${var.base_domain}")
   app_url     = "http${var.secure ? "s" : ""}://${local.base_host}"
   api_url     = "http${var.secure ? "s" : ""}://api.${local.base_host}"
 }
 
 resource "kubernetes_namespace" "branch" {
   metadata {
-    name = "review-${local.system}-${local.branch_slug}"
+    name = coalesce(var.namespace, "review-${local.system}-${local.branch_slug}")
   }
 }
 

@@ -22,7 +22,7 @@ build docker api:
         DOCKER_TLS_VERIFY: 1
         DOCKER_CERT_PATH: "$DOCKER_TLS_CERTDIR/client"
     rules:
-        - if: $CI_PIPELINE_SOURCE != "merge_request_event" # && $CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH
+        - when: always
     services:
         - docker:dind
     before_script:
@@ -43,7 +43,7 @@ build docker ws:
         DOCKER_TLS_VERIFY: 1
         DOCKER_CERT_PATH: "$DOCKER_TLS_CERTDIR/client"
     rules:
-        - if: $CI_PIPELINE_SOURCE != "merge_request_event" # && $CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH
+        - when: always
     services:
         - docker:dind
     before_script:
@@ -63,18 +63,31 @@ build docker spa:
         DOCKER_TLS_CERTDIR: "/certs"
         DOCKER_TLS_VERIFY: 1
         DOCKER_CERT_PATH: "$DOCKER_TLS_CERTDIR/client"
-        API_URL: https://api.$CI_COMMIT_REF_SLUG.$SYSTEM.review.brezel.cloud
     rules:
-        - if: $CI_PIPELINE_SOURCE != "merge_request_event" # && $CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH
+        # For merge requests, include information about the review environment and merge request in the build
+        -   if: $CI_PIPELINE_SOURCE == 'merge_request_event'
+            variables:
+                REVIEW_ENVIRONMENT: review/$CI_COMMIT_REF_SLUG
+                MERGE_REQUEST_IID: $CI_MERGE_REQUEST_IID
+                MERGE_REQUEST_TITLE: $CI_MERGE_REQUEST_TITLE
+                MERGE_REQUEST_URL: $CI_MERGE_REQUEST_PROJECT_URL/-/merge_requests/$CI_MERGE_REQUEST_IID
+        # Always execute the job
+        -   when: always
     services:
         - docker:dind
     before_script:
         - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     script:
+        # If TF_VAR_host is set, use it as the API URL. Else, use the review API url.
+        - if [ -n "$TF_VAR_host" ]; then
+            export API_URL=https://api.$TF_VAR_host
+          else
+            export API_URL=https://api.$CI_COMMIT_REF_SLUG.$SYSTEM.$TF_VAR_base_domain
+          fi
         - export BRANCH_TAG=$CI_COMMIT_REF_SLUG
         - docker info
         - docker pull $CI_REGISTRY_IMAGE:$BRANCH_TAG-spa || true
-        - docker build -f docker/spa.Dockerfile --cache-from $CI_REGISTRY_IMAGE:$BRANCH_TAG-spa --tag $CI_REGISTRY_IMAGE:$BRANCH_TAG-spa --build-arg SYSTEM=$SYSTEM --build-arg API_URL=$API_URL --secret id=NPM_TOKEN,env=CI_JOB_TOKEN .
+        - docker build -f docker/spa.Dockerfile --cache-from $CI_REGISTRY_IMAGE:$BRANCH_TAG-spa --tag $CI_REGISTRY_IMAGE:$BRANCH_TAG-spa --build-arg SYSTEM=$SYSTEM --build-arg API_URL=$API_URL --build-arg REVIEW_ENVIRONMENT=$REVIEW_ENVIRONMENT --build-arg MERGE_REQUEST_IID=$MERGE_REQUEST_IID --build-arg MERGE_REQUEST_TITLE=$MERGE_REQUEST_TITLE --build-arg MERGE_REQUEST_URL=$MERGE_REQUEST_URL --secret id=NPM_TOKEN,env=CI_JOB_TOKEN .
         - docker push $CI_REGISTRY_IMAGE:$BRANCH_TAG-spa
 
 infra:update:
@@ -83,27 +96,37 @@ infra:update:
         entrypoint:
             - ""
     stage: deploy
-    needs: [ "build docker api", "build docker ws","build docker spa" ]
+    needs: [ "build docker api", "build docker ws", "build docker spa" ]
     rules:
-        - if: $CI_PIPELINE_SOURCE != "merge_request_event" # && $CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH
+        - when: always
     before_script:
         - cp $KUBE $HOME/.kube/config
         - export KUBECONFIG="$HOME/.kube/config"
     script:
         - export BRANCH_TAG=$CI_COMMIT_REF_SLUG
-        - kubectl -n review-$SYSTEM-$BRANCH_TAG rollout restart deploy brezel-spa || true
-        - kubectl -n review-$SYSTEM-$BRANCH_TAG rollout restart statefulset brezel || true
+        # If TF_VAR_namespace is set, use it as the namespace. Else, use the review namespace.
+        - if [ -n "$TF_VAR_namespace" ]; then
+            export NAMESPACE=$TF_VAR_namespace
+          else
+            export NAMESPACE=review-$SYSTEM-$BRANCH_TAG
+          fi
+        - kubectl -n $NAMESPACE rollout restart deploy brezel-spa || true
+        - kubectl -n $NAMESPACE rollout restart statefulset brezel || true
 
-infra:review:
+infra:plan:
     image: registry.gitlab.com/gitlab-org/terraform-images/stable:latest
     extends: .terraform:build
     stage: deploy
-    needs: [ "build docker api", "build docker ws","build docker spa" ]
+    environment:
+        name: review/$CI_COMMIT_REF_SLUG
+        url: https://app-$CI_ENVIRONMENT_SLUG.$TF_VAR_base_domain
+        deployment_tier: development
     rules:
-        - if: $CI_PIPELINE_SOURCE != "merge_request_event" # && $CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH
+        - when: always
     variables:
         TF_ROOT: terraform
         TF_STATE_NAME: brezel-scaleway
+        TF_VAR_registry_image: $CI_REGISTRY_IMAGE
     before_script:
         - mkdir $HOME/.kube
         - cp $KUBE $HOME/.kube/config
@@ -111,44 +134,58 @@ infra:review:
         - export TF_STATE_NAME="scaleway-$CI_COMMIT_REF_SLUG"
         - export TF_VAR_branch=$CI_COMMIT_REF_SLUG
     resource_group: tf:product
+    script:
+        - gitlab-terraform plan -lock=false
 
 infra:deploy:
     image: registry.gitlab.com/gitlab-org/terraform-images/stable:latest
     extends: .terraform:deploy
     stage: deploy
     needs:
-        - infra:review
+        - infra:plan
     environment:
-        name: $CI_COMMIT_REF_SLUG
-        url: https://$CI_ENVIRONMENT_SLUG.$SYSTEM.review.brezel.cloud
+        name: review/$CI_COMMIT_REF_SLUG
+        url: https://app-$CI_ENVIRONMENT_SLUG.$TF_VAR_base_domain
+        on_stop: review:stop
         deployment_tier: development
-        on_stop: "stop review"
+    resource_group: tf:product
     variables:
         TF_ROOT: terraform
-    resource_group: tf:product
     rules:
-        - if: $CI_PIPELINE_SOURCE != "merge_request_event" # && $CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH
-          when: manual
+        - when: manual
     before_script:
         - mkdir $HOME/.kube
         - cp $KUBE $HOME/.kube/config
         - export KUBECONFIG="$HOME/.kube/config"
         - export TF_STATE_NAME="scaleway-$CI_COMMIT_REF_SLUG"
         - export TF_VAR_branch=$CI_COMMIT_REF_SLUG
+    script:
+        # Apply the Terraform configuration
+        - gitlab-terraform apply -auto-approve
+        # Fetch the root password from the Terraform output
+        - PASSWORD=$(gitlab-terraform output -raw root_password)
+        - echo "Root password is \"$PASSWORD\""
 
-stop review:
-    image: bitnami/kubectl
+review:stop:
+    image: registry.gitlab.com/gitlab-org/terraform-images/stable:latest
+    extends: .terraform:deploy
     stage: deploy
     environment:
-        name: $CI_COMMIT_REF_SLUG
+        name: review/$CI_COMMIT_REF_SLUG
         action: stop
+    resource_group: tf:product
     rules:
-        - if: $CI_PIPELINE_SOURCE != "merge_request_event" # && $CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH
+        - if: $CI_PIPELINE_SOURCE == "merge_request_event" && $CI_COMMIT_REF_SLUG != "main"
           when: manual
+    variables:
+        TF_ROOT: terraform
+        TF_STATE_NAME: brezel-scaleway
+        TF_VAR_review_environment_slug: $CI_ENVIRONMENT_SLUG
     before_script:
+        - mkdir $HOME/.kube
         - cp $KUBE $HOME/.kube/config
         - export KUBECONFIG="$HOME/.kube/config"
+        - export TF_STATE_NAME="scaleway-$CI_COMMIT_REF_SLUG"
+        - export TF_VAR_branch=$CI_COMMIT_REF_SLUG
     script:
-        - export BRANCH_TAG=$CI_COMMIT_REF_SLUG
-        - kubectl delete ns review-$SYSTEM-$BRANCH_TAG
-
+        - gitlab-terraform destroy -auto-approve

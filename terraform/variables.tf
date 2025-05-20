@@ -1,17 +1,41 @@
+variable "system" {
+  type = string
+}
+
+variable "registry_image" {
+  type = string
+}
+
+variable "base_domain" {
+  type = string
+}
+
+variable "host" {
+  type        = string
+  nullable    = true
+  description = "If not set, the host will be generated from the branch name, system, and base domain."
+}
+
+variable "namespace" {
+  type     = string
+  nullable = true
+  description = "If not set, the namespace will be generated from the branch name and system."
+}
+
 variable "branch" {
   type = string
 }
 
 variable "app_env" {
   description = "App Env (one of local, staging, production)"
-  type = string
-  default = "staging"
+  type        = string
+  default     = "staging"
 }
 
 variable "secure" {
   description = "Whether to issue certificates for HTTPS"
-  type = bool
-  default = true
+  type        = bool
+  default     = true
 }
 
 variable "mail_from_address" {
