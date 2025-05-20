@@ -1,4 +1,4 @@
-resource "random_password" "dev_password" {
+resource "random_string" "dev_password" {
   length  = 16
   special = false
 }
@@ -128,9 +128,9 @@ module "system" {
       DB_DATABASE       = scaleway_rdb_database.system.name
       DB_USER           = scaleway_rdb_user.system.name
       DB_PASSWORD       = random_password.db_password.result
-      ROOT_PASSWORD     = random_password.dev_password.result
+      ROOT_PASSWORD     = random_string.dev_password.result
 
-      ROOT_PASSWORD = random_password.dev_password.result
+      ROOT_PASSWORD = random_string.dev_password.result
 
       MAIL_DRIVER       = "smtp"
       MAIL_HOST         = var.mail_host
@@ -142,4 +142,8 @@ module "system" {
       MAIL_FROM_ADDRESS = var.mail_from_address
     }
   }
+}
+
+output "root_password" {
+  value = random_string.dev_password.result
 }
