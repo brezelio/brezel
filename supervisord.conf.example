@@ -1,21 +1,16 @@
 [supervisord]
-logfile=%(here)s/supervisord.log            ; main log file; default $CWD/supervisord.log
-;logfile_maxbytes=50MB                   ; max main logfile bytes b4 rotation; default 50MB
-logfile_backups=10                      ; # of main logfile backups; 0 means none, default 10
-loglevel=info                           ; log level; default info; others: debug,warn,trace
-pidfile=/tmp/supervisord-brezel-api.pid ; supervisord pidfile; default supervisord.pid
-nodaemon=false                          ; start in foreground if true; default false
-minfds=1024                             ; min. avail startup file descriptors; default 1024
-minprocs=200                            ; min. avail process descriptors;default 200
+logfile=%(here)s/supervisord.log        ; Log file relative to config location
+pidfile=/tmp/supervisord-brezel-api.pid ; Project-specific PID file to avoid conflicts with other supervisor instances
+umask=0002                              ; Ensures group-write permission is preserved so that files created by supervisor (running as 'brezel') can still be written to by the webserver (www-data)
 
-[rpcinterface:supervisor]
+[rpcinterface:supervisor]   ; REQUIRED: Enables XML-RPC interface for supervisorctl to control supervisor - do not remove this section
 supervisor.rpcinterface_factory = supervisor.rpcinterface:make_main_rpcinterface
 
 [unix_http_server]
-file=/tmp/supervisor-brezel.sock             ; the path to the socket file
+file=/tmp/supervisor-brezel.sock    ; Project-specific socket file to avoid conflicts with other supervisor instances
 
 [supervisorctl]
-serverurl=unix:///tmp/supervisor-brezel.sock ; use a unix:// URL  for a unix socket
+serverurl=unix:///tmp/supervisor-brezel.sock ; Must match the unix_http_server socket path above for supervisorctl to communicate with this supervisor instance
 
 [include]
-files = storage/workers.supervisord.conf
+files = storage/workers.supervisord.conf ; Separates worker configurations for better organization and maintainability
