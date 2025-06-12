@@ -96,7 +96,7 @@ module "system" {
 
   brezel_resources = {
     limits = {
-      memory = "1Gi"
+      memory = "1.5Gi"
     }
     requests = {
       cpu    = "1500m"
