@@ -96,11 +96,11 @@ module "system" {
 
   brezel_resources = {
     limits = {
-      memory = "1.5Gi"
+      memory = "1.5Gi" # Intuitively, limit should be higher than requests, but all k8s guides say to make them equal.
     }
     requests = {
       cpu    = "1500m"
-      memory = "1Gi"
+      memory = "1.5Gi" # A brezel instance ideling / handling some basic requests uses ~600mb, but to ensure stability, we set it to the same as our limit.
     }
   }
 

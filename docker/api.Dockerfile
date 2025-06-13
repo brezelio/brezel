@@ -14,67 +14,67 @@ FROM $PHP_BASE_IMAGE AS system
 
 # Install dependencies
 RUN apk add --no-cache \
-    # Just to debug
-    vim \
-    # Installs the mysql client to interact with the database
-    mysql-client \
-    # Needed to connect to mysql 8
-    mariadb-connector-c-dev \
-    # Needed for supervisor
-    supervisor \
-    # For nginx
-    nginx
+  # Just to debug
+  vim \
+  # Installs the mysql client to interact with the database
+  mysql-client \
+  # Needed to connect to mysql 8
+  mariadb-connector-c-dev \
+  # Needed for supervisor
+  supervisor \
+  # For nginx
+  nginx
 
 # System level application dependencies for php extensions
 RUN apk add --no-cache \
-    # Needed for guzzle
-    curl \
-    # To fix a warning about unzip missing and possibly causing corruption
-    unzip \
-    # For pdf file merging
-    ghostscript \
-    # For zip extension
-    libzip-dev \
-    # For php extension gmp
-    gmp-dev \
-    # For php extension sodium
-    libsodium-dev
+  # Needed for guzzle
+  curl \
+  # To fix a warning about unzip missing and possibly causing corruption
+  unzip \
+  # For pdf file merging
+  ghostscript \
+  # For zip extension
+  libzip-dev \
+  # For php extension gmp
+  gmp-dev \
+  # For php extension sodium
+  libsodium-dev
 
 # Build deps that can be removed later
 RUN apk add --no-cache --virtual .build-deps \
-    # Needed for pecl & imagick
-    $PHPIZE_DEPS \
-    # Required to compile native dependencies like gd or intl
-    build-base \
-    # Needed to build php extensions like sockets or xdebug on alpine
-    linux-headers
+  # Needed for pecl & imagick
+  $PHPIZE_DEPS \
+  # Required to compile native dependencies like gd or intl
+  build-base \
+  # Needed to build php extensions like sockets or xdebug on alpine
+  linux-headers
 
 # base php extensions
-RUN docker-php-ext-install pdo_mysql mysqli zip exif pcntl bcmath sockets gmp sodium
+RUN docker-php-ext-install pdo_mysql mysqli zip exif pcntl bcmath sockets gmp sodium opcache
 
 # intl
 RUN apk add --no-cache icu-dev \
-    && docker-php-ext-configure intl \
-    && docker-php-ext-install intl
+  && docker-php-ext-configure intl \
+  && docker-php-ext-install intl
 
 # gd
 RUN apk add --no-cache freetype-dev libjpeg-turbo-dev libpng-dev \
-    && docker-php-ext-configure gd --with-freetype=/usr/include/ --with-jpeg=/usr/include/ \
-    && docker-php-ext-install gd
+  && docker-php-ext-configure gd --with-freetype=/usr/include/ --with-jpeg=/usr/include/ \
+  && docker-php-ext-install gd
 
 # imagick
 # Imagick is installed from the archive because regular installation fails
 # See: https://github.com/Imagick/imagick/issues/643#issuecomment-1834361716
 RUN apk add --no-cache imagemagick imagemagick-dev \
-    && curl -L -o /tmp/imagick.tar.gz https://github.com/Imagick/imagick/archive/tags/3.7.0.tar.gz \
-    && tar --strip-components=1 -xf /tmp/imagick.tar.gz \
-    && sed -i 's/php_strtolower/zend_str_tolower/g' imagick.c \
-    && phpize \
-    && ./configure \
-    && make \
-    && make install \
-    && echo "extension=imagick.so" > /usr/local/etc/php/conf.d/ext-imagick.ini \
-    && rm -rf /tmp/*
+  && curl -L -o /tmp/imagick.tar.gz https://github.com/Imagick/imagick/archive/tags/3.7.0.tar.gz \
+  && tar --strip-components=1 -xf /tmp/imagick.tar.gz \
+  && sed -i 's/php_strtolower/zend_str_tolower/g' imagick.c \
+  && phpize \
+  && ./configure \
+  && make \
+  && make install \
+  && echo "extension=imagick.so" > /usr/local/etc/php/conf.d/ext-imagick.ini \
+  && rm -rf /tmp/*
 
 # Set ImageMagick PDF policy (https://stackoverflow.com/a/53379341)
 ARG imagemagic_config=/etc/ImageMagick-6/policy.xml
@@ -108,12 +108,12 @@ USER www-data
 
 # Get composer token (and validate that one was passed to the build using --secret id=COMPOSER_TOKEN )
 RUN --mount=type=secret,id=COMPOSER_TOKEN,env=COMPOSER_TOKEN \
-    test -n "$COMPOSER_TOKEN" || (echo "Build secret \"COMPOSER_TOKEN\" needs to be set. See https://docs.docker.com/build/building/secrets" && false)
+  test -n "$COMPOSER_TOKEN" || (echo "Build secret \"COMPOSER_TOKEN\" needs to be set. See https://docs.docker.com/build/building/secrets" && false)
 
 # Set the composer token and install dependencies without dev deps
 RUN --mount=type=secret,id=COMPOSER_TOKEN,env=COMPOSER_TOKEN \
-    composer config gitlab-token.gitlab.kiwis-and-brownies.de $COMPOSER_USER "$COMPOSER_TOKEN" && \
-    composer install --no-interaction --no-scripts --no-dev --optimize-autoloader
+  composer config gitlab-token.gitlab.kiwis-and-brownies.de $COMPOSER_USER "$COMPOSER_TOKEN" && \
+  composer install --no-interaction --no-scripts --no-dev --optimize-autoloader
 
 # Now run composer cleanup script to cleanup dependencies e.g. remove 100MB of Google apis...
 RUN composer run cleanup-dependencies --no-interaction
@@ -154,16 +154,30 @@ FROM system-files AS final
 ARG PHP_MEMORY_LIMIT
 RUN echo "memory_limit = $PHP_MEMORY_LIMIT" >> /usr/local/etc/php/conf.d/docker-php-memlimit.ini;
 
-# Configure php-fpm
+# Configure php and php-fpm
 RUN echo "pm = dynamic" >> /usr/local/etc/php-fpm.conf && \
-    echo "pm.max_children = 250" >> /usr/local/etc/php-fpm.conf && \
-    echo "pm.start_servers = 10" >> /usr/local/etc/php-fpm.conf && \
-    echo "pm.min_spare_servers = 10" >> /usr/local/etc/php-fpm.conf && \
-    echo "pm.max_spare_servers = 20" >> /usr/local/etc/php-fpm.conf && \
-    echo "pm.process_idle_timeout = 15s" >> /usr/local/etc/php-fpm.conf && \
-    # Don't print deprecation warnings. Needed because hyn/multi-tenant uses deprecated functions and we desperately need to update \
-    # TODO: Remove this once we do not depend on any deprecated deps like hyn/multi-tenant (or brezel/multi-tenant) anymore
-    echo "error_reporting = E_ALL & ~E_NOTICE & ~E_DEPRECATED" >> /usr/local/etc/php/php.ini
+  echo "pm.max_children = 300" >> /usr/local/etc/php-fpm.conf && \
+  echo "pm.max_requests = 1500 ; Restart worker after X requests to prevent memory leaks" >> /usr/local/etc/php-fpm.conf && \
+  echo "pm.start_servers = 10" >> /usr/local/etc/php-fpm.conf && \
+  echo "pm.min_spare_servers = 10" >> /usr/local/etc/php-fpm.conf && \
+  echo "pm.max_spare_servers = 50" >> /usr/local/etc/php-fpm.conf && \
+  echo "pm.process_idle_timeout = 15s" >> /usr/local/etc/php-fpm.conf && \
+  echo "opcache.enable_cli = 1" >> /usr/local/etc/php/conf.d/docker-php-perf.ini && \
+  echo "opcache.enable = 1" >> /usr/local/etc/php/conf.d/docker-php-perf.ini && \
+  echo "opcache.memory_consumption = 192" >> /usr/local/etc/php/conf.d/docker-php-perf.ini && \
+  echo "opcache.interned_strings_buffer = 16" >> /usr/local/etc/php/conf.d/docker-php-perf.ini && \
+  echo "opcache.max_accelerated_files = 10000" >> /usr/local/etc/php/conf.d/docker-php-perf.ini && \
+  echo "opcache.revalidate_freq = 0" >> /usr/local/etc/php/conf.d/docker-php-perf.ini && \
+  echo "opcache.validate_timestamps = 1" >> /usr/local/etc/php/conf.d/docker-php-perf.ini && \
+  echo "opcache.max_wasted_percentage = 10" >> /usr/local/etc/php/conf.d/docker-php-perf.ini && \
+  echo "opcache.fast_shutdown = 1" >> /usr/local/etc/php/conf.d/docker-php-perf.ini && \
+  echo "upload_max_filesize = 25M" >> /usr/local/etc/php/conf.d/docker-php-perf.ini && \
+  echo "post_max_size = 25M" >> /usr/local/etc/php/conf.d/docker-php-perf.ini && \
+  echo "expose_php = Off" >> /usr/local/etc/php/conf.d/docker-php-security.ini && \
+  echo "disable_functions = passthru,shell_exec,system ; we need exec for file merging. passthru is technically also used, but only for the dev server so we can safely disable it" >> /usr/local/etc/php/conf.d/docker-php-security.ini && \
+  echo "; This is needed because we hackily backported hyn to php 8. We should remove this once we migrate tenancy frameworks" >> /usr/local/etc/php/docker-php-hyn-tenancy.ini && \
+  echo "error_reporting = E_ALL & ~E_DEPRECATED & ~E_STRICT" >> /usr/local/etc/php/conf.d/docker-php-hyn-tenancy.ini && \
+  echo "display_errors = Off" >> /usr/local/etc/php/conf.d/docker-php-hyn-tenancy.ini
 
 # Get nginx configuration
 COPY docker/api.nginx.conf nginx.conf
