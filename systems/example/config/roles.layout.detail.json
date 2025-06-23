@@ -1,0 +1,32 @@
+{
+  "tabs": [
+    {
+      "identifier": "general",
+      "rows": [
+        {
+          "cols": [
+            {
+              "components": [
+                {
+                  "type": "field_group",
+                  "options": {
+                    "fields": [
+                      "name",
+                      "slug"
+                    ]
+                  }
+                },
+                {
+                  "type": "widget",
+                  "options": {
+                    "widget": "permissions"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

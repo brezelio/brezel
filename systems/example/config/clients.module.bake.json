@@ -6,7 +6,7 @@
       "type": "clients",
       "icon": "setting",
       "layouts": {
-        "detail": "${file('/config/clients.detail.json')}"
+        "detail": "config/clients.layout.detail"
       },
       "fields": [
         {

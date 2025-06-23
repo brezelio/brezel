@@ -5,7 +5,7 @@
     "policy": "sync",
     "resource": {
       "module": "roles",
-      "client": "${resource_client.global_client}",
+      "client": "${resource_client.global}",
       "fields": {
         "name": "Admin",
         "slug": "admin",

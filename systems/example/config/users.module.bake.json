@@ -6,7 +6,7 @@
       "type": "users",
       "icon": "user",
       "layouts": {
-        "detail": "${file('/config/users.detail.json')}"
+        "detail": "config/users.layout.detail"
       },
       "fields": [
         {
