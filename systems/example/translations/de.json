@@ -41,15 +41,5 @@
   "workflows": {
   },
   "calendar": {
-    "events": "Termine",
-    "employeeBirthdays": "Mitarbeiter-Geburtstage",
-    "employee_absence": "Abwesend",
-    "employee_sick": "Krank",
-    "employee_vacation": "Urlaub",
-    "employee_training": "Schulung",
-    "employee_overtime_reduction": "Überstundenabbau",
-    "employee_homeoffice": "Homeoffice",
-    "employee_vocational_school": "Berufsschule",
-    "holidays": "Feiertage"
   }
 }
