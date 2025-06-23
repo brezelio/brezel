@@ -1,0 +1,16 @@
+[
+  {
+    "resource_entity": "role_admin",
+    "depends_on": "resource_module.roles",
+    "policy": "sync",
+    "resource": {
+      "module": "roles",
+      "client": "${resource_client.global_client}",
+      "fields": {
+        "name": "Admin",
+        "slug": "admin",
+        "modules": true
+      }
+    }
+  }
+]

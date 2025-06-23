@@ -31,7 +31,8 @@
       "fields": {
         "name": "Name",
         "email": "E-Mail",
-        "password": "Passwort"
+        "password": "Passwort",
+        "roles": "Rollen"
       }
     }
   },

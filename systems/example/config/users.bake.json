@@ -5,6 +5,9 @@
       "identifier": "users",
       "type": "users",
       "icon": "user",
+      "layouts": {
+        "detail": "${file('/config/users.detail.json')}"
+      },
       "fields": [
         {
           "identifier": "name",
@@ -20,11 +23,15 @@
           "options": {
             "ignore_when_empty": true
           }
+        },
+        {
+          "identifier": "roles",
+          "type": "multiselect",
+          "options": {
+            "references": "roles"
+          }
         }
-      ],
-      "layouts": {
-        "detail": "${file('/config/users.detail.json')}"
-      }
+      ]
     }
   }
 ]
