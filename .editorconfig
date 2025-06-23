@@ -10,11 +10,14 @@ trim_trailing_whitespace = true
 [*.md]
 trim_trailing_whitespace = false
 
+[*.vue]
+indent_size = 2
+
 [*.yml]
-indent_size = 4
+indent_size = 2
 
 [*.json]
-indent_size = 4
+indent_size = 2
 
 [*.php]
 indent_size = 4
@@ -34,5 +37,7 @@ ij_php_blank_lines_around_constants = 0
 ij_php_blank_lines_after_function = 1
 ij_php_space_before_colon_in_return_type = true
 
-[*.{js, jsx, ts, tsx, vue, scss, css, sass}]
+[*.{js, jsx, ts, tsx, scss, css, sass}]
 indent_size = 2
+ij_javascript_space_before_function_left_parenth = true
+ij_typescript_space_before_function_left_parenth = true
