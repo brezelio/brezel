@@ -10,7 +10,7 @@
   },
   "type": "module",
   "dependencies": {
-    "@kibro/brezel-spa": "4.27.0",
+    "@kibro/brezel-spa": "4.39.2",
     "lodash-es": "*"
   },
   "devDependencies": {
