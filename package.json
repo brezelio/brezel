@@ -6,14 +6,16 @@
     "dev": "vite --host 0.0.0.0 -c node_modules/@kibro/brezel-spa/vite.config.js",
     "build": "NODE_OPTIONS=--max-old-space-size=4096 vite build -c node_modules/@kibro/brezel-spa/vite.config.js",
     "serve": "vite dev -c node_modules/@kibro/brezel-spa/vite.config.js",
+    "lint": "eslint --ignore-pattern .gitignore --fix src",
     "vite-cache:clear": "rm -rf node_modules/.vite"
   },
   "type": "module",
   "dependencies": {
-    "@kibro/brezel-spa": "4.39.2",
+    "@kibro/brezel-spa": "4.39.3",
     "lodash-es": "*"
   },
   "devDependencies": {
+    "eslint": "*",
     "vite": "*",
     "vue": "*",
     "workbox-window": "*",
