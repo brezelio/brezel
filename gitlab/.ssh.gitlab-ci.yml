@@ -50,7 +50,7 @@ stages:
         - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
         - ssh-add <(echo "$PRIVATE_KEY")
     script:
-        - ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST "cd $DEPLOY_PATH && (git clone git@$CI_SERVER_HOST:$CI_PROJECT_PATH.git . || (git reset --hard HEAD && git pull))"
+        - ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST "cd $DEPLOY_PATH && (git clone --recurse-submodules git@$CI_SERVER_HOST:$CI_PROJECT_PATH.git . || (git reset --hard HEAD && git pull --recurse-submodules))"
         - ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST "cd $DEPLOY_PATH && composer config --auth gitlab-token.gitlab.kiwis-and-brownies.de $PACKAGE_TOKEN_USER "$PACKAGE_TOKEN" --no-ansi --no-interaction"
         - ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST "cd $DEPLOY_PATH && composer install --no-interaction --no-dev"
         - ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST "cd $DEPLOY_PATH && php bakery init --force"
