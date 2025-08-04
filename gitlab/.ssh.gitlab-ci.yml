@@ -43,7 +43,7 @@ stages:
     stage: deploy
     before_script:
         # Add dependencies
-        - apk add --no-cache rsync openssh
+        - apk add --no-cache openssh
         # ssh connect
         - mkdir -p ~/.ssh
         - eval $(ssh-agent -s)
