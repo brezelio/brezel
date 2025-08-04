@@ -4,7 +4,11 @@
     "resource": {
       "name": "main",
       "elements": [
-        "users",
+        {
+          "name": "users",
+          "type": "entry",
+          "default": true
+        },
         "roles",
         "clients"
       ]
