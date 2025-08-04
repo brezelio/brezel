@@ -36,3 +36,5 @@ dist-lib
 
 storage/framework/*
 storage/app/tenancy/tenants/*
+
+.supervisord.conf

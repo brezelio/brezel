@@ -8,8 +8,11 @@ It represents the latest "recommended" setup for your Brezel Instance repo.
 > 
 > For the pre PHP 8 versions, please refer to the [1.x branch](https://gitlab.kiwis-and-brownies.de/kibro/brezel/brezel/-/tree/1.x).
 
+## Deployment
 
-## Usage
+Install and operate according to the [Brezel documentation](https://docs.brezel.io/deploy/virtual_server/).
+
+## Local Usage
 
 ### Install or update the Brezel components
 

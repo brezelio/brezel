@@ -1,51 +1,52 @@
 {
-    "name": "brezel/example",
-    "version": "1.0.0",
-    "description": "description",
-    "type": "project",
-    "minimum-stability": "dev",
-    "prefer-stable": true,
-    "license": "proprietary",
-    "require": {
-        "brezel/api": "2.0.0",
-        "nunomaduro/collision": "*",
-        "spatie/laravel-ignition": "*"
+  "name": "brezel/example",
+  "version": "1.0.0",
+  "description": "description",
+  "type": "project",
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "license": "proprietary",
+  "require": {
+    "brezel/api": "3.1.1",
+    "nunomaduro/collision": "*",
+    "spatie/laravel-ignition": "*"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "*",
+    "barryvdh/laravel-ide-helper": "*",
+    "pestphp/pest": "*",
+    "pestphp/pest-plugin-laravel": "*"
+  },
+  "scripts": {
+    "pre-install-cmd": [
+      "@php bin/check-platform.php"
+    ],
+    "pre-update-cmd": [
+      "@php bin/check-platform.php"
+    ],
+    "post-autoload-dump": [
+      "@cleanup-dependencies"
+    ],
+    "cleanup-dependencies": [
+      "@putenv COMPOSER=vendor/brezel/api/composer.json",
+      "@composer cleanup-dependencies"
+    ]
+  },
+  "config": {
+    "optimize-autoloader": true,
+    "allow-plugins": {
+      "endroid/installer": true,
+      "pestphp/pest-plugin": true,
+      "php-http/discovery": true
     },
-    "require-dev": {
-        "barryvdh/laravel-ide-helper": "*",
-        "pestphp/pest": "*",
-        "pestphp/pest-plugin-laravel": "*"
-    },
-    "config": {
-        "optimize-autoloader": true,
-        "allow-plugins": {
-            "endroid/installer": true,
-            "pestphp/pest-plugin": true,
-            "php-http/discovery": true
-        },
-        "gitlab-domains": [
-            "gitlab.kiwis-and-brownies.de"
-        ]
-    },
-    "scripts": {
-        "pre-install-cmd": [
-            "@php bin/check-platform.php"
-        ],
-        "pre-update-cmd": [
-            "@php bin/check-platform.php"
-        ],
-        "post-autoload-dump": [
-            "@cleanup-dependencies"
-        ],
-        "cleanup-dependencies": [
-            "@putenv COMPOSER=vendor/brezel/api/composer.json",
-            "@composer cleanup-dependencies"
-        ]
-    },
-    "repositories": {
-        "gitlab.kiwis-and-brownies.de/7": {
-            "type": "composer",
-            "url": "https://gitlab.kiwis-and-brownies.de/api/v4/group/7/-/packages/composer/packages.json"
-        }
+    "gitlab-domains": [
+      "gitlab.kiwis-and-brownies.de"
+    ]
+  },
+  "repositories": {
+    "gitlab.kiwis-and-brownies.de/7": {
+      "type": "composer",
+      "url": "https://gitlab.kiwis-and-brownies.de/api/v4/group/7/-/packages/composer/packages.json"
     }
+  }
 }
