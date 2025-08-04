@@ -1,119 +1,192 @@
 stages:
-    - build
-    - deploy
+  - build
+  - deploy
+
+# VPN via Gluetun
+.use_vpn_service:
+  services:
+    - name: qmcgaw/gluetun
+      alias: gluetun
+  variables:
+    VPN_SERVICE_PROVIDER: custom
+    VPN_TYPE: $VPN_TYPE # Either "wireguard" or "openvpn"
+    # WireGuard specific variables
+    WIREGUARD_PRIVATE_KEY: $WIREGUARD_PRIVATE_KEY
+    WIREGUARD_PUBLIC_KEY: $WIREGUARD_PUBLIC_KEY
+    WIREGUARD_PRESHARED_KEY: $WIREGUARD_PRESHARED_KEY
+    WIREGUARD_ENDPOINT_IP: $WIREGUARD_ENDPOINT_IP
+    WIREGUARD_ENDPOINT_PORT: $WIREGUARD_ENDPOINT_PORT
+    WIREGUARD_ADDRESSES: $WIREGUARD_ADDRESSES
+    # OpenVPN specific variables to extract from your .ovpn file
+    OPENVPN_USER: OPENVPN_USER # For username/password auth. Not needed for cert auth.
+    OPENVPN_PASSWORD: OPENVPN_PASSWORD # For username/password auth. Not needed for cert auth.
+    OPENVPN_ENDPOINT_IP: OPENVPN_ENDPOINT_IP # From the 'remote' line. Must be an IP.
+    OPENVPN_ENDPOINT_PORT: OPENVPN_ENDPOINT_PORT # From the 'remote' line.
+    OPENVPN_CIPHERS: OPENVPN_CIPHERS # From the 'cipher' or 'data-ciphers' line.
+    OPENVPN_AUTH: OPENVPN_AUTH # From the 'auth' line.
+    OPENVPN_CERT: OPENVPN_CERT # From the <cert> block, base64 part only
+    OPENVPN_KEY: OPENVPN_KEY # From the <key> block (if unencrypted), base64 part only.
+    OPENVPN_ENCRYPTED_KEY: OPENVPN_ENCRYPTED_KEY # From the <key> block (if encrypted), base64 part only.
+    OPENVPN_KEY_PASSPHRASE: OPENVPN_KEY_PASSPHRASE # Passphrase to decrypt the key in OPENVPN_ENCRYPTED_KEY.
+    OPENVPN_PROTOCOL: ${OPENVPN_PROTOCOL:-udp} # From the 'proto' line in your .ovpn file. Default: udp. Could also be 'tcp'.
+  before_script:
+    # Install curl and check VPN health before proceeding
+    - apk add --no-cache curl
+    - echo "Waiting for VPN service to report a healthy connection..."
+    - |
+      for i in $(seq 1 10); do
+        HEALTH_STATUS=$(curl --max-time 3 -s "http://gluetun:8000/v1/health")
+        echo "Attempt $i: Gluetun health status is: $HEALTH_STATUS"
+        if echo "$HEALTH_STATUS" | grep -q '"status": "running"'; then
+          echo "VPN connection is healthy and running."
+          exit 0
+        fi
+        sleep 5
+      done
+      echo "ERROR: VPN service did not become healthy in time."
+      exit 1
 
 .build frontend base:
-    image: node:20
-    stage: build
-    artifacts:
-        expire_in: 1 week
-        paths:
-            - dist
-    cache:
-        - paths:
-              - node_modules
-    script:
-        - npm config set @kibro:registry https://gitlab.kiwis-and-brownies.de/api/v4/packages/npm/
-        - 'echo "//gitlab.kiwis-and-brownies.de/api/v4/packages/npm/:_authToken=${CI_JOB_TOKEN}" >> ~/.npmrc'
-        - 'echo "//gitlab.kiwis-and-brownies.de/api/v4/projects/15/packages/npm/:_authToken=${CI_JOB_TOKEN}" >> ~/.npmrc'
-        - 'echo "//gitlab.kiwis-and-brownies.de/api/v4/projects/18/packages/npm/:_authToken=${CI_JOB_TOKEN}" >> ~/.npmrc'
-        - 'echo "//gitlab.kiwis-and-brownies.de/api/v4/projects/19/packages/npm/:_authToken=${CI_JOB_TOKEN}" >> ~/.npmrc'
-        - 'echo "//gitlab.kiwis-and-brownies.de/api/v4/projects/44/packages/npm/:_authToken=${CI_JOB_TOKEN}" >> ~/.npmrc'
-        - 'echo "//gitlab.kiwis-and-brownies.de/api/v4/projects/58/packages/npm/:_authToken=${CI_JOB_TOKEN}" >> ~/.npmrc'
-        - npm ci
-        - npm run build
+  image: node:20
+  stage: build
+  artifacts:
+    expire_in: 1 week
+    paths:
+      - dist
+  cache:
+    - paths:
+        - node_modules
+  script:
+    - npm config set @kibro:registry https://gitlab.kiwis-and-brownies.de/api/v4/packages/npm/
+    - 'echo "//gitlab.kiwis-and-brownies.de/api/v4/packages/npm/:_authToken=${CI_JOB_TOKEN}" >> ~/.npmrc'
+    - 'echo "//gitlab.kiwis-and-brownies.de/api/v4/projects/15/packages/npm/:_authToken=${CI_JOB_TOKEN}" >> ~/.npmrc'
+    - 'echo "//gitlab.kiwis-and-brownies.de/api/v4/projects/18/packages/npm/:_authToken=${CI_JOB_TOKEN}" >> ~/.npmrc'
+    - 'echo "//gitlab.kiwis-and-brownies.de/api/v4/projects/19/packages/npm/:_authToken=${CI_JOB_TOKEN}" >> ~/.npmrc'
+    - 'echo "//gitlab.kiwis-and-brownies.de/api/v4/projects/44/packages/npm/:_authToken=${CI_JOB_TOKEN}" >> ~/.npmrc'
+    - 'echo "//gitlab.kiwis-and-brownies.de/api/v4/projects/58/packages/npm/:_authToken=${CI_JOB_TOKEN}" >> ~/.npmrc'
+    - npm ci
+    - npm run build
 
 .deploy frontend base:
-    image: alpine
-    stage: deploy
-    before_script:
-        # Add dependencies
-        - apk add --no-cache rsync openssh
-        # ssh connect
-        - mkdir -p ~/.ssh
-        - eval $(ssh-agent -s)
-        - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
-        - ssh-add <(echo "$PRIVATE_KEY")
-    script:
-        # This syncs only the dist directory
-        - rsync -e "ssh -p $DEPLOY_PORT" -rav --delete dist $DEPLOY_USER@$DEPLOY_HOST:$DEPLOY_PATH
+  image: alpine
+  stage: deploy
+  before_script:
+    # Add dependencies
+    - apk add --no-cache rsync openssh
+    # ssh connect
+    - mkdir -p ~/.ssh
+    - eval $(ssh-agent -s)
+    - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+    - ssh-add <(echo "$PRIVATE_KEY")
+  script:
+    # This syncs only the dist directory
+    - rsync -e "ssh -p $DEPLOY_PORT" -rav --delete dist $DEPLOY_USER@$DEPLOY_HOST:$DEPLOY_PATH
 
 .deploy backend base:
-    image: alpine
-    stage: deploy
-    before_script:
-        # Add dependencies
-        - apk add --no-cache openssh
-        # ssh connect
-        - mkdir -p ~/.ssh
-        - eval $(ssh-agent -s)
-        - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
-        - ssh-add <(echo "$PRIVATE_KEY")
-    script:
-        - ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST "cd $DEPLOY_PATH && (git clone --recurse-submodules git@$CI_SERVER_HOST:$CI_PROJECT_PATH.git . || (git reset --hard HEAD && git pull --recurse-submodules))"
-        - ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST "cd $DEPLOY_PATH && composer config --auth gitlab-token.gitlab.kiwis-and-brownies.de $PACKAGE_TOKEN_USER "$PACKAGE_TOKEN" --no-ansi --no-interaction"
-        - ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST "cd $DEPLOY_PATH && composer install --no-interaction --no-dev"
-        - ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST "cd $DEPLOY_PATH && php bakery init --force"
-        - ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST "cd $DEPLOY_PATH && php bakery migrate --force"
-        - ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST "cd $DEPLOY_PATH && php bakery apply"
-        - ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST "cd $DEPLOY_PATH && php bakery load --force"
-        - ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST "cd $DEPLOY_PATH && php bakery make:supervisor"
-        - ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST "cd $DEPLOY_PATH && (supervisorctl update all || true)"
+  image: alpine
+  stage: deploy
+  before_script:
+    # Add dependencies
+    - apk add --no-cache openssh
+    # ssh connect
+    - mkdir -p ~/.ssh
+    - eval $(ssh-agent -s)
+    - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+    - ssh-add <(echo "$PRIVATE_KEY")
+  script:
+    - ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST "cd $DEPLOY_PATH && (git clone --recurse-submodules git@$CI_SERVER_HOST:$CI_PROJECT_PATH.git . || (git reset --hard HEAD && git pull --recurse-submodules))"
+    - ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST "cd $DEPLOY_PATH && composer config --auth gitlab-token.gitlab.kiwis-and-brownies.de $PACKAGE_TOKEN_USER "$PACKAGE_TOKEN" --no-ansi --no-interaction"
+    - ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST "cd $DEPLOY_PATH && composer install --no-interaction --no-dev"
+    - ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST "cd $DEPLOY_PATH && php bakery init --force"
+    - ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST "cd $DEPLOY_PATH && php bakery migrate --force"
+    - ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST "cd $DEPLOY_PATH && php bakery apply"
+    - ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST "cd $DEPLOY_PATH && php bakery load --force"
+    - ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST "cd $DEPLOY_PATH && php bakery make:supervisor"
+    - ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST "cd $DEPLOY_PATH && (supervisorctl update all || true)"
 
 build frontend:
-    extends: .build frontend base
-    only:
-        - main
+  extends: .build frontend base
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
 
 deploy frontend:
-    extends: .deploy frontend base
-    stage: deploy
-    needs:
-        - build frontend
-    only:
-        - main
-    variables:
-        DEPLOY_HOST: $PROD_HOST
-        DEPLOY_PORT: $PROD_PORT
-        DEPLOY_USER: $PROD_USER
-        DEPLOY_PATH: $PROD_PATH
+  extends: .deploy frontend base
+  needs:
+    - build frontend
+  rules:
+    # Run this job on the 'main' branch ONLY IF $USE_VPN is not "true"
+    - if: '$CI_COMMIT_BRANCH == "main" && $USE_VPN != "true"'
+  variables:
+    DEPLOY_HOST: $PROD_HOST
+    DEPLOY_PORT: $PROD_PORT
+    DEPLOY_USER: $PROD_USER
+    DEPLOY_PATH: $PROD_PATH
+
+deploy frontend with vpn:
+  extends:
+    - deploy frontend      # Inherits needs, variables, etc.
+    - .use_vpn_service     # Adds the VPN service and scripts
+  rules:
+    # Run this job on the 'main' branch ONLY IF $USE_VPN is not "true"
+    - if: '$CI_COMMIT_BRANCH == "main" && $USE_VPN == "true"'
 
 deploy backend:
-    extends: .deploy backend base
-    only:
-        - main
-    variables:
-        DEPLOY_HOST: $PROD_HOST
-        DEPLOY_PORT: $PROD_PORT
-        DEPLOY_USER: $PROD_USER
-        DEPLOY_PATH: $PROD_PATH
+  extends: .deploy backend base
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+  variables:
+    DEPLOY_HOST: $PROD_HOST
+    DEPLOY_PORT: $PROD_PORT
+    DEPLOY_USER: $PROD_USER
+    DEPLOY_PATH: $PROD_PATH
+
+deploy backend with vpn:
+  extends:
+    - deploy backend
+    - .use_vpn_service
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main" && $USE_VPN == "true"'
 
 deploy backend staging:
-    extends: .deploy backend base
-    only:
-        - staging
-    variables:
-        DEPLOY_HOST: $STAGING_HOST
-        DEPLOY_PORT: $STAGING_PORT
-        DEPLOY_USER: $STAGING_USER
-        DEPLOY_PATH: $STAGING_PATH
+  extends: .deploy backend base
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "staging"'
+  variables:
+    DEPLOY_HOST: $STAGING_HOST
+    DEPLOY_PORT: $STAGING_PORT
+    DEPLOY_USER: $STAGING_USER
+    DEPLOY_PATH: $STAGING_PATH
+
+deploy backend staging with vpn:
+  extends:
+    - deploy backend staging
+    - .use_vpn_service
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "staging" && $USE_VPN == "true"'
 
 build frontend staging:
-    extends: .build frontend base
-    only:
-        - staging
-    variables:
-        VUE_APP_API_URL: $STAGING_API_URL
-        VUE_APP_SYSTEM: $STAGING_SYSTEM
+  extends: .build frontend base
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "staging"'
+  variables:
+    VUE_APP_API_URL: $STAGING_API_URL
+    VUE_APP_SYSTEM: $STAGING_SYSTEM
 
 deploy frontend staging:
-    extends: .deploy frontend base
-    only:
-        - staging
-    needs:
-        - build frontend staging
-    variables:
-        DEPLOY_HOST: $STAGING_HOST
-        DEPLOY_PORT: $STAGING_PORT
-        DEPLOY_USER: $STAGING_USER
-        DEPLOY_PATH: $STAGING_PATH
+  extends: .deploy frontend base
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "staging" && $USE_VPN != "true"'
+  needs:
+    - build frontend staging
+  variables:
+    DEPLOY_HOST: $STAGING_HOST
+    DEPLOY_PORT: $STAGING_PORT
+    DEPLOY_USER: $STAGING_USER
+    DEPLOY_PATH: $STAGING_PATH
+
+deploy frontend staging with vpn:
+  extends:
+    - deploy frontend staging
+    - .use_vpn_service
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "staging" && $USE_VPN == "true"'
