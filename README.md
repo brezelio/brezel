@@ -11,7 +11,7 @@ It represents the latest "recommended" setup for your Brezel Instance repo.
 It contains a slim `example` system to get you up and running quickly.
 
 Crucially, it creates two users for you to use:
-- `dev@ki-bro.com`: A "root" user that bypasses all permission checks. This user can do everything, but be careful when you test features with it as things that work with this user may not work with other users!
+- `dev@ki-bro.com`: A "root" user that bypasses all permission checks. Use it e.g. for Bakery access. Since this user can do everything, but be careful when you test features with it as things that work with this user may not work with other users!
 - `admin@ki-bro.com`: A "normal" user with the `admin` role that has permissions for everything. This (or a similar user that is **not** root) should be used for normal development and interactive testing.
 
 > On local development only these users have the password `secret`.
