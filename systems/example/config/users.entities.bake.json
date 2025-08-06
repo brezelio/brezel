@@ -1,14 +1,29 @@
 [
   {
-    "resource_user": "admin",
+    "resource_user": "root",
     "resource": {
       "module": "users",
       "client": "${resource_client.global}",
       "root": true,
       "fields": {
         "email": "dev@ki-bro.com",
-        "password": "secret",
-        "name": "Admin"
+        "password": "${env('ROOT_PASSWORD', 'secret')}",
+        "name": "Kiwis & Brownies Root Account"
+      }
+    }
+  },
+  {
+    "resource_user": "admin",
+    "resource": {
+      "module": "users",
+      "client": "${resource_client.global}",
+      "fields": {
+        "email": "admin@ki-bro.com",
+        "password": "${env('ADMIN_PASSWORD', 'secret')}",
+        "name": "Kiwis & Brownies Admin Account",
+        "roles": [
+          "${resource_entity.role_admin}"
+        ]
       }
     }
   }
