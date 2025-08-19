@@ -7,44 +7,61 @@ stages:
   services:
     - name: qmcgaw/gluetun
       alias: gluetun
+      # Override entrypoint to first write the config file
+      entrypoint: [ "/bin/sh", "-c" ]
+      command:
+        - |
+          echo "Creating OpenVPN config file...";
+          if [ "$VPN_TYPE" = "openvpn" ]; then
+            echo "Writing OpenVPN configuration to /gluetun/custom.conf";
+            mkdir -p /gluetun && echo "$OPENVPN_CONFIG_CONTENT" > /gluetun/custom.conf
+          elif [ "$VPN_TYPE" = "wireguard" ]; then
+            echo "Writing WireGuard configuration to /gluetun/wireguard/wg0.conf";
+            # Ensure the directory exists and write the WireGuard config
+            mkdir -p /gluetun/wireguard && echo "$WIREGUARD_CONFIG_CONTENT" > /gluetun/wireguard/wg0.conf
+          fi
+          # Execute the original entrypoint
+          echo "Starting Gluetun with VPN configuration...";
+          exec /gluetun-entrypoint "$@"
   variables:
+    HTTPPROXY: "on"
     VPN_SERVICE_PROVIDER: custom
     VPN_TYPE: $VPN_TYPE # Either "wireguard" or "openvpn"
     # WireGuard specific variables
-    WIREGUARD_PRIVATE_KEY: $WIREGUARD_PRIVATE_KEY
-    WIREGUARD_PUBLIC_KEY: $WIREGUARD_PUBLIC_KEY
-    WIREGUARD_PRESHARED_KEY: $WIREGUARD_PRESHARED_KEY
-    WIREGUARD_ENDPOINT_IP: $WIREGUARD_ENDPOINT_IP
-    WIREGUARD_ENDPOINT_PORT: $WIREGUARD_ENDPOINT_PORT
-    WIREGUARD_ADDRESSES: $WIREGUARD_ADDRESSES
-    # OpenVPN specific variables to extract from your .ovpn file
-    OPENVPN_USER: OPENVPN_USER # For username/password auth. Not needed for cert auth.
-    OPENVPN_PASSWORD: OPENVPN_PASSWORD # For username/password auth. Not needed for cert auth.
-    OPENVPN_ENDPOINT_IP: OPENVPN_ENDPOINT_IP # From the 'remote' line. Must be an IP.
-    OPENVPN_ENDPOINT_PORT: OPENVPN_ENDPOINT_PORT # From the 'remote' line.
-    OPENVPN_CIPHERS: OPENVPN_CIPHERS # From the 'cipher' or 'data-ciphers' line.
-    OPENVPN_AUTH: OPENVPN_AUTH # From the 'auth' line.
-    OPENVPN_CERT: OPENVPN_CERT # From the <cert> block, base64 part only
-    OPENVPN_KEY: OPENVPN_KEY # From the <key> block (if unencrypted), base64 part only.
-    OPENVPN_ENCRYPTED_KEY: OPENVPN_ENCRYPTED_KEY # From the <key> block (if encrypted), base64 part only.
-    OPENVPN_KEY_PASSPHRASE: OPENVPN_KEY_PASSPHRASE # Passphrase to decrypt the key in OPENVPN_ENCRYPTED_KEY.
-    OPENVPN_PROTOCOL: ${OPENVPN_PROTOCOL:-udp} # From the 'proto' line in your .ovpn file. Default: udp. Could also be 'tcp'.
-  before_script:
+    WIREGUARD_CONFIG_CONTENT: $WIREGUARD_CONFIG_CONTENT # Full WireGuard config content
+    # OpenVPN specific variables
+    OPENVPN_USER: $OPENVPN_USER # For username/password auth. Not needed for cert auth.
+    OPENVPN_PASSWORD: $OPENVPN_PASSWORD # For username/password auth. Not needed for cert auth.
+    OPENVPN_CONFIG_CONTENT: $OPENVPN_CONFIG_CONTENT # Full OpenVPN config content
+    OPENVPN_CUSTOM_CONFIG: /gluetun/custom.conf # Path to the custom OpenVPN config file that will be written
+  before_script: &vpn_health_check
     # Install curl and check VPN health before proceeding
     - apk add --no-cache curl
     - echo "Waiting for VPN service to report a healthy connection..."
     - |
-      for i in $(seq 1 10); do
-        HEALTH_STATUS=$(curl --max-time 3 -s "http://gluetun:8000/v1/health")
-        echo "Attempt $i: Gluetun health status is: $HEALTH_STATUS"
-        if echo "$HEALTH_STATUS" | grep -q '"status": "running"'; then
-          echo "VPN connection is healthy and running."
-          exit 0
+      for i in $(seq 1 3); do
+        echo "Attempt $i: Checking connectivity to http://$DEPLOY_HOST:$DEPLOY_PORT  ..."
+        curl -s -o /dev/null --connect-timeout 5 --proxy http://gluetun:8888 http://$DEPLOY_HOST:$DEPLOY_PORT
+        CURL_EXIT_CODE=$?
+
+        # Check for successful exit codes: 0 (OK) or 56 (Reset by peer caused by CURLing an SSH port instead of HTTP)
+        if [ $CURL_EXIT_CODE -eq 0 ] || [ $CURL_EXIT_CODE -eq 56 ]; then
+          echo "VPN proxy is active and SSH port is reachable (Exit Code: $CURL_EXIT_CODE)."
+          VPN_OK=1
+          break
         fi
+
+        echo "Host $DEPLOY_HOST:$DEPLOY_PORT not yet reachable (Exit Code: $CURL_EXIT_CODE). Waiting 5 seconds..."
         sleep 5
       done
-      echo "ERROR: VPN service did not become healthy in time."
-      exit 1
+
+      if [ -z "$VPN_OK" ]; then
+        # If VPN_OK is not set, it means the connection was not successful
+        echo "ERROR: VPN service did not connect in time, $DEPLOY_HOST:$DEPLOY_PORT was not reachable through the VPN."
+        exit 1
+      else
+        echo "VPN service is healthy and $DEPLOY_HOST:$DEPLOY_PORT is reachable through the VPN."
+      fi
 
 .build frontend base:
   image: node:20
@@ -70,7 +87,7 @@ stages:
 .deploy frontend base:
   image: alpine
   stage: deploy
-  before_script:
+  before_script: &deploy_frontend_base_before_script
     # Add dependencies
     - apk add --no-cache rsync openssh
     # ssh connect
@@ -85,7 +102,7 @@ stages:
 .deploy backend base:
   image: alpine
   stage: deploy
-  before_script:
+  before_script: &deploy_backend_base_before_script
     # Add dependencies
     - apk add --no-cache openssh
     # ssh connect
@@ -94,15 +111,15 @@ stages:
     - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
     - ssh-add <(echo "$PRIVATE_KEY")
   script:
-    - ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST "cd $DEPLOY_PATH && (git clone --recurse-submodules git@$CI_SERVER_HOST:$CI_PROJECT_PATH.git . || (git reset --hard HEAD && git pull --recurse-submodules))"
-    - ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST "cd $DEPLOY_PATH && composer config --auth gitlab-token.gitlab.kiwis-and-brownies.de $PACKAGE_TOKEN_USER "$PACKAGE_TOKEN" --no-ansi --no-interaction"
-    - ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST "cd $DEPLOY_PATH && composer install --no-interaction --no-dev"
-    - ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST "cd $DEPLOY_PATH && php bakery init --force"
-    - ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST "cd $DEPLOY_PATH && php bakery migrate --force"
-    - ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST "cd $DEPLOY_PATH && php bakery apply"
-    - ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST "cd $DEPLOY_PATH && php bakery load --force"
-    - ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST "cd $DEPLOY_PATH && php bakery make:supervisor"
-    - ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST "cd $DEPLOY_PATH && (supervisorctl update all || true)"
+    - ssh -tt -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST "cd $DEPLOY_PATH && (git clone --recurse-submodules git@$CI_SERVER_HOST:$CI_PROJECT_PATH.git . || (git reset --hard HEAD && git pull --recurse-submodules))"
+    - ssh -tt -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST "cd $DEPLOY_PATH && composer config --auth gitlab-token.gitlab.kiwis-and-brownies.de $PACKAGE_TOKEN_USER "$PACKAGE_TOKEN" --no-ansi --no-interaction"
+    - ssh -tt -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST "cd $DEPLOY_PATH && composer install --no-interaction --no-dev"
+    - ssh -tt -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST "cd $DEPLOY_PATH && php bakery init --force"
+    - ssh -tt -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST "cd $DEPLOY_PATH && php bakery migrate --force"
+    - ssh -tt -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST "cd $DEPLOY_PATH && php bakery apply"
+    - ssh -tt -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST "cd $DEPLOY_PATH && php bakery load --force"
+    - ssh -tt -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST "cd $DEPLOY_PATH && php bakery make:supervisor"
+    - ssh -tt -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST "cd $DEPLOY_PATH && (supervisorctl update all || true)"
 
 build frontend:
   extends: .build frontend base
@@ -129,11 +146,22 @@ deploy frontend with vpn:
   rules:
     # Run this job on the 'main' branch ONLY IF $USE_VPN is not "true"
     - if: '$CI_COMMIT_BRANCH == "main" && $USE_VPN == "true"'
+  # Since we can only have one VPN connection active at a time, we need to execute the deployment jobs sequentially.
+  #  needs:
+  #    - deploy backend with vpn
+  before_script:
+    - *vpn_health_check
+    - *deploy_frontend_base_before_script
+    # Now, we "extend" the before_script to include corkscrew for SSH tunneling
+    - apk add --no-cache corkscrew
+    - sed -i '/^Host \*/a\ ProxyCommand corkscrew gluetun 8888 %h %p' ~/.ssh/config
+
 
 deploy backend:
   extends: .deploy backend base
   rules:
-    - if: '$CI_COMMIT_BRANCH == "main"'
+    # Run this job on the 'main' branch ONLY IF $USE_VPN is not "true"
+    - if: '$CI_COMMIT_BRANCH == "main" && $USE_VPN != "true"'
   variables:
     DEPLOY_HOST: $PROD_HOST
     DEPLOY_PORT: $PROD_PORT
@@ -146,11 +174,17 @@ deploy backend with vpn:
     - .use_vpn_service
   rules:
     - if: '$CI_COMMIT_BRANCH == "main" && $USE_VPN == "true"'
+  before_script:
+    - *vpn_health_check
+    - *deploy_backend_base_before_script
+    # Now, we "extend" the before_script to include corkscrew for SSH tunneling
+    - apk add --no-cache corkscrew
+    - sed -i '/^Host \*/a\ ProxyCommand corkscrew gluetun 8888 %h %p' ~/.ssh/config
 
 deploy backend staging:
   extends: .deploy backend base
   rules:
-    - if: '$CI_COMMIT_BRANCH == "staging"'
+    - if: '$CI_COMMIT_BRANCH == "staging" && $USE_VPN != "true"'
   variables:
     DEPLOY_HOST: $STAGING_HOST
     DEPLOY_PORT: $STAGING_PORT
@@ -163,6 +197,12 @@ deploy backend staging with vpn:
     - .use_vpn_service
   rules:
     - if: '$CI_COMMIT_BRANCH == "staging" && $USE_VPN == "true"'
+  before_script:
+    - *vpn_health_check
+    - *deploy_backend_base_before_script
+    # Now, we "extend" the before_script to include corkscrew for SSH tunneling
+    - apk add --no-cache corkscrew
+    - sed -i '/^Host \*/a\ ProxyCommand corkscrew gluetun 8888 %h %p' ~/.ssh/config
 
 build frontend staging:
   extends: .build frontend base
@@ -190,3 +230,12 @@ deploy frontend staging with vpn:
     - .use_vpn_service
   rules:
     - if: '$CI_COMMIT_BRANCH == "staging" && $USE_VPN == "true"'
+  # Since we can only have one VPN connection active at a time, we need to execute the deployment jobs sequentially.
+  needs:
+    - deploy backend staging with vpn
+  before_script:
+    - *vpn_health_check
+    - *deploy_frontend_base_before_script
+    # Now, we "extend" the before_script to include corkscrew for SSH tunneling
+    - apk add --no-cache corkscrew
+    - sed -i '/^Host \*/a\ ProxyCommand corkscrew gluetun 8888 %h %p' ~/.ssh/config
