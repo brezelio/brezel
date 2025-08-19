@@ -64,7 +64,7 @@ stages:
       fi
 
 .build frontend base:
-  image: node:20
+  image: node:22
   stage: build
   artifacts:
     expire_in: 1 week
