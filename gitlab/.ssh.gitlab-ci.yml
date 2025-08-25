@@ -141,15 +141,45 @@ stages:
   before_script:
     - *ssh_configuration
   script:
-    - ssh -tt -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST "cd $DEPLOY_PATH && (git clone --recurse-submodules git@$CI_SERVER_HOST:$CI_PROJECT_PATH.git . || (git reset --hard HEAD && git pull --recurse-submodules))"
-    - ssh -tt -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST "cd $DEPLOY_PATH && composer config --auth gitlab-token.gitlab.kiwis-and-brownies.de $PACKAGE_TOKEN_USER "$PACKAGE_TOKEN" --no-ansi --no-interaction"
-    - ssh -tt -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST "cd $DEPLOY_PATH && composer install --no-interaction --no-dev"
-    - ssh -tt -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST "cd $DEPLOY_PATH && php bakery init --force"
-    - ssh -tt -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST "cd $DEPLOY_PATH && php bakery migrate --force"
-    - ssh -tt -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST "cd $DEPLOY_PATH && php bakery apply"
-    - ssh -tt -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST "cd $DEPLOY_PATH && php bakery load --force"
-    - ssh -tt -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST "cd $DEPLOY_PATH && php bakery make:supervisor"
-    - ssh -tt -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST "cd $DEPLOY_PATH && (supervisorctl update all || true)"
+    - |
+      ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST /bin/bash << EOL
+        # This command sends the entire script block to the remote server to be executed in a single session.
+        # 'set -e' ensures that the script will exit immediately if any command fails.
+        set -e
+
+        echo "--- Navigating to deployment directory ---"
+        cd "$DEPLOY_PATH"
+
+        echo "--- Updating source code from Git repository ---"
+        # This logic handles both the first-time clone and subsequent updates.
+        if [ -d ".git" ]; then
+          echo "Repository exists. Resetting and pulling latest changes."
+          git reset --hard HEAD
+          git pull --recurse-submodules
+        else
+          echo "Cloning new repository."
+          git clone --recurse-submodules "git@${CI_SERVER_HOST}:${CI_PROJECT_PATH}.git" .
+        fi
+
+        echo "--- Configuring Composer authentication ---"
+        composer config --auth "gitlab-token.gitlab.kiwis-and-brownies.de" "${PACKAGE_TOKEN_USER}" "${PACKAGE_TOKEN}" --no-ansi --no-interaction
+
+        echo "--- Installing Composer dependencies ---"
+        composer install --no-interaction --no-dev --optimize-autoloader
+
+        echo "--- Running application setup (Bakery) ---"
+        php bakery init --force
+        php bakery migrate --force
+        php bakery apply
+        php bakery load --force
+        php bakery make:supervisor
+
+        echo "-- Updating Supervisor configuration ---"
+        # '|| true' prevents the job from failing if supervisor has no changes to apply
+        supervisorctl update all || true
+
+        echo "Deployment finished successfully!"
+      EOL
 
 build frontend:
   extends: .build frontend base
