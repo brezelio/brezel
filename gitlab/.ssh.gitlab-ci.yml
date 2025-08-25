@@ -2,6 +2,14 @@ stages:
   - build
   - deploy
 
+.ssh_configuration:
+  before_script: &ssh_configuration
+    - apk add --no-cache openssh-client
+    - mkdir -p ~/.ssh
+    - eval $(ssh-agent -s)
+    - echo -e "Host *\n  StrictHostKeyChecking no\n" > ~/.ssh/config
+    - ssh-add <(echo "$PRIVATE_KEY")
+
 # VPN via Gluetun
 .use_vpn_service:
   services:
@@ -24,8 +32,10 @@ stages:
           echo "Starting Gluetun with VPN configuration...";
           exec /gluetun-entrypoint "$@"
   variables:
-    HTTPPROXY: "on"
-    VPN_SERVICE_PROVIDER: custom
+    SHADOWSOCKS: "on" # Enable Shadowsocks for SOCKS5 proxy support
+    SHADOWSOCKS_PORT: "8338" # Port for the Shadowsocks proxy
+    SHADOWSOCKS_PASSWORD: "super_secret_password"
+    VPN_SERVICE_PROVIDER: custom # Use "custom" to provide your own config
     VPN_TYPE: $VPN_TYPE # Either "wireguard" or "openvpn"
     # WireGuard specific variables
     WIREGUARD_CONFIG_CONTENT: $WIREGUARD_CONFIG_CONTENT # Full WireGuard config content
@@ -34,34 +44,65 @@ stages:
     OPENVPN_PASSWORD: $OPENVPN_PASSWORD # For username/password auth. Not needed for cert auth.
     OPENVPN_CONFIG_CONTENT: $OPENVPN_CONFIG_CONTENT # Full OpenVPN config content
     OPENVPN_CUSTOM_CONFIG: /gluetun/custom.conf # Path to the custom OpenVPN config file that will be written
-  before_script: &vpn_health_check
-    # Install curl and check VPN health before proceeding
-    - apk add --no-cache curl
+  before_script: &vpn_setup
+    # Install helper for SSH over SOCKS5 (aka. Shadowsocks)
+    - apk add --no-cache curl shadowsocks-rust-sslocal netcat-openbsd
     - echo "Waiting for VPN service to report a healthy connection..."
     - |
-      for i in $(seq 1 3); do
-        echo "Attempt $i: Checking connectivity to http://$DEPLOY_HOST:$DEPLOY_PORT  ..."
-        curl -s -o /dev/null --connect-timeout 5 --proxy http://gluetun:8888 http://$DEPLOY_HOST:$DEPLOY_PORT
-        CURL_EXIT_CODE=$?
-
-        # Check for successful exit codes: 0 (OK) or 56 (Reset by peer caused by CURLing an SSH port instead of HTTP)
-        if [ $CURL_EXIT_CODE -eq 0 ] || [ $CURL_EXIT_CODE -eq 56 ]; then
-          echo "VPN proxy is active and SSH port is reachable (Exit Code: $CURL_EXIT_CODE)."
-          VPN_OK=1
+      echo "Waiting for Gluetun health check endpoint to be available..."
+      GLUETUN_OK=""
+      for i in $(seq 1 10); do
+        echo "Attempt $i: Checking Gluetun health endpoint..."
+        if curl -s -o /dev/null http://gluetun:8000/v1/health; then
+          echo "Gluetun is now healthy."
+          GLUETUN_OK=1
           break
         fi
-
-        echo "Host $DEPLOY_HOST:$DEPLOY_PORT not yet reachable (Exit Code: $CURL_EXIT_CODE). Waiting 5 seconds..."
+        echo "Gluetun not yet healthy. Waiting 5 seconds..."
         sleep 5
       done
 
-      if [ -z "$VPN_OK" ]; then
-        # If VPN_OK is not set, it means the connection was not successful
-        echo "ERROR: VPN service did not connect in time, $DEPLOY_HOST:$DEPLOY_PORT was not reachable through the VPN."
+      if [ -z "$GLUETUN_OK" ]; then
+        echo "ERROR: Gluetun health check timed out after 10 attempts."
         exit 1
-      else
-        echo "VPN service is healthy and $DEPLOY_HOST:$DEPLOY_PORT is reachable through the VPN."
       fi
+
+      echo "Starting Shadowsocks client to provide SSH-compatible SOCKS5 proxy..."
+      # That will start a SOCKS5 proxy at 127.0.0.1:1080, forwarding to the Gluetun Shadowsocks server on port 8338
+      sslocal --server-addr gluetun:8338 --local-addr 127.0.0.1:1080 --encrypt-method chacha20-ietf-poly1305 --password super_secret_password &
+      SSLOCAL_PID=$!
+      sleep 2
+      if ! kill -0 $SSLOCAL_PID 2>/dev/null; then
+        echo "Shadowsocks proxy via sslocal failed to start"
+        exit 1
+      fi
+      echo "Shadowsocks client is running (PID $SSLOCAL_PID)"
+
+      echo "Adding .ssh/config entries to use VPN for SSH connections..."
+      echo '  ProxyCommand nc -X 5 -x 127.0.0.1:1080 %h %p' >> ~/.ssh/config
+      echo '  ServerAliveInterval 30' >> ~/.ssh/config
+      echo '  ServerAliveCountMax 5' >> ~/.ssh/config
+      echo '  ConnectTimeout 10' >> ~/.ssh/config
+
+      echo "Performing end-to-end SSH health check..."
+      SSH_OK=""
+      for i in $(seq 1 5); do
+        echo "Attempt $i: Connecting to $DEPLOY_HOST:$DEPLOY_PORT..."
+        if ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST "echo 'Hello from CI/CD connection attempt' > /dev/null"; then
+          echo "SSH connection successful."
+          SSH_OK=1
+          break
+        fi
+        echo "SSH connection failed. Retrying in 5 seconds..."
+        sleep 5
+      done
+
+      if [ -z "$SSH_OK" ]; then
+        echo "ERROR: SSH health check failed. Could not connect to remote host."
+        exit 1
+      fi
+
+      echo "SSH tunnel is healthy and ready for deployment."
 
 .build frontend base:
   image: node:22
@@ -88,28 +129,17 @@ stages:
   image: alpine
   stage: deploy
   before_script: &deploy_frontend_base_before_script
-    # Add dependencies
-    - apk add --no-cache rsync openssh
-    # ssh connect
-    - mkdir -p ~/.ssh
-    - eval $(ssh-agent -s)
-    - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
-    - ssh-add <(echo "$PRIVATE_KEY")
+    - apk add --no-cache rsync # rsync is needed for the deployment of the frontend
+    - *ssh_configuration
   script:
     # This syncs only the dist directory
-    - rsync -e "ssh -p $DEPLOY_PORT" -rav --delete dist $DEPLOY_USER@$DEPLOY_HOST:$DEPLOY_PATH
+    - rsync -e "ssh -F $HOME/.ssh/config -p $DEPLOY_PORT" -rav --delete dist $DEPLOY_USER@$DEPLOY_HOST:$DEPLOY_PATH
 
 .deploy backend base:
   image: alpine
   stage: deploy
-  before_script: &deploy_backend_base_before_script
-    # Add dependencies
-    - apk add --no-cache openssh
-    # ssh connect
-    - mkdir -p ~/.ssh
-    - eval $(ssh-agent -s)
-    - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
-    - ssh-add <(echo "$PRIVATE_KEY")
+  before_script:
+    - *ssh_configuration
   script:
     - ssh -tt -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST "cd $DEPLOY_PATH && (git clone --recurse-submodules git@$CI_SERVER_HOST:$CI_PROJECT_PATH.git . || (git reset --hard HEAD && git pull --recurse-submodules))"
     - ssh -tt -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST "cd $DEPLOY_PATH && composer config --auth gitlab-token.gitlab.kiwis-and-brownies.de $PACKAGE_TOKEN_USER "$PACKAGE_TOKEN" --no-ansi --no-interaction"
@@ -146,15 +176,15 @@ deploy frontend with vpn:
   rules:
     # Run this job on the 'main' branch ONLY IF $USE_VPN is not "true"
     - if: '$CI_COMMIT_BRANCH == "main" && $USE_VPN == "true"'
+  retry: 2 # Retries this job up to 2 times upon failure. VPN's can be flaky, so this is useful.
   # Since we can only have one VPN connection active at a time, we need to execute the deployment jobs sequentially.
-  #  needs:
-  #    - deploy backend with vpn
+  needs:
+    - job: build frontend          # 1. Download artifacts from the build job
+    - job: deploy backend with vpn # 2. Wait for the backend deploy to finish successfully
   before_script:
-    - *vpn_health_check
+    - *ssh_configuration
     - *deploy_frontend_base_before_script
-    # Now, we "extend" the before_script to include corkscrew for SSH tunneling
-    - apk add --no-cache corkscrew
-    - sed -i '/^Host \*/a\ ProxyCommand corkscrew gluetun 8888 %h %p' ~/.ssh/config
+    - *vpn_setup
 
 
 deploy backend:
@@ -174,12 +204,10 @@ deploy backend with vpn:
     - .use_vpn_service
   rules:
     - if: '$CI_COMMIT_BRANCH == "main" && $USE_VPN == "true"'
+  retry: 2 # Retries this job up to 2 times upon failure. VPN's can be flaky, so this is useful.
   before_script:
-    - *vpn_health_check
-    - *deploy_backend_base_before_script
-    # Now, we "extend" the before_script to include corkscrew for SSH tunneling
-    - apk add --no-cache corkscrew
-    - sed -i '/^Host \*/a\ ProxyCommand corkscrew gluetun 8888 %h %p' ~/.ssh/config
+    - *ssh_configuration
+    - *vpn_setup
 
 deploy backend staging:
   extends: .deploy backend base
@@ -197,12 +225,10 @@ deploy backend staging with vpn:
     - .use_vpn_service
   rules:
     - if: '$CI_COMMIT_BRANCH == "staging" && $USE_VPN == "true"'
+  retry: 2 # Retries this job up to 2 times upon failure. VPN's can be flaky, so this is useful.
   before_script:
-    - *vpn_health_check
-    - *deploy_backend_base_before_script
-    # Now, we "extend" the before_script to include corkscrew for SSH tunneling
-    - apk add --no-cache corkscrew
-    - sed -i '/^Host \*/a\ ProxyCommand corkscrew gluetun 8888 %h %p' ~/.ssh/config
+    - *ssh_configuration
+    - *vpn_setup
 
 build frontend staging:
   extends: .build frontend base
@@ -230,12 +256,12 @@ deploy frontend staging with vpn:
     - .use_vpn_service
   rules:
     - if: '$CI_COMMIT_BRANCH == "staging" && $USE_VPN == "true"'
+  retry: 2 # Retries this job up to 2 times upon failure. VPN's can be flaky, so this is useful.
   # Since we can only have one VPN connection active at a time, we need to execute the deployment jobs sequentially.
   needs:
-    - deploy backend staging with vpn
+    - job: build frontend          # 1. Download artifacts from the build job
+    - job: deploy backend with vpn # 2. Wait for the backend deploy to finish successfully
   before_script:
-    - *vpn_health_check
+    - *ssh_configuration
     - *deploy_frontend_base_before_script
-    # Now, we "extend" the before_script to include corkscrew for SSH tunneling
-    - apk add --no-cache corkscrew
-    - sed -i '/^Host \*/a\ ProxyCommand corkscrew gluetun 8888 %h %p' ~/.ssh/config
+    - *vpn_setup
