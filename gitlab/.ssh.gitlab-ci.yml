@@ -172,6 +172,7 @@ stages:
         php bakery migrate --force
         php bakery apply
         php bakery load --force
+        php bakery queue:restart
         php bakery make:supervisor
 
         echo "-- Updating Supervisor configuration ---"
