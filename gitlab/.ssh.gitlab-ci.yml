@@ -266,8 +266,8 @@ build frontend staging:
   rules:
     - if: '$CI_COMMIT_BRANCH == "staging"'
   variables:
-    VUE_APP_API_URL: $STAGING_API_URL
-    VUE_APP_SYSTEM: $STAGING_SYSTEM
+    VITE_APP_API_URL: $STAGING_API_URL
+    VITE_APP_SYSTEM: $STAGING_SYSTEM
 
 deploy frontend staging:
   extends: .deploy frontend base
