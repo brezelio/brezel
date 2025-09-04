@@ -158,7 +158,7 @@ stages:
           git pull --recurse-submodules
         else
           echo "Cloning new repository."
-          git clone --recurse-submodules "git@${CI_SERVER_HOST}:${CI_PROJECT_PATH}.git" .
+          git clone --recurse-submodules --branch "$CI_COMMIT_BRANCH" "git@${CI_SERVER_HOST}:${CI_PROJECT_PATH}.git" .
         fi
 
         echo "--- Configuring Composer authentication ---"
