@@ -181,6 +181,10 @@ stages:
 
         echo "Deployment finished successfully!"
       EOL
+      if [ $? -ne 0 ]; then
+       echo "Remote deployment failed!"
+       exit \$?
+      fi
 
 build frontend:
   extends: .build frontend base
