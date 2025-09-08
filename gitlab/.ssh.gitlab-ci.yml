@@ -190,6 +190,9 @@ build frontend:
   extends: .build frontend base
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
+  variables:
+    VITE_APP_API_URL: $PROD_API_URL
+    VITE_APP_SYSTEM: $PROD_SYSTEM
 
 deploy frontend:
   extends: .deploy frontend base
