@@ -11,7 +11,7 @@
   },
   "type": "module",
   "dependencies": {
-    "@kibro/brezel-spa": "5.0.1",
+    "@kibro/brezel-spa": "5.8.0",
     "lodash-es": "*"
   },
   "devDependencies": {
