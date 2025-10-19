@@ -5,6 +5,7 @@
       "identifier": "users",
       "type": "users",
       "icon": "user",
+      "title": "name",
       "layouts": {
         "detail": "config/users.layout.detail"
       },
