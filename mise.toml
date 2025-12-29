@@ -23,6 +23,10 @@ depends = [
     "npm-install"
 ]
 
+[tasks.composer-update]
+description = "Do a composer update"
+run = "composer update"
+
 [tasks.init]
 description = "Initialize the project"
 run = "php bakery init"
