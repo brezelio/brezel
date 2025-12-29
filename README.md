@@ -24,6 +24,21 @@ Install and operate according to the [Brezel documentation](https://docs.brezel.
 
 ## Local Usage
 
+> If you have "(mise)[https://github.com/jdx/mise]" installed and set up properly in your shell, it will make your life
+> easier.
+>
+> It will automatically set up the correct php and node versions as well as provide you with helpful commands for common
+> operations.
+> 
+> e.g. `mise run install` to install both composer and npm packages in one, `mise run apply` for a quick bakery apply,
+> `mise run update` for an update, `mise run load` to reload workflows.
+> Most importantly, `mise run serve` will start a (zellij)[https://zellij.dev/] session with all the necessary servers
+> needed to run brezel in the foreground.
+> This way, you can monitor what is running and (more importantly) quit / stop them all at once by just exiting zellij.
+>
+> With the correct runner integration in your IDE you can have native access to these mise tasks as well, right from 
+> your fingertips.
+
 ### Install or update the Brezel components
 
 Install composer packages:
