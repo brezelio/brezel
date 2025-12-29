@@ -1,5 +1,6 @@
 .env
 vendor
+auth.json
 
 .DS_Store
 node_modules
