@@ -1,0 +1,18 @@
+{
+	# Enable FrankenPHP
+	frankenphp
+
+  # Order matters: this ensures php_server runs before the file server
+	order php_server before file_server
+}
+
+:8001 {
+	# Point to your Laravel public folder relative to project root
+	root * public/
+
+	# Compression
+	encode gzip
+
+	# The Magic: Serve PHP directly
+	php_server
+}

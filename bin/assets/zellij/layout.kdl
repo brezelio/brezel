@@ -1,0 +1,66 @@
+// Force the session to die when the terminal closes
+on_force_close "quit"
+
+//Disable saving state to disk (prevents "resurrection" clutter)
+session_serialization false
+
+// Define how the window should look
+layout {
+    default_tab_template {
+        children
+        pane size=1 borderless=true {
+            plugin location="zellij:status-bar"
+        }
+    }
+
+    tab name="Brezel Dashboard" {
+        pane split_direction="vertical" {
+            // LEFT COLUMN (35%)
+            pane split_direction="horizontal" size="35%" {
+                // SPA
+                pane name="spa" command="npm" {
+                  args "run" "serve"
+                }
+
+                // API
+                // We have to wrap farnkenphp (and thus caddy) in a small bash script to rewrite SIGHUB to SIGTERM.
+                // Otherwise frankenphp just reloads it's config and stays running when either zellij is quit or the
+                // terminal is closed.
+                pane name="api" command="bash" {
+                  args "-c" "frankenphp run --config bin/assets/zellij/api.Caddyfile & pid=$!; trap \"kill $pid\" HUP INT TERM EXIT; wait $pid"
+                }
+
+
+                // Brotcast
+                pane split_direction="vertical" {
+                    pane name="brotcast" command="php" {
+                      args "bakery" "brotcast:start"
+                    }
+
+                    pane name="queue" command="php" {
+                      args "bakery" "work" "--tries=1" "--queue=broadcasts"
+                    }
+                }
+            }
+
+            // RIGHT COLUMN
+            pane split_direction="horizontal" {
+                // INTERACTIVE shell in project directory
+                pane name="api-dir" command="$SHELL"
+
+
+                pane split_direction="vertical" size="35%" {
+                    // Default queue
+                    pane name="queue" command="php" {
+                      args "bakery" "work" "--tries=1" "--sleep=1"
+                    }
+
+                    // CRON
+                    pane name="cron" command="php" {
+                      args "bin/cron_runner.php"
+                    }
+                }
+            }
+        }
+   }
+}
