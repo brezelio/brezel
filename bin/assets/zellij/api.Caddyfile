@@ -6,7 +6,7 @@
 	order php_server before file_server
 }
 
-:8001 {
+:8081 {
 	# Point to your Laravel public folder relative to project root
 	root * public/
 
