@@ -23,7 +23,7 @@ layout {
                 }
 
                 // API
-                // We have to wrap farnkenphp (and thus caddy) in a small bash script to rewrite SIGHUB to SIGTERM.
+                // We have to wrap frankenphp (and thus caddy) in a small bash script to rewrite SIGHUB to SIGTERM.
                 // Otherwise frankenphp just reloads it's config and stays running when either zellij is quit or the
                 // terminal is closed.
                 pane name="api" command="bash" {
@@ -33,11 +33,11 @@ layout {
 
                 // Brotcast
                 pane split_direction="vertical" {
-                    pane name="brotcast" command="php" {
+                    pane name="brotcast-server" command="php" {
                       args "bakery" "brotcast:start"
                     }
 
-                    pane name="queue" command="php" {
+                    pane name="brotcast-queue" command="php" {
                       args "bakery" "work" "--tries=1" "--queue=broadcasts"
                     }
                 }
@@ -46,12 +46,12 @@ layout {
             // RIGHT COLUMN
             pane split_direction="horizontal" {
                 // INTERACTIVE shell in project directory
-                pane name="api-dir" command="$SHELL"
+                pane name="project" command="$SHELL"
 
 
-                pane split_direction="vertical" size="35%" {
+                pane split_direction="vertical" size="33%" {
                     // Default queue
-                    pane name="queue" command="php" {
+                    pane name="default-queue" command="php" {
                       args "bakery" "work" "--tries=1" "--sleep=1"
                     }
 
