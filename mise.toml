@@ -5,7 +5,7 @@
 # Required system tools
 [tools]
 node = "22"
-"ubi:adwinying/php" = "8.4"
+php = "8.4"
 
 # TODO: (activate once mise 2025.12.11 is packaged for arch)
 # Quick aliases to run common tasks
