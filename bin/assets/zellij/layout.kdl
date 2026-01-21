@@ -4,6 +4,9 @@ on_force_close "quit"
 //Disable saving state to disk (prevents "resurrection" clutter)
 session_serialization false
 
+// Set a name so that only one session is created
+session_name "Brezel"
+
 // Define how the window should look
 layout {
     default_tab_template {
