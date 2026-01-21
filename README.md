@@ -30,7 +30,7 @@ Install and operate according to the [Brezel documentation](https://docs.brezel.
 > It will automatically set up the correct php and node versions as well as provide you with helpful commands for common
 > operations.
 > (Since this will compile php for your system, you might need to install build dependencies like e.g. re2c, gd,
-> postgresql-libs, libzip)
+> postgresql-libs, libzip, gmp, libsodium)
 > 
 > e.g. `mise run install` to install both composer and npm packages in one, `mise run apply` for a quick bakery apply,
 > `mise run update` for an update, `mise run load` to reload workflows.
