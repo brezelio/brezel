@@ -7,12 +7,11 @@
 node = "22"
 php = "8.4"
 
-# TODO: (activate once mise 2025.12.11 is packaged for arch)
-# Quick aliases to run common tasks
-# [shell_alias]
-# u = "mise run update"
-# a = "mise run apply"
-# l = "mise run load"
+# Quick aliases to run common tasks. Note: requires mise 2025.12.11 and up!
+[shell_alias]
+u = "mise run update"
+a = "mise run apply"
+l = "mise run load"
 
 # Tasks
 [tasks.composer-install]
