@@ -20,4 +20,8 @@ echo "bin/u took: $((end - start)) second(s)"
 if [ "$(uname)" == "Darwin" ]; then
   # Do something under Mac OS X platform
   say bin/u
+elif command -v notify-send &> /dev/null
+then
+  # If "notify-send" is installed, send a notification
+  notify-send -a "Brezel Bakery" "Update is done" "The changes from bin/u should be visible. It took $((end - start)) second(s)"
 fi

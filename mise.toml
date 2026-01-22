@@ -39,7 +39,7 @@ run = "php bakery init"
 
 [tasks.apply]
 description = "Do a bakery apply"
-run = "php bakery apply"
+run = "bin/a"
 
 [tasks.load]
 description = "Reload Workflows"
