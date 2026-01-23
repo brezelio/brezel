@@ -27,6 +27,9 @@ pnpm-debug.log*
 *.sw?
 .php-cs-fixer*
 
+# Cache files
+**/*.cache
+
 composer-local.json
 
 bin/assets/windows/nginx.conf
