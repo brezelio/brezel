@@ -6,9 +6,9 @@
       "client": "${resource_client.global}",
       "root": true,
       "fields": {
-        "email": "dev@ki-bro.com",
+        "email": "dev@example.com",
         "password": "${env('ROOT_PASSWORD', 'secret')}",
-        "name": "Kiwis & Brownies Root Account"
+        "name": "Example Root Account"
       }
     }
   },
@@ -18,9 +18,9 @@
       "module": "users",
       "client": "${resource_client.global}",
       "fields": {
-        "email": "admin@ki-bro.com",
+        "email": "admin@example.com",
         "password": "${env('ADMIN_PASSWORD', 'secret')}",
-        "name": "Kiwis & Brownies Admin Account",
+        "name": "Example Admin Account",
         "roles": [
           "${resource_entity.role_admin}"
         ]
