@@ -439,6 +439,40 @@ Framework integration (`@kibro/brezel-spa`):
 - Typical flow: load module/entity data, execute workflow/layout commands, persist via API helpers.
 - Ant Design Vue components are available through `<a-...>` tags.
 
+### How-to: use generated Brezel types in widgets (important)
+These types are generated from system config and should be used in widget code.
+
+1. Ensure `systems/<system>/system.json` enables type generation:
+
+```json
+"bakery": {
+  "apply": {
+    "generate-types": {
+      "enabled": true,
+      "package": "@kibro/brezel-spa-types"
+    }
+  }
+}
+```
+
+2. Regenerate by running `php bakery apply` (or project wrapper like `bin/u`).
+3. Import generated entities/modules in widgets from `src/types/modules`.
+
+Example (from this project style):
+
+```ts
+import { Module } from '@kibro/brezel-spa'
+import { Project, Document as DocumentEntity } from '../types/modules'
+
+const projectsModule = Module.byIdentifier('projects')
+const project = (await projectsModule.getEntity(projectId)) as Project
+```
+
+Notes:
+- Generated files usually live under `src/types/` (`modules/`, `translations/`, and `custom-modules.d.ts`).
+- `custom-modules.d.ts` augments `@kibro/brezel-spa` types automatically.
+- Do not hand-edit generated files in `src/types/**`; regenerate from bakery config instead.
+
 ## Workflows
 Workflows handle business automation, side effects, imports/exports, and integrations.
 
