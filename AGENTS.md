@@ -364,6 +364,8 @@ Important layout semantics:
 
 ## Recipes (`.recipe` + inline)
 Recipes are JS-like expressions for dynamic behavior and logic.
+They are however purely _expressions_, not full scripting environments, so no `const foo` or similar.
+Recipe-Expressions should be kept short.
 
 Where recipes appear:
 - `field.options.recipes`
@@ -384,6 +386,7 @@ Common recipe examples:
 - `!this.destroyed`
 - `sum(positions[*].total_price)`
 - `getCurrentProjectId() != null`
+- `foo ? bar : baz` (Or even nested ternaries)
 
 ### How-to: extract long expression into reusable recipe file
 In `systems/<system>/recipes/showExportIfAppropriate.recipe`:
