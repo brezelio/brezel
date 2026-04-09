@@ -388,6 +388,11 @@ Common recipe examples:
 - `getCurrentProjectId() != null`
 - `foo ? bar : baz` (Or even nested ternaries)
 
+> You can find functions that are available for recipes that are used in the backend (i.e. workflows) in
+> `@vendor/brezel/api/app/Recipes/Driver/Native/Interpreter/Main/MainInterpreter.php`
+>
+> The recipes available to the frontend (i.e. in layouts) are often quite similar.
+
 ### How-to: extract long expression into reusable recipe file
 In `systems/<system>/recipes/showExportIfAppropriate.recipe`:
 
@@ -490,6 +495,8 @@ Common node types seen in production Brezel apps:
 - Logic/control: `flow/if`, `flow/empty`, `flow/each`, `flow/try`
 - Mutations: `op/set`, `op/addListItem`, `op/push`, `action/save`, `action/delete`
 - Side effects: `action/run`, `action/notify`, `action/log`, `action/redirect`, `action/export`, `action/response`, `cast/progress`, `action/makeDir`
+
+> You can find available workflow elements and their code / definition in `@vendor/brezel/api/app/Workflow/Elements/*`.
 
 ### How-to: webhook workflow triggered by module button
 1. Add module button key (for example `RenderInvoice`).
