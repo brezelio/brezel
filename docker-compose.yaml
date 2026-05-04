@@ -12,7 +12,7 @@ x-brezel-php-service: &brezel-php-service
     APP_DEBUG: ${APP_DEBUG:-true}
     APP_URL: ${APP_URL:-http://localhost:2041}
     TENANCY_HOST: ${TENANCY_HOST:-mariadb}
-    TENANCY_PORT: ${TENANCY_PORT:-3306}
+    TENANCY_PORT: ${TENANCY_PORT:-2042}
     BREZEL_JOBS_SUPERVISOR_USER: ${BREZEL_JOBS_SUPERVISOR_USER:-brezel}
     BREZEL_JOBS_SUPERVISOR_COMMAND: ${BREZEL_JOBS_SUPERVISOR_COMMAND:-php bakery work --tries=1 --sleep=1}
     BREZEL_BROTCAST_SERVER_HOST: ${BREZEL_BROTCAST_SERVER_HOST:-0.0.0.0}
@@ -143,14 +143,14 @@ services:
       MARIADB_USER: ${TENANCY_USERNAME:-brezel}
       MARIADB_PASSWORD: ${TENANCY_PASSWORD:-secret}
     ports:
-      - "2042:3306"
+      - "2042:2042"
     volumes:
       - mariadb_data:/var/lib/mysql
     restart: unless-stopped
     healthcheck:
       test:
         - CMD-SHELL
-        - mariadb-admin ping -h 127.0.0.1 -uroot -p$$MARIADB_ROOT_PASSWORD --silent
+        - mariadb-admin ping -h 127.0.0.1 -P 2042 -uroot -p$$MARIADB_ROOT_PASSWORD --silent
       interval: 10s
       timeout: 5s
       retries: 10

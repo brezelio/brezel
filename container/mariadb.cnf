@@ -1,4 +1,5 @@
 [mysqld]
+port = 2042
 max_connections = 500
 innodb_buffer_pool_size = 4G
 innodb_log_file_size = 512M
