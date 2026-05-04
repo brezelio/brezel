@@ -4,6 +4,7 @@
 
 # Required system tools
 [tools]
+bun = "latest"
 zellij = "latest"
 
 # Quick aliases to run common tasks. Note: requires mise 2025.12.11 and up!

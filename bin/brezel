@@ -4,9 +4,9 @@ set -euo pipefail
 
 script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 
-tty_args=()
-if [ ! -t 0 ] || [ ! -t 1 ]; then
-  tty_args=(-T)
+if ! command -v bun >/dev/null 2>&1; then
+  printf 'bun is required for bin/brezel but was not found in PATH.\n' >&2
+  exit 1
 fi
 
-exec "$script_dir/compose" exec "${tty_args[@]}" app php "$@"
+exec bun run "$script_dir/brezel.ts" "$@"
