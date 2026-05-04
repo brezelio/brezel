@@ -1,5 +1,6 @@
 .env
 vendor
+auth.json
 
 .DS_Store
 node_modules
@@ -24,6 +25,10 @@ pnpm-debug.log*
 *.njsproj
 *.sln
 *.sw?
+.php-cs-fixer*
+
+# Cache files
+**/*.cache
 
 composer-local.json
 
@@ -32,6 +37,9 @@ bin/assets/windows/nginx.conf
 nginxerrors.log
 
 dev-dist
+dist-lib
 
 storage/framework/*
 storage/app/tenancy/tenants/*
+
+supervisord.conf

@@ -1,20 +1,20 @@
-resource "random_password" "dev_password" {
+resource "random_string" "dev_password" {
   length  = 16
   special = false
 }
 
 locals {
-  system      = "lemikos"
-  system_repo = "registry.kiwis-and-brownies.de/kibro/basedonbrezel/lemikos"
+  system      = var.system
+  system_repo = var.registry_image
   branch_slug = replace(var.branch, "[^a-zA-Z0-9-]", "-")
-  base_host   = "${local.branch_slug}.${local.system}.review.brezel.cloud"
+  base_host   = coalesce(var.host, "${local.branch_slug}.${local.system}.${var.base_domain}")
   app_url     = "http${var.secure ? "s" : ""}://${local.base_host}"
   api_url     = "http${var.secure ? "s" : ""}://api.${local.base_host}"
 }
 
 resource "kubernetes_namespace" "branch" {
   metadata {
-    name = "review-${local.system}-${local.branch_slug}"
+    name = coalesce(var.namespace, "review-${local.system}-${local.branch_slug}")
   }
 }
 
@@ -96,11 +96,11 @@ module "system" {
 
   brezel_resources = {
     limits = {
-      memory = "1Gi"
+      memory = "1.5Gi" # Intuitively, limit should be higher than requests, but all k8s guides say to make them equal.
     }
     requests = {
       cpu    = "1500m"
-      memory = "1Gi"
+      memory = "1.5Gi" # A brezel instance ideling / handling some basic requests uses ~600mb, but to ensure stability, we set it to the same as our limit.
     }
   }
 
@@ -128,9 +128,9 @@ module "system" {
       DB_DATABASE       = scaleway_rdb_database.system.name
       DB_USER           = scaleway_rdb_user.system.name
       DB_PASSWORD       = random_password.db_password.result
-      ROOT_PASSWORD     = random_password.dev_password.result
+      ROOT_PASSWORD     = random_string.dev_password.result
 
-      ROOT_PASSWORD = random_password.dev_password.result
+      ROOT_PASSWORD = random_string.dev_password.result
 
       MAIL_DRIVER       = "smtp"
       MAIL_HOST         = var.mail_host
@@ -142,4 +142,8 @@ module "system" {
       MAIL_FROM_ADDRESS = var.mail_from_address
     }
   }
+}
+
+output "root_password" {
+  value = random_string.dev_password.result
 }

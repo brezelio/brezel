@@ -1,9 +1,52 @@
+# Brezel Skeleton
+
+This is the skeleton for a Brezel instance.
+
+It represents the latest "recommended" setup for your Brezel Instance repo.
+
+> Note: This is for brezel/api 2.0 with brezel/spa 4.0 and up!
+> 
+> For the pre PHP 8 versions, please refer to the [1.x branch](https://gitlab.kiwis-and-brownies.de/kibro/brezel/brezel/-/tree/1.x).
+
+It contains a slim `example` system to get you up and running quickly.
+
+Crucially, it creates two users for you to use:
+- `dev@example.com`: A "root" user that bypasses all permission checks. Use it e.g. for Bakery access. Since this user can do everything, but be careful when you test features with it as things that work with this user may not work with other users!
+- `admin@example.com`: A "normal" user with the `admin` role that has permissions for everything. This (or a similar user that is **not** root) should be used for normal development and interactive testing.
+
+> On local development only these users have the password `secret`.
+> 
+> You can (and should!) change these passwords in a production environment via your systems `.env` file!
+
+## Deployment
+
+Install and operate according to the [Brezel documentation](https://docs.brezel.io/deploy/virtual_server/).
+
+## Local Usage
+
+> If you have "(mise)[https://github.com/jdx/mise]" installed and set up properly in your shell, it will make your life
+> easier.
+>
+> It will automatically set up the correct php and node versions as well as provide you with helpful commands for common
+> operations.
+> (Since this will compile php for your system, you might need to install build dependencies like e.g. re2c, gd,
+> postgresql-libs, libzip, gmp, libsodium)
+> 
+> e.g. `mise run install` to install both composer and npm packages in one, `mise run apply` for a quick bakery apply,
+> `mise run update` for an update, `mise run load` to reload workflows.
+> Most importantly, `mise run serve` will start a (zellij)[https://zellij.dev/] session with all the necessary servers
+> needed to run brezel in the foreground.
+> This way, you can monitor what is running and (more importantly) quit / stop them all at once by just exiting zellij.
+>
+> With the correct runner integration in your IDE you can have native access to these mise tasks as well, right from 
+> your fingertips.
+
 ### Install or update the Brezel components
 
 Install composer packages:
 
 ```bash
-composer install
+composer update
 ```
 
 Install NPM packages:
@@ -24,7 +67,10 @@ CREATE DATABASE brezel_meta_<some-name>
 
 Copy the `.env.example` file to `.env` and edit the `.env` file.
 
-For a full list of settable environment variables, consult the [environment variable reference](https://wiki.brezel.io/docs/configuration/env/). To get started, make sure to set the following variables:
+For a (mostly) complete list of settable environment variables, consult the [environment variable reference](https://docs.brezel.io/reference/env/#_top). 
+More details are in the .env.example file.
+
+To get started, make sure to set the following variables:
 
 ##### General settings
 
@@ -75,7 +121,9 @@ php bakery system create <system>
 
 Run ``bin/u`` to apply the current system config.
 
-The corresponding directory `systems/example` can hold `.bake`-configuration files that can be synced to the `example` database. To do this, you can run the following command:
+The directory `systems/example` holds `.bake`-configuration files for a system called `example`. 
+`bin/u` will sync these to the DB and build your system.
+If you did not change any workflows and only want to update .bake configurations like modules or entities, use the bakery planner:
 
 ```bash
 php bakery apply
@@ -87,34 +135,38 @@ To just see what Brezel plans to change, do:
 php bakery plan
 ```
 
-### Set up your web server
-
-##### macOS, Linux
-
-If you used valet in the [webserver setup]({{< ref path="prerequisites.md" >}}):
-
+To update workflows, run:
 ```bash
-valet link
+php bakery load
 ```
 
-Now valet created the symbolic link `mybrezel.test` to your Brezel instance. This is where the Brezel **API** is reachable from now on.
+### Set up your local Dev environment
 
-##### Windows
+#### macOS, Linux
 
+You can use Laravel Valet to serve the API (or `php brezel serve`).
+
+The SPA is served on port 8080 by the `npm run serve` command.
+
+You will need to run the queues and websocket server in the background.
+```bash
+php bakery queue:work
+php bakery queue:work --queue=brotcasts
+php bakery brotcast:start
+```
+
+If you want to have local ``event/cron`` elements working, you will have to run `php bakery schedule` every 60 seconds.
+
+#### Windows
+
+You can use the same `php bakery serve` / `npm run serve` commands as on macOS and Linux, but that will be slow as your API will only be able to work on one request at a time.
+
+A better and faster approach is to use nginx and the included script.
+For that, install nginx in your path and make sure that both `gcm nginx` and `gcm php-cgi` find the correct executables.
 Go to the Brezel directory and run the following script on the Windows terminal:
 
 ```bash
 bin\serve_on_windows.ps1
 ```
 
-If you get CORS errors sure that you are running the script without nginx. You can run it with`./bin/serve_on_windows.ps1 $true` to disable nginx.
-
-### Run the SPA service
-
-In the Brezel directory, start the SPA development server:
-
-```bash
-npm run serve
-```
-
-The service will listen on localhost:8080 or the nearest open port.
+> If you just want the benefits of an all-in-one script, but don't want to use nginx, you can run it with`./bin/serve_on_windows.ps1 $true` to disable nginx.

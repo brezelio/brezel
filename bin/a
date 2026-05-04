@@ -1,0 +1,21 @@
+#! /usr/bin/env bash
+
+# Run php bakery apply
+
+start=$(date +%s)
+
+echo "bakery apply..."
+php bakery apply
+
+end=$(date +%s)
+
+echo "bin/a took: $((end - start)) second(s)"
+
+if [ "$(uname)" == "Darwin" ]; then
+  # Do something under Mac OS X platform
+  say bin/a
+elif command -v notify-send &> /dev/null
+then
+  # If "notify-send" is installed, send a notification
+  notify-send -a "Brezel Bakery" "Apply is done" "The changes from bin/a should be visible. It took $((end - start)) second(s)"
+fi

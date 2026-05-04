@@ -1,0 +1,29 @@
+[
+  {
+    "resource_module": "roles",
+    "import": true,
+    "resource": {
+      "type": "roles",
+      "identifier": "roles",
+      "title": "name",
+      "icon": "safety",
+      "layouts": {
+        "detail": "config/roles.layout.detail"
+      },
+      "fields": [
+        {
+          "identifier": "name",
+          "type": "text"
+        },
+        {
+          "identifier": "slug",
+          "type": "text"
+        },
+        {
+          "identifier": "modules",
+          "type": "code"
+        }
+      ]
+    }
+  }
+]

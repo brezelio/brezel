@@ -1,0 +1,69 @@
+[
+  {
+    "resource_module": "clients",
+    "resource": {
+      "identifier": "clients",
+      "type": "clients",
+      "icon": "setting",
+      "layouts": {
+        "detail": "config/clients.layout.detail"
+      },
+      "fields": [
+        {
+          "identifier": "title",
+          "type": "text",
+          "options": {
+            "autofocus": true,
+            "rules": "required"
+          }
+        },
+        {
+          "identifier": "color",
+          "type": "text"
+        },
+        {
+          "identifier": "mail_host",
+          "type": "text"
+        },
+        {
+          "identifier": "mail_port",
+          "type": "number"
+        },
+        {
+          "identifier": "mail_username",
+          "type": "text"
+        },
+        {
+          "identifier": "mail_password",
+          "type": "text",
+          "options": {
+            "hide_value": true,
+            "show_in_resource_table": false,
+            "recipes": {
+              "hidden_from_frontend": "mail_auth_mode == 'XOAUTH2'"
+            }
+          }
+        },
+        {
+          "identifier": "mail_encryption",
+          "type": "choice",
+          "options": {
+            "values": [
+              "tls",
+              "ssl",
+              "none"
+            ]
+          }
+        },
+        {
+          "identifier": "mail_from_address",
+          "type": "email"
+        },
+        {
+          "identifier": "mail_from_name",
+          "type": "text"
+        }
+      ]
+    }
+  }
+]

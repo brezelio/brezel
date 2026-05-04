@@ -1,14 +1,19 @@
 [
-    {
-        "resource_menu": "main",
-        "resource": {
-            "name": "main",
-            "elements": [
-                "users",
-                "clients"
-            ]
-        }
+  {
+    "resource_menu": "main",
+    "resource": {
+      "name": "main",
+      "elements": [
+        {
+          "name": "users",
+          "type": "entry",
+          "default": true
+        },
+        "roles",
+        "clients"
+      ]
     }
+  }
 ]
 
 

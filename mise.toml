@@ -1,0 +1,54 @@
+# Use mise (mise-en-place) to define what is needed to run brezel.
+# If properly configured, this will cause your terminal to use the correct versions of tools when in this project dir.
+# Also provides helpful tasks to automate common commands.
+
+# Required system tools
+[tools]
+node = "22"
+php = "8.4"
+
+# Quick aliases to run common tasks. Note: requires mise 2025.12.11 and up!
+[shell_alias]
+u = "mise run update"
+a = "mise run apply"
+l = "mise run load"
+
+# Tasks
+[tasks.composer-install]
+description = "Install composer dependencies"
+run = "composer install"
+
+[tasks.npm-install]
+description = "Install npm dependencies"
+run = "npm install"
+
+[tasks.install]
+description = "Install all dependencies"
+depends = [
+    "composer-install",
+    "npm-install"
+]
+
+[tasks.composer-update]
+description = "Do a composer update"
+run = "composer update"
+
+[tasks.init]
+description = "Initialize the project"
+run = "php bakery init"
+
+[tasks.apply]
+description = "Do a bakery apply"
+run = "bin/a"
+
+[tasks.load]
+description = "Reload Workflows"
+run = "bin/l"
+
+[tasks.update]
+description = "Update the systems (Spec, Worklows, etc)"
+run = "bin/u"
+
+[tasks.serve]
+description = "A Zellij-based helper to serve the application locally with all servers in the foreground. Everything will stop when you close this process!"
+run = "bin/serve.sh"
