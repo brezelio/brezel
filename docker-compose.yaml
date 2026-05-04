@@ -87,18 +87,6 @@ services:
         condition: service_completed_successfully
       mariadb:
         condition: service_healthy
-
-  reverb:
-    <<: *brezel-php-service
-    command:
-      - php
-      - bakery
-      - brotcast:start
-    depends_on:
-      deps:
-        condition: service_completed_successfully
-      mariadb:
-        condition: service_healthy
     ports:
       - "2043:8086"
 

@@ -5,7 +5,7 @@ on_force_close "quit"
 session_serialization false
 
 // Set a name so that only one session is created
-session_name "Brezel"
+session_name "Brezel Docker"
 
 // Define how the window should look
 layout {
@@ -16,33 +16,24 @@ layout {
         }
     }
 
-    tab name="Brezel Dashboard" {
+    tab name="Brezel Docker" {
         pane split_direction="vertical" {
             // LEFT COLUMN (35%)
             pane split_direction="horizontal" size="35%" {
                 // SPA
-                pane name="spa" command="npm" {
-                  args "run" "serve"
+                pane name="spa" command="bash" {
+                  args "-lc" "docker compose logs -f vite"
                 }
 
                 // API
-                // We have to wrap frankenphp (and thus caddy) in a small bash script to rewrite SIGHUB to SIGTERM.
-                // Otherwise frankenphp just reloads it's config and stays running when either zellij is quit or the
-                // terminal is closed.
                 pane name="api" command="bash" {
-                  args "-c" "frankenphp run --config bin/assets/zellij/api.Caddyfile & pid=$!; trap \"kill $pid\" HUP INT TERM EXIT; wait $pid"
+                  args "-lc" "docker compose logs -f app"
                 }
 
 
-                // Brotcast
-                pane split_direction="vertical" {
-                    pane name="brotcast-server" command="php" {
-                      args "bakery" "brotcast:start"
-                    }
-
-                    pane name="brotcast-queue" command="php" {
-                      args "bakery" "work" "--tries=1" "--queue=broadcasts"
-                    }
+                // Workers and brotcast are supervised together in the workers container.
+                pane name="workers" command="bash" {
+                  args "-lc" "until docker compose exec -T workers sh -lc 'mkdir -p storage/logs && touch storage/logs/worker.log storage/logs/brotcast.log' >/dev/null 2>&1; do sleep 1; done; docker compose exec -T workers sh -lc 'tail -F storage/logs/worker.log storage/logs/brotcast.log'"
                 }
             }
 
@@ -53,14 +44,14 @@ layout {
 
 
                 pane split_direction="vertical" size="33%" {
-                    // Default queue
-                    pane name="default-queue" command="php" {
-                      args "bakery" "work" "--tries=1" "--sleep=1"
+                    // One-shot dependency services are useful to keep visible during startup.
+                    pane name="bootstrap" command="bash" {
+                      args "-lc" "docker compose logs -f deps node_deps"
                     }
 
-                    // CRON
-                    pane name="cron" command="php" {
-                      args "bin/cron_runner.php"
+                    // Scheduler
+                    pane name="scheduler" command="bash" {
+                      args "-lc" "docker compose logs -f scheduler"
                     }
                 }
             }
