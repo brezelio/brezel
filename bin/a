@@ -5,7 +5,7 @@
 start=$(date +%s)
 
 echo "bakery apply..."
-php bakery apply
+bin/brezel bakery apply
 
 end=$(date +%s)
 

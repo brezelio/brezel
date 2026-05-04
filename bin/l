@@ -5,7 +5,7 @@
 start=$(date +%s)
 
 echo "bakery load..."
-php bakery load
+bin/brezel bakery load
 
 end=$(date +%s)
 

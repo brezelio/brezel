@@ -7,11 +7,11 @@ start=$(date +%s)
 
 # migrate all systems
 echo "bakery migrations..."
-php bakery migrate --force
+bin/brezel bakery migrate --force
 echo "bakery load..."
-php bakery load
+bin/brezel bakery load
 echo "bakery apply..."
-php bakery apply
+bin/brezel bakery apply
 
 end=$(date +%s)
 

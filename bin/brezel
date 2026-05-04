@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+project_dir="$(cd -- "$script_dir/.." && pwd)"
+
+tty_args=()
+if [ ! -t 0 ] || [ ! -t 1 ]; then
+  tty_args=(-T)
+fi
+
+exec docker compose \
+  --project-directory "$project_dir" \
+  -f "$project_dir/docker-compose.yaml" \
+  exec "${tty_args[@]}" app php "$@"

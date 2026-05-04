@@ -12,6 +12,7 @@ php = "8.4"
 u = "mise run update"
 a = "mise run apply"
 l = "mise run load"
+brezel = "./bin/brezel" # Run a php command such as `php bakery apply` in the containers with `brezel bakery apply`
 
 # Tasks
 [tasks.composer-install]
@@ -35,7 +36,7 @@ run = "composer update"
 
 [tasks.init]
 description = "Initialize the project"
-run = "php bakery init"
+run = "bin/brezel bakery init"
 
 [tasks.apply]
 description = "Do a bakery apply"
