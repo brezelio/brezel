@@ -142,31 +142,10 @@ php bakery load
 
 ### Set up your local Dev environment
 
-#### macOS, Linux
-
-You can use Laravel Valet to serve the API (or `php brezel serve`).
-
-The SPA is served on port 8080 by the `npm run serve` command.
-
-You will need to run the queues and websocket server in the background.
-```bash
-php bakery queue:work
-php bakery queue:work --queue=brotcasts
-php bakery brotcast:start
-```
-
-If you want to have local ``event/cron`` elements working, you will have to run `php bakery schedule` every 60 seconds.
-
-#### Windows
-
-You can use the same `php bakery serve` / `npm run serve` commands as on macOS and Linux, but that will be slow as your API will only be able to work on one request at a time.
-
-A better and faster approach is to use nginx and the included script.
-For that, install nginx in your path and make sure that both `gcm nginx` and `gcm php-cgi` find the correct executables.
-Go to the Brezel directory and run the following script on the Windows terminal:
+Use the Docker-based local workflow:
 
 ```bash
-bin\serve_on_windows.ps1
+brezel serve
 ```
 
-> If you just want the benefits of an all-in-one script, but don't want to use nginx, you can run it with`./bin/serve_on_windows.ps1 $true` to disable nginx.
+This starts the local Docker stack and opens the Zellij-based log/dashboard view.
