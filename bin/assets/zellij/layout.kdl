@@ -21,37 +21,37 @@ layout {
             // LEFT COLUMN (35%)
             pane split_direction="horizontal" size="35%" {
                 // SPA
-                pane name="spa" command="bash" {
-                  args "-lc" "bin/compose logs -f vite"
+                pane name="spa" command="bun" {
+                  args "run" "bin/brezel.ts" "logs" "vite"
                 }
 
                 // API
-                pane name="api" command="bash" {
-                  args "-lc" "bin/compose logs -f app"
+                pane name="api" command="bun" {
+                  args "run" "bin/brezel.ts" "logs" "app"
                 }
 
 
                 // Workers and brotcast are supervised together in the workers container.
-                pane name="workers" command="bash" {
-                  args "-lc" "until bin/compose exec -T workers sh -lc 'mkdir -p storage/logs && touch storage/logs/worker.log storage/logs/brotcast.log' >/dev/null 2>&1; do sleep 1; done; bin/compose exec -T workers sh -lc 'tail -F storage/logs/worker.log storage/logs/brotcast.log'"
+                pane name="workers" command="bun" {
+                  args "run" "bin/brezel.ts" "logs" "workers"
                 }
             }
 
             // RIGHT COLUMN
             pane split_direction="horizontal" {
                 // INTERACTIVE shell in project directory
-                pane name="project" command="$SHELL"
+                pane name="project"
 
 
                 pane split_direction="vertical" size="33%" {
                     // One-shot dependency services are useful to keep visible during startup.
-                    pane name="bootstrap" command="bash" {
-                      args "-lc" "bin/compose logs -f deps node_deps"
+                    pane name="bootstrap" command="bun" {
+                      args "run" "bin/brezel.ts" "logs" "bootstrap"
                     }
 
                     // Scheduler
-                    pane name="scheduler" command="bash" {
-                      args "-lc" "bin/compose logs -f scheduler"
+                    pane name="scheduler" command="bun" {
+                      args "run" "bin/brezel.ts" "logs" "scheduler"
                     }
                 }
             }

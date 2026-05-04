@@ -1,6 +1,7 @@
 import { runApplyCommand } from "./commands/apply"
 import { runBakeryCommand } from "./commands/bakery"
 import { runLoadCommand } from "./commands/load"
+import { runLogsCommand } from "./commands/logs"
 import { runServeCommand } from "./commands/serve"
 import { runSetupCommand } from "./commands/setup"
 import { runUpdateCommand } from "./commands/update"
@@ -21,6 +22,8 @@ export async function runCli(args: string[]): Promise<number> {
       return runApplyCommand(rest)
     case "load":
       return runLoadCommand(rest)
+    case "logs":
+      return await runLogsCommand(rest)
     case "update":
       return runUpdateCommand(rest)
     case "serve":
@@ -42,6 +45,7 @@ Usage:
   brezel bakery <args...>
   brezel apply
   brezel load
+  brezel logs <target>
   brezel update
   brezel serve
   brezel setup
@@ -50,6 +54,7 @@ Commands:
   bakery   Run bakery inside the app container
   apply    Run bakery apply in the app container
   load     Run bakery load in the app container
+  logs     Follow logs for a local dev target
   update   Run migrate, load, and apply in the app container
   serve    Start the local Docker/Zellij serve workflow
   setup    Placeholder for the future interactive setup flow

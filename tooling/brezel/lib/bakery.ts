@@ -1,4 +1,4 @@
-import { runProjectCommand } from "./exec"
+import { runComposeCommand } from "./compose"
 
 export function runBakeryArgs(args: string[]): number {
   const composeArgs = ["exec"]
@@ -9,9 +9,5 @@ export function runBakeryArgs(args: string[]): number {
 
   composeArgs.push("app", "php", "bakery", ...args)
 
-  return runProjectCommand({
-    unixCommand: "bin/compose",
-    windowsCommand: "bin\\compose.bat",
-    args: composeArgs,
-  })
+  return runComposeCommand(composeArgs)
 }

@@ -1,6 +1,7 @@
 import { spawnSync } from "node:child_process"
 import { join } from "node:path"
-import { getProjectDir, runProjectCommand, runProjectCommandInteractive } from "../lib/exec"
+import { runComposeCommand as runCompose } from "../lib/compose"
+import { getProjectDir, runProjectCommandInteractive } from "../lib/exec"
 import { portIsBusy } from "../lib/ports"
 
 const ports = [2040, 2041, 2042, 2043]
@@ -17,7 +18,7 @@ export async function runServeCommand(args: string[]): Promise<number> {
   }
 
   console.log("Cleaning up any existing Docker stack for this project")
-  runComposeCommand(["down", "--remove-orphans"])
+  runCompose(["down", "--remove-orphans"])
 
   for (const port of ports) {
     if (await portIsBusy(port)) {
@@ -27,7 +28,7 @@ export async function runServeCommand(args: string[]): Promise<number> {
   }
 
   console.log("Starting brezel using Docker Compose and Zellij")
-  const upExitCode = runComposeCommand(["up", "-d", "--remove-orphans"])
+  const upExitCode = runCompose(["up", "-d", "--remove-orphans"])
   if (upExitCode !== 0) {
     return upExitCode
   }
@@ -40,7 +41,7 @@ export async function runServeCommand(args: string[]): Promise<number> {
     }
 
     cleanedUp = true
-    runComposeCommand(["down", "--remove-orphans"])
+    runCompose(["down", "--remove-orphans"])
   }
 
   const handleSignal = (signal: NodeJS.Signals) => {
@@ -73,14 +74,6 @@ function commandExists(command: string): boolean {
     : spawnSync("sh", ["-lc", `command -v ${command}`], { stdio: "ignore" })
 
   return check.status === 0
-}
-
-function runComposeCommand(args: string[]): number {
-  return runProjectCommand({
-    unixCommand: "bin/compose",
-    windowsCommand: "bin\\compose.bat",
-    args,
-  })
 }
 
 function showPortConflict(port: number): void {
