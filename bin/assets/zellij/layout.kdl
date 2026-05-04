@@ -40,7 +40,9 @@ layout {
             // RIGHT COLUMN
             pane split_direction="horizontal" {
                 // INTERACTIVE shell in project directory
-                pane name="project"
+                pane name="project" command="bun" {
+                  args "run" "bin/brezel.ts" "shell"
+                }
 
 
                 pane split_direction="vertical" size="33%" {
