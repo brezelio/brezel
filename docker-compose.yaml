@@ -1,0 +1,174 @@
+name: wrs-scan
+
+x-brezel-php-service: &brezel-php-service
+  build:
+    context: .
+    dockerfile: ./container/Dockerfile
+  working_dir: /var/www/app
+  env_file:
+    - .env
+  environment:
+    APP_ENV: ${APP_ENV:-local}
+    APP_DEBUG: ${APP_DEBUG:-true}
+    APP_URL: ${APP_URL:-http://localhost:2041}
+    TENANCY_HOST: ${TENANCY_HOST:-mariadb}
+    TENANCY_PORT: ${TENANCY_PORT:-3306}
+    BREZEL_JOBS_SUPERVISOR_USER: ${BREZEL_JOBS_SUPERVISOR_USER:-brezel}
+    BREZEL_JOBS_SUPERVISOR_COMMAND: ${BREZEL_JOBS_SUPERVISOR_COMMAND:-php bakery work --tries=1 --sleep=1}
+    BREZEL_BROTCAST_SERVER_HOST: ${BREZEL_BROTCAST_SERVER_HOST:-0.0.0.0}
+    BREZEL_BROTCAST_SERVER_PORT: ${BREZEL_BROTCAST_SERVER_PORT:-8086}
+    HOME: /home/brezel
+    XDG_CONFIG_HOME: /home/brezel/.config
+    XDG_DATA_HOME: /home/brezel/.local/share
+  volumes:
+    - .:/var/www/app
+  restart: unless-stopped
+
+services:
+  deps:
+    <<: *brezel-php-service
+    environment:
+      COMPOSER_AUTH: '{"gitlab-token":{"gitlab.kiwis-and-brownies.de":"${COMPOSER_TOKEN:-}"}}'
+    command:
+      - composer
+      - install
+    restart: "no"
+
+  node_deps:
+    image: node:22-bookworm
+    user: "1000:1000"
+    working_dir: /var/www/app
+    environment:
+      HOME: /home/node
+      NPM_TOKEN: ${NPM_TOKEN:-}
+    command:
+      - sh
+      - -lc
+      - |
+        if [ -n "$$NPM_TOKEN" ]; then
+          mkdir -p "$$HOME"
+
+          npm config set @kibro:registry https://gitlab.kiwis-and-brownies.de/api/v4/packages/npm/
+          echo "//gitlab.kiwis-and-brownies.de/api/v4/packages/npm/:_authToken=${NPM_TOKEN}" >> "$$HOME/.npmrc"
+          echo "//gitlab.kiwis-and-brownies.de/api/v4/projects/15/packages/npm/:_authToken=${NPM_TOKEN}" >> "$$HOME/.npmrc"
+          echo "//gitlab.kiwis-and-brownies.de/api/v4/projects/18/packages/npm/:_authToken=${NPM_TOKEN}" >> "$$HOME/.npmrc"
+          echo "//gitlab.kiwis-and-brownies.de/api/v4/projects/19/packages/npm/:_authToken=${NPM_TOKEN}" >> "$$HOME/.npmrc"
+          echo "//gitlab.kiwis-and-brownies.de/api/v4/projects/44/packages/npm/:_authToken=${NPM_TOKEN}" >> "$$HOME/.npmrc"
+          echo "//gitlab.kiwis-and-brownies.de/api/v4/projects/58/packages/npm/:_authToken=${NPM_TOKEN}" >> "$$HOME/.npmrc"
+        fi
+        npm install
+    volumes:
+      - .:/var/www/app
+    restart: "no"
+
+  app:
+    <<: *brezel-php-service
+    command: frankenphp run --config /etc/frankenphp/Caddyfile
+    depends_on:
+      deps:
+        condition: service_completed_successfully
+      mariadb:
+        condition: service_healthy
+    ports:
+      - "2041:8081"
+    volumes:
+      - .:/var/www/app
+      - caddy_data:/data
+      - caddy_config:/config
+
+  workers:
+    <<: *brezel-php-service
+    command:
+      - sh
+      - -lc
+      - mkdir -p storage/logs && php bakery make:supervisor && exec supervisord -c /etc/supervisord.conf -n
+    depends_on:
+      deps:
+        condition: service_completed_successfully
+      mariadb:
+        condition: service_healthy
+
+  reverb:
+    <<: *brezel-php-service
+    command:
+      - php
+      - bakery
+      - brotcast:start
+    depends_on:
+      deps:
+        condition: service_completed_successfully
+      mariadb:
+        condition: service_healthy
+    ports:
+      - "2043:8086"
+
+  scheduler:
+    <<: *brezel-php-service
+    command:
+      - php
+      - bin/cron_runner.php
+    depends_on:
+      deps:
+        condition: service_completed_successfully
+      mariadb:
+        condition: service_healthy
+
+  vite:
+    image: node:22-bookworm
+    user: "1000:1000"
+    working_dir: /var/www/app
+    environment:
+      HOME: /home/node
+      NPM_TOKEN: ${NPM_TOKEN:-}
+    depends_on:
+      node_deps:
+        condition: service_completed_successfully
+    command:
+      - sh
+      - -lc
+      - |
+        if [ -n "$$NPM_TOKEN" ]; then
+          mkdir -p "$$HOME"
+
+          npm config set @kibro:registry https://gitlab.kiwis-and-brownies.de/api/v4/packages/npm/
+          echo "//gitlab.kiwis-and-brownies.de/api/v4/packages/npm/:_authToken=${NPM_TOKEN}" >> "$$HOME/.npmrc"
+          echo "//gitlab.kiwis-and-brownies.de/api/v4/projects/15/packages/npm/:_authToken=${NPM_TOKEN}" >> "$$HOME/.npmrc"
+          echo "//gitlab.kiwis-and-brownies.de/api/v4/projects/18/packages/npm/:_authToken=${NPM_TOKEN}" >> "$$HOME/.npmrc"
+          echo "//gitlab.kiwis-and-brownies.de/api/v4/projects/19/packages/npm/:_authToken=${NPM_TOKEN}" >> "$$HOME/.npmrc"
+          echo "//gitlab.kiwis-and-brownies.de/api/v4/projects/44/packages/npm/:_authToken=${NPM_TOKEN}" >> "$$HOME/.npmrc"
+          echo "//gitlab.kiwis-and-brownies.de/api/v4/projects/58/packages/npm/:_authToken=${NPM_TOKEN}" >> "$$HOME/.npmrc"
+        fi
+        npm run serve -- --host 0.0.0.0
+    ports:
+      - "2040:8080"
+    volumes:
+      - .:/var/www/app
+    restart: unless-stopped
+
+  mariadb:
+    build:
+      context: .
+      dockerfile: ./container/mariadb.Dockerfile
+    environment:
+      MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD:-root}
+      MARIADB_DATABASE: ${TENANCY_DATABASE:-brezel_meta}
+      MARIADB_USER: ${TENANCY_USERNAME:-brezel}
+      MARIADB_PASSWORD: ${TENANCY_PASSWORD:-secret}
+    ports:
+      - "2042:3306"
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    restart: unless-stopped
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - mariadb-admin ping -h 127.0.0.1 -uroot -p$$MARIADB_ROOT_PASSWORD --silent
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+
+volumes:
+  caddy_config:
+  caddy_data:
+  mariadb_data:

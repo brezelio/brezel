@@ -1,0 +1,38 @@
+{
+    admin off
+
+    servers {
+        enable_full_duplex
+    }
+
+    frankenphp {
+        num_threads 8
+        max_threads auto
+    }
+
+    log {
+        output stdout
+        format console
+        level INFO
+    }
+}
+
+:8081 {
+    root * /var/www/app/public
+    encode zstd br gzip
+
+    request_body {
+        max_size 25MB
+    }
+
+    header {
+        X-Frame-Options "SAMEORIGIN"
+        X-Content-Type-Options "nosniff"
+        -Server
+    }
+
+    php_server {
+        root /var/www/app/public
+        try_files {path} index.php
+    }
+}
