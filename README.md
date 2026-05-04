@@ -4,9 +4,7 @@ This is the skeleton for a Brezel instance.
 
 It represents the latest "recommended" setup for your Brezel Instance repo.
 
-> Note: This is for brezel/api 2.0 with brezel/spa 4.0 and up!
-> 
-> For the pre PHP 8 versions, please refer to the [1.x branch](https://gitlab.kiwis-and-brownies.de/kibro/brezel/brezel/-/tree/1.x).
+> Note: This is for brezel/api 4.0 with brezel/spa ?.0 and up!
 
 It contains a slim `example` system to get you up and running quickly.
 
@@ -18,134 +16,164 @@ Crucially, it creates two users for you to use:
 > 
 > You can (and should!) change these passwords in a production environment via your systems `.env` file!
 
-## Deployment
+## Quick Start
 
-Install and operate according to the [Brezel documentation](https://docs.brezel.io/deploy/virtual_server/).
+Install these on your machine first:
 
-## Local Usage
+1. [Docker](https://www.docker.com/)
+2. [mise](https://mise.jdx.dev/)
 
-> If you have "(mise)[https://github.com/jdx/mise]" installed and set up properly in your shell, it will make your life
-> easier.
->
-> It will automatically set up the correct php and node versions as well as provide you with helpful commands for common
-> operations.
-> (Since this will compile php for your system, you might need to install build dependencies like e.g. re2c, gd,
-> postgresql-libs, libzip, gmp, libsodium)
-> 
-> e.g. `mise run install` to install both composer and npm packages in one, `mise run apply` for a quick bakery apply,
-> `mise run update` for an update, `mise run load` to reload workflows.
-> Most importantly, `mise run serve` will start a (zellij)[https://zellij.dev/] session with all the necessary servers
-> needed to run brezel in the foreground.
-> This way, you can monitor what is running and (more importantly) quit / stop them all at once by just exiting zellij.
->
-> With the correct runner integration in your IDE you can have native access to these mise tasks as well, right from 
-> your fingertips.
-
-### Install or update the Brezel components
-
-Install composer packages:
+### 1. Trust and install the local tooling
 
 ```bash
-composer update
+mise trust
+mise install
 ```
 
-Install NPM packages:
+This installs the small project-local interaction tools only:
+
+- `bun`
+- `zellij`
+
+Those power the repo-shipped `brezel` CLI and the local dashboard.
+
+### 2. Run the setup entrypoint
 
 ```bash
-npm install
+brezel setup
 ```
 
-### Create the Database
+`brezel setup` is the entrypoint for the guided local setup flow.
 
-Create a new MySQL database called `brezel_meta_<some-name>`. This will be the meta database for one or more Brezel systems. In MySQL, execute the following command:
+It is intended to:
 
-```mysql
-CREATE DATABASE brezel_meta_<some-name>
-```
+- optionally copy `.env.example` to `.env`
+- ask for package registry access tokens used by Brezel
+- later also ask for optional AI connection info and similar extras
+- validate the setup by actually trying to use the dependency containers
 
-### Configure your Brezel environment
+> Right now this is still a draft placeholder command, but this is the entrypoint that will own the guided setup flow.
 
-Copy the `.env.example` file to `.env` and edit the `.env` file.
-
-For a (mostly) complete list of settable environment variables, consult the [environment variable reference](https://docs.brezel.io/reference/env/#_top). 
-More details are in the .env.example file.
-
-To get started, make sure to set the following variables:
-
-##### General settings
-
-```dotenv
-APP_URL="http://mybrezel.test"
-```
-
-##### SPA settings
-
-Note: variables that are prefixed with `VITE_` are baked into client JS scripts.
-
-**Do not** put sensitive values here.
-
-```dotenv
-APP_URL="http://mybrezel.test"
-APP_SYSTEM=example
-```
-
-##### Database settings
-
-```dotenv
-TENANCY_HOST=127.0.0.1
-TENANCY_PORT=3306
-TENANCY_DATABASE="brezel_meta"
-TENANCY_USERNAME="<user>"
-TENANCY_PASSWORD="<password>"
-```
-
-##### Brezel settings
-
-```dotenv
-BREZEL_EXPORT_URL="https://export.staging.cluster-sw.brezel.io"
-```
-
-### Setup your Brezel
-
-Initialize the database:
-
-```bash
-php bakery init
-```
-
-Create one or more Brezel systems:
-
-```bash
-php bakery system create <system>
-```
-
-Run `mise run update` to apply the current system config.
-
-The directory `systems/example` holds `.bake`-configuration files for a system called `example`.
-`mise run update` will sync these to the DB and build your system.
-If you did not change any workflows and only want to update .bake configurations like modules or entities, use the bakery planner:
-
-```bash
-php bakery apply
-```
-
-To just see what Brezel plans to change, do:
-
-```bash
-php bakery plan
-```
-
-To update workflows, run:
-```bash
-php bakery load
-```
-
-### Set up your local Dev environment
-
-Use the Docker-based local workflow:
+### 3. Start Brezel
 
 ```bash
 brezel serve
 ```
 
-This starts the local Docker stack and opens the Zellij-based log/dashboard view.
+This will:
+
+- clean up any old stack for this project
+- check that the required local ports are free
+- start the Docker services
+- open a Zellij dashboard attached to the live container outputs
+
+> **Important:** Exit the Zellij session with `Ctrl+Q` for a clean shutdown.
+> If you just kill the terminal window or otherwise leave the session abruptly, you may leave orphaned containers behind.
+
+## Why This Setup Is Nice
+
+You only need two real machine-wide dependencies:
+
+- [Docker](https://www.docker.com/)
+- [mise](https://mise.jdx.dev/)
+
+And only two project-local helper tools:
+
+- `bun`
+- `zellij`
+
+Everything else runs inside containers:
+
+- PHP
+- FrankenPHP
+- Composer
+- Node/Vite
+- MariaDB
+- workers
+- scheduler
+
+So you do **not** need a host PHP, Node, Composer, MySQL, or FrankenPHP installation for normal local work.
+
+## Everyday Usage
+
+The main project interaction commands are now:
+
+```bash
+brezel apply
+brezel load
+brezel update
+```
+
+What they do:
+
+- `brezel apply`: apply Brezel resource changes
+- `brezel load`: reload workflow definitions
+- `brezel update`: run migrations, then load, then apply
+
+If you prefer the `mise` task aliases, these still work too:
+
+- `a` for apply
+- `l` for load
+- `u` for update
+
+Or explicitly:
+
+```bash
+mise run apply
+mise run load
+mise run update
+```
+
+For direct Bakery commands inside the app container:
+
+```bash
+brezel bakery plan
+brezel bakery system create example
+brezel bakery init
+```
+
+## Zellij Dashboard
+
+`brezel serve` opens a Zellij session with attached panes so you can see what the local stack is doing.
+
+The panes are:
+
+- `spa`: Vite / SPA logs
+- `api`: FrankenPHP / app container logs
+- `workers`: worker and brotcast logs from the supervised workers container
+- `project`: your interactive shell in the project directory
+- `bootstrap`: one-shot dependency container logs (`deps` and `node_deps`)
+- `scheduler`: scheduler logs
+
+The interactive shell pane also prints the `Ctrl+Q` reminder when the session starts.
+
+## Ports
+
+The default local ports are:
+
+- `2040`: SPA
+- `2041`: API
+- `2042`: MariaDB
+- `2043`: Brotcast / websocket endpoint
+
+## Systems and Example Data
+
+The directory `systems/example` holds `.bake` configuration for a system called `example`.
+
+Use:
+
+```bash
+brezel update
+```
+
+to sync it to the database and build the current system state.
+
+## Environment
+
+Use `.env.example` as the reference template and `.env` as your local working config.
+
+For a broader list of Brezel environment variables, consult the [environment variable reference](https://docs.brezel.io/reference/env/#_top).
+
+## Deployment
+
+TBD
