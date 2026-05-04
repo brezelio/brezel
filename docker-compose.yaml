@@ -126,9 +126,9 @@ services:
           echo "//gitlab.kiwis-and-brownies.de/api/v4/projects/44/packages/npm/:_authToken=${NPM_TOKEN}" >> "$$HOME/.npmrc"
           echo "//gitlab.kiwis-and-brownies.de/api/v4/projects/58/packages/npm/:_authToken=${NPM_TOKEN}" >> "$$HOME/.npmrc"
         fi
-        npm run serve -- --host 0.0.0.0
+        npm run serve -- --host 0.0.0.0 --port 2040
     ports:
-      - "2040:8080"
+      - "2040:2040"
     volumes:
       - .:/var/www/app
     restart: unless-stopped
