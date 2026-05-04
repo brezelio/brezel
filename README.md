@@ -43,16 +43,14 @@ Those power the repo-shipped `brezel` CLI and the local dashboard.
 brezel setup
 ```
 
-`brezel setup` is the entrypoint for the guided local setup flow.
+`brezel setup` handles the guided local setup flow.
 
-It is intended to:
+It will:
 
-- optionally copy `.env.example` to `.env`
+- copy `.env.example` to `.env` when needed
 - ask for package registry access tokens used by Brezel
-- later also ask for optional AI connection info and similar extras
+- ask for AI connection info and similar extras when configured
 - validate the setup by actually trying to use the dependency containers
-
-> Right now this is still a draft placeholder command, but this is the entrypoint that will own the guided setup flow.
 
 ### 3. Start Brezel
 
