@@ -463,7 +463,7 @@ These types are generated from system config and should be used in widget code.
 }
 ```
 
-2. Regenerate by running `php bakery apply` (or project wrapper like `bin/u`).
+2. Regenerate by running `php bakery apply` (or project command like `brezel update`).
 3. Import generated entities/modules in widgets from `src/types/modules`.
 
 Example (from this project style):
@@ -526,7 +526,7 @@ Use `event/create` to react to entity creation:
 - Return explicit responses with `action/response` for integration reliability.
 
 Important operational note:
-- Workflow JSON changes usually require `php bakery load` (or project wrappers like `bin/l` / `bin/u`), not only `php bakery apply`.
+- Workflow JSON changes usually require `php bakery load` (or project commands like `brezel load` / `brezel update`), not only `php bakery apply`.
 
 ## Entities/seeds, depends_on, and policy
 `*.entities.bake.json` seeds default records and references.
@@ -708,7 +708,7 @@ Typical commands (project-specific wrappers may exist):
 - `php bakery plan` - inspect upcoming changes
 - `php bakery apply` - apply non-workflow resources
 - `php bakery load` - reload workflows
-- `bin/u` or `mise run update` - project wrapper for apply + load
+- `brezel update` or `mise run update` - project command for migrate + load + apply
 
 If workflows use queues (`async: true`):
 - run workers for required queues (for example `php bakery queue:work --queue=<queue_name>`)

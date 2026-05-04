@@ -119,10 +119,10 @@ Create one or more Brezel systems:
 php bakery system create <system>
 ```
 
-Run ``bin/u`` to apply the current system config.
+Run `mise run update` to apply the current system config.
 
-The directory `systems/example` holds `.bake`-configuration files for a system called `example`. 
-`bin/u` will sync these to the DB and build your system.
+The directory `systems/example` holds `.bake`-configuration files for a system called `example`.
+`mise run update` will sync these to the DB and build your system.
 If you did not change any workflows and only want to update .bake configurations like modules or entities, use the bakery planner:
 
 ```bash

@@ -40,15 +40,15 @@ run = "bin/brezel bakery init"
 
 [tasks.apply]
 description = "Do a bakery apply"
-run = "bin/a"
+run = "bin/brezel apply"
 
 [tasks.load]
 description = "Reload Workflows"
-run = "bin/l"
+run = "bin/brezel load"
 
 [tasks.update]
 description = "Update the systems (Spec, Worklows, etc)"
-run = "bin/u"
+run = "bin/brezel update"
 
 [tasks.serve]
 description = "Start the Docker stack in Zellij and stop it again when the session ends"

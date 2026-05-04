@@ -1,6 +1,9 @@
+import { runApplyCommand } from "./commands/apply"
 import { runBakeryCommand } from "./commands/bakery"
+import { runLoadCommand } from "./commands/load"
 import { runServeCommand } from "./commands/serve"
 import { runSetupCommand } from "./commands/setup"
+import { runUpdateCommand } from "./commands/update"
 
 export async function runCli(args: string[]): Promise<number> {
   const [command, ...rest] = args
@@ -14,6 +17,12 @@ export async function runCli(args: string[]): Promise<number> {
       return 0
     case "bakery":
       return runBakeryCommand(rest)
+    case "apply":
+      return runApplyCommand(rest)
+    case "load":
+      return runLoadCommand(rest)
+    case "update":
+      return runUpdateCommand(rest)
     case "serve":
       return runServeCommand(rest)
     case "setup":
@@ -31,11 +40,17 @@ function printHelp(): void {
 
 Usage:
   brezel bakery <args...>
+  brezel apply
+  brezel load
+  brezel update
   brezel serve
   brezel setup
 
 Commands:
   bakery   Run bakery inside the app container
+  apply    Run bakery apply in the app container
+  load     Run bakery load in the app container
+  update   Run migrate, load, and apply in the app container
   serve    Run the local serve workflow via mise
   setup    Placeholder for the future interactive setup flow
 `)
