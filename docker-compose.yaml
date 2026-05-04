@@ -30,8 +30,39 @@ services:
     environment:
       COMPOSER_AUTH: '{"gitlab-token":{"gitlab.kiwis-and-brownies.de":"${COMPOSER_TOKEN:-}"}}'
     command:
-      - composer
-      - install
+      - sh
+      - -lc
+      - |
+        current_json_checksum="$(cksum composer.json | cut -d' ' -f1)"
+        current_lock_checksum="missing"
+        if [ -f composer.lock ]; then
+          current_lock_checksum="$(cksum composer.lock | cut -d' ' -f1)"
+        fi
+        state_dir="vendor/.brezel-state"
+        json_checksum_file="$$state_dir/composer-json.cksum"
+        lock_checksum_file="$$state_dir/composer-lock.cksum"
+
+        if [ -f vendor/autoload.php ] && [ -f "$$json_checksum_file" ] && [ -f "$$lock_checksum_file" ] \
+          && [ "$(cat "$$json_checksum_file")" = "$$current_json_checksum" ] \
+          && [ "$(cat "$$lock_checksum_file")" = "$$current_lock_checksum" ]; then
+          echo "Composer dependencies are already in sync."
+          exit 0
+        fi
+
+        if composer install --no-interaction; then
+          mkdir -p "$$state_dir"
+          current_lock_checksum="missing"
+          if [ -f composer.lock ]; then
+            current_lock_checksum="$(cksum composer.lock | cut -d' ' -f1)"
+          fi
+          printf '%s\n' "$$current_json_checksum" > "$$json_checksum_file"
+          printf '%s\n' "$$current_lock_checksum" > "$$lock_checksum_file"
+          exit 0
+        fi
+
+        echo >&2
+        echo 'composer install failed. If you changed composer.json or bumped brezel/api, run `mise run composer-update` once to refresh composer.lock.' >&2
+        exit 1
     restart: "no"
 
   node_deps:
