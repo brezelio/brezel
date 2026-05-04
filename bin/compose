@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+project_dir="$(cd -- "$script_dir/.." && pwd)"
+project_base="$(basename "$project_dir")"
+project_base="$(printf '%s' "$project_base" | tr '[:upper:]' '[:lower:]' | sed -E 's/[^a-z0-9]+/-/g; s/^-+//; s/-+$//; s/-+/-/g')"
+project_hash="$(printf '%s' "$project_dir" | cksum)"
+project_hash="${project_hash%% *}"
+project_name="brezel-${project_base:-project}-${project_hash}"
+
+if ! command -v docker >/dev/null 2>&1; then
+  printf 'docker is required for bin/compose but was not found in PATH.\n' >&2
+  exit 1
+fi
+
+exec docker compose \
+  --project-name "$project_name" \
+  --project-directory "$project_dir" \
+  -f "$project_dir/docker-compose.yaml" \
+  "$@"

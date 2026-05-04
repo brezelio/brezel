@@ -3,19 +3,10 @@
 set -euo pipefail
 
 script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
-project_dir="$(cd -- "$script_dir/.." && pwd)"
-
-if ! command -v docker >/dev/null 2>&1; then
-  printf 'docker is required for bin/brezel but was not found in PATH.\n' >&2
-  exit 1
-fi
 
 tty_args=()
 if [ ! -t 0 ] || [ ! -t 1 ]; then
   tty_args=(-T)
 fi
 
-exec docker compose \
-  --project-directory "$project_dir" \
-  -f "$project_dir/docker-compose.yaml" \
-  exec "${tty_args[@]}" app php "$@"
+exec "$script_dir/compose" exec "${tty_args[@]}" app php "$@"

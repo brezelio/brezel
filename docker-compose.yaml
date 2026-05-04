@@ -1,5 +1,3 @@
-name: brezel
-
 x-brezel-php-service: &brezel-php-service
   build:
     context: .

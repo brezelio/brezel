@@ -16,11 +16,11 @@ brezel = "./bin/brezel" # Run a php command such as `php bakery apply` in the co
 # Tasks
 [tasks.composer-install]
 description = "Install composer dependencies"
-run = "docker compose run --rm deps"
+run = "bin/compose run --rm deps"
 
 [tasks.npm-install]
 description = "Install npm dependencies"
-run = "docker compose run --rm node_deps"
+run = "bin/compose run --rm node_deps"
 
 [tasks.install]
 description = "Install all dependencies"
@@ -31,7 +31,7 @@ depends = [
 
 [tasks.composer-update]
 description = "Do a composer update"
-run = "docker compose run --rm deps composer update"
+run = "bin/compose run --rm deps composer update"
 
 [tasks.init]
 description = "Initialize the project"
