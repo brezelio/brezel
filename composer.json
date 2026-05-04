@@ -1,7 +1,7 @@
 {
   "name": "brezel/example",
   "version": "1.0.0",
-  "description": "description",
+  "description": "A brezel.io project",
   "type": "project",
   "minimum-stability": "dev",
   "prefer-stable": true,
