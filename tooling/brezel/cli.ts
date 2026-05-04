@@ -51,7 +51,7 @@ Commands:
   apply    Run bakery apply in the app container
   load     Run bakery load in the app container
   update   Run migrate, load, and apply in the app container
-  serve    Run the local serve workflow via mise
+  serve    Start the local Docker/Zellij serve workflow
   setup    Placeholder for the future interactive setup flow
 `)
 }

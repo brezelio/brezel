@@ -52,4 +52,4 @@ run = "bin/brezel update"
 
 [tasks.serve]
 description = "Start the Docker stack in Zellij and stop it again when the session ends"
-run = "bin/serve.sh"
+run = "bin/brezel serve"

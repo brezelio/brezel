@@ -1,4 +1,4 @@
-import { spawnSync } from "node:child_process"
+import { spawn, spawnSync } from "node:child_process"
 import { dirname, resolve } from "node:path"
 import { fileURLToPath } from "node:url"
 
@@ -9,6 +9,10 @@ type ProjectCommand = {
   unixCommand: string
   windowsCommand: string
   args: string[]
+}
+
+export function getProjectDir(): string {
+  return projectDir
 }
 
 export function runProjectCommand(command: ProjectCommand): number {
@@ -28,4 +32,32 @@ export function runProjectCommand(command: ProjectCommand): number {
   }
 
   return result.status ?? 0
+}
+
+export async function runProjectCommandInteractive(command: ProjectCommand): Promise<number> {
+  const child = process.platform === "win32"
+    ? spawn("cmd.exe", ["/c", command.windowsCommand, ...command.args], {
+        cwd: projectDir,
+        stdio: "inherit",
+      })
+    : spawn(command.unixCommand, command.args, {
+        cwd: projectDir,
+        stdio: "inherit",
+      })
+
+  return await new Promise<number>((resolve) => {
+    child.on("error", (error) => {
+      console.error(error.message)
+      resolve(1)
+    })
+
+    child.on("exit", (code, signal) => {
+      if (signal) {
+        resolve(1)
+        return
+      }
+
+      resolve(code ?? 0)
+    })
+  })
 }
