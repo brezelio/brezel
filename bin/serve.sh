@@ -26,6 +26,9 @@ cleanup() {
 
 trap cleanup EXIT HUP INT TERM
 
+printf 'Cleaning up any existing Brezel Docker stack\n'
+"${compose[@]}" down --remove-orphans >/dev/null 2>&1 || true
+
 printf 'Starting brezel using Docker Compose and Zellij\n'
 "${compose[@]}" up -d --remove-orphans
 started=1
