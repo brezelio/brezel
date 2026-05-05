@@ -53,3 +53,7 @@ run = "bin/brezel update"
 [tasks.serve]
 description = "Start the Docker stack in Zellij and stop it again when the session ends"
 run = "bin/brezel serve"
+
+[tasks.teardown]
+description = "Stop the Docker stack and remove its volumes"
+run = "bin/brezel teardown"

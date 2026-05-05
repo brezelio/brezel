@@ -5,6 +5,7 @@ import { runLogsCommand } from "./commands/logs"
 import { runShellCommand } from "./commands/shell"
 import { runServeCommand } from "./commands/serve"
 import { runSetupCommand } from "./commands/setup"
+import { runTeardownCommand } from "./commands/teardown"
 import { runUpdateCommand } from "./commands/update"
 
 export async function runCli(args: string[]): Promise<number> {
@@ -33,6 +34,8 @@ export async function runCli(args: string[]): Promise<number> {
       return runServeCommand(rest)
     case "setup":
       return runSetupCommand(rest)
+    case "teardown":
+      return runTeardownCommand(rest)
     default:
       console.error(`Unknown brezel command: ${command}`)
       console.error("")
@@ -53,6 +56,7 @@ Usage:
   brezel update
   brezel serve
   brezel setup
+  brezel teardown
 
 Commands:
   bakery   Run bakery inside the app container
@@ -63,5 +67,6 @@ Commands:
   update   Run migrate, load, and apply in the app container
   serve    Start the local Docker/Zellij serve workflow
   setup    Placeholder for the future interactive setup flow
+  teardown Stop the local Docker stack and remove its volumes
 `)
 }
