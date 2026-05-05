@@ -24,38 +24,6 @@ export async function runLogsCommand(args: string[]): Promise<number> {
     case "vite":
       return await runComposeCommandInteractive(["logs", "-f", "vite"])
     case "workers":
-      return await runWorkersLogsCommand()
+      return await runComposeCommandInteractive(["logs", "-f", "workers"])
   }
-}
-
-async function runWorkersLogsCommand(): Promise<number> {
-  while (true) {
-    const initExitCode = runComposeCommand([
-      "exec",
-      "-T",
-      "workers",
-      "sh",
-      "-lc",
-      "mkdir -p storage/logs && touch storage/logs/worker.log storage/logs/brotcast.log",
-    ])
-
-    if (initExitCode === 0) {
-      break
-    }
-
-    await sleep(1000)
-  }
-
-  return await runComposeCommandInteractive([
-    "exec",
-    "-T",
-    "workers",
-    "sh",
-    "-lc",
-    "tail -F storage/logs/worker.log storage/logs/brotcast.log",
-  ])
-}
-
-async function sleep(milliseconds: number): Promise<void> {
-  await new Promise((resolve) => setTimeout(resolve, milliseconds))
 }

@@ -337,7 +337,7 @@ async function runServeControlLoop(appSystem: string, context: ServeControlConte
       case "l":
         await runCapturedAction(() => runLoadCommandCaptured(updateLiveActionOutput))
         return
-      case "d":
+      case "p":
         console.log("Opening diagnostics. Press Ctrl+C to return.")
         await runAction(() => runLogsCommand(["all"]), [0, 1, 130])
         return
@@ -385,7 +385,7 @@ function renderServeControlScreen(appSystem: string, showHelp: boolean, shimmerF
       centerLine(
         `${paint(ansi.dim)}Actions:${paintReset()} ` +
         `${hotkey("b")} bakery   ${hotkey("u")} update   ${hotkey("a")} apply   ${hotkey("l")} load   ` +
-        `${hotkey("d")} diagnostics   ${hotkey("j")} jobs   ${hotkey("q")} quit   ${hotkey("h")} hide help`,
+        `${hotkey("p")} peek   ${hotkey("j")} jobs   ${hotkey("q")} quit   ${hotkey("h")} hide help`,
       ),
     )
   } else {

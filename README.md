@@ -89,7 +89,7 @@ When the controls are visible, you can use:
 - `u` for a full update
 - `a` to apply config changes
 - `l` to load workflow changes
-- `d` for diagnostics (all container logs)
+- `p` to peek behind the curtain (all container logs)
 - `j` for worker logs
 - `q` to stop Brezel and clean up
 
