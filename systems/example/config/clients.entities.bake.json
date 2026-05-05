@@ -8,7 +8,7 @@
         "title": "System Client"
       },
       "hostnames": [
-        "${resource_hostname.system_identifier.hostname}"
+        "${resource_hostname.example.hostname}"
       ]
     }
   }
