@@ -29,9 +29,7 @@ const brezelLogo = [
   "%%%%&&&&&&&&*   ,,,*****       ",
   "%%%%%%%&(      /,,,,,,,*       ",
   "%%%%%%%#       *,,,,,,,,***    ",
-  "%%%%%%%#       *,,,,,,,,*****  ",
   "#%%%%%%#         ,,,,,,,*******",
-  "####%%%#             ,,,*******",
   "#######%#             ,&/******",
   "#######%%%%%.      &&&&@@@@#***",
   "#######%%%%%%%%*&&&&&&&@@@@@@@#",
@@ -286,6 +284,8 @@ async function runServeControlLoop(appSystem: string, context: ServeControlConte
 
 function renderServeControlScreen(appSystem: string, showHelp: boolean, shimmerFrame: number): void {
   console.clear()
+  console.log("")
+  console.log("")
   const statusLabel = showHelp ? "help: visible" : "help: hidden"
   for (const line of brezelLogo.map((entry, index) => renderLogoLine(entry, index, shimmerFrame))) {
     console.log(centerLine(line))
