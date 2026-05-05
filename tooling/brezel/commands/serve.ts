@@ -286,13 +286,18 @@ async function runServeControlLoop(appSystem: string, context: ServeControlConte
 
 function renderServeControlScreen(appSystem: string, showHelp: boolean, shimmerFrame: number): void {
   console.clear()
-  for (const line of brezelLogo) {
-    console.log(centerLine(renderLogoLine(line, shimmerFrame)))
+  const statusLabel = showHelp ? "help: visible" : "help: hidden"
+  for (const line of brezelLogo.map((entry, index) => renderLogoLine(entry, index, shimmerFrame))) {
+    console.log(centerLine(line))
   }
 
   console.log("")
-  console.log(centerLine(`${paint(ansi.bold, ansi.green)}Brezel is running${paintReset()}`))
+  for (const line of renderInlineBox(`${paint(ansi.bold, ansi.green)}Brezel is running${paintReset()}`)) {
+    console.log(centerLine(line))
+  }
+
   console.log("")
+  console.log(centerLine(statusLine(["stack: running", "mode: foreground", statusLabel])))
   console.log(centerLine(`${paint(ansi.bold)}Access it here:${paintReset()} http://${appSystem}.brezel.localhost:2040`))
   console.log(centerLine(`${paint(ansi.dim)}API:${paintReset()} http://localhost:2041`))
   console.log("")
@@ -318,6 +323,10 @@ function hotkey(key: string): string {
   return `${paint(ansi.bold, ansi.cyan)}[${key}]${paintReset()}`
 }
 
+function statusLine(parts: string[]): string {
+  return `${paint(ansi.dim)}${parts.join("  |  ")}${paintReset()}`
+}
+
 function centerLine(line: string): string {
   if (!process.stdout.isTTY) {
     return line
@@ -334,14 +343,25 @@ function centerLine(line: string): string {
   return `${" ".repeat(leftPadding)}${line}`
 }
 
-function renderLogoLine(line: string, shimmerFrame: number): string {
+function renderInlineBox(line: string): string[] {
+  const visibleWidth = stripAnsi(line).length
+  const horizontal = "─".repeat(visibleWidth + 2)
+
+  return [
+    `${paint(ansi.dim)}┌${horizontal}┐${paintReset()}`,
+    `${paint(ansi.dim)}│ ${paintReset()}${line}${paint(ansi.dim)} │${paintReset()}`,
+    `${paint(ansi.dim)}└${horizontal}┘${paintReset()}`,
+  ]
+}
+
+function renderLogoLine(line: string, row: number, shimmerFrame: number): string {
   if (!process.stdout.isTTY) {
     return line
   }
 
   let rendered = ""
   let activeColor = ""
-  const shimmerCenter = (shimmerFrame % (maxLogoWidth + 12)) - 6
+  const shimmerCenter = (shimmerFrame % (maxLogoWidth + 18)) - 8 + row * 0.8
 
   for (let index = 0; index < line.length; index += 1) {
     const character = line[index]
@@ -381,15 +401,15 @@ function getLogoCharacterRgb(character: string): [number, number, number] | null
     case "%":
       return [255, 70, 84]
     case "#":
-      return [140, 34, 38]
+      return [176, 64, 72]
     case "*":
-      return [220, 34, 34]
+      return [232, 62, 62]
     case ",":
     case ".":
     case "/":
     case "(":
     case ")":
-      return [176, 52, 52]
+      return [196, 84, 84]
     default:
       return null
   }
