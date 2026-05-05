@@ -36,7 +36,7 @@ export async function runCli(args: string[]): Promise<number> {
     case "serve":
       return runServeCommand(rest)
     case "setup":
-      return runSetupCommand(rest)
+      return await runSetupCommand(rest)
     case "teardown":
       return runTeardownCommand(rest)
     default:
@@ -71,7 +71,7 @@ Commands:
   shell    Open the interactive project shell used inside Zellij
   update   Run migrate, load, and apply in the app container
   serve    Start the local Docker stack in the foreground, optionally interactive and/or rebuilt first
-  setup    Placeholder for the future interactive setup flow
+  setup    Configure .env, install dependencies, initialize Brezel, and start it
   teardown Stop the local Docker stack and remove its volumes and local images
 `)
 }
