@@ -1,3 +1,4 @@
+import { runAttachCommand } from "./commands/attach"
 import { runApplyCommand } from "./commands/apply"
 import { runBakeryCommand } from "./commands/bakery"
 import { runLoadCommand } from "./commands/load"
@@ -20,6 +21,8 @@ export async function runCli(args: string[]): Promise<number> {
       return 0
     case "bakery":
       return runBakeryCommand(rest)
+    case "attach":
+      return await runAttachCommand(rest)
     case "apply":
       return runApplyCommand(rest)
     case "load":
@@ -49,6 +52,7 @@ function printHelp(): void {
 
 Usage:
   brezel bakery <args...>
+  brezel attach
   brezel apply
   brezel load
   brezel logs <target>
@@ -60,6 +64,7 @@ Usage:
 
 Commands:
   bakery   Run bakery inside the app container
+  attach   Open an interactive shell inside the app container
   apply    Run bakery apply in the app container
   load     Run bakery load in the app container
   logs     Follow logs for a local dev target
