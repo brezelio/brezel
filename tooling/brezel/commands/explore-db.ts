@@ -28,6 +28,7 @@ export async function startExploreDb(onUpdate?: LiveOutputUpdater): Promise<Comm
   let stderr = ""
 
   const result = await runComposeCommandStreamingCaptured(["up", "-d", "mariadb", "phpmyadmin"], {
+    profiles: ["db-explore"],
     mirrorStdout: onUpdate ? false : true,
     mirrorStderr: onUpdate ? false : true,
     onStdoutChunk: (chunk) => {

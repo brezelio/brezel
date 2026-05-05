@@ -46,7 +46,7 @@ export async function runServeCommand(args: string[]): Promise<number> {
 
   if (!skipStackStart) {
     console.log("Cleaning up any existing Docker stack for this project")
-    runCompose(["down", "--remove-orphans"])
+    runCompose(["down", "--remove-orphans"], { profiles: ["db-explore"] })
 
     for (const port of ports) {
       if (await portIsBusy(port)) {
@@ -80,7 +80,7 @@ export async function runServeCommand(args: string[]): Promise<number> {
     }
 
     cleanedUp = true
-    runCompose(["down", "--remove-orphans"])
+    runCompose(["down", "--remove-orphans"], { profiles: ["db-explore"] })
   }
 
   const handleSignal = (_signal: NodeJS.Signals) => {

@@ -1,39 +1,43 @@
 import { runProjectCommand, runProjectCommandCaptured, runProjectCommandInteractive, runProjectCommandStreamingCaptured, type CapturedCommandResult, type StreamingCaptureOptions } from "./exec"
 
-const optionalProfiles = ["db-explore"]
+type ComposeOptions = {
+  profiles?: string[]
+}
 
-export function runComposeCommand(args: string[]): number {
+export function runComposeCommand(args: string[], options: ComposeOptions = {}): number {
   return runProjectCommand({
     unixCommand: "bin/compose",
     windowsCommand: "bin\\compose.bat",
-    args: withOptionalProfiles(args),
+    args: withProfiles(args, options.profiles),
   })
 }
 
-export async function runComposeCommandInteractive(args: string[]): Promise<number> {
+export async function runComposeCommandInteractive(args: string[], options: ComposeOptions = {}): Promise<number> {
   return await runProjectCommandInteractive({
     unixCommand: "bin/compose",
     windowsCommand: "bin\\compose.bat",
-    args: withOptionalProfiles(args),
+    args: withProfiles(args, options.profiles),
   })
 }
 
-export function runComposeCommandCaptured(args: string[]): CapturedCommandResult {
+export function runComposeCommandCaptured(args: string[], options: ComposeOptions = {}): CapturedCommandResult {
   return runProjectCommandCaptured({
     unixCommand: "bin/compose",
     windowsCommand: "bin\\compose.bat",
-    args: withOptionalProfiles(args),
+    args: withProfiles(args, options.profiles),
   })
 }
 
-export async function runComposeCommandStreamingCaptured(args: string[], options: StreamingCaptureOptions = {}): Promise<CapturedCommandResult> {
+export async function runComposeCommandStreamingCaptured(args: string[], options: StreamingCaptureOptions & ComposeOptions = {}): Promise<CapturedCommandResult> {
+  const { profiles, ...streamingOptions } = options
+
   return await runProjectCommandStreamingCaptured({
     unixCommand: "bin/compose",
     windowsCommand: "bin\\compose.bat",
-    args: withOptionalProfiles(args),
-  }, options)
+    args: withProfiles(args, profiles),
+  }, streamingOptions)
 }
 
-function withOptionalProfiles(args: string[]): string[] {
-  return [...optionalProfiles.flatMap((profile) => ["--profile", profile]), ...args]
+function withProfiles(args: string[], profiles: string[] = []): string[] {
+  return [...profiles.flatMap((profile) => ["--profile", profile]), ...args]
 }

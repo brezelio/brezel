@@ -7,5 +7,5 @@ export function runTeardownCommand(args: string[]): number {
   }
 
   console.log("Tearing down the local Brezel Docker stack, its volumes, and its local images")
-  return runComposeCommand(["down", "-v", "--rmi", "local", "--remove-orphans"])
+  return runComposeCommand(["down", "-v", "--rmi", "local", "--remove-orphans"], { profiles: ["db-explore"] })
 }
