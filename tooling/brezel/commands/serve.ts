@@ -125,10 +125,17 @@ export async function runServeCommand(args: string[]): Promise<number> {
 }
 
 function printServeEndpoints(appSystem: string): void {
-  console.log("")
-  console.log(`Brezel is available at http://${appSystem}.brezel.localhost:2040`)
-  console.log("API is available at http://localhost:2041")
-  console.log("")
+  console.log("\n")
+  console.log(renderServeEndpointLine(appSystem))
+  console.log("\n")
+}
+
+function getServeSpaUrl(appSystem: string): string {
+  return `http://${appSystem}.brezel.localhost:2040`
+}
+
+function renderServeEndpointLine(appSystem: string): string {
+  return `Brezel is available at ${getServeSpaUrl(appSystem)}`
 }
 
 type ServeControlContext = {
@@ -296,11 +303,10 @@ function renderServeControlScreen(appSystem: string, showHelp: boolean, shimmerF
     console.log(centerLine(line))
   }
 
-  console.log("")
+  console.log("\n")
   console.log(centerLine(statusLine(["stack: running", "mode: foreground", statusLabel])))
-  console.log(centerLine(`${paint(ansi.bold)}Access it here:${paintReset()} http://${appSystem}.brezel.localhost:2040`))
-  console.log(centerLine(`${paint(ansi.dim)}API:${paintReset()} http://localhost:2041`))
-  console.log("")
+  console.log(centerLine(`${paint(ansi.bold)}${renderServeEndpointLine(appSystem)}${paintReset()}`))
+  console.log("\n")
 
   if (showHelp) {
     console.log(
