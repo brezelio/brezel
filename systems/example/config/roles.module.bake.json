@@ -1,7 +1,6 @@
 [
   {
     "resource_module": "roles",
-    "import": true,
     "resource": {
       "type": "roles",
       "identifier": "roles",
