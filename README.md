@@ -69,7 +69,7 @@ This will:
 It will then be available at:
 
 ```text
-http://<system-identifier>.brezel.localhost:2040
+http://<system-identifier>.localhost:2040
 ```
 
 If you want the attached Zellij dashboard, use:

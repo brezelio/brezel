@@ -146,7 +146,7 @@ function printServeEndpoints(appSystem: string): void {
 }
 
 function getServeSpaUrl(appSystem: string): string {
-  return `http://${appSystem}.brezel.localhost:2040`
+  return `http://${appSystem}.localhost:2040`
 }
 
 function renderServeEndpointLine(appSystem: string): string {
