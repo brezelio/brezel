@@ -82,7 +82,7 @@ const commandDefinitions: CommandDefinition[] = [
   },
   {
     name: "teardown",
-    usage: "brezel teardown",
+    usage: "brezel teardown [--force]",
     description: "Stop the local Docker stack and remove its volumes and local images",
     handler: runTeardownCommand,
   },
