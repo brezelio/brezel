@@ -45,7 +45,7 @@ export async function runCli(args: string[]): Promise<number> {
 }
 
 function printHelp(): void {
-  console.log(`Brezel CLI (draft)
+  console.log(`Brezel CLI - Local development environment for the Brezel project
 
 Usage:
   brezel bakery <args...>
