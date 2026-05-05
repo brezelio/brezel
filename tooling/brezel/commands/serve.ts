@@ -37,11 +37,22 @@ const brezelLogo = [
 const maxLogoWidth = Math.max(...brezelLogo.map((line) => line.length))
 
 export async function runServeCommand(args: string[]): Promise<number> {
-  const interactive = args[0] === "interactive"
+  let interactive = false
+  let rebuild = false
   const appSystem = getProjectEnvValue("APP_SYSTEM") || "example"
 
-  if (args.length > 1 || (args.length === 1 && !interactive)) {
-    console.error("Usage: brezel serve [interactive]")
+  for (const arg of args) {
+    if (arg === "interactive") {
+      interactive = true
+      continue
+    }
+
+    if (arg === "--rebuild") {
+      rebuild = true
+      continue
+    }
+
+    console.error("Usage: brezel serve [interactive] [--rebuild]")
     return 1
   }
 
@@ -61,6 +72,13 @@ export async function runServeCommand(args: string[]): Promise<number> {
   }
 
   console.log("Starting brezel using Docker Compose")
+  if (rebuild) {
+    console.log("Rebuilding Docker images first...")
+    const buildExitCode = runCompose(["build"])
+    if (buildExitCode !== 0) {
+      return buildExitCode
+    }
+  }
   const upExitCode = runCompose(["up", "-d", "--remove-orphans"])
   if (upExitCode !== 0) {
     return upExitCode

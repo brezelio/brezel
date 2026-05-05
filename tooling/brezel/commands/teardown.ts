@@ -6,6 +6,6 @@ export function runTeardownCommand(args: string[]): number {
     return 1
   }
 
-  console.log("Tearing down the local Brezel Docker stack and its volumes")
-  return runComposeCommand(["down", "-v", "--remove-orphans"])
+  console.log("Tearing down the local Brezel Docker stack, its volumes, and its local images")
+  return runComposeCommand(["down", "-v", "--rmi", "local", "--remove-orphans"])
 }

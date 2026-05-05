@@ -78,6 +78,25 @@ If you want the attached Zellij dashboard, use:
 brezel serve interactive
 ```
 
+If you want to force a rebuild first, use:
+
+```bash
+brezel serve --rebuild
+brezel serve interactive --rebuild
+```
+
+When you want to fully clean up the local stack again, use:
+
+```bash
+brezel teardown
+```
+
+This removes:
+
+- containers
+- volumes
+- local Compose images for this Brezel stack
+
 Stop the normal foreground mode with `Ctrl+C`.
 
 The foreground view starts in a clean mode.
