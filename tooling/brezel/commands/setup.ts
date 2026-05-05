@@ -448,62 +448,17 @@ function renameSystem(currentIdentifier: string, nextIdentifier: string): void {
 
   const hostnamesPath = join(currentDir, "hostnames.bake.json")
   const hostnames = JSON.parse(readFileSync(hostnamesPath, "utf-8")) as Array<{ resource_hostname?: string, resource?: { hostname?: string } }>
-  const currentHostnameKey = hostnames[0]?.resource_hostname
-  const currentHostnameValue = hostnames[0]?.resource?.hostname
 
   if (!Array.isArray(hostnames) || hostnames.length === 0) {
     throw new Error("Could not parse systems/<system>/hostnames.bake.json.")
   }
 
-  hostnames[0].resource_hostname = nextIdentifier
   if (!hostnames[0].resource) {
     hostnames[0].resource = {}
   }
   hostnames[0].resource.hostname = nextIdentifier
   writeFileSync(hostnamesPath, `${JSON.stringify(hostnames, null, 2)}\n`)
-
-  const identifierCandidates = new Set<string>([
-    currentIdentifier,
-    currentHostnameKey,
-    currentHostnameValue,
-    "example",
-  ].filter((value): value is string => Boolean(value)))
-
-  rewriteSystemHostnameReferences(currentDir, identifierCandidates, nextIdentifier)
   renameSync(currentDir, nextDir)
-}
-
-function rewriteSystemHostnameReferences(systemDir: string, oldIdentifiers: Set<string>, nextIdentifier: string): void {
-  for (const filePath of walkFiles(systemDir)) {
-    const original = readFileSync(filePath, "utf-8")
-    let nextContent = original
-
-    for (const identifier of oldIdentifiers) {
-      nextContent = nextContent.replaceAll(`resource_hostname.${identifier}.hostname`, `resource_hostname.${nextIdentifier}.hostname`)
-    }
-
-    if (nextContent !== original) {
-      writeFileSync(filePath, nextContent)
-    }
-  }
-}
-
-function walkFiles(directory: string): string[] {
-  const result: string[] = []
-
-  for (const entry of readdirSync(directory)) {
-    const fullPath = join(directory, entry)
-    const stats = statSync(fullPath)
-
-    if (stats.isDirectory()) {
-      result.push(...walkFiles(fullPath))
-      continue
-    }
-
-    result.push(fullPath)
-  }
-
-  return result
 }
 
 function isValidIdentifier(value: string): boolean {
