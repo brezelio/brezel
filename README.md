@@ -80,7 +80,10 @@ brezel serve interactive
 
 Stop the normal foreground mode with `Ctrl+C`.
 
-While it is running, you can use:
+The foreground view starts in a clean mode.
+Press `h` to show the available controls.
+
+When the controls are visible, you can use:
 
 - `b` to run an arbitrary Bakery command
 - `u` for a full update

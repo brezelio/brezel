@@ -12,6 +12,14 @@ import { portIsBusy } from "../lib/ports"
 import { runUpdateCommand } from "./update"
 
 const ports = [2040, 2041, 2042, 2043]
+const ansi = {
+  reset: "\u001b[0m",
+  bold: "\u001b[1m",
+  dim: "\u001b[2m",
+  cyan: "\u001b[36m",
+  green: "\u001b[32m",
+  yellow: "\u001b[33m",
+}
 
 export async function runServeCommand(args: string[]): Promise<number> {
   const interactive = args[0] === "interactive"
@@ -121,6 +129,7 @@ async function runServeControlLoop(appSystem: string, context: ServeControlConte
 
   let busy = false
   let cleanedUpInput = false
+  let showHelp = false
 
   const restoreRawMode = () => {
     if (typeof process.stdin.setRawMode === "function") {
@@ -162,7 +171,7 @@ async function runServeControlLoop(appSystem: string, context: ServeControlConte
       if (!cleanedUpInput) {
         process.stdin.resume()
         restoreRawMode()
-        renderServeControlScreen(appSystem)
+        renderServeControlScreen(appSystem, showHelp)
       }
       busy = false
     }
@@ -185,6 +194,10 @@ async function runServeControlLoop(appSystem: string, context: ServeControlConte
         cleanupInput()
         context.stop()
         resolveExit(0)
+        return
+      case "h":
+        showHelp = !showHelp
+        renderServeControlScreen(appSystem, showHelp)
         return
       case "b":
         await runAction(() => promptAndRunBakeryCommand())
@@ -214,30 +227,54 @@ async function runServeControlLoop(appSystem: string, context: ServeControlConte
   process.stdin.on("keypress", onKeypress)
   process.stdin.resume()
   restoreRawMode()
-  renderServeControlScreen(appSystem)
+  renderServeControlScreen(appSystem, showHelp)
 
   return await new Promise<number>((resolve) => {
     resolveExit = resolve
   })
 }
 
-function renderServeControlScreen(appSystem: string): void {
+function renderServeControlScreen(appSystem: string, showHelp: boolean): void {
   console.clear()
-  console.log("Brezel is running")
+  console.log(`${paint(ansi.bold, ansi.green)}Brezel is running${paintReset()}`)
   console.log("")
-  console.log(`Access it here: http://${appSystem}.brezel.localhost:2040`)
-  console.log("API: http://localhost:2041")
+  console.log(`${paint(ansi.bold)}Access it here:${paintReset()} http://${appSystem}.brezel.localhost:2040`)
+  console.log(`${paint(ansi.dim)}API:${paintReset()} http://localhost:2041`)
   console.log("")
-  console.log("Controls")
-  console.log("  b  run an arbitrary bakery command")
-  console.log("  u  full update")
-  console.log("  a  apply config changes")
-  console.log("  l  load workflow changes")
-  console.log("  d  diagnostics (all container logs)")
-  console.log("  j  jobs (workers container logs)")
-  console.log("  q  stop Brezel and clean up")
-  console.log("  Ctrl+C  stop Brezel and clean up")
+
+  if (showHelp) {
+    console.log(
+      `${paint(ansi.dim)}Actions:${paintReset()} ` +
+      `${hotkey("b")} bakery   ${hotkey("u")} update   ${hotkey("a")} apply   ${hotkey("l")} load   ` +
+      `${hotkey("d")} diagnostics   ${hotkey("j")} jobs   ${hotkey("q")} quit   ${hotkey("h")} hide help`,
+    )
+  } else {
+    console.log(`${paint(ansi.dim)}Press ${hotkey("h")} for controls, ${hotkey("q")} to stop Brezel.${paintReset()}`)
+  }
+
   console.log("")
+  console.log(`${paint(ansi.dim)}Normal stop:${paintReset()} Ctrl+C`)
+  console.log("")
+}
+
+function hotkey(key: string): string {
+  return `${paint(ansi.bold, ansi.cyan)}[${key}]${paintReset()}`
+}
+
+function paint(...codes: string[]): string {
+  if (!process.stdout.isTTY) {
+    return ""
+  }
+
+  return codes.join("")
+}
+
+function paintReset(): string {
+  if (!process.stdout.isTTY) {
+    return ""
+  }
+
+  return ansi.reset
 }
 
 async function promptAndRunBakeryCommand(): Promise<number> {
