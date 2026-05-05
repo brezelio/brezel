@@ -394,7 +394,8 @@ function renderServeControlScreen(appSystem: string, showHelp: boolean, shimmerF
   }
 
   console.log("\n")
-  console.log(centerLine(statusLine(["stack: running", "mode: foreground", statusLabel])))
+  console.log(centerLine(statusLine(["stack: running", statusLabel])))
+  console.log("")
   console.log(centerLine(`${paint(ansi.bold)}${renderServeEndpointLine(appSystem)}${paintReset()}`))
   console.log("\n")
 
@@ -403,15 +404,12 @@ function renderServeControlScreen(appSystem: string, showHelp: boolean, shimmerF
       centerLine(
         `${paint(ansi.dim)}Actions:${paintReset()} ` +
         `${hotkey("b")} bakery   ${hotkey("u")} update   ${hotkey("a")} apply   ${hotkey("l")} load   ` +
-        `${hotkey("p")} peek   ${hotkey("j")} jobs   ${hotkey("q")} quit   ${hotkey("h")} hide help`,
-      ),
+        `${hotkey("p")} peek   ${hotkey("j")} jobs   ${hotkey("q")} quit   ${hotkey("h")} hide help`
+      )
     )
   } else {
-    console.log(centerLine(`${paint(ansi.dim)}Press ${hotkey("h")} for controls, ${hotkey("q")} to stop Brezel.${paintReset()}`))
+    console.log(centerLine(`${paint(ansi.dim)}Press ${hotkey("h")} for controls, ${hotkey("q")} or ${hotkey("Ctrl+C")} to stop Brezel.${paintReset()}`))
   }
-
-  console.log("")
-  console.log(centerLine(`${paint(ansi.dim)}Normal stop:${paintReset()} Ctrl+C`))
 
   if (bakeryPrompt) {
     console.log("")
