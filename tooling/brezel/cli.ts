@@ -1,6 +1,7 @@
 import { runAttachCommand } from "./commands/attach"
 import { runApplyCommand } from "./commands/apply"
 import { runBakeryCommand } from "./commands/bakery"
+import { runExploreDbCommand } from "./commands/explore-db"
 import { runLoadCommand } from "./commands/load"
 import { runLogsCommand } from "./commands/logs"
 import { runShellCommand } from "./commands/shell"
@@ -36,6 +37,12 @@ const commandDefinitions: CommandDefinition[] = [
     usage: "brezel apply",
     description: "Run bakery apply in the app container",
     handler: runApplyCommand,
+  },
+  {
+    name: "explore-db",
+    usage: "brezel explore-db",
+    description: "Start phpMyAdmin for the local Brezel MariaDB instance",
+    handler: runExploreDbCommand,
   },
   {
     name: "load",

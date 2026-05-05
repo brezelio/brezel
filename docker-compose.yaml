@@ -181,6 +181,25 @@ services:
       - .:/var/www/app
     restart: unless-stopped
 
+  phpmyadmin:
+    image: phpmyadmin:5-apache
+    profiles:
+      - db-explore
+    environment:
+      PMA_HOST: mariadb
+      PMA_PORT: 2042
+      PMA_USER: ${TENANCY_USERNAME:-brezel}
+      PMA_PASSWORD: ${TENANCY_PASSWORD:-secret}
+      PMA_BLOWFISH_SECRET: brezel-local-phpmyadmin-secret
+    depends_on:
+      mariadb:
+        condition: service_healthy
+    ports:
+      - "2044:80"
+    volumes:
+      - ./container/phpmyadmin.config.user.inc.php:/etc/phpmyadmin/config.user.inc.php:ro
+    restart: unless-stopped
+
   mariadb:
     build:
       context: .

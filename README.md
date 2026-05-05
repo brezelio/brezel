@@ -108,6 +108,7 @@ When the controls are visible, you can use:
 - `u` for a full update
 - `a` to apply config changes
 - `l` to load workflow changes
+- `e` to explore the database in phpMyAdmin
 - `p` to peek behind the curtain (all container logs)
 - `j` for worker logs
 - `q` to stop Brezel and clean up
@@ -200,6 +201,7 @@ The default local ports are:
 - `2041`: API
 - `2042`: MariaDB
 - `2043`: Brotcast / websocket endpoint
+- `2044`: phpMyAdmin via `brezel explore-db`
 
 ## Systems and Example Data
 

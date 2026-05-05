@@ -7,6 +7,7 @@ import { getProjectEnvValue } from "../lib/env"
 import { getProjectDir, runProjectCommandInteractive } from "../lib/exec"
 import { buildCommandOutput, normalizeOutputLines } from "../lib/output"
 import { ansi, brezelLogo, centerLine, type CommandOutput, hotkey, isPrintableInput, maxLogoWidth, paint, paintReset, renderCommandOutputBlock, renderInlineBox, renderInlineBoxLines, renderLogoLine, statusLine } from "../lib/ui"
+import { startExploreDb } from "./explore-db"
 import { runLogsCommand } from "./logs"
 import { portIsBusy } from "../lib/ports"
 
@@ -334,6 +335,9 @@ async function runServeControlLoop(appSystem: string, context: ServeControlConte
       case "l":
         await runCapturedAction(() => runLoadCommandCaptured(updateLiveActionOutput))
         return
+      case "e":
+        await runCapturedAction(() => startExploreDb(updateLiveActionOutput))
+        return
       case "p":
         console.log("Opening diagnostics. Press Ctrl+C to return.")
         await runAction(() => runLogsCommand(["all"]), [0, 1, 130])
@@ -379,13 +383,13 @@ function renderServeControlScreen(appSystem: string, showHelp: boolean, shimmerF
   console.log("\n")
 
   if (showHelp) {
-    console.log(
-      centerLine(
-        `${paint(ansi.dim)}Actions:${paintReset()} ` +
-        `${hotkey("b")} bakery   ${hotkey("u")} update   ${hotkey("a")} apply   ${hotkey("l")} load   ` +
-        `${hotkey("p")} peek   ${hotkey("j")} jobs   ${hotkey("q")} quit   ${hotkey("h")} hide help`
+      console.log(
+        centerLine(
+          `${paint(ansi.dim)}Actions:${paintReset()} ` +
+          `${hotkey("b")} bakery   ${hotkey("u")} update   ${hotkey("a")} apply   ${hotkey("l")} load   ` +
+          `${hotkey("e")} explore db   ${hotkey("p")} peek   ${hotkey("j")} jobs   ${hotkey("q")} quit   ${hotkey("h")} hide help`
+        )
       )
-    )
   } else {
     console.log(centerLine(`${paint(ansi.dim)}Press ${hotkey("h")} for controls, ${hotkey("q")} or ${hotkey("Ctrl+C")} to stop Brezel.${paintReset()}`))
   }
