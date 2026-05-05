@@ -1,8 +1,8 @@
 import { runComposeCommand } from "../lib/compose"
+import { assertNoArgs } from "../lib/validation"
 
 export function runTeardownCommand(args: string[]): number {
-  if (args.length > 0) {
-    console.error("brezel teardown does not accept additional arguments.")
+  if (!assertNoArgs("brezel teardown", args)) {
     return 1
   }
 

@@ -1,13 +1,12 @@
 import { runComposeCommandInteractive } from "../lib/compose"
+import { assertInteractiveTerminal, assertNoArgs } from "../lib/validation"
 
 export async function runAttachCommand(args: string[]): Promise<number> {
-  if (args.length > 0) {
-    console.error("brezel attach does not accept additional arguments.")
+  if (!assertNoArgs("brezel attach", args)) {
     return 1
   }
 
-  if (!process.stdin.isTTY || !process.stdout.isTTY) {
-    console.error("brezel attach requires an interactive terminal.")
+  if (!assertInteractiveTerminal("brezel attach")) {
     return 1
   }
 

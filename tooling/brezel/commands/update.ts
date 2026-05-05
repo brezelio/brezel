@@ -1,38 +1,14 @@
-import { runBakeryArgs } from "../lib/bakery"
-import { sendLinuxNotification } from "../lib/notifications"
+import { runTimedBakerySequence } from "../lib/bakery-actions"
+import { assertNoArgs } from "../lib/validation"
 
 export function runUpdateCommand(args: string[]): number {
-  if (args.length > 0) {
-    console.error("brezel update does not accept additional arguments.")
+  if (!assertNoArgs("brezel update", args)) {
     return 1
   }
 
-  const start = Date.now()
-
-  console.log("bakery migrations...")
-  let exitCode = runBakeryArgs(["migrate", "--force"])
-  if (exitCode !== 0) {
-    return exitCode
-  }
-
-  console.log("bakery load...")
-  exitCode = runBakeryArgs(["load"])
-  if (exitCode !== 0) {
-    return exitCode
-  }
-
-  console.log("bakery apply...")
-  exitCode = runBakeryArgs(["apply"])
-
-  const durationInSeconds = Math.floor((Date.now() - start) / 1000)
-  console.log(`brezel update took: ${durationInSeconds} second(s)`)
-
-  if (exitCode === 0) {
-    sendLinuxNotification(
-      "Update is done",
-      `The changes from brezel update should be visible. It took ${durationInSeconds} second(s).`,
-    )
-  }
-
-  return exitCode
+  return runTimedBakerySequence("brezel update", [
+    { label: "bakery migrations...", args: ["migrate", "--force"] },
+    { label: "bakery load...", args: ["load"] },
+    { label: "bakery apply...", args: ["apply"] },
+  ])
 }

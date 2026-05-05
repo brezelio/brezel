@@ -9,69 +9,106 @@ import { runSetupCommand } from "./commands/setup"
 import { runTeardownCommand } from "./commands/teardown"
 import { runUpdateCommand } from "./commands/update"
 
-export async function runCli(args: string[]): Promise<number> {
-  const [command, ...rest] = args
+type CommandHandler = (args: string[]) => number | Promise<number>
 
-  switch (command) {
-    case undefined:
-    case "help":
-    case "--help":
-    case "-h":
-      printHelp()
-      return 0
-    case "bakery":
-      return runBakeryCommand(rest)
-    case "attach":
-      return await runAttachCommand(rest)
-    case "apply":
-      return runApplyCommand(rest)
-    case "load":
-      return runLoadCommand(rest)
-    case "logs":
-      return await runLogsCommand(rest)
-    case "shell":
-      return await runShellCommand(rest)
-    case "update":
-      return runUpdateCommand(rest)
-    case "serve":
-      return runServeCommand(rest)
-    case "setup":
-      return await runSetupCommand(rest)
-    case "teardown":
-      return runTeardownCommand(rest)
-    default:
-      console.error(`Unknown brezel command: ${command}`)
-      console.error("")
-      printHelp()
-      return 1
+type CommandDefinition = {
+  name: string
+  usage: string
+  description: string
+  handler: CommandHandler
+}
+
+const commandDefinitions: CommandDefinition[] = [
+  {
+    name: "bakery",
+    usage: "brezel bakery <args...>",
+    description: "Run bakery inside the app container",
+    handler: runBakeryCommand,
+  },
+  {
+    name: "attach",
+    usage: "brezel attach",
+    description: "Open an interactive shell inside the app container",
+    handler: runAttachCommand,
+  },
+  {
+    name: "apply",
+    usage: "brezel apply",
+    description: "Run bakery apply in the app container",
+    handler: runApplyCommand,
+  },
+  {
+    name: "load",
+    usage: "brezel load",
+    description: "Run bakery load in the app container",
+    handler: runLoadCommand,
+  },
+  {
+    name: "logs",
+    usage: "brezel logs <target>",
+    description: "Follow logs for a local dev target",
+    handler: runLogsCommand,
+  },
+  {
+    name: "shell",
+    usage: "brezel shell",
+    description: "Open the interactive project shell used inside Zellij",
+    handler: runShellCommand,
+  },
+  {
+    name: "update",
+    usage: "brezel update",
+    description: "Run migrate, load, and apply in the app container",
+    handler: runUpdateCommand,
+  },
+  {
+    name: "serve",
+    usage: "brezel serve [interactive] [--rebuild]",
+    description: "Start the local Docker stack in the foreground, optionally interactive and/or rebuilt first",
+    handler: runServeCommand,
+  },
+  {
+    name: "setup",
+    usage: "brezel setup",
+    description: "Configure .env, install dependencies, initialize Brezel, and start it",
+    handler: runSetupCommand,
+  },
+  {
+    name: "teardown",
+    usage: "brezel teardown",
+    description: "Stop the local Docker stack and remove its volumes and local images",
+    handler: runTeardownCommand,
+  },
+]
+
+const commandMap = new Map(commandDefinitions.map((command) => [command.name, command]))
+
+export async function runCli(args: string[]): Promise<number> {
+  const [commandName, ...rest] = args
+
+  if (!commandName || ["help", "--help", "-h"].includes(commandName)) {
+    printHelp()
+    return 0
   }
+
+  const command = commandMap.get(commandName)
+  if (!command) {
+    console.error(`Unknown brezel command: ${commandName}`)
+    console.error("")
+    printHelp()
+    return 1
+  }
+
+  return await command.handler(rest)
 }
 
 function printHelp(): void {
   console.log(`Brezel CLI - Local development environment for the Brezel project
 
 Usage:
-  brezel bakery <args...>
-  brezel attach
-  brezel apply
-  brezel load
-  brezel logs <target>
-  brezel shell
-  brezel update
-  brezel serve [interactive] [--rebuild]
-  brezel setup
-  brezel teardown
+${commandDefinitions.map((command) => `  ${command.usage}`).join("\n")}
 
 Commands:
-  bakery   Run bakery inside the app container
-  attach   Open an interactive shell inside the app container
-  apply    Run bakery apply in the app container
-  load     Run bakery load in the app container
-  logs     Follow logs for a local dev target
-  shell    Open the interactive project shell used inside Zellij
-  update   Run migrate, load, and apply in the app container
-  serve    Start the local Docker stack in the foreground, optionally interactive and/or rebuilt first
-  setup    Configure .env, install dependencies, initialize Brezel, and start it
-  teardown Stop the local Docker stack and remove its volumes and local images
+${commandDefinitions.map((command) => `  ${command.name.padEnd(8, " ")} ${command.description}`).join("\n")}
 `)
 }

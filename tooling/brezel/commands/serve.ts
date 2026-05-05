@@ -5,36 +5,12 @@ import { runComposeCommand as runCompose } from "../lib/compose"
 import { runBakeryArgsStreamingCaptured } from "../lib/bakery"
 import { getProjectEnvValue } from "../lib/env"
 import { getProjectDir, runProjectCommandInteractive } from "../lib/exec"
+import { buildCommandOutput, normalizeOutputLines } from "../lib/output"
+import { ansi, brezelLogo, centerLine, type CommandOutput, hotkey, isPrintableInput, maxLogoWidth, paint, paintReset, renderCommandOutputBlock, renderInlineBox, renderInlineBoxLines, renderLogoLine, statusLine } from "../lib/ui"
 import { runLogsCommand } from "./logs"
 import { portIsBusy } from "../lib/ports"
 
 const ports = [2040, 2041, 2042, 2043]
-const ansi = {
-  reset: "\u001b[0m",
-  bold: "\u001b[1m",
-  dim: "\u001b[2m",
-  cyan: "\u001b[36m",
-  green: "\u001b[32m",
-  yellow: "\u001b[33m",
-}
-const brezelLogo = [
-  "             ,@@**             ",
-  "         .&@@@@&*****,         ",
-  "      (&&&@@@@@&********       ",
-  "   %&&&&&&&&@@@&********       ",
-  "&&&&&&&&&&&&&&&&********       ",
-  "%%%%&&&&&&&&*   ,,,*****       ",
-  "%%%%%%%&(      /,,,,,,,*       ",
-  "%%%%%%%#       *,,,,,,,,***    ",
-  "#%%%%%%#         ,,,,,,,*******",
-  "#######%#             ,&/******",
-  "#######%%%%%.      &&&&@@@@#***",
-  "#######%%%%%%%%*&&&&&&&@@@@@@@#",
-  "  ,####%%%%%%%%&&&&&&&&@@@@@%  ",
-  "      /%%%%%%%%&&&&&&&&@%.     ",
-  "         ,%%%%%&&&&&&*         ",
-]
-const maxLogoWidth = Math.max(...brezelLogo.map((line) => line.length))
 
 export async function runServeCommand(args: string[]): Promise<number> {
   let interactive = false
@@ -166,12 +142,7 @@ type ServeControlContext = {
   stop: () => void
 }
 
-type LastActionOutput = {
-  title: string
-  lines: string[]
-  success: boolean
-  live?: boolean
-}
+type LastActionOutput = CommandOutput
 
 type BakeryPromptState = {
   value: string
@@ -428,40 +399,12 @@ function renderServeControlScreen(appSystem: string, showHelp: boolean, shimmerF
 
   if (lastActionOutput) {
     console.log("")
-    for (const line of renderOutputBlock(lastActionOutput)) {
+    for (const line of renderCommandOutputBlock(lastActionOutput, { live: "Running", complete: "Last output" })) {
       console.log(centerLine(line))
     }
   }
 
   console.log("")
-}
-
-function hotkey(key: string): string {
-  return `${paint(ansi.bold, ansi.cyan)}[${key}]${paintReset()}`
-}
-
-function statusLine(parts: string[]): string {
-  return `${paint(ansi.dim)}${parts.join("  |  ")}${paintReset()}`
-}
-
-function centerLine(line: string): string {
-  if (!process.stdout.isTTY) {
-    return line
-  }
-
-  const terminalWidth = process.stdout.columns || 80
-  const visibleLength = stripAnsi(line).length
-
-  if (visibleLength >= terminalWidth) {
-    return line
-  }
-
-  const leftPadding = Math.floor((terminalWidth - visibleLength) / 2)
-  return `${" ".repeat(leftPadding)}${line}`
-}
-
-function renderInlineBox(line: string): string[] {
-  return renderInlineBoxLines([line])
 }
 
 function renderBakeryPromptBlock(prompt: BakeryPromptState): string[] {
@@ -472,117 +415,6 @@ function renderBakeryPromptBlock(prompt: BakeryPromptState): string[] {
     `brezel bakery ${displayValue}`,
     `${paint(ansi.dim)}Enter to run, Esc to cancel${paintReset()}`,
   ])
-}
-
-function padVisible(line: string, width: number): string {
-  const visibleLength = stripAnsi(line).length
-  if (visibleLength >= width) {
-    return line
-  }
-
-  return `${line}${" ".repeat(width - visibleLength)}`
-}
-
-function renderLogoLine(line: string, row: number, shimmerFrame: number): string {
-  if (!process.stdout.isTTY) {
-    return line
-  }
-
-  let rendered = ""
-  let activeColor = ""
-  const shimmerCenter = (shimmerFrame % (maxLogoWidth + 18)) - 8 + row * 0.8
-
-  for (let index = 0; index < line.length; index += 1) {
-    const character = line[index]
-    const nextColor = getLogoCharacterColor(character, index, shimmerCenter)
-
-    if (nextColor !== activeColor) {
-      rendered += nextColor || ansi.reset
-      activeColor = nextColor
-    }
-
-    rendered += character
-  }
-
-  return `${rendered}${ansi.reset}`
-}
-
-function getLogoCharacterColor(character: string, column: number, shimmerCenter: number): string {
-  const baseColor = getLogoCharacterRgb(character)
-  if (!baseColor) {
-    return ""
-  }
-
-  const distance = Math.abs(column - shimmerCenter)
-  const shimmerWidth = 5
-  const shimmerStrength = Math.max(0, 1 - distance / shimmerWidth)
-  const [red, green, blue] = applyShimmer(baseColor, shimmerStrength)
-
-  return rgb(red, green, blue)
-}
-
-function getLogoCharacterRgb(character: string): [number, number, number] | null {
-  switch (character) {
-    case "@":
-      return [255, 214, 13]
-    case "&":
-      return [255, 166, 32]
-    case "%":
-      return [255, 70, 84]
-    case "#":
-      return [176, 64, 72]
-    case "*":
-      return [232, 62, 62]
-    case ",":
-    case ".":
-    case "/":
-    case "(":
-    case ")":
-      return [196, 84, 84]
-    default:
-      return null
-  }
-}
-
-function applyShimmer(color: [number, number, number], strength: number): [number, number, number] {
-  if (strength <= 0) {
-    return color
-  }
-
-  const glow = 0.45 * strength
-  return [
-    blendChannel(color[0], 255, glow),
-    blendChannel(color[1], 248, glow),
-    blendChannel(color[2], 220, glow),
-  ]
-}
-
-function blendChannel(base: number, target: number, amount: number): number {
-  return Math.round(base + (target - base) * amount)
-}
-
-function paint(...codes: string[]): string {
-  if (!process.stdout.isTTY) {
-    return ""
-  }
-
-  return codes.join("")
-}
-
-function paintReset(): string {
-  if (!process.stdout.isTTY) {
-    return ""
-  }
-
-  return ansi.reset
-}
-
-function stripAnsi(value: string): string {
-  return value.replace(/\u001b\[[0-9;]*m/g, "")
-}
-
-function rgb(red: number, green: number, blue: number): string {
-  return `\u001b[38;2;${red};${green};${blue}m`
 }
 
 async function runBakeryPromptCommand(input: string, onUpdate: LiveOutputUpdater): Promise<LastActionOutput> {
@@ -685,7 +517,7 @@ async function runBakeryCommandStreaming(title: string, args: string[], onUpdate
     },
   })
 
-  return buildLastActionOutput(title, result.stdout, result.stderr, result.exitCode)
+  return buildCommandOutput(title, result.stdout, result.stderr, result.exitCode)
 }
 
 function buildUpdateOutputLines(outputSections: string[], stepArgs: string[], stdout: string, stderr: string): string[] {
@@ -697,51 +529,6 @@ function buildUpdateOutputLines(outputSections: string[], stepArgs: string[], st
   }
 
   return lines
-}
-
-function buildLastActionOutput(title: string, stdout: string, stderr: string, exitCode: number): LastActionOutput {
-  const lines = normalizeOutputLines(stdout, stderr)
-
-  return {
-    title,
-    lines: lines.length > 0 ? lines : [exitCode === 0 ? "Command completed successfully." : "Command failed without output."],
-    success: exitCode === 0,
-  }
-}
-
-function normalizeOutputLines(stdout: string, stderr: string): string[] {
-  const combined = [stdout.trimEnd(), stderr.trimEnd()].filter((value) => value.length > 0).join("\n")
-  if (!combined) {
-    return []
-  }
-
-  return combined
-    .split(/\r?\n/)
-    .map((line) => stripAnsi(line))
-}
-
-function renderOutputBlock(output: LastActionOutput): string[] {
-  const maxLines = 10
-  const lines = output.lines.length > maxLines
-    ? [
-        `... showing last ${maxLines} lines of ${output.lines.length}`,
-        ...output.lines.slice(-maxLines),
-      ]
-    : output.lines
-
-  const header = `${output.success ? paint(ansi.green, ansi.bold) : paint(ansi.yellow, ansi.bold)}Last output:${paintReset()} ${output.title}`
-  return renderInlineBoxLines([header, "", ...lines])
-}
-
-function renderInlineBoxLines(lines: string[]): string[] {
-  const visibleWidth = lines.reduce((max, line) => Math.max(max, stripAnsi(line).length), 0)
-  const horizontal = "─".repeat(visibleWidth + 2)
-
-  return [
-    `${paint(ansi.dim)}┌${horizontal}┐${paintReset()}`,
-    ...lines.map((line) => `${paint(ansi.dim)}│ ${paintReset()}${padVisible(line, visibleWidth)}${paint(ansi.dim)} │${paintReset()}`),
-    `${paint(ansi.dim)}└${horizontal}┘${paintReset()}`,
-  ]
 }
 
 function splitCommandLine(input: string): string[] | null {
@@ -786,10 +573,6 @@ function splitCommandLine(input: string): string[] | null {
   }
 
   return args
-}
-
-function isPrintableInput(value: string): boolean {
-  return !/[\u0000-\u001f\u007f]/.test(value)
 }
 
 async function waitForever(): Promise<number> {

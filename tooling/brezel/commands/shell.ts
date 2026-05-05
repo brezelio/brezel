@@ -1,9 +1,13 @@
 import { basename } from "node:path"
 import { spawn } from "node:child_process"
+import { assertInteractiveTerminal, assertNoArgs } from "../lib/validation"
 
 export async function runShellCommand(args: string[]): Promise<number> {
-  if (args.length > 0) {
-    console.error("brezel shell does not accept additional arguments.")
+  if (!assertNoArgs("brezel shell", args)) {
+    return 1
+  }
+
+  if (!assertInteractiveTerminal("brezel shell")) {
     return 1
   }
 
