@@ -132,6 +132,14 @@ export async function runSetupCommand(args: string[]): Promise<number> {
       return 1
     }
 
+    if (await runSetupStep(ui, "Restarting the Brezel stack", ["down", "--remove-orphans"]) !== 0) {
+      return 1
+    }
+
+    if (await runSetupStep(ui, "Starting the Brezel stack", ["up", "-d", "--remove-orphans"]) !== 0) {
+      return 1
+    }
+
     ui.step = "Setup complete"
     ui.setOutput({
       title: "Ready",
@@ -143,7 +151,7 @@ export async function runSetupCommand(args: string[]): Promise<number> {
     ui.stop()
   }
 
-  return await runServeCommand([])
+  return await runServeCommand(["--skip-stack-start"])
 }
 
 function createSetupUi(): SetupUi & {

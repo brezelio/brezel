@@ -39,6 +39,7 @@ const maxLogoWidth = Math.max(...brezelLogo.map((line) => line.length))
 export async function runServeCommand(args: string[]): Promise<number> {
   let interactive = false
   let rebuild = false
+  let skipStackStart = false
   const appSystem = getProjectEnvValue("APP_SYSTEM") || "example"
 
   for (const arg of args) {
@@ -52,6 +53,11 @@ export async function runServeCommand(args: string[]): Promise<number> {
       continue
     }
 
+    if (arg === "--skip-stack-start") {
+      skipStackStart = true
+      continue
+    }
+
     console.error("Usage: brezel serve [interactive] [--rebuild]")
     return 1
   }
@@ -61,27 +67,29 @@ export async function runServeCommand(args: string[]): Promise<number> {
     return 1
   }
 
-  console.log("Cleaning up any existing Docker stack for this project")
-  runCompose(["down", "--remove-orphans"])
+  if (!skipStackStart) {
+    console.log("Cleaning up any existing Docker stack for this project")
+    runCompose(["down", "--remove-orphans"])
 
-  for (const port of ports) {
-    if (await portIsBusy(port)) {
-      showPortConflict(port)
-      return 1
+    for (const port of ports) {
+      if (await portIsBusy(port)) {
+        showPortConflict(port)
+        return 1
+      }
     }
-  }
 
-  console.log("Starting brezel using Docker Compose")
-  if (rebuild) {
-    console.log("Rebuilding Docker images first...")
-    const buildExitCode = runCompose(["build"])
-    if (buildExitCode !== 0) {
-      return buildExitCode
+    console.log("Starting brezel using Docker Compose")
+    if (rebuild) {
+      console.log("Rebuilding Docker images first...")
+      const buildExitCode = runCompose(["build"])
+      if (buildExitCode !== 0) {
+        return buildExitCode
+      }
     }
-  }
-  const upExitCode = runCompose(["up", "-d", "--remove-orphans"])
-  if (upExitCode !== 0) {
-    return upExitCode
+    const upExitCode = runCompose(["up", "-d", "--remove-orphans"])
+    if (upExitCode !== 0) {
+      return upExitCode
+    }
   }
 
   printServeEndpoints(appSystem)
