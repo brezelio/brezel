@@ -175,6 +175,7 @@ services:
       - "2042:2042"
     volumes:
       - mariadb_data:/var/lib/mysql
+      - ./container/init-db-user-grants.sh:/docker-entrypoint-initdb.d/init-db-user-grants.sh:ro
     restart: unless-stopped
     healthcheck:
       test:
