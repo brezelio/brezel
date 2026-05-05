@@ -332,7 +332,7 @@ function renderPromptBlock(prompt: PromptState): string[] {
   }
 
   lines.push("")
-  lines.push(displayValue)
+  lines.push(`> ${displayValue}`)
 
   if (prompt.hint) {
     lines.push("")

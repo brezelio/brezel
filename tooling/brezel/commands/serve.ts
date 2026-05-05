@@ -416,7 +416,7 @@ function renderBakeryPromptBlock(prompt: BakeryPromptState): string[] {
   return renderInlineBoxLines([
     `${paint(ansi.bold)}Bakery command${paintReset()}`,
     "",
-    `brezel bakery ${displayValue}`,
+    `> brezel bakery ${displayValue}`,
     `${paint(ansi.dim)}Enter to run, Esc to cancel${paintReset()}`,
   ])
 }
