@@ -287,33 +287,51 @@ async function runServeControlLoop(appSystem: string, context: ServeControlConte
 function renderServeControlScreen(appSystem: string, showHelp: boolean, shimmerFrame: number): void {
   console.clear()
   for (const line of brezelLogo) {
-    console.log(renderLogoLine(line, shimmerFrame))
+    console.log(centerLine(renderLogoLine(line, shimmerFrame)))
   }
 
   console.log("")
-  console.log(`${paint(ansi.bold, ansi.green)}Brezel is running${paintReset()}`)
+  console.log(centerLine(`${paint(ansi.bold, ansi.green)}Brezel is running${paintReset()}`))
   console.log("")
-  console.log(`${paint(ansi.bold)}Access it here:${paintReset()} http://${appSystem}.brezel.localhost:2040`)
-  console.log(`${paint(ansi.dim)}API:${paintReset()} http://localhost:2041`)
+  console.log(centerLine(`${paint(ansi.bold)}Access it here:${paintReset()} http://${appSystem}.brezel.localhost:2040`))
+  console.log(centerLine(`${paint(ansi.dim)}API:${paintReset()} http://localhost:2041`))
   console.log("")
 
   if (showHelp) {
     console.log(
-      `${paint(ansi.dim)}Actions:${paintReset()} ` +
-      `${hotkey("b")} bakery   ${hotkey("u")} update   ${hotkey("a")} apply   ${hotkey("l")} load   ` +
-      `${hotkey("d")} diagnostics   ${hotkey("j")} jobs   ${hotkey("q")} quit   ${hotkey("h")} hide help`,
+      centerLine(
+        `${paint(ansi.dim)}Actions:${paintReset()} ` +
+        `${hotkey("b")} bakery   ${hotkey("u")} update   ${hotkey("a")} apply   ${hotkey("l")} load   ` +
+        `${hotkey("d")} diagnostics   ${hotkey("j")} jobs   ${hotkey("q")} quit   ${hotkey("h")} hide help`,
+      ),
     )
   } else {
-    console.log(`${paint(ansi.dim)}Press ${hotkey("h")} for controls, ${hotkey("q")} to stop Brezel.${paintReset()}`)
+    console.log(centerLine(`${paint(ansi.dim)}Press ${hotkey("h")} for controls, ${hotkey("q")} to stop Brezel.${paintReset()}`))
   }
 
   console.log("")
-  console.log(`${paint(ansi.dim)}Normal stop:${paintReset()} Ctrl+C`)
+  console.log(centerLine(`${paint(ansi.dim)}Normal stop:${paintReset()} Ctrl+C`))
   console.log("")
 }
 
 function hotkey(key: string): string {
   return `${paint(ansi.bold, ansi.cyan)}[${key}]${paintReset()}`
+}
+
+function centerLine(line: string): string {
+  if (!process.stdout.isTTY) {
+    return line
+  }
+
+  const terminalWidth = process.stdout.columns || 80
+  const visibleLength = stripAnsi(line).length
+
+  if (visibleLength >= terminalWidth) {
+    return line
+  }
+
+  const leftPadding = Math.floor((terminalWidth - visibleLength) / 2)
+  return `${" ".repeat(leftPadding)}${line}`
 }
 
 function renderLogoLine(line: string, shimmerFrame: number): string {
@@ -408,6 +426,10 @@ function paintReset(): string {
   }
 
   return ansi.reset
+}
+
+function stripAnsi(value: string): string {
+  return value.replace(/\u001b\[[0-9;]*m/g, "")
 }
 
 function rgb(red: number, green: number, blue: number): string {
