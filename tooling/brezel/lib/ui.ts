@@ -95,12 +95,14 @@ export function renderInlineBox(line: string): string[] {
 }
 
 export function renderInlineBoxLines(lines: string[]): string[] {
-  const visibleWidth = lines.reduce((max, line) => Math.max(max, stripAnsi(line).length), 0)
+  const maxContentWidth = getMaxBoxContentWidth()
+  const wrappedLines = lines.flatMap((line) => wrapVisibleLine(line, maxContentWidth))
+  const visibleWidth = wrappedLines.reduce((max, line) => Math.max(max, stripAnsi(line).length), 0)
   const horizontal = "─".repeat(visibleWidth + 2)
 
   return [
     `${paint(ansi.dim)}┌${horizontal}┐${paintReset()}`,
-    ...lines.map((line) => `${paint(ansi.dim)}│ ${paintReset()}${padVisible(line, visibleWidth)}${paint(ansi.dim)} │${paintReset()}`),
+    ...wrappedLines.map((line) => `${paint(ansi.dim)}│ ${paintReset()}${padVisible(line, visibleWidth)}${paint(ansi.dim)} │${paintReset()}`),
     `${paint(ansi.dim)}└${horizontal}┘${paintReset()}`,
   ]
 }
@@ -197,4 +199,59 @@ function applyShimmer(color: [number, number, number], strength: number): [numbe
 
 function blendChannel(base: number, target: number, amount: number): number {
   return Math.round(base + (target - base) * amount)
+}
+
+function getMaxBoxContentWidth(): number {
+  const terminalWidth = process.stdout.columns || 80
+  const boxWidth = Math.floor(terminalWidth * 0.9)
+  return Math.max(24, boxWidth - 4)
+}
+
+function wrapVisibleLine(line: string, width: number): string[] {
+  const plain = stripAnsi(line)
+  if (!plain || plain.length <= width) {
+    return [line]
+  }
+
+  const words = plain.split(/(\s+)/).filter((part) => part.length > 0)
+  const lines: string[] = []
+  let current = ""
+
+  for (const word of words) {
+    if (word.trim().length === 0) {
+      if (current.length > 0 && current.length + word.length <= width) {
+        current += word
+      }
+      continue
+    }
+
+    if (word.length > width) {
+      if (current.length > 0) {
+        lines.push(current.trimEnd())
+        current = ""
+      }
+
+      for (let offset = 0; offset < word.length; offset += width) {
+        lines.push(word.slice(offset, offset + width))
+      }
+      continue
+    }
+
+    const candidate = current.length > 0 ? `${current}${word}` : word
+    if (candidate.length <= width) {
+      current = candidate
+      continue
+    }
+
+    if (current.length > 0) {
+      lines.push(current.trimEnd())
+    }
+    current = word
+  }
+
+  if (current.length > 0) {
+    lines.push(current.trimEnd())
+  }
+
+  return lines.length > 0 ? lines : [""]
 }
