@@ -6,7 +6,7 @@ ENV APP_PATH=/var/www/app \
 WORKDIR ${APP_PATH}
 
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends git openssh-client unzip supervisor mariadb-client \
+    && apt-get install -y --no-install-recommends git openssh-client unzip supervisor mariadb-client less vim htop ncdu \
     && install-php-extensions bcmath exif gd gmp intl mysqli opcache pcntl pdo_mysql sockets zip imagick ssh2 \
     && rm -rf /var/lib/apt/lists/*
 
