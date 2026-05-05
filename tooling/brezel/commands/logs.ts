@@ -1,8 +1,8 @@
 import { runComposeCommand, runComposeCommandInteractive } from "../lib/compose"
 
-type LogTarget = "app" | "bootstrap" | "scheduler" | "vite" | "workers"
+type LogTarget = "all" | "app" | "bootstrap" | "scheduler" | "vite" | "workers"
 
-const validTargets: LogTarget[] = ["app", "bootstrap", "scheduler", "vite", "workers"]
+const validTargets: LogTarget[] = ["all", "app", "bootstrap", "scheduler", "vite", "workers"]
 
 export async function runLogsCommand(args: string[]): Promise<number> {
   const [target, ...rest] = args
@@ -13,6 +13,8 @@ export async function runLogsCommand(args: string[]): Promise<number> {
   }
 
   switch (target as LogTarget) {
+    case "all":
+      return await runComposeCommandInteractive(["logs", "-f", "app", "vite", "workers", "scheduler", "deps", "node_deps", "mariadb"])
     case "app":
       return await runComposeCommandInteractive(["logs", "-f", "app"])
     case "bootstrap":

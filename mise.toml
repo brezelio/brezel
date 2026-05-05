@@ -51,8 +51,12 @@ description = "Update the systems (Spec, Worklows, etc)"
 run = "bin/brezel update"
 
 [tasks.serve]
-description = "Start the Docker stack in Zellij and stop it again when the session ends"
+description = "Start Brezel"
 run = "bin/brezel serve"
+
+[tasks.serve-interactive]
+description = "Start the Zellij based control pane for detailed interaction with the stack"
+run = "bin/brezel serve interactive"
 
 [tasks.teardown]
 description = "Stop the Docker stack and remove its volumes"

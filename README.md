@@ -63,9 +63,34 @@ This will:
 - clean up any old stack for this project
 - check that the required local ports are free
 - start the Docker services
-- open a Zellij dashboard attached to the live container outputs
+- print where your local Brezel is available
+- stay attached in the foreground with a clean control view
 
-> **Important:** Exit the Zellij session with `Ctrl+Q` for a clean shutdown.
+It will then be available at:
+
+```text
+http://<system-identifier>.brezel.localhost:2040
+```
+
+If you want the attached Zellij dashboard, use:
+
+```bash
+brezel serve interactive
+```
+
+Stop the normal foreground mode with `Ctrl+C`.
+
+While it is running, you can use:
+
+- `b` to run an arbitrary Bakery command
+- `u` for a full update
+- `a` to apply config changes
+- `l` to load workflow changes
+- `d` for diagnostics (all container logs)
+- `j` for worker logs
+- `q` to stop Brezel and clean up
+
+> **Important:** Exit the interactive Zellij session with `Ctrl+Q` for a clean shutdown.
 > If you just kill the terminal window or otherwise leave the session abruptly, you may leave orphaned containers behind.
 
 ## Why This Setup Is Nice
@@ -132,7 +157,7 @@ brezel bakery init
 
 ## Zellij Dashboard
 
-`brezel serve` opens a Zellij session with attached panes so you can see what the local stack is doing.
+`brezel serve interactive` opens a Zellij session with attached panes so you can see what the local stack is doing.
 
 The panes are:
 

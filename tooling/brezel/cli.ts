@@ -54,7 +54,7 @@ Usage:
   brezel logs <target>
   brezel shell
   brezel update
-  brezel serve
+  brezel serve [interactive]
   brezel setup
   brezel teardown
 
@@ -65,7 +65,7 @@ Commands:
   logs     Follow logs for a local dev target
   shell    Open the interactive project shell used inside Zellij
   update   Run migrate, load, and apply in the app container
-  serve    Start the local Docker/Zellij serve workflow
+  serve    Start the local Docker stack in the foreground, optionally with the Zellij dashboard
   setup    Placeholder for the future interactive setup flow
   teardown Stop the local Docker stack and remove its volumes
 `)
