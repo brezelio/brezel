@@ -20,6 +20,26 @@ const ansi = {
   green: "\u001b[32m",
   yellow: "\u001b[33m",
 }
+const brezelLogo = [
+  "             ,@@**             ",
+  "         .&@@@@&*****,         ",
+  "      (&&&@@@@@&********       ",
+  "   %&&&&&&&&@@@&********       ",
+  "&&&&&&&&&&&&&&&&********       ",
+  "%%%%&&&&&&&&*   ,,,*****       ",
+  "%%%%%%%&(      /,,,,,,,*       ",
+  "%%%%%%%#       *,,,,,,,,***    ",
+  "%%%%%%%#       *,,,,,,,,*****  ",
+  "#%%%%%%#         ,,,,,,,*******",
+  "####%%%#             ,,,*******",
+  "#######%#             ,&/******",
+  "#######%%%%%.      &&&&@@@@#***",
+  "#######%%%%%%%%*&&&&&&&@@@@@@@#",
+  "  ,####%%%%%%%%&&&&&&&&@@@@@%  ",
+  "      /%%%%%%%%&&&&&&&&@%.     ",
+  "         ,%%%%%&&&&&&*         ",
+]
+const maxLogoWidth = Math.max(...brezelLogo.map((line) => line.length))
 
 export async function runServeCommand(args: string[]): Promise<number> {
   const interactive = args[0] === "interactive"
@@ -130,6 +150,8 @@ async function runServeControlLoop(appSystem: string, context: ServeControlConte
   let busy = false
   let cleanedUpInput = false
   let showHelp = false
+  let shimmerFrame = 0
+  let shimmerTimer: ReturnType<typeof setInterval> | null = null
 
   const restoreRawMode = () => {
     if (typeof process.stdin.setRawMode === "function") {
@@ -149,14 +171,40 @@ async function runServeControlLoop(appSystem: string, context: ServeControlConte
     }
 
     cleanedUpInput = true
+    stopShimmer()
     disableRawMode()
     process.stdin.removeListener("keypress", onKeypress)
     process.stdin.pause()
   }
 
+  const startShimmer = () => {
+    if (shimmerTimer || cleanedUpInput || !process.stdout.isTTY) {
+      return
+    }
+
+    shimmerTimer = setInterval(() => {
+      if (busy || cleanedUpInput) {
+        return
+      }
+
+      shimmerFrame = (shimmerFrame + 1) % (maxLogoWidth + 12)
+      renderServeControlScreen(appSystem, showHelp, shimmerFrame)
+    }, 120)
+  }
+
+  const stopShimmer = () => {
+    if (!shimmerTimer) {
+      return
+    }
+
+    clearInterval(shimmerTimer)
+    shimmerTimer = null
+  }
+
   const runAction = async (action: () => Promise<number> | number, expectedExitCodes: number[] = [0]) => {
     busy = true
     context.setForegroundAction(true)
+    stopShimmer()
     disableRawMode()
 
     try {
@@ -171,7 +219,8 @@ async function runServeControlLoop(appSystem: string, context: ServeControlConte
       if (!cleanedUpInput) {
         process.stdin.resume()
         restoreRawMode()
-        renderServeControlScreen(appSystem, showHelp)
+        renderServeControlScreen(appSystem, showHelp, shimmerFrame)
+        startShimmer()
       }
       busy = false
     }
@@ -197,7 +246,7 @@ async function runServeControlLoop(appSystem: string, context: ServeControlConte
         return
       case "h":
         showHelp = !showHelp
-        renderServeControlScreen(appSystem, showHelp)
+        renderServeControlScreen(appSystem, showHelp, shimmerFrame)
         return
       case "b":
         await runAction(() => promptAndRunBakeryCommand())
@@ -227,15 +276,21 @@ async function runServeControlLoop(appSystem: string, context: ServeControlConte
   process.stdin.on("keypress", onKeypress)
   process.stdin.resume()
   restoreRawMode()
-  renderServeControlScreen(appSystem, showHelp)
+  renderServeControlScreen(appSystem, showHelp, shimmerFrame)
+  startShimmer()
 
   return await new Promise<number>((resolve) => {
     resolveExit = resolve
   })
 }
 
-function renderServeControlScreen(appSystem: string, showHelp: boolean): void {
+function renderServeControlScreen(appSystem: string, showHelp: boolean, shimmerFrame: number): void {
   console.clear()
+  for (const line of brezelLogo) {
+    console.log(renderLogoLine(line, shimmerFrame))
+  }
+
+  console.log("")
   console.log(`${paint(ansi.bold, ansi.green)}Brezel is running${paintReset()}`)
   console.log("")
   console.log(`${paint(ansi.bold)}Access it here:${paintReset()} http://${appSystem}.brezel.localhost:2040`)
@@ -261,6 +316,84 @@ function hotkey(key: string): string {
   return `${paint(ansi.bold, ansi.cyan)}[${key}]${paintReset()}`
 }
 
+function renderLogoLine(line: string, shimmerFrame: number): string {
+  if (!process.stdout.isTTY) {
+    return line
+  }
+
+  let rendered = ""
+  let activeColor = ""
+  const shimmerCenter = (shimmerFrame % (maxLogoWidth + 12)) - 6
+
+  for (let index = 0; index < line.length; index += 1) {
+    const character = line[index]
+    const nextColor = getLogoCharacterColor(character, index, shimmerCenter)
+
+    if (nextColor !== activeColor) {
+      rendered += nextColor || ansi.reset
+      activeColor = nextColor
+    }
+
+    rendered += character
+  }
+
+  return `${rendered}${ansi.reset}`
+}
+
+function getLogoCharacterColor(character: string, column: number, shimmerCenter: number): string {
+  const baseColor = getLogoCharacterRgb(character)
+  if (!baseColor) {
+    return ""
+  }
+
+  const distance = Math.abs(column - shimmerCenter)
+  const shimmerWidth = 5
+  const shimmerStrength = Math.max(0, 1 - distance / shimmerWidth)
+  const [red, green, blue] = applyShimmer(baseColor, shimmerStrength)
+
+  return rgb(red, green, blue)
+}
+
+function getLogoCharacterRgb(character: string): [number, number, number] | null {
+  switch (character) {
+    case "@":
+      return [255, 214, 13]
+    case "&":
+      return [255, 166, 32]
+    case "%":
+      return [255, 70, 84]
+    case "#":
+      return [140, 34, 38]
+    case "*":
+      return [220, 34, 34]
+    case ",":
+    case ".":
+    case "/":
+    case "(":
+    case ")":
+      return [176, 52, 52]
+    default:
+      return null
+  }
+}
+
+function applyShimmer(color: [number, number, number], strength: number): [number, number, number] {
+  if (strength <= 0) {
+    return color
+  }
+
+  const glow = 0.45 * strength
+  return [
+    blendChannel(color[0], 255, glow),
+    blendChannel(color[1], 248, glow),
+    blendChannel(color[2], 220, glow),
+  ]
+}
+
+function blendChannel(base: number, target: number, amount: number): number {
+  return Math.round(base + (target - base) * amount)
+}
+
 function paint(...codes: string[]): string {
   if (!process.stdout.isTTY) {
     return ""
@@ -275,6 +408,10 @@ function paintReset(): string {
   }
 
   return ansi.reset
+}
+
+function rgb(red: number, green: number, blue: number): string {
+  return `\u001b[38;2;${red};${green};${blue}m`
 }
 
 async function promptAndRunBakeryCommand(): Promise<number> {
