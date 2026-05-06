@@ -29,6 +29,8 @@ export async function runLinkCommand(args: string[]): Promise<number> {
     currentState[target] = path.trim()
     writeLinkState(currentState)
     console.log(`Linked brezel/${target} from ${path.trim()}`)
-    return await refreshLinkedTargets([target])
+    return await refreshLinkedTargets([target], {
+      installLinkedSpaDependencies: target === "spa",
+    })
   }
 }

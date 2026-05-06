@@ -94,8 +94,8 @@ function buildComposeOverride(state: LinkState): string {
   }
 
   if (state.spa) {
-    const mount = yamlString(`${state.spa}:/var/www/app/node_modules/@kibro/brezel-spa`)
-    for (const service of ["vite"]) {
+    const mount = yamlString(`${state.spa}:/linked/spa`)
+    for (const service of ["node_deps", "vite"]) {
       lines.push(`  ${service}:`)
       lines.push("    volumes:")
       lines.push(`      - ${mount}`)

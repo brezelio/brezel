@@ -104,7 +104,16 @@ services:
           echo "//gitlab.kiwis-and-brownies.de/api/v4/projects/44/packages/npm/:_authToken=${NPM_TOKEN}" >> "$$HOME/.npmrc"
           echo "//gitlab.kiwis-and-brownies.de/api/v4/projects/58/packages/npm/:_authToken=${NPM_TOKEN}" >> "$$HOME/.npmrc"
         fi
+        if [ -L node_modules/@kibro/brezel-spa ] && [ ! -f /linked/spa/package.json ]; then
+          rm node_modules/@kibro/brezel-spa
+        fi
         npm install
+        if [ -f /linked/spa/package.json ]; then
+          mkdir -p node_modules/@kibro
+          rm -rf node_modules/@kibro/brezel-spa
+          ln -s /linked/spa node_modules/@kibro/brezel-spa
+          rm -rf node_modules/.vite
+        fi
     volumes:
       - .:/var/www/app
     restart: "no"
