@@ -101,7 +101,7 @@ export const commandMetadata: CommandMetadata[] = [
   {
     name: "setup",
     usage: "brezel setup",
-    description: "Configure .env, install dependencies, initialize Brezel, and start it",
+    description: "Run the technical local setup flow and then start Brezel",
     serveDashboard: {
       allowed: false,
       reason: "brezel setup is an interactive first-run flow and cannot run inside the serve dashboard.",
@@ -110,7 +110,7 @@ export const commandMetadata: CommandMetadata[] = [
   {
     name: "system",
     usage: "brezel system initialize",
-    description: "Customize the initial system semantics before technical setup",
+    description: "Run the semantic first-run system customization step",
     serveDashboard: {
       allowed: false,
       reason: "brezel system initialize is an interactive setup flow and cannot run inside the serve dashboard.",

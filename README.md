@@ -37,13 +37,24 @@ This installs the small project-local interaction tools only:
 
 Those power the repo-shipped `brezel` CLI and the local dashboard.
 
-### 2. Run the setup entrypoint
+### 2. Run the semantic system initialization step
+
+```bash
+brezel system initialize
+```
+
+`brezel system initialize` is the semantic first-run step.
+
+Right now it asks for your company name and can rename the default `example` system accordingly.
+If you answer `no!`, it leaves the system bare and unchanged.
+
+### 3. Run the technical setup entrypoint
 
 ```bash
 brezel setup
 ```
 
-`brezel setup` handles the guided local setup flow.
+`brezel setup` is the technical local setup flow.
 
 It will:
 
@@ -51,8 +62,9 @@ It will:
 - ask for package registry access tokens used by Brezel
 - ask for AI connection info and similar extras when configured
 - validate the setup by actually trying to use the dependency containers
+- start `brezel serve` when it is done
 
-### 3. Start Brezel
+### 4. Start Brezel
 
 ```bash
 brezel serve
