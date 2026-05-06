@@ -18,6 +18,15 @@ export const commandMetadata: CommandMetadata[] = [
     serveDashboard: { allowed: true },
   },
   {
+    name: "animate",
+    usage: "brezel animate",
+    description: "Show the Brezel ASCII shimmer animation",
+    serveDashboard: {
+      allowed: false,
+      reason: "brezel animate takes over the terminal and cannot run inside the serve dashboard.",
+    },
+  },
+  {
     name: "attach",
     usage: "brezel attach",
     description: "Open an interactive shell inside the app container",

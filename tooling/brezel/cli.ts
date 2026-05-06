@@ -1,4 +1,5 @@
 import { runAttachCommand } from "./commands/attach"
+import { runAnimateCommand } from "./commands/animate"
 import { runApplyCommand } from "./commands/apply"
 import { runBakeryCommand } from "./commands/bakery"
 import { runExploreDbCommand } from "./commands/explore-db"
@@ -24,6 +25,7 @@ type CommandDefinition = {
 
 const commandHandlers: Record<string, CommandHandler> = {
   bakery: runBakeryCommand,
+  animate: runAnimateCommand,
   attach: runAttachCommand,
   apply: runApplyCommand,
   "explore-db": runExploreDbCommand,
