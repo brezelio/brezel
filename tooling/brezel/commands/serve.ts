@@ -80,6 +80,10 @@ export async function runServeCommand(args: string[]): Promise<number> {
       return
     }
 
+    console.log("")
+    console.log("Cleaning up and shutting down Brezel stack...")
+    console.log("")
+
     cleanedUp = true
     runCompose(["down", "--remove-orphans"], { profiles: ["db-explore"] })
   }
@@ -107,6 +111,11 @@ export async function runServeCommand(args: string[]): Promise<number> {
       args: ["--layout", layoutPath],
     })
   } else {
+    console.log("")
+    console.log("Brezel stack has started.")
+    console.log("")
+    console.log("=== Service Dashboard ===")
+
     sessionExitCode = await runServeControlLoop(appSystem, {
       setForegroundAction(value) {
         inForegroundAction = value
