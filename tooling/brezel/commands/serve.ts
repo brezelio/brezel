@@ -6,9 +6,10 @@ import { runBakeryArgsStreamingCaptured } from "../lib/bakery"
 import { getCommandMetadata } from "../lib/command-metadata"
 import { getProjectEnvValue } from "../lib/env"
 import { getProjectDir, runProjectCommandInteractive, runProjectCommandStreamingCaptured } from "../lib/exec"
+import { readLoginInfo, type LoginInfo } from "../lib/login-info"
 import { buildCommandOutput, normalizeOutputLines } from "../lib/output"
 import { readStackStatus, type StackStatus } from "../lib/stack-status"
-import { ansi, brezelLogo, centerLine, type CommandOutput, hotkey, isPrintableInput, maxLogoWidth, paint, paintReset, renderCommandOutputBlock, renderInlineBox, renderInlineBoxLines, renderLogoLine, statusLine } from "../lib/ui"
+import { ansi, brezelLogo, centerLine, type CommandOutput, hotkey, isPrintableInput, maxLogoWidth, padVisible, paint, paintReset, renderCommandOutputBlock, renderInlineBox, renderInlineBoxLines, renderLogoLine, statusLine, stripAnsi } from "../lib/ui"
 import { startExploreDb } from "./explore-db"
 import { runLogsCommand } from "./logs"
 import { portIsBusy } from "../lib/ports"
@@ -173,8 +174,9 @@ async function runServeControlLoop(appSystem: string, context: ServeControlConte
   let liveActionOutput: LastActionOutput | null = null
   let prompt: PromptState | null = null
   let stackStatus: StackStatus = readStackStatus()
+  const loginInfo = readLoginInfo(appSystem)
 
-  const render = () => renderServeControlScreen(appSystem, showHelp, shimmerFrame, liveActionOutput ?? lastActionOutput, prompt, stackStatus)
+  const render = () => renderServeControlScreen(appSystem, showHelp, shimmerFrame, liveActionOutput ?? lastActionOutput, prompt, stackStatus, loginInfo)
   const updateLiveActionOutput: LiveOutputUpdater = (title, lines) => {
     liveActionOutput = {
       title,
@@ -404,7 +406,7 @@ async function runServeControlLoop(appSystem: string, context: ServeControlConte
   })
 }
 
-function renderServeControlScreen(appSystem: string, showHelp: boolean, shimmerFrame: number, lastActionOutput: LastActionOutput | null, prompt: PromptState | null, stackStatus: StackStatus): void {
+function renderServeControlScreen(appSystem: string, showHelp: boolean, shimmerFrame: number, lastActionOutput: LastActionOutput | null, prompt: PromptState | null, stackStatus: StackStatus, loginInfo: LoginInfo[]): void {
   console.clear()
   console.log("")
   console.log("")
@@ -422,6 +424,12 @@ function renderServeControlScreen(appSystem: string, showHelp: boolean, shimmerF
   console.log(centerLine(statusLine([stackStatus.label, stackStatus.detail, statusLabel])))
   console.log("")
   console.log(centerLine(`${paint(ansi.bold)}${renderServeEndpointLine(appSystem)}${paintReset()}`))
+  if (loginInfo.length > 0) {
+    console.log("")
+    for (const line of renderLoginInfoBlock(loginInfo)) {
+      console.log(centerLine(line))
+    }
+  }
   console.log("\n")
 
   if (showHelp) {
@@ -464,6 +472,55 @@ function renderStackHeadline(stackStatus: StackStatus): string {
     default:
       return `${paint(ansi.bold, ansi.yellow)}Brezel status is unknown${paintReset()}`
   }
+}
+
+function renderLoginInfoBlock(loginInfo: LoginInfo[]): string[] {
+  const rows = chunkLoginInfoRows(loginInfo, 3)
+  const roleLabelWidth = Math.max(...loginInfo.map((entry) => entry.root ? 4 : 4))
+  const cards = loginInfo.map((entry) => formatLoginLines(entry, roleLabelWidth))
+  const cardWidth = Math.max(...cards.flatMap((lines) => lines.map((line) => stripAnsi(line).length)))
+
+  const rowLines = rows.flatMap((entries, rowIndex) => {
+    const rowCards = entries.map((entry) => formatLoginLines(entry, roleLabelWidth))
+    const maxCardHeight = Math.max(...rowCards.map((lines) => lines.length))
+
+    const renderedRow = Array.from({ length: maxCardHeight }, (_value, index) => rowCards
+      .map((card) => padVisible(card[index] || "", cardWidth))
+      .join("    ")
+      .trimEnd())
+
+    return rowIndex < rows.length - 1 ? [...renderedRow, ""] : renderedRow
+  })
+
+  const lines = [
+    `${paint(ansi.bold)}Login information${paintReset()}`,
+    "",
+    ...rowLines,
+  ]
+
+  return renderInlineBoxLines(lines)
+}
+
+function formatLoginLines(entry: LoginInfo, roleLabelWidth: number): string[] {
+  const label = entry.root
+    ? `${paint(ansi.bold, ansi.green)}ROOT${paintReset()}`
+    : `${paint(ansi.bold)}USER${paintReset()}`
+  const labelPadding = " ".repeat(roleLabelWidth)
+
+  return [
+    `${padVisible(label, roleLabelWidth)}  email: ${entry.email}`,
+    `${labelPadding}  password: ${entry.password}`,
+  ]
+}
+
+function chunkLoginInfoRows(loginInfo: LoginInfo[], maxPerRow: number): LoginInfo[][] {
+  const rows: LoginInfo[][] = []
+
+  for (let index = 0; index < loginInfo.length; index += maxPerRow) {
+    rows.push(loginInfo.slice(index, index + maxPerRow))
+  }
+
+  return rows
 }
 
 function renderPromptBlock(prompt: PromptState): string[] {
