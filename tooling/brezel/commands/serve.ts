@@ -476,7 +476,7 @@ async function runServeControlLoop(appSystem: string, context: ServeControlConte
         await runCapturedAction(() => startExploreDb(updateLiveActionOutput))
         return
       case "p":
-        console.log("Opening diagnostics. Press Ctrl+C to return.")
+        console.log("Peeking into stack logs. Press Ctrl+C to return.")
         await runAction(() => runLogsCommand(["all"]), [0, 1, 130])
         return
       case "w":
