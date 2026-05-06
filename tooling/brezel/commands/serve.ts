@@ -540,15 +540,15 @@ function renderServeControlScreen(appSystem: string, showHelp: boolean, shimmerF
   console.log("")
 
   if (showHelp) {
+      const dimHotkey = (key: string) => `${hotkey(key)}${paint(ansi.dim)}`
       console.log(
         centerLine(
-          `${paint(ansi.dim)}Actions:${paintReset()} ` +
-          `${hotkey("b")} bakery  ${hotkey("x")} brezel  ${hotkey("u")} update  ${hotkey("a")} apply  ${hotkey("l")} load  ${hotkey("r")} restart  ` +
-          `${hotkey("e")} explore db  ${hotkey("d")} debug  ${hotkey("p")} peek  ${hotkey("w")} jobs  ${hotkey("q")} quit  ${hotkey("h")} hide help`
+          `${paint(ansi.dim)}Actions: ${dimHotkey("b")} bakery  ${dimHotkey("x")} brezel  ${dimHotkey("u")} update  ${dimHotkey("a")} apply  ${dimHotkey("l")} load  ${dimHotkey("r")} restart  ` +
+          `${dimHotkey("e")} explore db  ${dimHotkey("d")} debug  ${dimHotkey("p")} peek  ${dimHotkey("w")} jobs  ${dimHotkey("q")} quit  ${dimHotkey("h")} hide help${paintReset()}`
         )
       )
   } else {
-    console.log(centerLine(`${paint(ansi.dim)}Press ${hotkey("h")} for controls, ${hotkey("q")} or ${hotkey("Ctrl+C")} to stop Brezel.${paintReset()}`))
+    console.log(centerLine(`${paint(ansi.dim)}Press ${hotkey("h")}${paint(ansi.dim)} for controls, ${hotkey("q")}${paint(ansi.dim)} or ${hotkey("Ctrl+C")}${paint(ansi.dim)} to stop Brezel.${paintReset()}`))
   }
 
   if (prompt) {
