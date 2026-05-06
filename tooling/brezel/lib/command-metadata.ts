@@ -67,8 +67,8 @@ export const commandMetadata: CommandMetadata[] = [
   },
   {
     name: "logs",
-    usage: "brezel logs <target>",
-    description: "Follow logs for a local dev target",
+    usage: "brezel logs <all|app|bootstrap|scheduler|vite|workers>\n  brezel logs file [filename]",
+    description: "Follow container logs or open a local logfile in lnav",
     serveDashboard: {
       allowed: false,
       reason: "brezel logs stays attached in the foreground. Use the dashboard log shortcuts instead.",
@@ -91,7 +91,7 @@ export const commandMetadata: CommandMetadata[] = [
   },
   {
     name: "serve",
-    usage: "brezel serve [interactive] [--rebuild]",
+    usage: "brezel serve [interactive] [--rebuild] [--skip-stack-start]",
     description: "Start the local Docker stack in the foreground, optionally interactive and/or rebuilt first",
     serveDashboard: {
       allowed: false,
@@ -118,7 +118,7 @@ export const commandMetadata: CommandMetadata[] = [
   },
   {
     name: "unlink",
-    usage: "brezel unlink [api|spa|all]",
+    usage: "brezel unlink [api|spa|all|both]",
     description: "Remove local brezel/api or brezel/spa links from this project",
     serveDashboard: { allowed: true },
   },
