@@ -85,7 +85,7 @@ function buildComposeOverride(state: LinkState): string {
   ]
 
   if (state.api) {
-    const mount = yamlString(`${state.api}:/var/www/app/vendor/brezel/api`)
+    const mount = yamlString(`${state.api}:/var/www/brezel/vendor/brezel/api`)
     for (const service of ["app", "workers", "scheduler"]) {
       lines.push(`  ${service}:`)
       lines.push("    volumes:")

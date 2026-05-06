@@ -18,7 +18,7 @@
 }
 
 :8081 {
-    root * /var/www/app/public
+    root * /var/www/brezel/public
     encode zstd br gzip
 
     request_body {
@@ -32,7 +32,7 @@
     }
 
     php_server {
-        root /var/www/app/public
+        root /var/www/brezel/public
         try_files {path} index.php
     }
 }

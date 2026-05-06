@@ -44,3 +44,4 @@ storage/app/tenancy/tenants/*
 
 ./supervisord.conf
 .brezel-state/
+/BREZEL_CLI_HANDOFF.md

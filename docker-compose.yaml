@@ -2,7 +2,7 @@ x-brezel-php-service: &brezel-php-service
   build:
     context: .
     dockerfile: ./container/Dockerfile
-  working_dir: /var/www/app
+  working_dir: /var/www/brezel
   env_file:
     - .env
   environment:
@@ -19,7 +19,7 @@ x-brezel-php-service: &brezel-php-service
     XDG_CONFIG_HOME: /home/brezel/.config
     XDG_DATA_HOME: /home/brezel/.local/share
   volumes:
-    - .:/var/www/app
+    - .:/var/www/brezel
   restart: unless-stopped
 
 services:
@@ -85,7 +85,7 @@ services:
   node_deps:
     image: node:22-bookworm
     user: "1000:1000"
-    working_dir: /var/www/app
+    working_dir: /var/www/brezel
     environment:
       HOME: /home/node
       NPM_TOKEN: ${NPM_TOKEN:-}
@@ -115,7 +115,7 @@ services:
           rm -rf node_modules/.vite
         fi
     volumes:
-      - .:/var/www/app
+      - .:/var/www/brezel
     restart: "no"
 
   app:
@@ -129,7 +129,7 @@ services:
     ports:
       - "2041:8081"
     volumes:
-      - .:/var/www/app
+      - .:/var/www/brezel
       - caddy_data:/data
       - caddy_config:/config
 
@@ -161,7 +161,7 @@ services:
   vite:
     image: node:22-bookworm
     user: "1000:1000"
-    working_dir: /var/www/app
+    working_dir: /var/www/brezel
     environment:
       HOME: /home/node
       NPM_TOKEN: ${NPM_TOKEN:-}
@@ -187,7 +187,7 @@ services:
     ports:
       - "2040:2040"
     volumes:
-      - .:/var/www/app
+      - .:/var/www/brezel
     restart: unless-stopped
 
   phpmyadmin:

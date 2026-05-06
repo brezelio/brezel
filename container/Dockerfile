@@ -1,6 +1,6 @@
 FROM dunglas/frankenphp:1-php8.4-bookworm
 
-ENV APP_PATH=/var/www/app \
+ENV APP_PATH=/var/www/brezel \
     COMPOSER_ALLOW_SUPERUSER=1
 
 WORKDIR ${APP_PATH}
