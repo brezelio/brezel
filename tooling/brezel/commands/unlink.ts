@@ -1,16 +1,19 @@
 import { refreshLinkedTargets } from "../lib/link-actions"
 import { readLinkState, type LinkTarget, writeLinkState } from "../lib/links"
 import { askChoice } from "../lib/questions"
-import { assertInteractiveTerminal, assertNoArgs } from "../lib/validation"
+import { assertInteractiveTerminal } from "../lib/validation"
 
 type UnlinkTarget = LinkTarget | "both"
 
 export async function runUnlinkCommand(args: string[]): Promise<number> {
-  if (!assertNoArgs("brezel unlink", args)) {
+  if (args.length > 1 || (args.length === 1 && !["api", "spa", "all", "both"].includes(args[0]))) {
+    console.error("Usage: brezel unlink [api|spa|all]")
     return 1
   }
 
-  if (!assertInteractiveTerminal("brezel unlink")) {
+  const hasExplicitTarget = args.length === 1
+
+  if (!hasExplicitTarget && !assertInteractiveTerminal("brezel unlink")) {
     return 1
   }
 
@@ -31,7 +34,9 @@ export async function runUnlinkCommand(args: string[]): Promise<number> {
     choices.push({ value: "both", label: "both" })
   }
 
-  const target = await askChoice<UnlinkTarget>("What do you want to unlink?", choices)
+  const target = hasExplicitTarget
+    ? ((args[0] === "all" ? "both" : args[0]) as UnlinkTarget)
+    : await askChoice<UnlinkTarget>("What do you want to unlink?", choices)
   const affectedTargets: LinkTarget[] = []
 
   if (target === "both") {

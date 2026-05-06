@@ -1,5 +1,8 @@
+import { existsSync, rmSync } from "node:fs"
+import { join } from "node:path"
 import { createInterface } from "node:readline"
 import { runComposeCommand } from "../lib/compose"
+import { getProjectDir } from "../lib/exec"
 
 export async function runTeardownCommand(args: string[]): Promise<number> {
   const force = args.includes("--force")
@@ -21,7 +24,13 @@ export async function runTeardownCommand(args: string[]): Promise<number> {
   }
 
   console.log("Tearing down the local Brezel Docker stack, its volumes, and its local images")
-  return runComposeCommand(["down", "-v", "--rmi", "local", "--remove-orphans"], { profiles: ["db-explore"] })
+  const exitCode = runComposeCommand(["down", "-v", "--rmi", "local", "--remove-orphans"], { profiles: ["db-explore"] })
+
+  if (exitCode === 0) {
+    cleanupLocalBrezelState()
+  }
+
+  return exitCode
 }
 
 async function confirmTeardown(): Promise<boolean> {
@@ -36,4 +45,12 @@ async function confirmTeardown(): Promise<boolean> {
       resolve(["y", "yes"].includes(answer.trim().toLowerCase()))
     })
   })
+}
+
+function cleanupLocalBrezelState(): void {
+  const stateDir = join(getProjectDir(), ".brezel-state")
+
+  if (existsSync(stateDir)) {
+    rmSync(stateDir, { recursive: true, force: true })
+  }
 }

@@ -96,7 +96,7 @@ const commandDefinitions: CommandDefinition[] = [
   },
   {
     name: "unlink",
-    usage: "brezel unlink",
+    usage: "brezel unlink [api|spa|all]",
     description: "Remove local brezel/api or brezel/spa links from this project",
     handler: runUnlinkCommand,
   },
