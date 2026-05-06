@@ -9,7 +9,7 @@ import { getProjectDir, runProjectCommandInteractive, runProjectCommandStreaming
 import { readLoginInfo, type LoginInfo } from "../lib/login-info"
 import { buildCommandOutput, normalizeOutputLines } from "../lib/output"
 import { readStackStatus, type StackStatus } from "../lib/stack-status"
-import { ansi, brezelLogo, centerLine, type CommandOutput, hotkey, isPrintableInput, maxLogoWidth, padVisible, paint, paintReset, renderCommandOutputBlock, renderInlineBox, renderInlineBoxLines, renderLogoLine, statusLine, stripAnsi } from "../lib/ui"
+import { ansi, brezelLogo, centerLine, type CommandOutput, hotkey, isPrintableInput, maxLogoWidth, padVisible, paint, paintReset, renderInlineBox, renderInlineBoxLines, renderLogoLine, statusLine, stripAnsi } from "../lib/ui"
 import { startExploreDb } from "./explore-db"
 import { runLogsCommand } from "./logs"
 import { portIsBusy } from "../lib/ports"
@@ -155,6 +155,8 @@ type PromptState = {
 
 type LiveOutputUpdater = (title: string, lines: string[]) => void
 
+const outputVisibleLineCount = 12
+
 async function runServeControlLoop(appSystem: string, context: ServeControlContext): Promise<number> {
   if (!process.stdin.isTTY) {
     console.log("Brezel is running in the foreground.")
@@ -173,11 +175,12 @@ async function runServeControlLoop(appSystem: string, context: ServeControlConte
   let statusTimer: ReturnType<typeof setInterval> | null = null
   let lastActionOutput: LastActionOutput | null = null
   let liveActionOutput: LastActionOutput | null = null
+  let outputScrollOffset = 0
   let prompt: PromptState | null = null
   let stackStatus: StackStatus = readStackStatus()
   const loginInfo = readLoginInfo(appSystem)
 
-  const render = () => renderServeControlScreen(appSystem, showHelp, shimmerFrame, liveActionOutput ?? lastActionOutput, prompt, stackStatus, loginInfo)
+  const render = () => renderServeControlScreen(appSystem, showHelp, shimmerFrame, liveActionOutput ?? lastActionOutput, prompt, stackStatus, loginInfo, outputScrollOffset)
   const updateLiveActionOutput: LiveOutputUpdater = (title, lines) => {
     liveActionOutput = {
       title,
@@ -185,6 +188,7 @@ async function runServeControlLoop(appSystem: string, context: ServeControlConte
       success: true,
       live: true,
     }
+    outputScrollOffset = 0
     render()
   }
 
@@ -317,9 +321,11 @@ async function runServeControlLoop(appSystem: string, context: ServeControlConte
         success: true,
         live: true,
       }
+      outputScrollOffset = 0
       render()
       lastActionOutput = await action()
       liveActionOutput = null
+      outputScrollOffset = 0
       return lastActionOutput.success ? 0 : 1
     }, [0, 1])
   }
@@ -381,9 +387,18 @@ async function runServeControlLoop(appSystem: string, context: ServeControlConte
         showHelp = !showHelp
         render()
         return
+      case "j":
+        outputScrollOffset = scrollOutput(outputScrollOffset, liveActionOutput ?? lastActionOutput, -1)
+        render()
+        return
+      case "k":
+        outputScrollOffset = scrollOutput(outputScrollOffset, liveActionOutput ?? lastActionOutput, 1)
+        render()
+        return
       case "c":
         lastActionOutput = null
         liveActionOutput = null
+        outputScrollOffset = 0
         render()
         return
       case "b":
@@ -415,6 +430,18 @@ async function runServeControlLoop(appSystem: string, context: ServeControlConte
         await runAction(() => runLogsCommand(["workers"]), [0, 1, 130])
         return
     }
+
+    if (key.ctrl && key.name === "d") {
+      outputScrollOffset = scrollOutput(outputScrollOffset, liveActionOutput ?? lastActionOutput, -Math.ceil(outputVisibleLineCount / 2))
+      render()
+      return
+    }
+
+    if (key.ctrl && key.name === "u") {
+      outputScrollOffset = scrollOutput(outputScrollOffset, liveActionOutput ?? lastActionOutput, Math.ceil(outputVisibleLineCount / 2))
+      render()
+      return
+    }
   }
 
   let resolveExit: (code: number) => void = () => {}
@@ -432,7 +459,7 @@ async function runServeControlLoop(appSystem: string, context: ServeControlConte
   })
 }
 
-function renderServeControlScreen(appSystem: string, showHelp: boolean, shimmerFrame: number, lastActionOutput: LastActionOutput | null, prompt: PromptState | null, stackStatus: StackStatus, loginInfo: LoginInfo[]): void {
+function renderServeControlScreen(appSystem: string, showHelp: boolean, shimmerFrame: number, lastActionOutput: LastActionOutput | null, prompt: PromptState | null, stackStatus: StackStatus, loginInfo: LoginInfo[], outputScrollOffset: number): void {
   clearTerminalScreen()
   console.log("")
   const statusLabel = showHelp ? "help: visible" : "help: hidden"
@@ -478,10 +505,43 @@ function renderServeControlScreen(appSystem: string, showHelp: boolean, shimmerF
 
   if (lastActionOutput) {
     console.log("")
-    for (const line of renderCommandOutputBlock(lastActionOutput, { live: "Running", complete: "Last output" })) {
+    for (const line of renderScrollableCommandOutputBlock(lastActionOutput, outputScrollOffset)) {
       console.log(centerLine(line))
     }
+    console.log("")
+    console.log(centerLine(`${paint(ansi.dim)}Scroll output: ${hotkey("k")} up  ${hotkey("j")} down  ${hotkey("Ctrl+U")} half page up  ${hotkey("Ctrl+D")} half page down  ${hotkey("c")} clear${paintReset()}`))
   }
+}
+
+function renderScrollableCommandOutputBlock(output: CommandOutput, scrollOffset: number): string[] {
+  const totalLines = output.lines.length
+  const maxScrollOffset = Math.max(0, totalLines - outputVisibleLineCount)
+  const clampedOffset = Math.min(Math.max(scrollOffset, 0), maxScrollOffset)
+  const end = totalLines - clampedOffset
+  const start = Math.max(0, end - outputVisibleLineCount)
+  const visibleLines = output.lines.slice(start, end)
+  const prefix = output.live ? "Running" : "Last output"
+  const statusColor = output.success ? ansi.green : ansi.yellow
+  const header = `${paint(statusColor, ansi.bold)}${prefix}:${paintReset()} ${output.title}`
+  const rangeLabel = totalLines > outputVisibleLineCount
+    ? `${paint(ansi.dim)}Showing lines ${start + 1}-${end} of ${totalLines}${paintReset()}`
+    : `${paint(ansi.dim)}Showing all ${totalLines} lines${paintReset()}`
+
+  return renderInlineBoxLines([
+    header,
+    rangeLabel,
+    "",
+    ...(visibleLines.length > 0 ? visibleLines : ["No output yet."]),
+  ])
+}
+
+function scrollOutput(currentOffset: number, output: CommandOutput | null, delta: number): number {
+  if (!output) {
+    return 0
+  }
+
+  const maxOffset = Math.max(0, output.lines.length - outputVisibleLineCount)
+  return Math.min(Math.max(currentOffset + delta, 0), maxOffset)
 }
 
 function clearTerminalScreen(): void {
