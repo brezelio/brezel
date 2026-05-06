@@ -58,6 +58,10 @@ run = "bin/brezel serve"
 description = "Start the Zellij based control pane for detailed interaction with the stack"
 run = "bin/brezel serve interactive"
 
+[tasks.attach]
+description = "Get a shell in a running Brezel environment in your container"
+run = "bin/brezel attach"
+
 [tasks.teardown]
 description = "Stop the Docker stack and remove its volumes"
 run = "bin/brezel teardown"
