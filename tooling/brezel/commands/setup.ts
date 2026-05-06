@@ -428,6 +428,7 @@ function getSingleSystemIdentifier(): string {
   const systemsDir = join(getProjectDir(), "systems")
   const identifiers = readdirSync(systemsDir)
     .filter((entry) => !entry.startsWith("."))
+    .filter((entry) => !entry.includes("__test__"))
     .filter((entry) => statSync(join(systemsDir, entry)).isDirectory())
 
   if (identifiers.length !== 1) {
