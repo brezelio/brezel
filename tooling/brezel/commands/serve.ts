@@ -166,6 +166,7 @@ async function runServeControlLoop(appSystem: string, context: ServeControlConte
 
   let busy = false
   let cleanedUpInput = false
+  let usingAlternateScreen = false
   let showHelp = false
   let shimmerFrame = 0
   let shimmerTimer: ReturnType<typeof setInterval> | null = null
@@ -208,8 +209,27 @@ async function runServeControlLoop(appSystem: string, context: ServeControlConte
     stopShimmer()
     stopStatusPolling()
     disableRawMode()
+    leaveAlternateScreen()
     process.stdin.removeListener("keypress", onKeypress)
     process.stdin.pause()
+  }
+
+  const enterAlternateScreen = () => {
+    if (!process.stdout.isTTY || usingAlternateScreen) {
+      return
+    }
+
+    process.stdout.write("\u001b[?1049h\u001b[H")
+    usingAlternateScreen = true
+  }
+
+  const leaveAlternateScreen = () => {
+    if (!process.stdout.isTTY || !usingAlternateScreen) {
+      return
+    }
+
+    process.stdout.write("\u001b[?1049l")
+    usingAlternateScreen = false
   }
 
   const startShimmer = () => {
@@ -396,6 +416,7 @@ async function runServeControlLoop(appSystem: string, context: ServeControlConte
 
   process.stdin.on("keypress", onKeypress)
   process.stdin.resume()
+  enterAlternateScreen()
   restoreRawMode()
   render()
   startShimmer()
