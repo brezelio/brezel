@@ -11,6 +11,7 @@ import { runSetupCommand } from "./commands/setup"
 import { runTeardownCommand } from "./commands/teardown"
 import { runUnlinkCommand } from "./commands/unlink"
 import { runUpdateCommand } from "./commands/update"
+import { commandMetadata } from "./lib/command-metadata"
 
 type CommandHandler = (args: string[]) => number | Promise<number>
 
@@ -21,86 +22,26 @@ type CommandDefinition = {
   handler: CommandHandler
 }
 
-const commandDefinitions: CommandDefinition[] = [
-  {
-    name: "bakery",
-    usage: "brezel bakery <args...>",
-    description: "Run bakery inside the app container",
-    handler: runBakeryCommand,
-  },
-  {
-    name: "attach",
-    usage: "brezel attach",
-    description: "Open an interactive shell inside the app container",
-    handler: runAttachCommand,
-  },
-  {
-    name: "apply",
-    usage: "brezel apply",
-    description: "Run bakery apply in the app container",
-    handler: runApplyCommand,
-  },
-  {
-    name: "explore-db",
-    usage: "brezel explore-db",
-    description: "Start phpMyAdmin for the local Brezel MariaDB instance",
-    handler: runExploreDbCommand,
-  },
-  {
-    name: "link",
-    usage: "brezel link",
-    description: "Link a local brezel/api or brezel/spa checkout into this project",
-    handler: runLinkCommand,
-  },
-  {
-    name: "load",
-    usage: "brezel load",
-    description: "Run bakery load in the app container",
-    handler: runLoadCommand,
-  },
-  {
-    name: "logs",
-    usage: "brezel logs <target>",
-    description: "Follow logs for a local dev target",
-    handler: runLogsCommand,
-  },
-  {
-    name: "shell",
-    usage: "brezel shell",
-    description: "Open the interactive project shell used inside Zellij",
-    handler: runShellCommand,
-  },
-  {
-    name: "update",
-    usage: "brezel update",
-    description: "Run migrate, load, and apply in the app container",
-    handler: runUpdateCommand,
-  },
-  {
-    name: "serve",
-    usage: "brezel serve [interactive] [--rebuild]",
-    description: "Start the local Docker stack in the foreground, optionally interactive and/or rebuilt first",
-    handler: runServeCommand,
-  },
-  {
-    name: "setup",
-    usage: "brezel setup",
-    description: "Configure .env, install dependencies, initialize Brezel, and start it",
-    handler: runSetupCommand,
-  },
-  {
-    name: "teardown",
-    usage: "brezel teardown [--force]",
-    description: "Stop the local Docker stack and remove its volumes and local images",
-    handler: runTeardownCommand,
-  },
-  {
-    name: "unlink",
-    usage: "brezel unlink [api|spa|all]",
-    description: "Remove local brezel/api or brezel/spa links from this project",
-    handler: runUnlinkCommand,
-  },
-]
+const commandHandlers: Record<string, CommandHandler> = {
+  bakery: runBakeryCommand,
+  attach: runAttachCommand,
+  apply: runApplyCommand,
+  "explore-db": runExploreDbCommand,
+  link: runLinkCommand,
+  load: runLoadCommand,
+  logs: runLogsCommand,
+  shell: runShellCommand,
+  update: runUpdateCommand,
+  serve: runServeCommand,
+  setup: runSetupCommand,
+  teardown: runTeardownCommand,
+  unlink: runUnlinkCommand,
+}
+
+const commandDefinitions: CommandDefinition[] = commandMetadata.map((command) => ({
+  ...command,
+  handler: commandHandlers[command.name],
+}))
 
 const commandMap = new Map(commandDefinitions.map((command) => [command.name, command]))
 

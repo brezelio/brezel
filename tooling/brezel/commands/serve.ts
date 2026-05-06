@@ -3,8 +3,9 @@ import { join } from "node:path"
 import { emitKeypressEvents } from "node:readline"
 import { runComposeCommand as runCompose } from "../lib/compose"
 import { runBakeryArgsStreamingCaptured } from "../lib/bakery"
+import { getCommandMetadata } from "../lib/command-metadata"
 import { getProjectEnvValue } from "../lib/env"
-import { getProjectDir, runProjectCommandInteractive } from "../lib/exec"
+import { getProjectDir, runProjectCommandInteractive, runProjectCommandStreamingCaptured } from "../lib/exec"
 import { buildCommandOutput, normalizeOutputLines } from "../lib/output"
 import { ansi, brezelLogo, centerLine, type CommandOutput, hotkey, isPrintableInput, maxLogoWidth, paint, paintReset, renderCommandOutputBlock, renderInlineBox, renderInlineBoxLines, renderLogoLine, statusLine } from "../lib/ui"
 import { startExploreDb } from "./explore-db"
@@ -145,7 +146,8 @@ type ServeControlContext = {
 
 type LastActionOutput = CommandOutput
 
-type BakeryPromptState = {
+type PromptState = {
+  kind: "bakery" | "command"
   value: string
 }
 
@@ -167,9 +169,9 @@ async function runServeControlLoop(appSystem: string, context: ServeControlConte
   let shimmerTimer: ReturnType<typeof setInterval> | null = null
   let lastActionOutput: LastActionOutput | null = null
   let liveActionOutput: LastActionOutput | null = null
-  let bakeryPrompt: BakeryPromptState | null = null
+  let prompt: PromptState | null = null
 
-  const render = () => renderServeControlScreen(appSystem, showHelp, shimmerFrame, liveActionOutput ?? lastActionOutput, bakeryPrompt)
+  const render = () => renderServeControlScreen(appSystem, showHelp, shimmerFrame, liveActionOutput ?? lastActionOutput, prompt)
   const updateLiveActionOutput: LiveOutputUpdater = (title, lines) => {
     liveActionOutput = {
       title,
@@ -273,32 +275,35 @@ async function runServeControlLoop(appSystem: string, context: ServeControlConte
       return
     }
 
-    if (bakeryPrompt) {
+    if (prompt) {
       if (key.ctrl && key.name === "c") {
-        bakeryPrompt = null
+        prompt = null
         render()
         return
       }
 
       switch (key.name) {
         case "escape":
-          bakeryPrompt = null
+          prompt = null
           render()
           return
         case "return":
         case "enter": {
-          const command = bakeryPrompt.value
-          bakeryPrompt = null
-          await runCapturedAction(() => runBakeryPromptCommand(command, updateLiveActionOutput))
+          const command = prompt.value
+          const kind = prompt.kind
+          prompt = null
+          await runCapturedAction(() => kind === "bakery"
+            ? runBakeryPromptCommand(command, updateLiveActionOutput)
+            : runServeCommandPrompt(command, updateLiveActionOutput))
           return
         }
         case "backspace":
-          bakeryPrompt.value = bakeryPrompt.value.slice(0, -1)
+          prompt.value = prompt.value.slice(0, -1)
           render()
           return
         default:
           if (_str && isPrintableInput(_str)) {
-            bakeryPrompt.value += _str
+            prompt.value += _str
             render()
           }
           return
@@ -323,7 +328,11 @@ async function runServeControlLoop(appSystem: string, context: ServeControlConte
         render()
         return
       case "b":
-        bakeryPrompt = { value: "" }
+        prompt = { kind: "bakery", value: "" }
+        render()
+        return
+      case "x":
+        prompt = { kind: "command", value: "" }
         render()
         return
       case "u":
@@ -362,7 +371,7 @@ async function runServeControlLoop(appSystem: string, context: ServeControlConte
   })
 }
 
-function renderServeControlScreen(appSystem: string, showHelp: boolean, shimmerFrame: number, lastActionOutput: LastActionOutput | null, bakeryPrompt: BakeryPromptState | null): void {
+function renderServeControlScreen(appSystem: string, showHelp: boolean, shimmerFrame: number, lastActionOutput: LastActionOutput | null, prompt: PromptState | null): void {
   console.clear()
   console.log("")
   console.log("")
@@ -386,17 +395,17 @@ function renderServeControlScreen(appSystem: string, showHelp: boolean, shimmerF
       console.log(
         centerLine(
           `${paint(ansi.dim)}Actions:${paintReset()} ` +
-          `${hotkey("b")} bakery   ${hotkey("u")} update   ${hotkey("a")} apply   ${hotkey("l")} load   ` +
-          `${hotkey("e")} explore db   ${hotkey("p")} peek   ${hotkey("j")} jobs   ${hotkey("q")} quit   ${hotkey("h")} hide help`
+          `${hotkey("b")} bakery  ${hotkey("x")} brezel  ${hotkey("u")} update  ${hotkey("a")} apply  ${hotkey("l")} load  ` +
+          `${hotkey("e")} explore db  ${hotkey("p")} peek  ${hotkey("j")} jobs  ${hotkey("q")} quit  ${hotkey("h")} hide help`
         )
       )
   } else {
     console.log(centerLine(`${paint(ansi.dim)}Press ${hotkey("h")} for controls, ${hotkey("q")} or ${hotkey("Ctrl+C")} to stop Brezel.${paintReset()}`))
   }
 
-  if (bakeryPrompt) {
+  if (prompt) {
     console.log("")
-    for (const line of renderBakeryPromptBlock(bakeryPrompt)) {
+    for (const line of renderPromptBlock(prompt)) {
       console.log(centerLine(line))
     }
   }
@@ -411,12 +420,18 @@ function renderServeControlScreen(appSystem: string, showHelp: boolean, shimmerF
   console.log("")
 }
 
-function renderBakeryPromptBlock(prompt: BakeryPromptState): string[] {
-  const displayValue = prompt.value.length > 0 ? prompt.value : `${paint(ansi.dim)}type a bakery command...${paintReset()}`
+function renderPromptBlock(prompt: PromptState): string[] {
+  const title = prompt.kind === "bakery" ? "Bakery command" : "Brezel command"
+  const prefix = prompt.kind === "bakery" ? "brezel bakery " : "brezel "
+  const placeholder = prompt.kind === "bakery"
+    ? "type a bakery command..."
+    : "type any brezel command..."
+  const displayValue = prompt.value.length > 0 ? prompt.value : `${paint(ansi.dim)}${placeholder}${paintReset()}`
+
   return renderInlineBoxLines([
-    `${paint(ansi.bold)}Bakery command${paintReset()}`,
+    `${paint(ansi.bold)}${title}${paintReset()}`,
     "",
-    `> brezel bakery ${displayValue}`,
+    `> ${prefix}${displayValue}`,
     `${paint(ansi.dim)}Enter to run, Esc to cancel${paintReset()}`,
   ])
 }
@@ -442,6 +457,61 @@ async function runBakeryPromptCommand(input: string, onUpdate: LiveOutputUpdater
   }
 
   return await runBakeryCommandStreaming(`brezel bakery ${trimmedInput}`, args, onUpdate)
+}
+
+async function runServeCommandPrompt(input: string, onUpdate: LiveOutputUpdater): Promise<LastActionOutput> {
+  const trimmedInput = input.trim()
+
+  if (!trimmedInput) {
+    return {
+      title: "Brezel command",
+      lines: ["No Brezel command entered."],
+      success: true,
+    }
+  }
+
+  const normalizedInput = trimmedInput.startsWith("brezel ") ? trimmedInput.slice("brezel ".length).trim() : trimmedInput
+  const args = splitCommandLine(normalizedInput)
+  if (args === null) {
+    return {
+      title: `brezel ${trimmedInput}`,
+      lines: ["Could not parse Brezel command. Check your quotes and try again."],
+      success: false,
+    }
+  }
+
+  if (args.length === 0) {
+    return {
+      title: "Brezel command",
+      lines: ["No Brezel command entered."],
+      success: true,
+    }
+  }
+
+  const [commandName] = args
+  const metadata = getCommandMetadata(commandName)
+
+  if (!metadata && !["help", "--help", "-h"].includes(commandName)) {
+    return {
+      title: `brezel ${normalizedInput}`,
+      lines: [
+        `Unknown brezel command: ${commandName}`,
+        "",
+        "Run `brezel --help` to see available commands.",
+      ],
+      success: false,
+    }
+  }
+
+  if (metadata && !metadata.serveDashboard.allowed) {
+    return {
+      title: `brezel ${normalizedInput}`,
+      lines: [metadata.serveDashboard.reason ?? "That command cannot run inside the serve dashboard."],
+      success: false,
+    }
+  }
+
+  return await runBrezelCommandStreaming(`brezel ${normalizedInput}`, args, onUpdate)
 }
 
 async function runApplyCommandCaptured(onUpdate: LiveOutputUpdater): Promise<LastActionOutput> {
@@ -509,6 +579,30 @@ async function runBakeryCommandStreaming(title: string, args: string[], onUpdate
   let stderr = ""
 
   const result = await runBakeryArgsStreamingCaptured(args, {
+    mirrorStdout: false,
+    mirrorStderr: false,
+    onStdoutChunk: (chunk) => {
+      stdout += chunk
+      onUpdate(title, normalizeOutputLines(stdout, stderr))
+    },
+    onStderrChunk: (chunk) => {
+      stderr += chunk
+      onUpdate(title, normalizeOutputLines(stdout, stderr))
+    },
+  })
+
+  return buildCommandOutput(title, result.stdout, result.stderr, result.exitCode)
+}
+
+async function runBrezelCommandStreaming(title: string, args: string[], onUpdate: LiveOutputUpdater): Promise<LastActionOutput> {
+  let stdout = ""
+  let stderr = ""
+
+  const result = await runProjectCommandStreamingCaptured({
+    unixCommand: "bun",
+    windowsCommand: "bun",
+    args: ["./bin/brezel.ts", ...args],
+  }, {
     mirrorStdout: false,
     mirrorStderr: false,
     onStdoutChunk: (chunk) => {
