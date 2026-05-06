@@ -407,20 +407,19 @@ async function runServeControlLoop(appSystem: string, context: ServeControlConte
 }
 
 function renderServeControlScreen(appSystem: string, showHelp: boolean, shimmerFrame: number, lastActionOutput: LastActionOutput | null, prompt: PromptState | null, stackStatus: StackStatus, loginInfo: LoginInfo[]): void {
-  console.clear()
-  console.log("")
+  clearTerminalScreen()
   console.log("")
   const statusLabel = showHelp ? "help: visible" : "help: hidden"
   for (const line of brezelLogo.map((entry, index) => renderLogoLine(entry, index, shimmerFrame))) {
     console.log(centerLine(line))
   }
-
   console.log("")
+
   for (const line of renderInlineBox(renderStackHeadline(stackStatus))) {
     console.log(centerLine(line))
   }
 
-  console.log("\n")
+  console.log("")
   console.log(centerLine(statusLine([stackStatus.label, stackStatus.detail, statusLabel])))
   console.log("")
   console.log(centerLine(`${paint(ansi.bold)}${renderServeEndpointLine(appSystem)}${paintReset()}`))
@@ -430,7 +429,7 @@ function renderServeControlScreen(appSystem: string, showHelp: boolean, shimmerF
       console.log(centerLine(line))
     }
   }
-  console.log("\n")
+  console.log("")
 
   if (showHelp) {
       console.log(
@@ -457,8 +456,15 @@ function renderServeControlScreen(appSystem: string, showHelp: boolean, shimmerF
       console.log(centerLine(line))
     }
   }
+}
 
-  console.log("")
+function clearTerminalScreen(): void {
+  if (process.stdout.isTTY) {
+    process.stdout.write("\u001b[2J\u001b[H")
+    return
+  }
+
+  console.clear()
 }
 
 function renderStackHeadline(stackStatus: StackStatus): string {
