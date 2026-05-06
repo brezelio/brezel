@@ -490,7 +490,7 @@ function renderServeControlScreen(appSystem: string, showHelp: boolean, shimmerF
         centerLine(
           `${paint(ansi.dim)}Actions:${paintReset()} ` +
           `${hotkey("b")} bakery  ${hotkey("x")} brezel  ${hotkey("u")} update  ${hotkey("a")} apply  ${hotkey("l")} load  ` +
-          `${hotkey("e")} explore db  ${hotkey("p")} peek  ${hotkey("w")} jobs  ${hotkey("c")} clear output  ${hotkey("q")} quit  ${hotkey("h")} hide help`
+          `${hotkey("e")} explore db  ${hotkey("p")} peek  ${hotkey("w")} jobs  ${hotkey("q")} quit  ${hotkey("h")} hide help`
         )
       )
   } else {
