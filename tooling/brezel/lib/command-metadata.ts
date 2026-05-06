@@ -60,6 +60,12 @@ export const commandMetadata: CommandMetadata[] = [
     serveDashboard: { allowed: true },
   },
   {
+    name: "restart",
+    usage: "brezel restart",
+    description: "Restart the local Docker stack",
+    serveDashboard: { allowed: true },
+  },
+  {
     name: "logs",
     usage: "brezel logs <target>",
     description: "Follow logs for a local dev target",

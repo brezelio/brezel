@@ -12,6 +12,7 @@ import { readStackStatus, type StackStatus } from "../lib/stack-status"
 import { ansi, brezelLogo, centerLine, type CommandOutput, hotkey, isPrintableInput, maxLogoWidth, padVisible, paint, paintReset, renderInlineBox, renderInlineBoxLines, renderLogoLine, statusLine, stripAnsi } from "../lib/ui"
 import { startExploreDb } from "./explore-db"
 import { runLogsCommand } from "./logs"
+import { restartStack } from "./restart"
 import { portIsBusy } from "../lib/ports"
 
 const ports = [2040, 2041, 2042, 2043]
@@ -174,6 +175,7 @@ async function runServeControlLoop(appSystem: string, context: ServeControlConte
   let shimmerFrame = 0
   let shimmerTimer: ReturnType<typeof setInterval> | null = null
   let statusTimer: ReturnType<typeof setInterval> | null = null
+  let suspendDashboardRefresh = false
   let lastActionOutput: LastActionOutput | null = null
   let liveActionOutput: LastActionOutput | null = null
   let outputScrollOffset = 0
@@ -267,7 +269,7 @@ async function runServeControlLoop(appSystem: string, context: ServeControlConte
     }
 
     statusTimer = setInterval(() => {
-      if (busy || cleanedUpInput) {
+      if (cleanedUpInput || suspendDashboardRefresh) {
         return
       }
 
@@ -290,6 +292,7 @@ async function runServeControlLoop(appSystem: string, context: ServeControlConte
 
   const runAction = async (action: () => Promise<number> | number, expectedExitCodes: number[] = [0]) => {
     busy = true
+    suspendDashboardRefresh = true
     context.setForegroundAction(true)
     stopShimmer()
     disableRawMode()
@@ -304,11 +307,42 @@ async function runServeControlLoop(appSystem: string, context: ServeControlConte
       }
     } finally {
       context.setForegroundAction(false)
+      suspendDashboardRefresh = false
       if (!cleanedUpInput) {
         process.stdin.resume()
         restoreRawMode()
         render()
         startShimmer()
+      }
+      busy = false
+    }
+  }
+
+  const runBackgroundAction = async (action: () => Promise<number> | number, optimisticStatus?: StackStatus) => {
+    busy = true
+    context.setForegroundAction(true)
+
+    if (optimisticStatus) {
+      stackStatus = optimisticStatus
+      render()
+    }
+
+    try {
+      const exitCode = await action()
+      stackStatus = readStackStatus()
+
+      if (exitCode !== 0) {
+        lastActionOutput = {
+          title: "brezel restart",
+          lines: ["Restart failed. Run `brezel restart` manually to inspect the full output."],
+          success: false,
+        }
+        outputScrollOffset = 0
+      }
+    } finally {
+      context.setForegroundAction(false)
+      if (!cleanedUpInput) {
+        render()
       }
       busy = false
     }
@@ -415,6 +449,12 @@ async function runServeControlLoop(appSystem: string, context: ServeControlConte
         outputScrollOffset = 0
         render()
         return
+      case "r":
+        await runBackgroundAction(
+          () => restartStack({ mirrorStdout: false, mirrorStderr: false }),
+          { phase: "restarting", label: "stack: restarting", detail: "requested by dashboard" },
+        )
+        return
       case "b":
         prompt = { kind: "bakery", value: "" }
         render()
@@ -490,7 +530,7 @@ function renderServeControlScreen(appSystem: string, showHelp: boolean, shimmerF
       console.log(
         centerLine(
           `${paint(ansi.dim)}Actions:${paintReset()} ` +
-          `${hotkey("b")} bakery  ${hotkey("x")} brezel  ${hotkey("u")} update  ${hotkey("a")} apply  ${hotkey("l")} load  ` +
+          `${hotkey("b")} bakery  ${hotkey("x")} brezel  ${hotkey("u")} update  ${hotkey("a")} apply  ${hotkey("l")} load  ${hotkey("r")} restart  ` +
           `${hotkey("e")} explore db  ${hotkey("p")} peek  ${hotkey("w")} jobs  ${hotkey("q")} quit  ${hotkey("h")} hide help`
         )
       )
