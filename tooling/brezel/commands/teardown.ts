@@ -31,7 +31,7 @@ async function confirmTeardown(): Promise<boolean> {
   })
 
   return await new Promise<boolean>((resolve) => {
-    readline.question("This will remove Brezel containers, volumes, and local images. Continue? [y/N] ", (answer) => {
+    readline.question("This will remove Brezel containers, volumes, and local images, aka. DELETE ALL YOUR DATA! Continue? [y/N] ", (answer) => {
       readline.close()
       resolve(["y", "yes"].includes(answer.trim().toLowerCase()))
     })
