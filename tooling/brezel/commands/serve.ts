@@ -370,11 +370,22 @@ async function runServeControlLoop(appSystem: string, context: ServeControlConte
       }
     }
 
-    if (key.ctrl && key.name === "c") {
-      cleanupInput()
-      context.stop()
-      resolveExit(0)
-      return
+    if (key.ctrl) {
+      switch (key.name) {
+        case "c":
+          cleanupInput()
+          context.stop()
+          resolveExit(0)
+          return
+        case "d":
+          outputScrollOffset = scrollOutput(outputScrollOffset, liveActionOutput ?? lastActionOutput, -Math.ceil(outputVisibleLineCount / 2))
+          render()
+          return
+        case "u":
+          outputScrollOffset = scrollOutput(outputScrollOffset, liveActionOutput ?? lastActionOutput, Math.ceil(outputVisibleLineCount / 2))
+          render()
+          return
+      }
     }
 
     switch (key.name) {
@@ -388,10 +399,12 @@ async function runServeControlLoop(appSystem: string, context: ServeControlConte
         render()
         return
       case "j":
+      case "down":
         outputScrollOffset = scrollOutput(outputScrollOffset, liveActionOutput ?? lastActionOutput, -1)
         render()
         return
       case "k":
+      case "up":
         outputScrollOffset = scrollOutput(outputScrollOffset, liveActionOutput ?? lastActionOutput, 1)
         render()
         return
@@ -425,22 +438,10 @@ async function runServeControlLoop(appSystem: string, context: ServeControlConte
         console.log("Opening diagnostics. Press Ctrl+C to return.")
         await runAction(() => runLogsCommand(["all"]), [0, 1, 130])
         return
-      case "j":
+      case "w":
         console.log("Opening worker logs. Press Ctrl+C to return.")
         await runAction(() => runLogsCommand(["workers"]), [0, 1, 130])
         return
-    }
-
-    if (key.ctrl && key.name === "d") {
-      outputScrollOffset = scrollOutput(outputScrollOffset, liveActionOutput ?? lastActionOutput, -Math.ceil(outputVisibleLineCount / 2))
-      render()
-      return
-    }
-
-    if (key.ctrl && key.name === "u") {
-      outputScrollOffset = scrollOutput(outputScrollOffset, liveActionOutput ?? lastActionOutput, Math.ceil(outputVisibleLineCount / 2))
-      render()
-      return
     }
   }
 
@@ -489,7 +490,7 @@ function renderServeControlScreen(appSystem: string, showHelp: boolean, shimmerF
         centerLine(
           `${paint(ansi.dim)}Actions:${paintReset()} ` +
           `${hotkey("b")} bakery  ${hotkey("x")} brezel  ${hotkey("u")} update  ${hotkey("a")} apply  ${hotkey("l")} load  ` +
-          `${hotkey("e")} explore db  ${hotkey("p")} peek  ${hotkey("j")} jobs  ${hotkey("c")} clear output  ${hotkey("q")} quit  ${hotkey("h")} hide help`
+          `${hotkey("e")} explore db  ${hotkey("p")} peek  ${hotkey("w")} jobs  ${hotkey("c")} clear output  ${hotkey("q")} quit  ${hotkey("h")} hide help`
         )
       )
   } else {
@@ -509,7 +510,7 @@ function renderServeControlScreen(appSystem: string, showHelp: boolean, shimmerF
       console.log(centerLine(line))
     }
     console.log("")
-    console.log(centerLine(`${paint(ansi.dim)}Scroll output: ${hotkey("k")} up  ${hotkey("j")} down  ${hotkey("Ctrl+U")} half page up  ${hotkey("Ctrl+D")} half page down  ${hotkey("c")} clear${paintReset()}`))
+    console.log(centerLine(`${paint(ansi.dim)}Scroll: ${hotkey("↑")}/${hotkey("k")} up  ${hotkey("↓")}/${hotkey("j")} down  ${hotkey("Ctrl+U")}/${hotkey("Ctrl+D")} half page  ${hotkey("c")} clear${paintReset()}`))
   }
 }
 
