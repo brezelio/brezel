@@ -7,6 +7,7 @@ import { getCommandMetadata } from "../lib/command-metadata"
 import { getProjectEnvValue } from "../lib/env"
 import { getProjectDir, runProjectCommandInteractive, runProjectCommandStreamingCaptured } from "../lib/exec"
 import { readLoginInfo, type LoginInfo } from "../lib/login-info"
+import { sendLinuxNotification } from "../lib/notifications"
 import { buildCommandOutput, normalizeOutputLines } from "../lib/output"
 import { readStackStatus, type StackStatus } from "../lib/stack-status"
 import { ansi, brezelLogo, centerLine, type CommandOutput, hotkey, isPrintableInput, maxLogoWidth, padVisible, paint, paintReset, renderInlineBox, renderInlineBoxLines, renderLogoLine, statusLine, stripAnsi } from "../lib/ui"
@@ -361,6 +362,14 @@ async function runServeControlLoop(appSystem: string, context: ServeControlConte
       lastActionOutput = await action()
       liveActionOutput = null
       outputScrollOffset = 0
+
+      if (lastActionOutput.success) {
+        sendLinuxNotification(
+          `${lastActionOutput.title} is done`,
+          `The command finished successfully.`,
+        )
+      }
+
       return lastActionOutput.success ? 0 : 1
     }, [0, 1])
   }
