@@ -72,8 +72,6 @@ export async function runServeCommand(args: string[]): Promise<number> {
     }
   }
 
-  printServeEndpoints(appSystem)
-
   let cleanedUp = false
   let inForegroundAction = false
 
@@ -125,12 +123,6 @@ export async function runServeCommand(args: string[]): Promise<number> {
 
   cleanup()
   return sessionExitCode
-}
-
-function printServeEndpoints(appSystem: string): void {
-  console.log("\n")
-  console.log(renderServeEndpointLine(appSystem))
-  console.log("\n")
 }
 
 function getServeSpaUrl(appSystem: string): string {
