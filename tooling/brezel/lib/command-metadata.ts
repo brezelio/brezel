@@ -108,6 +108,15 @@ export const commandMetadata: CommandMetadata[] = [
     },
   },
   {
+    name: "system",
+    usage: "brezel system initialize",
+    description: "Customize the initial system semantics before technical setup",
+    serveDashboard: {
+      allowed: false,
+      reason: "brezel system initialize is an interactive setup flow and cannot run inside the serve dashboard.",
+    },
+  },
+  {
     name: "teardown",
     usage: "brezel teardown [--force]",
     description: "Stop the local Docker stack and remove its volumes and local images",

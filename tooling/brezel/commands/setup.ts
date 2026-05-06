@@ -1,10 +1,9 @@
-import { existsSync, readdirSync, readFileSync, renameSync, statSync, writeFileSync } from "node:fs"
-import { join } from "node:path"
+import { existsSync } from "node:fs"
 import { emitKeypressEvents } from "node:readline"
 import { runComposeCommandStreamingCaptured } from "../lib/compose"
 import { ensureProjectEnvFile, getProjectEnvPath, readEnvValue, writeEnvValue } from "../lib/env"
-import { getProjectDir } from "../lib/exec"
 import { buildCommandOutput, normalizeOutputLines } from "../lib/output"
+import { getSingleSystemIdentifier } from "../lib/system-config"
 import { assertInteractiveTerminal, assertNoArgs } from "../lib/validation"
 import { ansi, brezelLogo, centerLine, type CommandOutput, isPrintableInput, maxLogoWidth, paint, paintReset, renderCommandOutputBlock, renderInlineBox, renderInlineBoxLines, renderLogoLine, statusLine } from "../lib/ui"
 import { runServeCommand } from "./serve"
@@ -60,8 +59,7 @@ export async function runSetupCommand(args: string[]): Promise<number> {
     await ensureToken(ui, envPath, "COMPOSER_TOKEN", "Composer token")
     await ensureToken(ui, envPath, "NPM_TOKEN", "npm token")
 
-    const finalSystemIdentifier = await maybeRenameSystem(ui, currentSystemIdentifier, envPath)
-    writeEnvValue(envPath, "APP_SYSTEM", finalSystemIdentifier)
+    writeEnvValue(envPath, "APP_SYSTEM", currentSystemIdentifier)
 
     if (await runSetupStep(ui, "Rebuilding local Docker images", ["build", "deps", "app", "workers", "scheduler", "mariadb"]) !== 0) {
       return 1
@@ -83,7 +81,7 @@ export async function runSetupCommand(args: string[]): Promise<number> {
       return 1
     }
 
-    if (await runSetupStep(ui, `Creating system '${finalSystemIdentifier}'`, ["exec", "app", "php", "bakery", "system", "create", finalSystemIdentifier]) !== 0) {
+    if (await runSetupStep(ui, `Creating system '${currentSystemIdentifier}'`, ["exec", "app", "php", "bakery", "system", "create", currentSystemIdentifier]) !== 0) {
       return 1
     }
 
@@ -203,45 +201,6 @@ async function ensureToken(ui: ReturnType<typeof createSetupUi>, envPath: string
     secret: true,
   })
   writeEnvValue(envPath, key, value)
-}
-
-async function maybeRenameSystem(ui: ReturnType<typeof createSetupUi>, currentIdentifier: string, envPath: string): Promise<string> {
-  const shouldRename = await askYesNo(ui, `Current system identifier is '${currentIdentifier}'. Rename it?`, false)
-  if (!shouldRename) {
-    return currentIdentifier
-  }
-
-  while (true) {
-    const nextIdentifier = (await askPrompt(ui, {
-      title: "Rename system",
-      message: "Choose the identifier used for the system directory, hostnames, and APP_SYSTEM.",
-      hint: `Current identifier: ${currentIdentifier}`,
-      placeholder: currentIdentifier,
-      value: currentIdentifier,
-    })).trim()
-
-    if (!isValidIdentifier(nextIdentifier)) {
-      ui.setOutput({
-        title: "Rename system",
-        lines: ["Use only lowercase letters, digits, '-' and '_' for the system identifier."],
-        success: false,
-      })
-      continue
-    }
-
-    if (nextIdentifier === currentIdentifier) {
-      return currentIdentifier
-    }
-
-    renameSystem(currentIdentifier, nextIdentifier)
-    writeEnvValue(envPath, "APP_SYSTEM", nextIdentifier)
-    ui.setOutput({
-      title: "Rename system",
-      lines: [`Renamed system '${currentIdentifier}' to '${nextIdentifier}'.`],
-      success: true,
-    })
-    return nextIdentifier
-  }
 }
 
 async function runSetupStep(ui: ReturnType<typeof createSetupUi>, title: string, composeArgs: string[]): Promise<number> {
@@ -422,48 +381,6 @@ async function askPrompt(ui: ReturnType<typeof createSetupUi>, prompt: Omit<Prom
     }
     ui.render()
   })
-}
-
-function getSingleSystemIdentifier(): string {
-  const systemsDir = join(getProjectDir(), "systems")
-  const identifiers = readdirSync(systemsDir)
-    .filter((entry) => !entry.startsWith("."))
-    .filter((entry) => !entry.includes("__test__"))
-    .filter((entry) => statSync(join(systemsDir, entry)).isDirectory())
-
-  if (identifiers.length !== 1) {
-    throw new Error(`brezel setup currently expects exactly one system directory in 'systems/', found ${identifiers.length}.`)
-  }
-
-  return identifiers[0]
-}
-
-function renameSystem(currentIdentifier: string, nextIdentifier: string): void {
-  const systemsDir = join(getProjectDir(), "systems")
-  const currentDir = join(systemsDir, currentIdentifier)
-  const nextDir = join(systemsDir, nextIdentifier)
-
-  if (existsSync(nextDir)) {
-    throw new Error(`The target system directory '${nextIdentifier}' already exists.`)
-  }
-
-  const hostnamesPath = join(currentDir, "hostnames.bake.json")
-  const hostnames = JSON.parse(readFileSync(hostnamesPath, "utf-8")) as Array<{ resource_hostname?: string, resource?: { hostname?: string } }>
-
-  if (!Array.isArray(hostnames) || hostnames.length === 0) {
-    throw new Error("Could not parse systems/<system>/hostnames.bake.json.")
-  }
-
-  if (!hostnames[0].resource) {
-    hostnames[0].resource = {}
-  }
-  hostnames[0].resource.hostname = nextIdentifier
-  writeFileSync(hostnamesPath, `${JSON.stringify(hostnames, null, 2)}\n`)
-  renameSync(currentDir, nextDir)
-}
-
-function isValidIdentifier(value: string): boolean {
-  return /^[a-z0-9][a-z0-9_-]*$/.test(value)
 }
 
 function maskSecret(value: string): string {
