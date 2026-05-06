@@ -381,6 +381,11 @@ async function runServeControlLoop(appSystem: string, context: ServeControlConte
         showHelp = !showHelp
         render()
         return
+      case "c":
+        lastActionOutput = null
+        liveActionOutput = null
+        render()
+        return
       case "b":
         prompt = { kind: "bakery", value: "" }
         render()
@@ -457,7 +462,7 @@ function renderServeControlScreen(appSystem: string, showHelp: boolean, shimmerF
         centerLine(
           `${paint(ansi.dim)}Actions:${paintReset()} ` +
           `${hotkey("b")} bakery  ${hotkey("x")} brezel  ${hotkey("u")} update  ${hotkey("a")} apply  ${hotkey("l")} load  ` +
-          `${hotkey("e")} explore db  ${hotkey("p")} peek  ${hotkey("j")} jobs  ${hotkey("q")} quit  ${hotkey("h")} hide help`
+          `${hotkey("e")} explore db  ${hotkey("p")} peek  ${hotkey("j")} jobs  ${hotkey("c")} clear output  ${hotkey("q")} quit  ${hotkey("h")} hide help`
         )
       )
   } else {
