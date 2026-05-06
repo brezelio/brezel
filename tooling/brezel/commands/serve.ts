@@ -7,6 +7,7 @@ import { getCommandMetadata } from "../lib/command-metadata"
 import { getProjectEnvValue } from "../lib/env"
 import { getProjectDir, runProjectCommandInteractive, runProjectCommandStreamingCaptured } from "../lib/exec"
 import { buildCommandOutput, normalizeOutputLines } from "../lib/output"
+import { readStackStatus, type StackStatus } from "../lib/stack-status"
 import { ansi, brezelLogo, centerLine, type CommandOutput, hotkey, isPrintableInput, maxLogoWidth, paint, paintReset, renderCommandOutputBlock, renderInlineBox, renderInlineBoxLines, renderLogoLine, statusLine } from "../lib/ui"
 import { startExploreDb } from "./explore-db"
 import { runLogsCommand } from "./logs"
@@ -167,11 +168,13 @@ async function runServeControlLoop(appSystem: string, context: ServeControlConte
   let showHelp = false
   let shimmerFrame = 0
   let shimmerTimer: ReturnType<typeof setInterval> | null = null
+  let statusTimer: ReturnType<typeof setInterval> | null = null
   let lastActionOutput: LastActionOutput | null = null
   let liveActionOutput: LastActionOutput | null = null
   let prompt: PromptState | null = null
+  let stackStatus: StackStatus = readStackStatus()
 
-  const render = () => renderServeControlScreen(appSystem, showHelp, shimmerFrame, liveActionOutput ?? lastActionOutput, prompt)
+  const render = () => renderServeControlScreen(appSystem, showHelp, shimmerFrame, liveActionOutput ?? lastActionOutput, prompt, stackStatus)
   const updateLiveActionOutput: LiveOutputUpdater = (title, lines) => {
     liveActionOutput = {
       title,
@@ -201,6 +204,7 @@ async function runServeControlLoop(appSystem: string, context: ServeControlConte
 
     cleanedUpInput = true
     stopShimmer()
+    stopStatusPolling()
     disableRawMode()
     process.stdin.removeListener("keypress", onKeypress)
     process.stdin.pause()
@@ -230,6 +234,33 @@ async function runServeControlLoop(appSystem: string, context: ServeControlConte
     shimmerTimer = null
   }
 
+  const startStatusPolling = () => {
+    if (statusTimer || cleanedUpInput) {
+      return
+    }
+
+    statusTimer = setInterval(() => {
+      if (busy || cleanedUpInput) {
+        return
+      }
+
+      const nextStatus = readStackStatus()
+      if (nextStatus.label !== stackStatus.label || nextStatus.detail !== stackStatus.detail) {
+        stackStatus = nextStatus
+        render()
+      }
+    }, 3000)
+  }
+
+  const stopStatusPolling = () => {
+    if (!statusTimer) {
+      return
+    }
+
+    clearInterval(statusTimer)
+    statusTimer = null
+  }
+
   const runAction = async (action: () => Promise<number> | number, expectedExitCodes: number[] = [0]) => {
     busy = true
     context.setForegroundAction(true)
@@ -239,6 +270,7 @@ async function runServeControlLoop(appSystem: string, context: ServeControlConte
     try {
       console.log("")
       const exitCode = await action()
+      stackStatus = readStackStatus()
       if (!expectedExitCodes.includes(exitCode)) {
         console.log("")
         console.log(`Command exited with status ${exitCode}.`)
@@ -365,13 +397,14 @@ async function runServeControlLoop(appSystem: string, context: ServeControlConte
   restoreRawMode()
   render()
   startShimmer()
+  startStatusPolling()
 
   return await new Promise<number>((resolve) => {
     resolveExit = resolve
   })
 }
 
-function renderServeControlScreen(appSystem: string, showHelp: boolean, shimmerFrame: number, lastActionOutput: LastActionOutput | null, prompt: PromptState | null): void {
+function renderServeControlScreen(appSystem: string, showHelp: boolean, shimmerFrame: number, lastActionOutput: LastActionOutput | null, prompt: PromptState | null, stackStatus: StackStatus): void {
   console.clear()
   console.log("")
   console.log("")
@@ -381,12 +414,12 @@ function renderServeControlScreen(appSystem: string, showHelp: boolean, shimmerF
   }
 
   console.log("")
-  for (const line of renderInlineBox(`${paint(ansi.bold, ansi.green)}Brezel is running${paintReset()}`)) {
+  for (const line of renderInlineBox(renderStackHeadline(stackStatus))) {
     console.log(centerLine(line))
   }
 
   console.log("\n")
-  console.log(centerLine(statusLine(["stack: running", statusLabel])))
+  console.log(centerLine(statusLine([stackStatus.label, stackStatus.detail, statusLabel])))
   console.log("")
   console.log(centerLine(`${paint(ansi.bold)}${renderServeEndpointLine(appSystem)}${paintReset()}`))
   console.log("\n")
@@ -418,6 +451,19 @@ function renderServeControlScreen(appSystem: string, showHelp: boolean, shimmerF
   }
 
   console.log("")
+}
+
+function renderStackHeadline(stackStatus: StackStatus): string {
+  switch (stackStatus.phase) {
+    case "running":
+      return `${paint(ansi.bold, ansi.green)}Brezel is running${paintReset()}`
+    case "restarting":
+      return `${paint(ansi.bold, ansi.yellow)}Brezel is restarting${paintReset()}`
+    case "stopped":
+      return `${paint(ansi.bold, ansi.yellow)}Brezel is stopped${paintReset()}`
+    default:
+      return `${paint(ansi.bold, ansi.yellow)}Brezel status is unknown${paintReset()}`
+  }
 }
 
 function renderPromptBlock(prompt: PromptState): string[] {
