@@ -43,3 +43,4 @@ storage/framework/*
 storage/app/tenancy/tenants/*
 
 ./supervisord.conf
+.brezel-state/

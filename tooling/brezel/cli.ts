@@ -2,12 +2,14 @@ import { runAttachCommand } from "./commands/attach"
 import { runApplyCommand } from "./commands/apply"
 import { runBakeryCommand } from "./commands/bakery"
 import { runExploreDbCommand } from "./commands/explore-db"
+import { runLinkCommand } from "./commands/link"
 import { runLoadCommand } from "./commands/load"
 import { runLogsCommand } from "./commands/logs"
 import { runShellCommand } from "./commands/shell"
 import { runServeCommand } from "./commands/serve"
 import { runSetupCommand } from "./commands/setup"
 import { runTeardownCommand } from "./commands/teardown"
+import { runUnlinkCommand } from "./commands/unlink"
 import { runUpdateCommand } from "./commands/update"
 
 type CommandHandler = (args: string[]) => number | Promise<number>
@@ -43,6 +45,12 @@ const commandDefinitions: CommandDefinition[] = [
     usage: "brezel explore-db",
     description: "Start phpMyAdmin for the local Brezel MariaDB instance",
     handler: runExploreDbCommand,
+  },
+  {
+    name: "link",
+    usage: "brezel link",
+    description: "Link a local brezel/api or brezel/spa checkout into this project",
+    handler: runLinkCommand,
   },
   {
     name: "load",
@@ -85,6 +93,12 @@ const commandDefinitions: CommandDefinition[] = [
     usage: "brezel teardown [--force]",
     description: "Stop the local Docker stack and remove its volumes and local images",
     handler: runTeardownCommand,
+  },
+  {
+    name: "unlink",
+    usage: "brezel unlink",
+    description: "Remove local brezel/api or brezel/spa links from this project",
+    handler: runUnlinkCommand,
   },
 ]
 
