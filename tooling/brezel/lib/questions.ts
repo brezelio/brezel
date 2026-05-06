@@ -5,13 +5,18 @@ export type ChoiceOption<T extends string> = {
   label: string
 }
 
-export async function askQuestion(prompt: string): Promise<string> {
+export async function askQuestion(prompt: string): Promise<string | null> {
   const readline = createInterface({
     input: process.stdin,
     output: process.stdout,
   })
 
-  return await new Promise<string>((resolve) => {
+  return await new Promise<string | null>((resolve) => {
+    readline.on("SIGINT", () => {
+      readline.close()
+      resolve(null)
+    })
+
     readline.question(prompt, (answer) => {
       readline.close()
       resolve(answer)
@@ -19,24 +24,29 @@ export async function askQuestion(prompt: string): Promise<string> {
   })
 }
 
-export async function askYesNo(question: string, defaultValue: boolean): Promise<boolean> {
+export async function askYesNo(question: string, defaultValue: boolean): Promise<boolean | null> {
   const defaultLabel = defaultValue ? "Y/n" : "y/N"
 
   while (true) {
-    const answer = (await askQuestion(`${question} [${defaultLabel}] `)).trim().toLowerCase()
-    if (!answer) {
+    const answer = await askQuestion(`${question} [${defaultLabel}] `)
+    if (answer === null) {
+      return null
+    }
+
+    const normalizedAnswer = answer.trim().toLowerCase()
+    if (!normalizedAnswer) {
       return defaultValue
     }
-    if (["y", "yes"].includes(answer)) {
+    if (["y", "yes"].includes(normalizedAnswer)) {
       return true
     }
-    if (["n", "no"].includes(answer)) {
+    if (["n", "no"].includes(normalizedAnswer)) {
       return false
     }
   }
 }
 
-export async function askChoice<T extends string>(question: string, choices: Array<T | ChoiceOption<T>>): Promise<T> {
+export async function askChoice<T extends string>(question: string, choices: Array<T | ChoiceOption<T>>): Promise<T | null> {
   const normalizedChoices = choices.map((choice) => typeof choice === "string"
     ? { value: choice, label: choice }
     : choice)
@@ -47,13 +57,18 @@ export async function askChoice<T extends string>(question: string, choices: Arr
       console.log(`  ${index + 1}. ${choice.label}`)
     }
 
-    const answer = (await askQuestion("Choose an option: ")).trim().toLowerCase()
-    const selectedIndex = Number(answer)
+    const answer = await askQuestion("Choose an option: ")
+    if (answer === null) {
+      return null
+    }
+
+    const normalizedAnswer = answer.trim().toLowerCase()
+    const selectedIndex = Number(normalizedAnswer)
     if (Number.isInteger(selectedIndex) && selectedIndex >= 1 && selectedIndex <= normalizedChoices.length) {
       return normalizedChoices[selectedIndex - 1].value
     }
 
-    const match = normalizedChoices.find((choice) => choice.value.toLowerCase() === answer)
+    const match = normalizedChoices.find((choice) => choice.value.toLowerCase() === normalizedAnswer)
     if (match) {
       return match.value
     }

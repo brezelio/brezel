@@ -16,10 +16,16 @@ export async function runLinkCommand(args: string[]): Promise<number> {
     { value: "api", label: "brezel/api" },
     { value: "spa", label: "brezel/spa" },
   ])
+  if (target === null) {
+    return 130
+  }
   const currentState = readLinkState()
 
   while (true) {
     const path = await askQuestion(`Enter the absolute path to the local brezel/${target} repo: `)
+    if (path === null) {
+      return 130
+    }
     const validationError = validateLinkPath(target, path)
     if (validationError) {
       console.error(validationError)

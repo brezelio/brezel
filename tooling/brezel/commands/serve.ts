@@ -475,6 +475,10 @@ async function runServeControlLoop(appSystem: string, context: ServeControlConte
       case "e":
         await runCapturedAction(() => startExploreDb(updateLiveActionOutput))
         return
+      case "d":
+        console.log("Choose a logfile to view. Press Ctrl+C to return.")
+        await runAction(() => runLogsCommand(["file"]), [0, 1, 130])
+        return
       case "p":
         console.log("Peeking into stack logs. Press Ctrl+C to return.")
         await runAction(() => runLogsCommand(["all"]), [0, 1, 130])
@@ -531,7 +535,7 @@ function renderServeControlScreen(appSystem: string, showHelp: boolean, shimmerF
         centerLine(
           `${paint(ansi.dim)}Actions:${paintReset()} ` +
           `${hotkey("b")} bakery  ${hotkey("x")} brezel  ${hotkey("u")} update  ${hotkey("a")} apply  ${hotkey("l")} load  ${hotkey("r")} restart  ` +
-          `${hotkey("e")} explore db  ${hotkey("p")} peek  ${hotkey("w")} jobs  ${hotkey("q")} quit  ${hotkey("h")} hide help`
+          `${hotkey("e")} explore db  ${hotkey("d")} debug  ${hotkey("p")} peek  ${hotkey("w")} jobs  ${hotkey("q")} quit  ${hotkey("h")} hide help`
         )
       )
   } else {

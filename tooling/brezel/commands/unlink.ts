@@ -37,6 +37,9 @@ export async function runUnlinkCommand(args: string[]): Promise<number> {
   const target = hasExplicitTarget
     ? ((args[0] === "all" ? "both" : args[0]) as UnlinkTarget)
     : await askChoice<UnlinkTarget>("What do you want to unlink?", choices)
+  if (target === null) {
+    return 130
+  }
   const affectedTargets: LinkTarget[] = []
 
   if (target === "both") {
