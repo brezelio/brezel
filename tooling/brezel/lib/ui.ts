@@ -51,7 +51,9 @@ export function paintReset(): string {
 }
 
 export function stripAnsi(value: string): string {
-  return value.replace(/\u001b\[[0-9;]*m/g, "")
+  return value
+    .replace(/\u001b\[[0-9;]*m/g, "")
+    .replace(/\u001b\]8;;.*?(\u0007|\u001b\\)/g, "")
 }
 
 export function rgb(red: number, green: number, blue: number): string {
