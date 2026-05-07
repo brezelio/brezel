@@ -62,7 +62,7 @@ export async function runSetupCommand(args: string[]): Promise<number> {
 
     writeEnvValue(envPath, "APP_SYSTEM", currentSystemIdentifier)
 
-    if (await runSetupStep(ui, "Rebuilding local Docker images", ["build", "deps", "app", "workers", "scheduler", "mariadb"]) !== 0) {
+    if (await runSetupStep(ui, "Rebuilding local Docker images", ["build", "--quiet", "deps", "app", "workers", "scheduler", "mariadb"]) !== 0) {
       return 1
     }
 
