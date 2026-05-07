@@ -33,6 +33,7 @@ mise install
 This installs the small project-local interaction tools only:
 
 - `bun`
+- `tailspin`
 - `zellij`
 
 Those power the repo-shipped `brezel` CLI and the local dashboard.
@@ -138,6 +139,7 @@ You only need two real machine-wide dependencies:
 And only two project-local helper tools:
 
 - `bun`
+- `tailspin`
 - `zellij`
 
 Everything else runs inside containers:

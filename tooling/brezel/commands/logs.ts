@@ -91,8 +91,8 @@ async function runFileLogsCommand(args: string[]): Promise<number> {
 
   const filePath = join(getProjectDir(), "storage", "logs", selectedFile)
   return await runProjectCommandInteractive({
-    unixCommand: "lnav",
-    windowsCommand: "lnav",
+    unixCommand: "tspin",
+    windowsCommand: "tspin",
     args: [filePath],
   })
 }

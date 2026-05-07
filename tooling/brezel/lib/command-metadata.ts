@@ -68,7 +68,7 @@ export const commandMetadata: CommandMetadata[] = [
   {
     name: "logs",
     usage: "brezel logs <all|app|bootstrap|scheduler|vite|workers>\n  brezel logs file [filename]",
-    description: "Follow container logs or open a local logfile in lnav",
+    description: "Follow container logs or open a local logfile in tailspin",
     serveDashboard: {
       allowed: false,
       reason: "brezel logs stays attached in the foreground. Use the dashboard log shortcuts instead.",
