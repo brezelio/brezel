@@ -62,6 +62,14 @@ export function hotkey(key: string): string {
   return `${paint(ansi.bold, ansi.cyan)}[${key}]${paintReset()}`
 }
 
+export function hyperlink(url: string, label: string = url): string {
+  if (!process.stdout.isTTY) {
+    return label
+  }
+
+  return `]8;;${url}${label}]8;;`
+}
+
 export function statusLine(parts: string[]): string {
   return `${paint(ansi.dim)}${parts.join("  |  ")}${paintReset()}`
 }

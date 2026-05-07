@@ -10,7 +10,7 @@ import { readLoginInfo, type LoginInfo } from "../lib/login-info"
 import { sendLinuxNotification } from "../lib/notifications"
 import { buildCommandOutput, normalizeOutputLines } from "../lib/output"
 import { readStackStatus, type StackStatus } from "../lib/stack-status"
-import { ansi, brezelLogo, centerLine, type CommandOutput, hotkey, isPrintableInput, maxLogoWidth, padVisible, paint, paintReset, renderInlineBox, renderInlineBoxLines, renderLogoLine, statusLine, stripAnsi } from "../lib/ui"
+import { ansi, brezelLogo, centerLine, type CommandOutput, hotkey, hyperlink, isPrintableInput, maxLogoWidth, padVisible, paint, paintReset, renderInlineBox, renderInlineBoxLines, renderLogoLine, statusLine, stripAnsi } from "../lib/ui"
 import { startExploreDb } from "./explore-db"
 import { runLogsCommand } from "./logs"
 import { restartStack } from "./restart"
@@ -141,7 +141,8 @@ function getServeSpaUrl(appSystem: string): string {
 }
 
 function renderServeEndpointLine(appSystem: string): string {
-  return `Brezel is available at ${getServeSpaUrl(appSystem)}`
+  const url = getServeSpaUrl(appSystem)
+  return `Brezel is available at ${hyperlink(url)}`
 }
 
 type ServeControlContext = {
