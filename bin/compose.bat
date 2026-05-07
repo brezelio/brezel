@@ -11,7 +11,7 @@ if errorlevel 1 (
   exit /b 1
 )
 
-for /f %%I in ('powershell -NoProfile -Command "$path = '%PROJECT_DIR%'; $base = Split-Path -Path $path -Leaf; $base = $base.ToLowerInvariant() -replace '[^a-z0-9]+','-'; $base = $base.Trim('-'); if ([string]::IsNullOrWhiteSpace($base)) { $base = 'project' }; $bytes = [System.Text.Encoding]::UTF8.GetBytes($path); $hash = [System.Security.Cryptography.SHA1]::Create().ComputeHash($bytes); $suffix = ([System.BitConverter]::ToString($hash)).Replace('-','').Substring(0,8).ToLowerInvariant(); "$base-$suffix""') do set "PROJECT_SUFFIX=%%I"
+for /f %%I in ('powershell -NoProfile -Command "$path = '%PROJECT_DIR%'; $base = Split-Path -Path $path -Leaf; $base = $base.ToLowerInvariant() -replace '[^a-z0-9]+','-'; $base = $base.Trim('-'); if ([string]::IsNullOrWhiteSpace($base)) { $base = 'project' }; $bytes = [System.Text.Encoding]::UTF8.GetBytes($path); $hash = [System.Security.Cryptography.SHA1]::Create().ComputeHash($bytes); $suffix = ([System.BitConverter]::ToString($hash)).Replace('-','').Substring(0,8).ToLowerInvariant(); '{0}-{1}' -f $base, $suffix"') do set "PROJECT_SUFFIX=%%I"
 set "PROJECT_NAME=brezel-%PROJECT_SUFFIX%"
 
 if exist "%LOCAL_OVERRIDE%" (
