@@ -89,7 +89,11 @@ export async function runSetupCommand(args: string[]): Promise<number> {
       return 1
     }
 
-    if (await runSetupStep(ui, "Reloading app container after initialization", ["up", "-d", "--force-recreate", "app"]) !== 0) {
+    if (await runSetupStep(ui, "Restarting containers after initialization", ["down", "--remove-orphans"]) !== 0) {
+      return 1
+    }
+
+    if (await runSetupStep(ui, "Starting database and app with initialized env", ["up", "-d", "mariadb", "app"]) !== 0) {
       return 1
     }
 
