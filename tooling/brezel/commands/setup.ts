@@ -109,8 +109,12 @@ export async function runSetupCommand(args: string[]): Promise<number> {
       return 1
     }
 
-    if (await runSetupStep(ui, "Applying Brezel resources", ["exec", "app", "php", "bakery", "apply"]) !== 0) {
+    if (await runSetupStep(ui, "Applying Brezel resources (Step 1)", ["exec", "app", "php", "bakery", "apply"]) !== 0) {
       return 1
+    }
+
+    if (await runSetupStep(ui, "Applying Brezel resources (Step 2)", ["exec", "app", "php", "bakery", "apply"]) !== 0) {
+    return 1
     }
 
     if (await runSetupStep(ui, "Restarting the Brezel stack", ["down", "--remove-orphans"]) !== 0) {
