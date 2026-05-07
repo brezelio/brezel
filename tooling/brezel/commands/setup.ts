@@ -66,10 +66,18 @@ export async function runSetupCommand(args: string[]): Promise<number> {
     }
 
     if (await runSetupStep(ui, "Installing Composer dependencies", ["run", "--rm", "deps"]) !== 0) {
+      appendSetupRecoveryHint(ui, [
+        "Composer dependency installation failed.",
+        "Double-check your Composer token and rerun `brezel setup`.",
+      ])
       return 1
     }
 
     if (await runSetupStep(ui, "Installing npm dependencies", ["run", "--rm", "node_deps"]) !== 0) {
+      appendSetupRecoveryHint(ui, [
+        "npm dependency installation failed.",
+        "Double-check your npm token and rerun `brezel setup`.",
+      ])
       return 1
     }
 
@@ -299,6 +307,19 @@ function renderPromptBlock(prompt: PromptState): string[] {
   }
 
   return renderInlineBoxLines(lines)
+}
+
+function appendSetupRecoveryHint(ui: ReturnType<typeof createSetupUi>, lines: string[]): void {
+  if (!ui.output) {
+    return
+  }
+
+  ui.setOutput({
+    ...ui.output,
+    lines: [...ui.output.lines, "", ...lines],
+    success: false,
+    live: false,
+  })
 }
 
 
