@@ -184,8 +184,14 @@ async function runServeControlLoop(appSystem: string, context: ServeControlConte
   let prompt: PromptState | null = null
   let stackStatus: StackStatus = readStackStatus()
   const loginInfo = readLoginInfo(appSystem)
+  const shimmerInterval = process.platform === "win32" ? 220 : 120
 
   const render = () => renderServeControlScreen(appSystem, showHelp, shimmerFrame, liveActionOutput ?? lastActionOutput, prompt, stackStatus, loginInfo, outputScrollOffset)
+  const onResize = () => {
+    if (!cleanedUpInput) {
+      render()
+    }
+  }
   const updateLiveActionOutput: LiveOutputUpdater = (title, lines) => {
     liveActionOutput = {
       title,
@@ -219,6 +225,7 @@ async function runServeControlLoop(appSystem: string, context: ServeControlConte
     stopStatusPolling()
     disableRawMode()
     leaveAlternateScreen()
+    process.stdout.removeListener("resize", onResize)
     process.stdin.removeListener("keypress", onKeypress)
     process.stdin.pause()
   }
@@ -253,7 +260,7 @@ async function runServeControlLoop(appSystem: string, context: ServeControlConte
 
       shimmerFrame = (shimmerFrame + 1) % (maxLogoWidth + 12)
       render()
-    }, 120)
+    }, shimmerInterval)
   }
 
   const stopShimmer = () => {
@@ -505,6 +512,7 @@ async function runServeControlLoop(appSystem: string, context: ServeControlConte
   process.stdin.on("keypress", onKeypress)
   process.stdin.resume()
   enterAlternateScreen()
+  process.stdout.on("resize", onResize)
   restoreRawMode()
   render()
   startShimmer()

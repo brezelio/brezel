@@ -144,7 +144,7 @@ function createSetupUi(): SetupUi & {
   stop: () => void
   render: () => void
   setOutput: (output: SetupOutput | null) => void
-} {
+  } {
   const ui = {
     prompt: null,
     output: null,
@@ -160,6 +160,8 @@ function createSetupUi(): SetupUi & {
   }
 
   const render = () => renderSetupScreen(ui)
+  const onResize = () => render()
+  const shimmerInterval = process.platform === "win32" ? 220 : 120
 
   const start = () => {
     if (ui.running) {
@@ -170,7 +172,8 @@ function createSetupUi(): SetupUi & {
     ui.shimmerTimer = setInterval(() => {
       ui.shimmerFrame = (ui.shimmerFrame + 1) % (maxLogoWidth + 12)
       render()
-    }, 120)
+    }, shimmerInterval)
+    process.stdout.on("resize", onResize)
     render()
   }
 
@@ -184,6 +187,8 @@ function createSetupUi(): SetupUi & {
       clearInterval(ui.shimmerTimer)
       ui.shimmerTimer = null
     }
+
+    process.stdout.removeListener("resize", onResize)
 
     if (typeof process.stdin.setRawMode === "function") {
       process.stdin.setRawMode(false)
@@ -263,8 +268,7 @@ async function runSetupStep(ui: ReturnType<typeof createSetupUi>, title: string,
 }
 
 function renderSetupScreen(ui: SetupUi): void {
-  console.clear()
-  console.log("")
+  clearTerminalScreen()
   console.log("")
 
   for (const line of brezelLogo.map((entry, index) => renderLogoLine(entry, index, ui.shimmerFrame))) {
@@ -295,6 +299,15 @@ function renderSetupScreen(ui: SetupUi): void {
   }
 
   console.log("")
+}
+
+function clearTerminalScreen(): void {
+  if (process.stdout.isTTY) {
+    process.stdout.write("\u001b[2J\u001b[H")
+    return
+  }
+
+  console.clear()
 }
 
 function renderPromptBlock(prompt: PromptState): string[] {
