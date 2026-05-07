@@ -27,6 +27,7 @@ services:
     <<: *brezel-php-service
     environment:
       COMPOSER_AUTH: '{"gitlab-token":{"gitlab.kiwis-and-brownies.de":"${COMPOSER_TOKEN:-}"}}'
+      COMPOSER_PROCESS_TIMEOUT: ${COMPOSER_PROCESS_TIMEOUT:-600}
     command:
       - sh
       - -lc
