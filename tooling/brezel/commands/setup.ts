@@ -45,6 +45,7 @@ export async function runSetupCommand(args: string[]): Promise<number> {
     const envPath = getProjectEnvPath()
     const hadEnv = existsSync(envPath)
     ensureProjectEnvFile()
+    const appKeyMissingAtStart = !readEnvValue(envPath, "APP_KEY")
 
     if (!hadEnv) {
       ui.setOutput({
@@ -87,6 +88,12 @@ export async function runSetupCommand(args: string[]): Promise<number> {
 
     if (await runSetupStep(ui, "Initializing Brezel", ["exec", "app", "php", "bakery", "init"]) !== 0) {
       return 1
+    }
+
+    if (appKeyMissingAtStart) {
+      if (await runSetupStep(ui, "Reloading app container with generated APP_KEY", ["up", "-d", "--force-recreate", "app"]) !== 0) {
+        return 1
+      }
     }
 
     if (await runSetupStep(ui, `Creating system '${currentSystemIdentifier}'`, ["exec", "app", "php", "bakery", "system", "create", currentSystemIdentifier]) !== 0) {
