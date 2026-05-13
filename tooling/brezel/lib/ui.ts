@@ -87,11 +87,11 @@ export function centerLine(line: string): string {
     return line
   }
 
-  const terminalWidth = process.stdout.columns || 80
+  const terminalWidth = getSafeTerminalWidth()
   const visibleLength = stripAnsi(line).length
 
   if (visibleLength >= terminalWidth) {
-    return line
+    return fitTerminalLine(line)
   }
 
   return `${" ".repeat(Math.floor((terminalWidth - visibleLength) / 2))}${line}`
@@ -176,6 +176,8 @@ export function createScreenRenderer(): ScreenRenderer {
         return
       }
 
+      const fittedLines = lines.map((line) => fitTerminalLine(line))
+
       const updates: string[] = []
 
       if (!initialized) {
@@ -183,10 +185,10 @@ export function createScreenRenderer(): ScreenRenderer {
         initialized = true
       }
 
-      const maxLineCount = Math.max(previousLines.length, lines.length)
+      const maxLineCount = Math.max(previousLines.length, fittedLines.length)
 
       for (let index = 0; index < maxLineCount; index += 1) {
-        const nextLine = lines[index]
+        const nextLine = fittedLines[index]
         const previousLine = previousLines[index]
 
         if (nextLine === previousLine) {
@@ -204,7 +206,7 @@ export function createScreenRenderer(): ScreenRenderer {
         process.stdout.write(updates.join(""))
       }
 
-      previousLines = lines.slice()
+      previousLines = fittedLines.slice()
     },
 
     reset() {
@@ -228,6 +230,91 @@ export function createScreenRenderer(): ScreenRenderer {
       initialized = false
     },
   }
+}
+
+function fitTerminalLine(line: string): string {
+  if (!process.stdout.isTTY) {
+    return line
+  }
+
+  const terminalWidth = getSafeTerminalWidth()
+  const visibleLength = stripAnsi(line).length
+  if (visibleLength <= terminalWidth) {
+    return line
+  }
+
+  return `${sliceAnsiVisible(line, terminalWidth)}${ansi.reset}`
+}
+
+function getSafeTerminalWidth(): number {
+  const terminalWidth = process.stdout.columns || 80
+  return Math.max(1, terminalWidth - 1)
+}
+
+function sliceAnsiVisible(value: string, width: number): string {
+  if (width <= 0) {
+    return ""
+  }
+
+  let output = ""
+  let visibleCount = 0
+
+  for (let index = 0; index < value.length; index += 1) {
+    const character = value[index]
+
+    if (character === "\u001b") {
+      const nextCharacter = value[index + 1]
+
+      if (nextCharacter === "[") {
+        const endIndex = findAnsiCsiEnd(value, index + 2)
+        output += value.slice(index, endIndex + 1)
+        index = endIndex
+        continue
+      }
+
+      if (nextCharacter === "]") {
+        const endIndex = findAnsiOscEnd(value, index + 2)
+        output += value.slice(index, endIndex + 1)
+        index = endIndex
+        continue
+      }
+    }
+
+    if (visibleCount >= width) {
+      break
+    }
+
+    output += character
+    visibleCount += 1
+  }
+
+  return output
+}
+
+function findAnsiCsiEnd(value: string, startIndex: number): number {
+  for (let index = startIndex; index < value.length; index += 1) {
+    const character = value[index]
+    if (character >= "@" && character <= "~") {
+      return index
+    }
+  }
+
+  return value.length - 1
+}
+
+function findAnsiOscEnd(value: string, startIndex: number): number {
+  for (let index = startIndex; index < value.length; index += 1) {
+    const character = value[index]
+    if (character === "\u0007") {
+      return index
+    }
+
+    if (character === "\u001b" && value[index + 1] === "\\") {
+      return index + 1
+    }
+  }
+
+  return value.length - 1
 }
 
 function getLogoCharacterColor(character: string, column: number, shimmerCenter: number): string {
@@ -284,7 +371,7 @@ function blendChannel(base: number, target: number, amount: number): number {
 }
 
 function getMaxBoxContentWidth(): number {
-  const terminalWidth = process.stdout.columns || 80
+  const terminalWidth = getSafeTerminalWidth()
   const boxWidth = Math.floor(terminalWidth * 0.9)
   return Math.max(24, boxWidth - 4)
 }
