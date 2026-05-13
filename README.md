@@ -23,6 +23,9 @@ Install these on your machine first:
 1. [Docker](https://www.docker.com/)
 2. [mise](https://mise.jdx.dev/)
 
+On macOS and Linux, the one-line installer can install these dependencies for you.
+On Windows, Docker Desktop must already be installed and running before you start the Brezel installer.
+
 ### 1. Trust and install the local tooling
 
 ```bash
