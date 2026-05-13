@@ -48,7 +48,10 @@ export async function runAnimateCommand(args: string[]): Promise<number> {
     render()
   }
 
+  const handleProcessExit = () => cleanup()
+
   process.stdout.on("resize", onResize)
+  process.once("exit", handleProcessExit)
   render()
 
   const timer = setInterval(() => {
@@ -62,6 +65,7 @@ export async function runAnimateCommand(args: string[]): Promise<number> {
       process.removeListener("SIGINT", handleSignal)
       process.removeListener("SIGTERM", handleSignal)
       process.stdout.removeListener("resize", onResize)
+      process.removeListener("exit", handleProcessExit)
       cleanup()
       resolve(code)
     }

@@ -166,6 +166,7 @@ function createSetupUi(): SetupUi & {
     ui.screenRenderer.reset()
     render()
   }
+  const handleProcessExit = () => stop()
   const shimmerInterval = process.platform === "win32" ? 220 : 120
 
   const start = () => {
@@ -179,6 +180,7 @@ function createSetupUi(): SetupUi & {
       render()
     }, shimmerInterval)
     process.stdout.on("resize", onResize)
+    process.once("exit", handleProcessExit)
     render()
   }
 
@@ -194,6 +196,7 @@ function createSetupUi(): SetupUi & {
     }
 
     process.stdout.removeListener("resize", onResize)
+    process.removeListener("exit", handleProcessExit)
     ui.screenRenderer.cleanup()
 
     if (typeof process.stdin.setRawMode === "function") {

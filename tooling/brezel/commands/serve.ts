@@ -230,6 +230,7 @@ async function runServeControlLoop(appSystem: string, context: ServeControlConte
     screenRenderer.cleanup()
     process.stdout.removeListener("resize", onResize)
     process.stdin.removeListener("keypress", onKeypress)
+    process.removeListener("exit", cleanupInput)
     process.stdin.pause()
   }
 
@@ -517,6 +518,7 @@ async function runServeControlLoop(appSystem: string, context: ServeControlConte
   process.stdin.resume()
   enterAlternateScreen()
   process.stdout.on("resize", onResize)
+  process.once("exit", cleanupInput)
   restoreRawMode()
   render()
   startShimmer()
