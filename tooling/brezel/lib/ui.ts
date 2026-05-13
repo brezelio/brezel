@@ -226,7 +226,7 @@ export function createScreenRenderer(): ScreenRenderer {
         return
       }
 
-      process.stdout.write("\u001b[0m\u001b[?25h")
+      process.stdout.write("\u001b[2J\u001b[H\u001b[0m\u001b[?25h")
       initialized = false
     },
   }
