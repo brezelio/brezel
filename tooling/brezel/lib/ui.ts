@@ -5,6 +5,12 @@ export type CommandOutput = {
   live?: boolean
 }
 
+export type ScreenRenderer = {
+  render: (lines: string[]) => void
+  reset: () => void
+  cleanup: () => void
+}
+
 export const ansi = {
   reset: "\u001b[0m",
   bold: "\u001b[1m",
@@ -156,6 +162,72 @@ export function renderLogoLine(line: string, row: number, shimmerFrame: number):
 
 export function isPrintableInput(value: string): boolean {
   return !/[\u0000-\u001f\u007f]/.test(value)
+}
+
+export function createScreenRenderer(): ScreenRenderer {
+  let previousLines: string[] = []
+  let initialized = false
+
+  return {
+    render(lines: string[]) {
+      if (!process.stdout.isTTY) {
+        process.stdout.write(`${lines.join("\n")}\n`)
+        previousLines = lines.slice()
+        return
+      }
+
+      const updates: string[] = []
+
+      if (!initialized) {
+        updates.push("\u001b[?25l\u001b[2J")
+        initialized = true
+      }
+
+      const maxLineCount = Math.max(previousLines.length, lines.length)
+
+      for (let index = 0; index < maxLineCount; index += 1) {
+        const nextLine = lines[index]
+        const previousLine = previousLines[index]
+
+        if (nextLine === previousLine) {
+          continue
+        }
+
+        updates.push(`\u001b[${index + 1};1H\u001b[2K`)
+        if (typeof nextLine === "string") {
+          updates.push(nextLine)
+        }
+      }
+
+      if (updates.length > 0) {
+        updates.push("\u001b[1;1H")
+        process.stdout.write(updates.join(""))
+      }
+
+      previousLines = lines.slice()
+    },
+
+    reset() {
+      previousLines = []
+
+      if (!process.stdout.isTTY || !initialized) {
+        return
+      }
+
+      process.stdout.write("\u001b[2J\u001b[H")
+    },
+
+    cleanup() {
+      previousLines = []
+
+      if (!process.stdout.isTTY || !initialized) {
+        return
+      }
+
+      process.stdout.write("\u001b[0m\u001b[?25h")
+      initialized = false
+    },
+  }
 }
 
 function getLogoCharacterColor(character: string, column: number, shimmerCenter: number): string {

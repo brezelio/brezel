@@ -10,7 +10,7 @@ import { readLoginInfo, type LoginInfo } from "../lib/login-info"
 import { sendLinuxNotification } from "../lib/notifications"
 import { buildCommandOutput, normalizeOutputLines } from "../lib/output"
 import { readStackStatus, type StackStatus } from "../lib/stack-status"
-import { ansi, brezelLogo, centerLine, type CommandOutput, hotkey, hyperlink, isPrintableInput, maxLogoWidth, padVisible, paint, paintReset, renderInlineBox, renderInlineBoxLines, renderLogoLine, statusLine, stripAnsi } from "../lib/ui"
+import { ansi, brezelLogo, centerLine, createScreenRenderer, type CommandOutput, hotkey, hyperlink, isPrintableInput, maxLogoWidth, padVisible, paint, paintReset, renderInlineBox, renderInlineBoxLines, renderLogoLine, statusLine, stripAnsi } from "../lib/ui"
 import { startExploreDb } from "./explore-db"
 import { runLogsCommand } from "./logs"
 import { restartStack } from "./restart"
@@ -185,10 +185,12 @@ async function runServeControlLoop(appSystem: string, context: ServeControlConte
   let stackStatus: StackStatus = readStackStatus()
   const loginInfo = readLoginInfo(appSystem)
   const shimmerInterval = process.platform === "win32" ? 220 : 120
+  const screenRenderer = createScreenRenderer()
 
-  const render = () => renderServeControlScreen(appSystem, showHelp, shimmerFrame, liveActionOutput ?? lastActionOutput, prompt, stackStatus, loginInfo, outputScrollOffset)
+  const render = () => screenRenderer.render(renderServeControlScreen(appSystem, showHelp, shimmerFrame, liveActionOutput ?? lastActionOutput, prompt, stackStatus, loginInfo, outputScrollOffset))
   const onResize = () => {
     if (!cleanedUpInput) {
+      screenRenderer.reset()
       render()
     }
   }
@@ -225,6 +227,7 @@ async function runServeControlLoop(appSystem: string, context: ServeControlConte
     stopStatusPolling()
     disableRawMode()
     leaveAlternateScreen()
+    screenRenderer.cleanup()
     process.stdout.removeListener("resize", onResize)
     process.stdin.removeListener("keypress", onKeypress)
     process.stdin.pause()
@@ -305,6 +308,7 @@ async function runServeControlLoop(appSystem: string, context: ServeControlConte
     context.setForegroundAction(true)
     stopShimmer()
     disableRawMode()
+    screenRenderer.cleanup()
 
     try {
       console.log("")
@@ -523,58 +527,58 @@ async function runServeControlLoop(appSystem: string, context: ServeControlConte
   })
 }
 
-function renderServeControlScreen(appSystem: string, showHelp: boolean, shimmerFrame: number, lastActionOutput: LastActionOutput | null, prompt: PromptState | null, stackStatus: StackStatus, loginInfo: LoginInfo[], outputScrollOffset: number): void {
-  clearTerminalScreen()
-  console.log("")
+function renderServeControlScreen(appSystem: string, showHelp: boolean, shimmerFrame: number, lastActionOutput: LastActionOutput | null, prompt: PromptState | null, stackStatus: StackStatus, loginInfo: LoginInfo[], outputScrollOffset: number): string[] {
+  const lines: string[] = []
+  lines.push("")
   const statusLabel = showHelp ? "help: visible" : "help: hidden"
   for (const line of brezelLogo.map((entry, index) => renderLogoLine(entry, index, shimmerFrame))) {
-    console.log(centerLine(line))
+    lines.push(centerLine(line))
   }
-  console.log("")
+  lines.push("")
 
   for (const line of renderInlineBox(renderStackHeadline(stackStatus))) {
-    console.log(centerLine(line))
+    lines.push(centerLine(line))
   }
 
-  console.log("")
-  console.log(centerLine(statusLine([stackStatus.label, stackStatus.detail, statusLabel])))
-  console.log("")
-  console.log(centerLine(`${paint(ansi.bold)}${renderServeEndpointLine(appSystem)}${paintReset()}`))
+  lines.push("")
+  lines.push(centerLine(statusLine([stackStatus.label, stackStatus.detail, statusLabel])))
+  lines.push("")
+  lines.push(centerLine(`${paint(ansi.bold)}${renderServeEndpointLine(appSystem)}${paintReset()}`))
   if (loginInfo.length > 0) {
-    console.log("")
+    lines.push("")
     for (const line of renderLoginInfoBlock(loginInfo)) {
-      console.log(centerLine(line))
+      lines.push(centerLine(line))
     }
   }
-  console.log("")
+  lines.push("")
 
   if (showHelp) {
-      const dimHotkey = (key: string) => `${hotkey(key)}${paint(ansi.dim)}`
-      console.log(
-        centerLine(
-          `${paint(ansi.dim)}Actions: ${dimHotkey("b")} bakery  ${dimHotkey("x")} brezel  ${dimHotkey("u")} update  ${dimHotkey("a")} apply  ${dimHotkey("l")} load  ${dimHotkey("r")} restart  ` +
-          `${dimHotkey("e")} explore db  ${dimHotkey("d")} debug  ${dimHotkey("p")} peek  ${dimHotkey("w")} jobs  ${dimHotkey("q")} quit  ${dimHotkey("h")} hide help${paintReset()}`
-        )
-      )
+    const dimHotkey = (key: string) => `${hotkey(key)}${paint(ansi.dim)}`
+    lines.push(centerLine(
+      `${paint(ansi.dim)}Actions: ${dimHotkey("b")} bakery  ${dimHotkey("x")} brezel  ${dimHotkey("u")} update  ${dimHotkey("a")} apply  ${dimHotkey("l")} load  ${dimHotkey("r")} restart  ` +
+      `${dimHotkey("e")} explore db  ${dimHotkey("d")} debug  ${dimHotkey("p")} peek  ${dimHotkey("w")} jobs  ${dimHotkey("q")} quit  ${dimHotkey("h")} hide help${paintReset()}`
+    ))
   } else {
-    console.log(centerLine(`${paint(ansi.dim)}Press ${hotkey("h")}${paint(ansi.dim)} for controls, ${hotkey("q")}${paint(ansi.dim)} or ${hotkey("Ctrl+C")}${paint(ansi.dim)} to stop Brezel.${paintReset()}`))
+    lines.push(centerLine(`${paint(ansi.dim)}Press ${hotkey("h")}${paint(ansi.dim)} for controls, ${hotkey("q")}${paint(ansi.dim)} or ${hotkey("Ctrl+C")}${paint(ansi.dim)} to stop Brezel.${paintReset()}`))
   }
 
   if (prompt) {
-    console.log("")
+    lines.push("")
     for (const line of renderPromptBlock(prompt)) {
-      console.log(centerLine(line))
+      lines.push(centerLine(line))
     }
   }
 
   if (lastActionOutput) {
-    console.log("")
+    lines.push("")
     for (const line of renderScrollableCommandOutputBlock(lastActionOutput, outputScrollOffset)) {
-      console.log(centerLine(line))
+      lines.push(centerLine(line))
     }
-    console.log("")
-    console.log(centerLine(`${paint(ansi.dim)}Scroll: ${hotkey("↑")}/${hotkey("k")} up  ${hotkey("↓")}/${hotkey("j")} down  ${hotkey("Ctrl+U")}/${hotkey("Ctrl+D")} half page  ${hotkey("c")} clear${paintReset()}`))
+    lines.push("")
+    lines.push(centerLine(`${paint(ansi.dim)}Scroll: ${hotkey("↑")}/${hotkey("k")} up  ${hotkey("↓")}/${hotkey("j")} down  ${hotkey("Ctrl+U")}/${hotkey("Ctrl+D")} half page  ${hotkey("c")} clear${paintReset()}`))
   }
+
+  return lines
 }
 
 function renderScrollableCommandOutputBlock(output: CommandOutput, scrollOffset: number): string[] {
@@ -606,15 +610,6 @@ function scrollOutput(currentOffset: number, output: CommandOutput | null, delta
 
   const maxOffset = Math.max(0, output.lines.length - outputVisibleLineCount)
   return Math.min(Math.max(currentOffset + delta, 0), maxOffset)
-}
-
-function clearTerminalScreen(): void {
-  if (process.stdout.isTTY) {
-    process.stdout.write("\u001b[2J\u001b[H")
-    return
-  }
-
-  console.clear()
 }
 
 function renderStackHeadline(stackStatus: StackStatus): string {

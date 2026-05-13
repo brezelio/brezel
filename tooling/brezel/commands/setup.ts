@@ -5,7 +5,7 @@ import { ensureProjectEnvFile, getProjectEnvPath, readEnvValue, writeEnvValue } 
 import { buildCommandOutput, normalizeOutputLines } from "../lib/output"
 import { getSingleSystemIdentifier } from "../lib/system-config"
 import { assertInteractiveTerminal, assertNoArgs } from "../lib/validation"
-import { ansi, brezelLogo, centerLine, type CommandOutput, isPrintableInput, maxLogoWidth, paint, paintReset, renderCommandOutputBlock, renderInlineBox, renderInlineBoxLines, renderLogoLine, statusLine } from "../lib/ui"
+import { ansi, brezelLogo, centerLine, createScreenRenderer, type CommandOutput, isPrintableInput, maxLogoWidth, paint, paintReset, renderCommandOutputBlock, renderInlineBox, renderInlineBoxLines, renderLogoLine, statusLine } from "../lib/ui"
 import { runServeCommand } from "./serve"
 
 type SetupOutput = CommandOutput
@@ -26,6 +26,7 @@ type SetupUi = {
   shimmerFrame: number
   shimmerTimer: ReturnType<typeof setInterval> | null
   running: boolean
+  screenRenderer: ReturnType<typeof createScreenRenderer>
 }
 
 export async function runSetupCommand(args: string[]): Promise<number> {
@@ -152,6 +153,7 @@ function createSetupUi(): SetupUi & {
     shimmerFrame: 0,
     shimmerTimer: null,
     running: false,
+    screenRenderer: createScreenRenderer(),
   } as SetupUi & {
     start: () => void
     stop: () => void
@@ -159,8 +161,11 @@ function createSetupUi(): SetupUi & {
     setOutput: (output: SetupOutput | null) => void
   }
 
-  const render = () => renderSetupScreen(ui)
-  const onResize = () => render()
+  const render = () => ui.screenRenderer.render(renderSetupScreen(ui))
+  const onResize = () => {
+    ui.screenRenderer.reset()
+    render()
+  }
   const shimmerInterval = process.platform === "win32" ? 220 : 120
 
   const start = () => {
@@ -189,6 +194,7 @@ function createSetupUi(): SetupUi & {
     }
 
     process.stdout.removeListener("resize", onResize)
+    ui.screenRenderer.cleanup()
 
     if (typeof process.stdin.setRawMode === "function") {
       process.stdin.setRawMode(false)
@@ -267,47 +273,39 @@ async function runSetupStep(ui: ReturnType<typeof createSetupUi>, title: string,
   return result.exitCode
 }
 
-function renderSetupScreen(ui: SetupUi): void {
-  clearTerminalScreen()
-  console.log("")
+function renderSetupScreen(ui: SetupUi): string[] {
+  const lines: string[] = []
+  lines.push("")
 
   for (const line of brezelLogo.map((entry, index) => renderLogoLine(entry, index, ui.shimmerFrame))) {
-    console.log(centerLine(line))
+    lines.push(centerLine(line))
   }
 
-  console.log("")
+  lines.push("")
   for (const line of renderInlineBox(`${paint(ansi.bold, ansi.green)}Welcome to Brezel!${paintReset()}`)) {
-    console.log(centerLine(line))
+    lines.push(centerLine(line))
   }
 
-  console.log("")
-  console.log(centerLine(`${paint(ansi.dim)}Let's quickly set everything up and get your brezel into the oven.${paintReset()}`))
-  console.log(centerLine(statusLine(["mode: setup", `step: ${ui.step}`])))
+  lines.push("")
+  lines.push(centerLine(`${paint(ansi.dim)}Let's quickly set everything up and get your brezel into the oven.${paintReset()}`))
+  lines.push(centerLine(statusLine(["mode: setup", `step: ${ui.step}`])))
 
   if (ui.prompt) {
-    console.log("")
+    lines.push("")
     for (const line of renderPromptBlock(ui.prompt)) {
-      console.log(centerLine(line))
+      lines.push(centerLine(line))
     }
   }
 
   if (ui.output) {
-    console.log("")
+    lines.push("")
     for (const line of renderCommandOutputBlock(ui.output, { live: "Running", complete: "Output" })) {
-      console.log(centerLine(line))
+      lines.push(centerLine(line))
     }
   }
 
-  console.log("")
-}
-
-function clearTerminalScreen(): void {
-  if (process.stdout.isTTY) {
-    process.stdout.write("\u001b[2J\u001b[H")
-    return
-  }
-
-  console.clear()
+  lines.push("")
+  return lines
 }
 
 function renderPromptBlock(prompt: PromptState): string[] {

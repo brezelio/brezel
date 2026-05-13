@@ -1,5 +1,5 @@
 import { assertNoArgs } from "../lib/validation"
-import { brezelLogo, centerLine, maxLogoWidth, renderLogoLine } from "../lib/ui"
+import { brezelLogo, centerLine, createScreenRenderer, maxLogoWidth, renderLogoLine } from "../lib/ui"
 
 export async function runAnimateCommand(args: string[]): Promise<number> {
   if (!assertNoArgs("brezel animate", args)) {
@@ -15,6 +15,7 @@ export async function runAnimateCommand(args: string[]): Promise<number> {
 
   let shimmerFrame = 0
   let cleanedUp = false
+  const screenRenderer = createScreenRenderer()
 
   const cleanup = () => {
     if (cleanedUp) {
@@ -22,26 +23,32 @@ export async function runAnimateCommand(args: string[]): Promise<number> {
     }
 
     cleanedUp = true
-    process.stdout.write("\u001b[?25h")
-    process.stdout.write("\u001b[0m")
+    screenRenderer.cleanup()
     process.stdout.write("\n")
   }
 
   const render = () => {
-    console.clear()
-
     const terminalHeight = process.stdout.rows || 24
     const topPadding = Math.max(0, Math.floor((terminalHeight - brezelLogo.length) / 2))
+    const lines: string[] = []
+
     for (let index = 0; index < topPadding; index += 1) {
-      console.log("")
+      lines.push("")
     }
 
     for (const [index, line] of brezelLogo.entries()) {
-      console.log(centerLine(renderLogoLine(line, index, shimmerFrame)))
+      lines.push(centerLine(renderLogoLine(line, index, shimmerFrame)))
     }
+
+    screenRenderer.render(lines)
   }
 
-  process.stdout.write("\u001b[?25l")
+  const onResize = () => {
+    screenRenderer.reset()
+    render()
+  }
+
+  process.stdout.on("resize", onResize)
   render()
 
   const timer = setInterval(() => {
@@ -54,6 +61,7 @@ export async function runAnimateCommand(args: string[]): Promise<number> {
       clearInterval(timer)
       process.removeListener("SIGINT", handleSignal)
       process.removeListener("SIGTERM", handleSignal)
+      process.stdout.removeListener("resize", onResize)
       cleanup()
       resolve(code)
     }
