@@ -113,6 +113,12 @@ This removes:
 - volumes
 - local Compose images for this Brezel stack
 
+Technical note:
+
+- `vendor/` and `node_modules/` are stored in Docker named volumes for better filesystem performance on Windows and macOS.
+- You may still see empty `vendor/` and `node_modules/` folders in the project directory on the host. That is expected: Docker creates those mount points so the named volumes can be attached there inside the containers.
+- `brezel teardown` removes these named volumes too, because it runs `docker compose down -v`.
+
 Stop the normal foreground mode with `Ctrl+C`.
 
 The foreground view starts in a clean mode.

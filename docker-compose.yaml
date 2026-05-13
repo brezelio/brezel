@@ -20,11 +20,13 @@ x-brezel-php-service: &brezel-php-service
     XDG_DATA_HOME: /home/brezel/.local/share
   volumes:
     - .:/var/www/brezel
+    - brezel_vendor:/var/www/brezel/vendor
   restart: unless-stopped
 
 services:
   deps:
     <<: *brezel-php-service
+    user: "0:0"
     environment:
       COMPOSER_AUTH: '{"gitlab-token":{"gitlab.kiwis-and-brownies.de":"${COMPOSER_TOKEN:-}"}}'
       COMPOSER_PROCESS_TIMEOUT: ${COMPOSER_PROCESS_TIMEOUT:-600}
@@ -32,6 +34,7 @@ services:
       - sh
       - -lc
       - |
+        mkdir -p vendor
         current_json_checksum="$(cksum composer.json | cut -d' ' -f1)"
         current_lock_checksum="missing"
         if [ -f composer.lock ]; then
@@ -68,6 +71,7 @@ services:
         echo "Running composer $$composer_command..."
 
         if composer "$${composer_command}" --no-interaction; then
+          chown -R brezel:brezel vendor
           mkdir -p "$$state_dir"
           current_lock_checksum="missing"
           if [ -f composer.lock ]; then
@@ -85,7 +89,7 @@ services:
 
   node_deps:
     image: node:22-bookworm
-    user: "1000:1000"
+    user: "0:0"
     working_dir: /var/www/brezel
     environment:
       HOME: /home/node
@@ -94,6 +98,7 @@ services:
       - sh
       - -lc
       - |
+        mkdir -p node_modules
         if [ -n "$$NPM_TOKEN" ]; then
           mkdir -p "$$HOME"
 
@@ -115,8 +120,10 @@ services:
           ln -s /linked/spa node_modules/@kibro/brezel-spa
           rm -rf node_modules/.vite
         fi
+        chown -R node:node node_modules
     volumes:
       - .:/var/www/brezel
+      - brezel_node_modules:/var/www/brezel/node_modules
     restart: "no"
 
   app:
@@ -131,6 +138,7 @@ services:
       - "2041:8081"
     volumes:
       - .:/var/www/brezel
+      - brezel_node_modules:/var/www/brezel/node_modules
       - caddy_data:/data
       - caddy_config:/config
 
@@ -235,6 +243,8 @@ services:
       start_period: 20s
 
 volumes:
+  brezel_node_modules:
+  brezel_vendor:
   caddy_config:
   caddy_data:
   mariadb_data:
