@@ -41,11 +41,19 @@ This installs the small project-local interaction tools only:
 
 Those power the repo-shipped `brezel` CLI and the local dashboard.
 
+Windows note:
+
+- `mise` shell aliases are not available in PowerShell.
+- In PowerShell, use `./brezel ...` from the project root, or `mise run <task>`.
+- Examples: `./brezel serve`, `./brezel setup`, `mise run serve`.
+
 ### 2. Run the semantic system initialization step
 
 ```bash
 brezel system initialize
 ```
+
+On Windows PowerShell from the project root, use `./brezel system initialize` instead.
 
 `brezel system initialize` is the semantic first-run step.
 
@@ -57,6 +65,8 @@ If you answer `no!`, it leaves the system bare and unchanged.
 ```bash
 brezel setup
 ```
+
+On Windows PowerShell from the project root, use `./brezel setup` instead.
 
 `brezel setup` is the technical local setup flow.
 
@@ -73,6 +83,8 @@ It will:
 ```bash
 brezel serve
 ```
+
+On Windows PowerShell from the project root, use `./brezel serve` instead.
 
 This will:
 
