@@ -1,2 +1,8 @@
+bakery text eol=lf
+bin/* text eol=lf
 *.sh text eol=lf
-bin/compose text eol=lf
+*.bat text eol=crlf
+*.php text eol=lf
+*.js text eol=lf
+*.ts text eol=lf
+*.vue text eol=lf
