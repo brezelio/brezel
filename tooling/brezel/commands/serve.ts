@@ -184,10 +184,12 @@ async function runServeControlLoop(appSystem: string, context: ServeControlConte
   let prompt: PromptState | null = null
   let stackStatus: StackStatus = readStackStatus()
   const loginInfo = readLoginInfo(appSystem)
-  const shimmerInterval = process.platform === "win32" ? 220 : 120
+  const shimmerInterval = process.platform === "win32" ? 140 : 120
   const screenRenderer = createScreenRenderer()
+  const logoRowOffset = 1
 
   const render = () => screenRenderer.render(renderServeControlScreen(appSystem, showHelp, shimmerFrame, liveActionOutput ?? lastActionOutput, prompt, stackStatus, loginInfo, outputScrollOffset))
+  const renderLogoOnly = () => screenRenderer.renderRows(logoRowOffset, renderServeLogoLines(shimmerFrame))
   const onResize = () => {
     if (!cleanedUpInput) {
       screenRenderer.reset()
@@ -263,7 +265,7 @@ async function runServeControlLoop(appSystem: string, context: ServeControlConte
       }
 
       shimmerFrame = (shimmerFrame + 1) % (maxLogoWidth + 12)
-      render()
+      renderLogoOnly()
     }, shimmerInterval)
   }
 
@@ -533,8 +535,8 @@ function renderServeControlScreen(appSystem: string, showHelp: boolean, shimmerF
   const lines: string[] = []
   lines.push("")
   const statusLabel = showHelp ? "help: visible" : "help: hidden"
-  for (const line of brezelLogo.map((entry, index) => renderLogoLine(entry, index, shimmerFrame))) {
-    lines.push(centerLine(line))
+  for (const line of renderServeLogoLines(shimmerFrame)) {
+    lines.push(line)
   }
   lines.push("")
 
@@ -581,6 +583,10 @@ function renderServeControlScreen(appSystem: string, showHelp: boolean, shimmerF
   }
 
   return lines
+}
+
+function renderServeLogoLines(shimmerFrame: number): string[] {
+  return brezelLogo.map((entry, index) => centerLine(renderLogoLine(entry, index, shimmerFrame)))
 }
 
 function renderScrollableCommandOutputBlock(output: CommandOutput, scrollOffset: number): string[] {

@@ -7,6 +7,7 @@ export type CommandOutput = {
 
 export type ScreenRenderer = {
   render: (lines: string[]) => void
+  renderRows: (startRow: number, lines: string[]) => void
   reset: () => void
   cleanup: () => void
 }
@@ -168,6 +169,39 @@ export function createScreenRenderer(): ScreenRenderer {
   let previousLines: string[] = []
   let initialized = false
 
+  const writeRows = (startRow: number, lines: string[]) => {
+    if (!process.stdout.isTTY) {
+      return
+    }
+
+    const fittedLines = lines.map((line) => fitTerminalLine(line))
+    const updates: string[] = []
+
+    if (!initialized) {
+      updates.push("\u001b[?25l\u001b[2J")
+      initialized = true
+    }
+
+    for (let offset = 0; offset < fittedLines.length; offset += 1) {
+      const rowIndex = startRow + offset
+      const nextLine = fittedLines[offset]
+      const previousLine = previousLines[rowIndex]
+
+      if (nextLine === previousLine) {
+        continue
+      }
+
+      updates.push(`\u001b[${rowIndex + 1};1H\u001b[2K`)
+      updates.push(nextLine)
+      previousLines[rowIndex] = nextLine
+    }
+
+    if (updates.length > 0) {
+      updates.push("\u001b[1;1H")
+      process.stdout.write(updates.join(""))
+    }
+  }
+
   return {
     render(lines: string[]) {
       if (!process.stdout.isTTY) {
@@ -207,6 +241,10 @@ export function createScreenRenderer(): ScreenRenderer {
       }
 
       previousLines = fittedLines.slice()
+    },
+
+    renderRows(startRow: number, lines: string[]) {
+      writeRows(startRow, lines)
     },
 
     reset() {
