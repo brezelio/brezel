@@ -272,7 +272,16 @@ async function runSetupStep(ui: ReturnType<typeof createSetupUi>, title: string,
     },
   })
 
-  ui.setOutput(buildCommandOutput(title, result.stdout, result.stderr, result.exitCode))
+  const output = buildCommandOutput(title, result.stdout, result.stderr, result.exitCode)
+  if (!output.success && result.stdout.trim().length === 0 && result.stderr.trim().length === 0) {
+    output.lines = [
+      "Command failed without output.",
+      `Compose command: bin/compose ${composeArgs.join(" ")}`,
+      `Exit code: ${result.exitCode}`,
+    ]
+  }
+
+  ui.setOutput(output)
   return result.exitCode
 }
 
