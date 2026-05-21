@@ -51,6 +51,10 @@ run = "bin/brezel load"
 description = "Update the systems (Spec, Worklows, etc)"
 run = "bin/brezel update"
 
+[tasks.setup]
+description = "Set up Brezel"
+run = "bin/brezel setup"
+
 [tasks.serve]
 description = "Start Brezel"
 run = "bin/brezel serve"
