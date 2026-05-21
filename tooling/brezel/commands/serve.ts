@@ -193,7 +193,7 @@ async function runServeControlLoop(appSystem: string, context: ServeControlConte
   let stackStatus: StackStatus = readStackStatus()
   let statusPollInFlight = false
   const loginInfo = readLoginInfo(appSystem)
-  const screenRenderer = createScreenRenderer({ interactionPauseMs: process.platform === "win32" ? 250 : 0 })
+  const screenRenderer = createScreenRenderer()
   const logoRowOffset = 1
   const shimmer = createLogoShimmerController(() => {
     if (busy || cleanedUpInput) {
@@ -208,7 +208,7 @@ async function runServeControlLoop(appSystem: string, context: ServeControlConte
     currentLayout = buildServeControlLayout(appSystem, showHelp, shimmer.getFrame(), liveActionOutput ?? lastActionOutput, prompt, stackStatus, loginInfo, outputScrollOffset)
     screenRenderer.queueRender(currentLayout.lines)
   }
-  const renderLogoOnly = () => screenRenderer.queueAnimationRows(logoRowOffset, renderServeLogoLines(shimmer.getFrame()))
+  const renderLogoOnly = () => screenRenderer.queueRenderRows(logoRowOffset, renderServeLogoLines(shimmer.getFrame()))
   const renderStatusAndHelpOnly = () => {
     currentLayout = buildServeControlLayout(appSystem, showHelp, shimmer.getFrame(), liveActionOutput ?? lastActionOutput, prompt, stackStatus, loginInfo, outputScrollOffset)
     screenRenderer.queueRenderRows(
@@ -224,7 +224,6 @@ async function runServeControlLoop(appSystem: string, context: ServeControlConte
   }
   const onResize = () => {
     if (!cleanedUpInput) {
-      screenRenderer.notifyInteraction()
       screenRenderer.reset()
       render()
     }
@@ -416,7 +415,6 @@ async function runServeControlLoop(appSystem: string, context: ServeControlConte
     if (prompt) {
       if (key.ctrl && key.name === "c") {
         prompt = null
-        screenRenderer.notifyInteraction()
         render()
         return
       }
@@ -424,7 +422,6 @@ async function runServeControlLoop(appSystem: string, context: ServeControlConte
       switch (key.name) {
         case "escape":
           prompt = null
-          screenRenderer.notifyInteraction()
           render()
           return
         case "return":
@@ -439,13 +436,11 @@ async function runServeControlLoop(appSystem: string, context: ServeControlConte
         }
         case "backspace":
           prompt.value = prompt.value.slice(0, -1)
-          screenRenderer.notifyInteraction()
           render()
           return
         default:
           if (_str && isPrintableInput(_str)) {
             prompt.value += _str
-            screenRenderer.notifyInteraction()
             render()
           }
           return
@@ -461,12 +456,10 @@ async function runServeControlLoop(appSystem: string, context: ServeControlConte
           return
         case "d":
           outputScrollOffset = scrollOutput(outputScrollOffset, liveActionOutput ?? lastActionOutput, -Math.ceil(outputVisibleLineCount / 2))
-          screenRenderer.notifyInteraction()
           renderOutputOnly()
           return
         case "u":
           outputScrollOffset = scrollOutput(outputScrollOffset, liveActionOutput ?? lastActionOutput, Math.ceil(outputVisibleLineCount / 2))
-          screenRenderer.notifyInteraction()
           renderOutputOnly()
           return
       }
@@ -480,26 +473,22 @@ async function runServeControlLoop(appSystem: string, context: ServeControlConte
         return
       case "h":
         showHelp = !showHelp
-        screenRenderer.notifyInteraction()
         renderStatusAndHelpOnly()
         return
       case "j":
       case "down":
         outputScrollOffset = scrollOutput(outputScrollOffset, liveActionOutput ?? lastActionOutput, -1)
-        screenRenderer.notifyInteraction()
         renderOutputOnly()
         return
       case "k":
       case "up":
         outputScrollOffset = scrollOutput(outputScrollOffset, liveActionOutput ?? lastActionOutput, 1)
-        screenRenderer.notifyInteraction()
         renderOutputOnly()
         return
       case "c":
         lastActionOutput = null
         liveActionOutput = null
         outputScrollOffset = 0
-        screenRenderer.notifyInteraction()
         render()
         return
       case "r":
@@ -510,12 +499,10 @@ async function runServeControlLoop(appSystem: string, context: ServeControlConte
         return
       case "b":
         prompt = { kind: "bakery", value: "" }
-        screenRenderer.notifyInteraction()
         render()
         return
       case "x":
         prompt = { kind: "command", value: "" }
-        screenRenderer.notifyInteraction()
         render()
         return
       case "u":

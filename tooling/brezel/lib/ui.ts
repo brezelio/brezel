@@ -10,14 +10,8 @@ export type ScreenRenderer = {
   renderRows: (startRow: number, lines: string[]) => void
   queueRender: (lines: string[]) => void
   queueRenderRows: (startRow: number, lines: string[]) => void
-  queueAnimationRows: (startRow: number, lines: string[]) => void
-  notifyInteraction: () => void
   reset: () => void
   cleanup: () => void
-}
-
-type ScreenRendererOptions = {
-  interactionPauseMs?: number
 }
 
 export type LogoShimmerController = {
@@ -215,13 +209,11 @@ export function isPrintableInput(value: string): boolean {
   return !/[\u0000-\u001f\u007f]/.test(value)
 }
 
-export function createScreenRenderer(options: ScreenRendererOptions = {}): ScreenRenderer {
+export function createScreenRenderer(): ScreenRenderer {
   let previousLines: string[] = []
   let initialized = false
   let pendingUpdate: { kind: "full", lines: string[] } | { kind: "rows", startRow: number, lines: string[] } | null = null
   let renderScheduled = false
-  let interactionPausedUntil = 0
-  const interactionPauseMs = options.interactionPauseMs ?? 0
 
   const writeRows = (startRow: number, lines: string[]) => {
     if (!process.stdout.isTTY) {
@@ -346,20 +338,6 @@ export function createScreenRenderer(options: ScreenRendererOptions = {}): Scree
 
     queueRenderRows(startRow: number, lines: string[]) {
       queueUpdate({ kind: "rows", startRow, lines })
-    },
-
-    queueAnimationRows(startRow: number, lines: string[]) {
-      if (interactionPauseMs > 0 && Date.now() < interactionPausedUntil) {
-        return
-      }
-
-      queueUpdate({ kind: "rows", startRow, lines })
-    },
-
-    notifyInteraction() {
-      if (interactionPauseMs > 0) {
-        interactionPausedUntil = Date.now() + interactionPauseMs
-      }
     },
 
     reset() {
