@@ -290,7 +290,7 @@ function renderSetupScreen(ui: SetupUi): string[] {
   }
 
   lines.push("")
-  lines.push(centerLine(`${paint(ansi.dim)}Let's quickly set everything up and get your brezel into the oven.${paintReset()}`))
+  lines.push(centerLine(`${paint(ansi.dim)}Let's quickly set up everything and get your brezel into the oven.${paintReset()}`))
   lines.push(centerLine(statusLine(["mode: setup", `step: ${ui.step}`])))
 
   if (ui.prompt) {
