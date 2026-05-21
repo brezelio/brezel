@@ -1,5 +1,5 @@
 import { assertNoArgs } from "../lib/validation"
-import { brezelLogo, centerLine, createScreenRenderer, maxLogoWidth, renderLogoLine } from "../lib/ui"
+import { brezelLogo, centerLine, createLogoShimmerController, createScreenRenderer, renderLogoLine } from "../lib/ui"
 
 export async function runAnimateCommand(args: string[]): Promise<number> {
   if (!assertNoArgs("brezel animate", args)) {
@@ -13,9 +13,9 @@ export async function runAnimateCommand(args: string[]): Promise<number> {
     return 0
   }
 
-  let shimmerFrame = 0
   let cleanedUp = false
   const screenRenderer = createScreenRenderer()
+  const shimmer = createLogoShimmerController(() => render())
 
   const cleanup = () => {
     if (cleanedUp) {
@@ -37,7 +37,7 @@ export async function runAnimateCommand(args: string[]): Promise<number> {
     }
 
     for (const [index, line] of brezelLogo.entries()) {
-      lines.push(centerLine(renderLogoLine(line, index, shimmerFrame)))
+      lines.push(centerLine(renderLogoLine(line, index, shimmer.getFrame())))
     }
 
     screenRenderer.render(lines)
@@ -53,15 +53,11 @@ export async function runAnimateCommand(args: string[]): Promise<number> {
   process.stdout.on("resize", onResize)
   process.once("exit", handleProcessExit)
   render()
-
-  const timer = setInterval(() => {
-    shimmerFrame = (shimmerFrame + 1) % (maxLogoWidth + 12)
-    render()
-  }, 120)
+  shimmer.start()
 
   return await new Promise<number>((resolve) => {
     const finish = (code: number) => {
-      clearInterval(timer)
+      shimmer.stop()
       process.removeListener("SIGINT", handleSignal)
       process.removeListener("SIGTERM", handleSignal)
       process.stdout.removeListener("resize", onResize)

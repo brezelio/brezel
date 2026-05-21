@@ -8,8 +8,21 @@ export type CommandOutput = {
 export type ScreenRenderer = {
   render: (lines: string[]) => void
   renderRows: (startRow: number, lines: string[]) => void
+  queueRender: (lines: string[]) => void
+  queueRenderRows: (startRow: number, lines: string[]) => void
+  notifyInteraction: () => void
   reset: () => void
   cleanup: () => void
+}
+
+type ScreenRendererOptions = {
+  interactionPauseMs?: number
+}
+
+export type LogoShimmerController = {
+  getFrame: () => number
+  start: () => void
+  stop: () => void
 }
 
 export const ansi = {
@@ -40,6 +53,7 @@ export const brezelLogo = [
 ] as const
 
 export const maxLogoWidth = Math.max(...brezelLogo.map((line) => line.length))
+const logoShimmerFrameCount = maxLogoWidth + 12
 
 export function paint(...codes: string[]): string {
   if (!process.stdout.isTTY) {
@@ -161,13 +175,52 @@ export function renderLogoLine(line: string, row: number, shimmerFrame: number):
   return `${rendered}${ansi.reset}`
 }
 
+export function createLogoShimmerController(onFrame: (frame: number) => void): LogoShimmerController {
+  let frame = 0
+  let timer: ReturnType<typeof setInterval> | null = null
+
+  return {
+    getFrame() {
+      return frame
+    },
+
+    start() {
+      if (timer || !process.stdout.isTTY) {
+        return
+      }
+
+      timer = setInterval(() => {
+        frame = (frame + 1) % logoShimmerFrameCount
+        onFrame(frame)
+      }, getLogoShimmerInterval())
+    },
+
+    stop() {
+      if (!timer) {
+        return
+      }
+
+      clearInterval(timer)
+      timer = null
+    },
+  }
+}
+
+export function getLogoShimmerInterval(): number {
+  return process.platform === "win32" ? 180 : 120
+}
+
 export function isPrintableInput(value: string): boolean {
   return !/[\u0000-\u001f\u007f]/.test(value)
 }
 
-export function createScreenRenderer(): ScreenRenderer {
+export function createScreenRenderer(options: ScreenRendererOptions = {}): ScreenRenderer {
   let previousLines: string[] = []
   let initialized = false
+  let pendingUpdate: { kind: "full", lines: string[] } | { kind: "rows", startRow: number, lines: string[] } | null = null
+  let renderScheduled = false
+  let interactionPausedUntil = 0
+  const interactionPauseMs = options.interactionPauseMs ?? 0
 
   const writeRows = (startRow: number, lines: string[]) => {
     if (!process.stdout.isTTY) {
@@ -202,53 +255,112 @@ export function createScreenRenderer(): ScreenRenderer {
     }
   }
 
+  const flushQueuedRender = () => {
+    renderScheduled = false
+
+    if (!pendingUpdate) {
+      return
+    }
+
+    const update = pendingUpdate
+    pendingUpdate = null
+
+    if (update.kind === "full") {
+      renderNow(update.lines)
+      return
+    }
+
+    renderRowsNow(update.startRow, update.lines)
+  }
+
+  const queueUpdate = (update: { kind: "full", lines: string[] } | { kind: "rows", startRow: number, lines: string[] }) => {
+    if (update.kind === "full" || pendingUpdate === null) {
+      pendingUpdate = update
+    }
+
+    if (renderScheduled) {
+      return
+    }
+
+    renderScheduled = true
+    setImmediate(flushQueuedRender)
+  }
+
+  const renderRowsNow = (startRow: number, lines: string[]) => {
+    writeRows(startRow, lines)
+  }
+
+  const renderNow = (lines: string[]) => {
+    if (!process.stdout.isTTY) {
+      process.stdout.write(`${lines.join("\n")}\n`)
+      previousLines = lines.slice()
+      return
+    }
+
+    const fittedLines = lines.map((line) => fitTerminalLine(line))
+
+    const updates: string[] = []
+
+    if (!initialized) {
+      updates.push("\u001b[?25l\u001b[2J")
+      initialized = true
+    }
+
+    const maxLineCount = Math.max(previousLines.length, fittedLines.length)
+
+    for (let index = 0; index < maxLineCount; index += 1) {
+      const nextLine = fittedLines[index]
+      const previousLine = previousLines[index]
+
+      if (nextLine === previousLine) {
+        continue
+      }
+
+      updates.push(`\u001b[${index + 1};1H\u001b[2K`)
+      if (typeof nextLine === "string") {
+        updates.push(nextLine)
+      }
+    }
+
+    if (updates.length > 0) {
+      updates.push("\u001b[1;1H")
+      process.stdout.write(updates.join(""))
+    }
+
+    previousLines = fittedLines.slice()
+  }
+
   return {
     render(lines: string[]) {
-      if (!process.stdout.isTTY) {
-        process.stdout.write(`${lines.join("\n")}\n`)
-        previousLines = lines.slice()
-        return
-      }
-
-      const fittedLines = lines.map((line) => fitTerminalLine(line))
-
-      const updates: string[] = []
-
-      if (!initialized) {
-        updates.push("\u001b[?25l\u001b[2J")
-        initialized = true
-      }
-
-      const maxLineCount = Math.max(previousLines.length, fittedLines.length)
-
-      for (let index = 0; index < maxLineCount; index += 1) {
-        const nextLine = fittedLines[index]
-        const previousLine = previousLines[index]
-
-        if (nextLine === previousLine) {
-          continue
-        }
-
-        updates.push(`\u001b[${index + 1};1H\u001b[2K`)
-        if (typeof nextLine === "string") {
-          updates.push(nextLine)
-        }
-      }
-
-      if (updates.length > 0) {
-        updates.push("\u001b[1;1H")
-        process.stdout.write(updates.join(""))
-      }
-
-      previousLines = fittedLines.slice()
+      renderNow(lines)
     },
 
     renderRows(startRow: number, lines: string[]) {
-      writeRows(startRow, lines)
+      renderRowsNow(startRow, lines)
+    },
+
+    queueRender(lines: string[]) {
+      queueUpdate({ kind: "full", lines })
+    },
+
+    queueRenderRows(startRow: number, lines: string[]) {
+      if (interactionPauseMs > 0 && Date.now() < interactionPausedUntil) {
+        return
+      }
+
+      queueUpdate({ kind: "rows", startRow, lines })
+    },
+
+    notifyInteraction() {
+      if (interactionPauseMs > 0) {
+        interactionPausedUntil = Date.now() + interactionPauseMs
+      }
     },
 
     reset() {
       previousLines = []
+      pendingUpdate = null
+      renderScheduled = false
 
       if (!process.stdout.isTTY || !initialized) {
         return
@@ -259,6 +371,8 @@ export function createScreenRenderer(): ScreenRenderer {
 
     cleanup() {
       previousLines = []
+      pendingUpdate = null
+      renderScheduled = false
 
       if (!process.stdout.isTTY || !initialized) {
         return

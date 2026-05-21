@@ -5,7 +5,7 @@ import { ensureProjectEnvFile, getProjectEnvPath, readEnvValue, writeEnvValue } 
 import { buildCommandOutput, normalizeOutputLines } from "../lib/output"
 import { getSingleSystemIdentifier } from "../lib/system-config"
 import { assertInteractiveTerminal, assertNoArgs } from "../lib/validation"
-import { ansi, brezelLogo, centerLine, createScreenRenderer, type CommandOutput, isPrintableInput, maxLogoWidth, paint, paintReset, renderCommandOutputBlock, renderInlineBox, renderInlineBoxLines, renderLogoLine, statusLine } from "../lib/ui"
+import { ansi, brezelLogo, centerLine, createLogoShimmerController, createScreenRenderer, type CommandOutput, isPrintableInput, type LogoShimmerController, paint, paintReset, renderCommandOutputBlock, renderInlineBox, renderInlineBoxLines, renderLogoLine, statusLine } from "../lib/ui"
 import { runServeCommand } from "./serve"
 
 type SetupOutput = CommandOutput
@@ -23,10 +23,9 @@ type SetupUi = {
   prompt: PromptState | null
   output: SetupOutput | null
   step: string
-  shimmerFrame: number
-  shimmerTimer: ReturnType<typeof setInterval> | null
   running: boolean
   screenRenderer: ReturnType<typeof createScreenRenderer>
+  shimmer: LogoShimmerController
 }
 
 export async function runSetupCommand(args: string[]): Promise<number> {
@@ -150,10 +149,9 @@ function createSetupUi(): SetupUi & {
     prompt: null,
     output: null,
     step: "Preparing setup",
-    shimmerFrame: 0,
-    shimmerTimer: null,
     running: false,
     screenRenderer: createScreenRenderer(),
+    shimmer: createLogoShimmerController(() => render()),
   } as SetupUi & {
     start: () => void
     stop: () => void
@@ -167,7 +165,6 @@ function createSetupUi(): SetupUi & {
     render()
   }
   const handleProcessExit = () => stop()
-  const shimmerInterval = process.platform === "win32" ? 220 : 120
 
   const start = () => {
     if (ui.running) {
@@ -175,13 +172,10 @@ function createSetupUi(): SetupUi & {
     }
 
     ui.running = true
-    ui.shimmerTimer = setInterval(() => {
-      ui.shimmerFrame = (ui.shimmerFrame + 1) % (maxLogoWidth + 12)
-      render()
-    }, shimmerInterval)
     process.stdout.on("resize", onResize)
     process.once("exit", handleProcessExit)
     render()
+    ui.shimmer.start()
   }
 
   const stop = () => {
@@ -190,10 +184,7 @@ function createSetupUi(): SetupUi & {
     }
 
     ui.running = false
-    if (ui.shimmerTimer) {
-      clearInterval(ui.shimmerTimer)
-      ui.shimmerTimer = null
-    }
+    ui.shimmer.stop()
 
     process.stdout.removeListener("resize", onResize)
     process.removeListener("exit", handleProcessExit)
@@ -289,7 +280,7 @@ function renderSetupScreen(ui: SetupUi): string[] {
   const lines: string[] = []
   lines.push("")
 
-  for (const line of brezelLogo.map((entry, index) => renderLogoLine(entry, index, ui.shimmerFrame))) {
+  for (const line of brezelLogo.map((entry, index) => renderLogoLine(entry, index, ui.shimmer.getFrame()))) {
     lines.push(centerLine(line))
   }
 

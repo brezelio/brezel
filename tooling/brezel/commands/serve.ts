@@ -10,7 +10,7 @@ import { readLoginInfo, type LoginInfo } from "../lib/login-info"
 import { sendLinuxNotification } from "../lib/notifications"
 import { buildCommandOutput, normalizeOutputLines } from "../lib/output"
 import { readStackStatus, type StackStatus } from "../lib/stack-status"
-import { ansi, brezelLogo, centerLine, createScreenRenderer, type CommandOutput, hotkey, hyperlink, isPrintableInput, maxLogoWidth, padVisible, paint, paintReset, renderInlineBox, renderInlineBoxLines, renderLogoLine, statusLine, stripAnsi } from "../lib/ui"
+import { ansi, brezelLogo, centerLine, createLogoShimmerController, createScreenRenderer, type CommandOutput, hotkey, hyperlink, isPrintableInput, padVisible, paint, paintReset, renderInlineBox, renderInlineBoxLines, renderLogoLine, statusLine, stripAnsi } from "../lib/ui"
 import { startExploreDb } from "./explore-db"
 import { runLogsCommand } from "./logs"
 import { restartStack } from "./restart"
@@ -174,8 +174,6 @@ async function runServeControlLoop(appSystem: string, context: ServeControlConte
   let cleanedUpInput = false
   let usingAlternateScreen = false
   let showHelp = false
-  let shimmerFrame = 0
-  let shimmerTimer: ReturnType<typeof setInterval> | null = null
   let statusTimer: ReturnType<typeof setInterval> | null = null
   let suspendDashboardRefresh = false
   let lastActionOutput: LastActionOutput | null = null
@@ -184,14 +182,21 @@ async function runServeControlLoop(appSystem: string, context: ServeControlConte
   let prompt: PromptState | null = null
   let stackStatus: StackStatus = readStackStatus()
   const loginInfo = readLoginInfo(appSystem)
-  const shimmerInterval = process.platform === "win32" ? 140 : 120
-  const screenRenderer = createScreenRenderer()
+  const screenRenderer = createScreenRenderer({ interactionPauseMs: process.platform === "win32" ? 250 : 0 })
   const logoRowOffset = 1
+  const shimmer = createLogoShimmerController(() => {
+    if (busy || cleanedUpInput) {
+      return
+    }
 
-  const render = () => screenRenderer.render(renderServeControlScreen(appSystem, showHelp, shimmerFrame, liveActionOutput ?? lastActionOutput, prompt, stackStatus, loginInfo, outputScrollOffset))
-  const renderLogoOnly = () => screenRenderer.renderRows(logoRowOffset, renderServeLogoLines(shimmerFrame))
+    renderLogoOnly()
+  })
+
+  const render = () => screenRenderer.queueRender(renderServeControlScreen(appSystem, showHelp, shimmer.getFrame(), liveActionOutput ?? lastActionOutput, prompt, stackStatus, loginInfo, outputScrollOffset))
+  const renderLogoOnly = () => screenRenderer.queueRenderRows(logoRowOffset, renderServeLogoLines(shimmer.getFrame()))
   const onResize = () => {
     if (!cleanedUpInput) {
+      screenRenderer.notifyInteraction()
       screenRenderer.reset()
       render()
     }
@@ -225,7 +230,7 @@ async function runServeControlLoop(appSystem: string, context: ServeControlConte
     }
 
     cleanedUpInput = true
-    stopShimmer()
+    shimmer.stop()
     stopStatusPolling()
     disableRawMode()
     leaveAlternateScreen()
@@ -252,30 +257,6 @@ async function runServeControlLoop(appSystem: string, context: ServeControlConte
 
     process.stdout.write("\u001b[?1049l")
     usingAlternateScreen = false
-  }
-
-  const startShimmer = () => {
-    if (shimmerTimer || cleanedUpInput || !process.stdout.isTTY) {
-      return
-    }
-
-    shimmerTimer = setInterval(() => {
-      if (busy || cleanedUpInput) {
-        return
-      }
-
-      shimmerFrame = (shimmerFrame + 1) % (maxLogoWidth + 12)
-      renderLogoOnly()
-    }, shimmerInterval)
-  }
-
-  const stopShimmer = () => {
-    if (!shimmerTimer) {
-      return
-    }
-
-    clearInterval(shimmerTimer)
-    shimmerTimer = null
   }
 
   const startStatusPolling = () => {
@@ -309,7 +290,7 @@ async function runServeControlLoop(appSystem: string, context: ServeControlConte
     busy = true
     suspendDashboardRefresh = true
     context.setForegroundAction(true)
-    stopShimmer()
+    shimmer.stop()
     disableRawMode()
     screenRenderer.cleanup()
 
@@ -328,7 +309,7 @@ async function runServeControlLoop(appSystem: string, context: ServeControlConte
         process.stdin.resume()
         restoreRawMode()
         render()
-        startShimmer()
+        shimmer.start()
       }
       busy = false
     }
@@ -397,6 +378,7 @@ async function runServeControlLoop(appSystem: string, context: ServeControlConte
     if (prompt) {
       if (key.ctrl && key.name === "c") {
         prompt = null
+        screenRenderer.notifyInteraction()
         render()
         return
       }
@@ -404,6 +386,7 @@ async function runServeControlLoop(appSystem: string, context: ServeControlConte
       switch (key.name) {
         case "escape":
           prompt = null
+          screenRenderer.notifyInteraction()
           render()
           return
         case "return":
@@ -418,11 +401,13 @@ async function runServeControlLoop(appSystem: string, context: ServeControlConte
         }
         case "backspace":
           prompt.value = prompt.value.slice(0, -1)
+          screenRenderer.notifyInteraction()
           render()
           return
         default:
           if (_str && isPrintableInput(_str)) {
             prompt.value += _str
+            screenRenderer.notifyInteraction()
             render()
           }
           return
@@ -438,10 +423,12 @@ async function runServeControlLoop(appSystem: string, context: ServeControlConte
           return
         case "d":
           outputScrollOffset = scrollOutput(outputScrollOffset, liveActionOutput ?? lastActionOutput, -Math.ceil(outputVisibleLineCount / 2))
+          screenRenderer.notifyInteraction()
           render()
           return
         case "u":
           outputScrollOffset = scrollOutput(outputScrollOffset, liveActionOutput ?? lastActionOutput, Math.ceil(outputVisibleLineCount / 2))
+          screenRenderer.notifyInteraction()
           render()
           return
       }
@@ -455,22 +442,26 @@ async function runServeControlLoop(appSystem: string, context: ServeControlConte
         return
       case "h":
         showHelp = !showHelp
+        screenRenderer.notifyInteraction()
         render()
         return
       case "j":
       case "down":
         outputScrollOffset = scrollOutput(outputScrollOffset, liveActionOutput ?? lastActionOutput, -1)
+        screenRenderer.notifyInteraction()
         render()
         return
       case "k":
       case "up":
         outputScrollOffset = scrollOutput(outputScrollOffset, liveActionOutput ?? lastActionOutput, 1)
+        screenRenderer.notifyInteraction()
         render()
         return
       case "c":
         lastActionOutput = null
         liveActionOutput = null
         outputScrollOffset = 0
+        screenRenderer.notifyInteraction()
         render()
         return
       case "r":
@@ -481,10 +472,12 @@ async function runServeControlLoop(appSystem: string, context: ServeControlConte
         return
       case "b":
         prompt = { kind: "bakery", value: "" }
+        screenRenderer.notifyInteraction()
         render()
         return
       case "x":
         prompt = { kind: "command", value: "" }
+        screenRenderer.notifyInteraction()
         render()
         return
       case "u":
@@ -523,7 +516,7 @@ async function runServeControlLoop(appSystem: string, context: ServeControlConte
   process.once("exit", cleanupInput)
   restoreRawMode()
   render()
-  startShimmer()
+  shimmer.start()
   startStatusPolling()
 
   return await new Promise<number>((resolve) => {
