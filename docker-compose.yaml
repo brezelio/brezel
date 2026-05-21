@@ -70,7 +70,7 @@ services:
 
         echo "Running composer $$composer_command..."
 
-        if composer "$${composer_command}" --no-interaction; then
+        if bash -c "composer $${composer_command} --no-interaction 2> >(grep --line-buffered -viE 'deprecation|abandoned' >&2)"; then
           chown -R brezel:brezel vendor
           mkdir -p "$$state_dir"
           current_lock_checksum="missing"
@@ -113,7 +113,7 @@ services:
         if [ -L node_modules/@kibro/brezel-spa ] && [ ! -f /linked/spa/package.json ]; then
           rm node_modules/@kibro/brezel-spa
         fi
-        npm install
+        bash -c "npm install --no-audit --no-fund 2> >(grep --line-buffered -viE 'npm warn|deprecated' >&2)"
         if [ -f /linked/spa/package.json ]; then
           mkdir -p node_modules/@kibro
           rm -rf node_modules/@kibro/brezel-spa
