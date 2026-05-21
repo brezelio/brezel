@@ -15,7 +15,7 @@ export async function runAnimateCommand(args: string[]): Promise<number> {
 
   let cleanedUp = false
   const screenRenderer = createScreenRenderer()
-  const shimmer = createLogoShimmerController(() => render(), { enabled: true })
+  const shimmer = createLogoShimmerController(() => render())
 
   const cleanup = () => {
     if (cleanedUp) {

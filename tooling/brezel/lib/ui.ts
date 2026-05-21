@@ -21,13 +21,8 @@ type ScreenRendererOptions = {
 
 export type LogoShimmerController = {
   getFrame: () => number
-  isEnabled: () => boolean
   start: () => void
   stop: () => void
-}
-
-type LogoShimmerOptions = {
-  enabled?: boolean
 }
 
 export const ansi = {
@@ -180,22 +175,17 @@ export function renderLogoLine(line: string, row: number, shimmerFrame: number):
   return `${rendered}${ansi.reset}`
 }
 
-export function createLogoShimmerController(onFrame: (frame: number) => void, options: LogoShimmerOptions = {}): LogoShimmerController {
+export function createLogoShimmerController(onFrame: (frame: number) => void): LogoShimmerController {
   let frame = 0
   let timer: ReturnType<typeof setInterval> | null = null
-  const enabled = options.enabled ?? shouldEnableAnimatedLogo()
 
   return {
     getFrame() {
       return frame
     },
 
-    isEnabled() {
-      return enabled
-    },
-
     start() {
-      if (!enabled || timer || !process.stdout.isTTY) {
+      if (timer || !process.stdout.isTTY) {
         return
       }
 
@@ -218,22 +208,6 @@ export function createLogoShimmerController(onFrame: (frame: number) => void, op
 
 export function getLogoShimmerInterval(): number {
   return process.platform === "win32" ? 180 : 120
-}
-
-export function shouldEnableAnimatedLogo(): boolean {
-  if (!process.stdout.isTTY) {
-    return false
-  }
-
-  if (process.env.BREZEL_FORCE_ANIMATED_LOGO === "1") {
-    return true
-  }
-
-  if (process.env.BREZEL_DISABLE_ANIMATED_LOGO === "1") {
-    return false
-  }
-
-  return process.platform !== "win32"
 }
 
 export function isPrintableInput(value: string): boolean {
