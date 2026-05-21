@@ -159,6 +159,16 @@ type PromptState = {
 
 type LiveOutputUpdater = (title: string, lines: string[]) => void
 
+type ServeControlLayout = {
+  lines: string[]
+  statusRow: number
+  statusLine: string
+  helpRow: number
+  helpLine: string
+  outputStartRow: number | null
+  outputLines: string[]
+}
+
 const outputVisibleLineCount = 12
 
 async function runServeControlLoop(appSystem: string, context: ServeControlContext): Promise<number> {
@@ -191,9 +201,26 @@ async function runServeControlLoop(appSystem: string, context: ServeControlConte
 
     renderLogoOnly()
   })
+  let currentLayout = buildServeControlLayout(appSystem, showHelp, shimmer.getFrame(), liveActionOutput ?? lastActionOutput, prompt, stackStatus, loginInfo, outputScrollOffset)
 
-  const render = () => screenRenderer.queueRender(renderServeControlScreen(appSystem, showHelp, shimmer.getFrame(), liveActionOutput ?? lastActionOutput, prompt, stackStatus, loginInfo, outputScrollOffset))
-  const renderLogoOnly = () => screenRenderer.queueRenderRows(logoRowOffset, renderServeLogoLines(shimmer.getFrame()))
+  const render = () => {
+    currentLayout = buildServeControlLayout(appSystem, showHelp, shimmer.getFrame(), liveActionOutput ?? lastActionOutput, prompt, stackStatus, loginInfo, outputScrollOffset)
+    screenRenderer.queueRender(currentLayout.lines)
+  }
+  const renderLogoOnly = () => screenRenderer.queueAnimationRows(logoRowOffset, renderServeLogoLines(shimmer.getFrame()))
+  const renderStatusAndHelpOnly = () => {
+    currentLayout = buildServeControlLayout(appSystem, showHelp, shimmer.getFrame(), liveActionOutput ?? lastActionOutput, prompt, stackStatus, loginInfo, outputScrollOffset)
+    screenRenderer.queueRenderRows(
+      currentLayout.statusRow,
+      currentLayout.lines.slice(currentLayout.statusRow, currentLayout.helpRow + 1),
+    )
+  }
+  const renderOutputOnly = () => {
+    currentLayout = buildServeControlLayout(appSystem, showHelp, shimmer.getFrame(), liveActionOutput ?? lastActionOutput, prompt, stackStatus, loginInfo, outputScrollOffset)
+    if (currentLayout.outputStartRow !== null) {
+      screenRenderer.queueRenderRows(currentLayout.outputStartRow, currentLayout.outputLines)
+    }
+  }
   const onResize = () => {
     if (!cleanedUpInput) {
       screenRenderer.notifyInteraction()
@@ -424,12 +451,12 @@ async function runServeControlLoop(appSystem: string, context: ServeControlConte
         case "d":
           outputScrollOffset = scrollOutput(outputScrollOffset, liveActionOutput ?? lastActionOutput, -Math.ceil(outputVisibleLineCount / 2))
           screenRenderer.notifyInteraction()
-          render()
+          renderOutputOnly()
           return
         case "u":
           outputScrollOffset = scrollOutput(outputScrollOffset, liveActionOutput ?? lastActionOutput, Math.ceil(outputVisibleLineCount / 2))
           screenRenderer.notifyInteraction()
-          render()
+          renderOutputOnly()
           return
       }
     }
@@ -443,19 +470,19 @@ async function runServeControlLoop(appSystem: string, context: ServeControlConte
       case "h":
         showHelp = !showHelp
         screenRenderer.notifyInteraction()
-        render()
+        renderStatusAndHelpOnly()
         return
       case "j":
       case "down":
         outputScrollOffset = scrollOutput(outputScrollOffset, liveActionOutput ?? lastActionOutput, -1)
         screenRenderer.notifyInteraction()
-        render()
+        renderOutputOnly()
         return
       case "k":
       case "up":
         outputScrollOffset = scrollOutput(outputScrollOffset, liveActionOutput ?? lastActionOutput, 1)
         screenRenderer.notifyInteraction()
-        render()
+        renderOutputOnly()
         return
       case "c":
         lastActionOutput = null
@@ -524,7 +551,7 @@ async function runServeControlLoop(appSystem: string, context: ServeControlConte
   })
 }
 
-function renderServeControlScreen(appSystem: string, showHelp: boolean, shimmerFrame: number, lastActionOutput: LastActionOutput | null, prompt: PromptState | null, stackStatus: StackStatus, loginInfo: LoginInfo[], outputScrollOffset: number): string[] {
+function buildServeControlLayout(appSystem: string, showHelp: boolean, shimmerFrame: number, lastActionOutput: LastActionOutput | null, prompt: PromptState | null, stackStatus: StackStatus, loginInfo: LoginInfo[], outputScrollOffset: number): ServeControlLayout {
   const lines: string[] = []
   lines.push("")
   const statusLabel = showHelp ? "help: visible" : "help: hidden"
@@ -538,7 +565,9 @@ function renderServeControlScreen(appSystem: string, showHelp: boolean, shimmerF
   }
 
   lines.push("")
-  lines.push(centerLine(statusLine([stackStatus.label, stackStatus.detail, statusLabel])))
+  const statusRow = lines.length
+  const renderedStatusLine = centerLine(statusLine([stackStatus.label, stackStatus.detail, statusLabel]))
+  lines.push(renderedStatusLine)
   lines.push("")
   lines.push(centerLine(`${paint(ansi.bold)}${renderServeEndpointLine(appSystem)}${paintReset()}`))
   if (loginInfo.length > 0) {
@@ -549,14 +578,12 @@ function renderServeControlScreen(appSystem: string, showHelp: boolean, shimmerF
   }
   lines.push("")
 
+  const helpRow = lines.length
+  const renderedHelpLine = renderServeHelpLine(showHelp)
   if (showHelp) {
-    const dimHotkey = (key: string) => `${hotkey(key)}${paint(ansi.dim)}`
-    lines.push(centerLine(
-      `${paint(ansi.dim)}Actions: ${dimHotkey("b")} bakery  ${dimHotkey("x")} brezel  ${dimHotkey("u")} update  ${dimHotkey("a")} apply  ${dimHotkey("l")} load  ${dimHotkey("r")} restart  ` +
-      `${dimHotkey("e")} explore db  ${dimHotkey("d")} debug  ${dimHotkey("p")} peek  ${dimHotkey("w")} jobs  ${dimHotkey("q")} quit  ${dimHotkey("h")} hide help${paintReset()}`
-    ))
+    lines.push(renderedHelpLine)
   } else {
-    lines.push(centerLine(`${paint(ansi.dim)}Press ${hotkey("h")}${paint(ansi.dim)} for controls, ${hotkey("q")}${paint(ansi.dim)} or ${hotkey("Ctrl+C")}${paint(ansi.dim)} to stop Brezel.${paintReset()}`))
+    lines.push(renderedHelpLine)
   }
 
   if (prompt) {
@@ -566,16 +593,30 @@ function renderServeControlScreen(appSystem: string, showHelp: boolean, shimmerF
     }
   }
 
+  let outputStartRow: number | null = null
+  let outputLines: string[] = []
   if (lastActionOutput) {
     lines.push("")
-    for (const line of renderScrollableCommandOutputBlock(lastActionOutput, outputScrollOffset)) {
-      lines.push(centerLine(line))
+    outputStartRow = lines.length
+    outputLines = [
+      ...renderScrollableCommandOutputBlock(lastActionOutput, outputScrollOffset),
+      "",
+      `${paint(ansi.dim)}Scroll: ${hotkey("↑")}${paint(ansi.dim)}/${hotkey("k")}${paint(ansi.dim)} up  ${hotkey("↓")}${paint(ansi.dim)}/${hotkey("j")}${paint(ansi.dim)} down  ${hotkey("Ctrl+U")}${paint(ansi.dim)}/${hotkey("Ctrl+D")}${paint(ansi.dim)} half page  ${hotkey("c")}${paint(ansi.dim)} clear${paintReset()}`,
+    ].map((line) => centerLine(line))
+    for (const line of outputLines) {
+      lines.push(line)
     }
-    lines.push("")
-    lines.push(centerLine(`${paint(ansi.dim)}Scroll: ${hotkey("↑")}${paint(ansi.dim)}/${hotkey("k")}${paint(ansi.dim)} up  ${hotkey("↓")}${paint(ansi.dim)}/${hotkey("j")}${paint(ansi.dim)} down  ${hotkey("Ctrl+U")}${paint(ansi.dim)}/${hotkey("Ctrl+D")}${paint(ansi.dim)} half page  ${hotkey("c")}${paint(ansi.dim)} clear${paintReset()}`))
   }
 
-  return lines
+  return {
+    lines,
+    statusRow,
+    statusLine: renderedStatusLine,
+    helpRow,
+    helpLine: renderedHelpLine,
+    outputStartRow,
+    outputLines,
+  }
 }
 
 function renderServeLogoLines(shimmerFrame: number): string[] {
@@ -589,6 +630,9 @@ function renderScrollableCommandOutputBlock(output: CommandOutput, scrollOffset:
   const end = totalLines - clampedOffset
   const start = Math.max(0, end - outputVisibleLineCount)
   const visibleLines = output.lines.slice(start, end)
+  while (visibleLines.length < outputVisibleLineCount) {
+    visibleLines.push(visibleLines.length === 0 ? "No output yet." : "")
+  }
   const prefix = output.live ? "Running" : "Last output"
   const statusColor = output.success ? ansi.green : ansi.yellow
   const header = `${paint(statusColor, ansi.bold)}${prefix}:${paintReset()} ${output.title}`
@@ -602,6 +646,18 @@ function renderScrollableCommandOutputBlock(output: CommandOutput, scrollOffset:
     "",
     ...(visibleLines.length > 0 ? visibleLines : ["No output yet."]),
   ])
+}
+
+function renderServeHelpLine(showHelp: boolean): string {
+  if (showHelp) {
+    const dimHotkey = (key: string) => `${hotkey(key)}${paint(ansi.dim)}`
+    return centerLine(
+      `${paint(ansi.dim)}Actions: ${dimHotkey("b")} bakery  ${dimHotkey("x")} brezel  ${dimHotkey("u")} update  ${dimHotkey("a")} apply  ${dimHotkey("l")} load  ${dimHotkey("r")} restart  ` +
+      `${dimHotkey("e")} explore db  ${dimHotkey("d")} debug  ${dimHotkey("p")} peek  ${dimHotkey("w")} jobs  ${dimHotkey("q")} quit  ${dimHotkey("h")} hide help${paintReset()}`
+    )
+  }
+
+  return centerLine(`${paint(ansi.dim)}Press ${hotkey("h")}${paint(ansi.dim)} for controls, ${hotkey("q")}${paint(ansi.dim)} or ${hotkey("Ctrl+C")}${paint(ansi.dim)} to stop Brezel.${paintReset()}`)
 }
 
 function scrollOutput(currentOffset: number, output: CommandOutput | null, delta: number): number {

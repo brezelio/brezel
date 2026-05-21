@@ -10,6 +10,7 @@ export type ScreenRenderer = {
   renderRows: (startRow: number, lines: string[]) => void
   queueRender: (lines: string[]) => void
   queueRenderRows: (startRow: number, lines: string[]) => void
+  queueAnimationRows: (startRow: number, lines: string[]) => void
   notifyInteraction: () => void
   reset: () => void
   cleanup: () => void
@@ -344,6 +345,10 @@ export function createScreenRenderer(options: ScreenRendererOptions = {}): Scree
     },
 
     queueRenderRows(startRow: number, lines: string[]) {
+      queueUpdate({ kind: "rows", startRow, lines })
+    },
+
+    queueAnimationRows(startRow: number, lines: string[]) {
       if (interactionPauseMs > 0 && Date.now() < interactionPausedUntil) {
         return
       }
