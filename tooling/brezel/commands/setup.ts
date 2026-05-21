@@ -299,7 +299,8 @@ function renderSetupScreen(ui: SetupUi): string[] {
   }
 
   lines.push("")
-  lines.push(centerLine(`${paint(ansi.dim)}Let's quickly set up everything and get your brezel into the oven.${paintReset()}`))
+  lines.push(centerLine(`Let's preheat the oven, get things ready and then get your Brezel baking!`))
+  lines.push(centerLine(`${paint(ansi.dim)}First-time setup can take up to 10 minutes depending on your machine, especially while building Docker images.${paintReset()}`))
   lines.push(centerLine(statusLine(["mode: setup", `step: ${ui.step}`])))
 
   if (ui.prompt) {

@@ -70,6 +70,8 @@ On Windows PowerShell from the project root, use `./brezel setup` instead.
 
 `brezel setup` is the technical local setup flow.
 
+On a fresh machine, this can take up to 10 minutes depending on specs, especially during the first Docker image build.
+
 It will:
 
 - copy `.env.example` to `.env` when needed
