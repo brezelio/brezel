@@ -138,6 +138,7 @@ services:
       - "2041:8081"
     volumes:
       - .:/var/www/brezel
+      - brezel_vendor:/var/www/brezel/vendor
       - brezel_node_modules:/var/www/brezel/node_modules
       - caddy_data:/data
       - caddy_config:/config
@@ -205,6 +206,7 @@ services:
       - "2040:2040"
     volumes:
       - .:/var/www/brezel
+      - brezel_node_modules:/var/www/brezel/node_modules
     restart: unless-stopped
 
   phpmyadmin:
