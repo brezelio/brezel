@@ -579,7 +579,7 @@ function renderServeControlScreen(appSystem: string, showHelp: boolean, shimmerF
       lines.push(centerLine(line))
     }
     lines.push("")
-    lines.push(centerLine(`${paint(ansi.dim)}Scroll: ${hotkey("↑")}/${hotkey("k")} up  ${hotkey("↓")}/${hotkey("j")} down  ${hotkey("Ctrl+U")}/${hotkey("Ctrl+D")} half page  ${hotkey("c")} clear${paintReset()}`))
+    lines.push(centerLine(`${paint(ansi.dim)}Scroll: ${hotkey("↑")}${paint(ansi.dim)}/${hotkey("k")}${paint(ansi.dim)} up  ${hotkey("↓")}${paint(ansi.dim)}/${hotkey("j")}${paint(ansi.dim)} down  ${hotkey("Ctrl+U")}${paint(ansi.dim)}/${hotkey("Ctrl+D")}${paint(ansi.dim)} half page  ${hotkey("c")}${paint(ansi.dim)} clear${paintReset()}`))
   }
 
   return lines
