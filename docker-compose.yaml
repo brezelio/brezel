@@ -141,6 +141,14 @@ services:
       - brezel_node_modules:/var/www/brezel/node_modules
       - caddy_data:/data
       - caddy_config:/config
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - php -r '$socket = @fsockopen("127.0.0.1", 8081); exit($socket ? 0 : 1);'
+      interval: 5s
+      timeout: 3s
+      retries: 20
+      start_period: 10s
 
   workers:
     <<: *brezel-php-service

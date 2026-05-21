@@ -82,7 +82,7 @@ export async function runSetupCommand(args: string[]): Promise<number> {
       return 1
     }
 
-    if (await runSetupStep(ui, "Preparing database and app container", ["up", "-d", "mariadb", "app"]) !== 0) {
+    if (await runSetupStep(ui, "Preparing database and app container", ["up", "-d", "--wait", "mariadb", "app"]) !== 0) {
       return 1
     }
 
@@ -94,7 +94,7 @@ export async function runSetupCommand(args: string[]): Promise<number> {
       return 1
     }
 
-    if (await runSetupStep(ui, "Starting database and app with initialized env", ["up", "-d", "mariadb", "app"]) !== 0) {
+    if (await runSetupStep(ui, "Starting database and app with initialized env", ["up", "-d", "--wait", "mariadb", "app"]) !== 0) {
       return 1
     }
 
