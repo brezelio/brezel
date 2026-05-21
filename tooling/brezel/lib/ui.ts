@@ -202,7 +202,7 @@ export function createLogoShimmerController(onFrame: (frame: number) => void): L
 }
 
 export function getLogoShimmerInterval(): number {
-  return process.platform === "win32" ? 180 : 120
+  return 120
 }
 
 export function isPrintableInput(value: string): boolean {

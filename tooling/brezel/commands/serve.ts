@@ -162,9 +162,7 @@ type LiveOutputUpdater = (title: string, lines: string[]) => void
 type ServeControlLayout = {
   lines: string[]
   statusRow: number
-  statusLine: string
   helpRow: number
-  helpLine: string
   outputStartRow: number | null
   outputLines: string[]
 }
@@ -334,7 +332,6 @@ async function runServeControlLoop(appSystem: string, context: ServeControlConte
     try {
       console.log("")
       const exitCode = await action()
-      stackStatus = readStackStatus()
       if (!expectedExitCodes.includes(exitCode)) {
         console.log("")
         console.log(`Command exited with status ${exitCode}.`)
@@ -363,7 +360,6 @@ async function runServeControlLoop(appSystem: string, context: ServeControlConte
 
     try {
       const exitCode = await action()
-      stackStatus = readStackStatus()
 
       if (exitCode !== 0) {
         lastActionOutput = {
@@ -609,9 +605,7 @@ function buildServeControlLayout(appSystem: string, showHelp: boolean, shimmerFr
   return {
     lines,
     statusRow,
-    statusLine: renderedStatusLine,
     helpRow,
-    helpLine: renderedHelpLine,
     outputStartRow,
     outputLines,
   }
