@@ -1,4 +1,4 @@
-import { runComposeCommandCaptured } from "./compose"
+import { runComposeCommandCaptured, runComposeCommandCapturedAsync } from "./compose"
 
 type ComposePsRow = {
   Service?: string
@@ -17,7 +17,16 @@ const runtimeServices = ["mariadb", "app", "workers", "scheduler", "vite"] as co
 
 export function readStackStatus(): StackStatus {
   const result = runComposeCommandCaptured(["ps", "--all", "--format", "json"])
-  if (result.exitCode !== 0) {
+  return buildStackStatus(result.exitCode, result.stdout)
+}
+
+export async function readStackStatusAsync(): Promise<StackStatus> {
+  const result = await runComposeCommandCapturedAsync(["ps", "--all", "--format", "json"])
+  return buildStackStatus(result.exitCode, result.stdout)
+}
+
+function buildStackStatus(exitCode: number, stdout: string): StackStatus {
+  if (exitCode !== 0) {
     return {
       phase: "unknown",
       label: "stack: unknown",
@@ -25,7 +34,7 @@ export function readStackStatus(): StackStatus {
     }
   }
 
-  const rows = parseComposePsRows(result.stdout)
+  const rows = parseComposePsRows(stdout)
   const states = new Map(rows.map((row) => [row.Service ?? "", (row.State ?? "").toLowerCase()]))
 
   let running = 0

@@ -9,7 +9,7 @@ import { getProjectDir, runProjectCommandInteractive, runProjectCommandStreaming
 import { readLoginInfo, type LoginInfo } from "../lib/login-info"
 import { sendLinuxNotification } from "../lib/notifications"
 import { buildCommandOutput, normalizeOutputLines } from "../lib/output"
-import { readStackStatus, type StackStatus } from "../lib/stack-status"
+import { readStackStatus, readStackStatusAsync, type StackStatus } from "../lib/stack-status"
 import { ansi, brezelLogo, centerLine, createLogoShimmerController, createScreenRenderer, type CommandOutput, hotkey, hyperlink, isPrintableInput, padVisible, paint, paintReset, renderInlineBox, renderInlineBoxLines, renderLogoLine, statusLine, stripAnsi } from "../lib/ui"
 import { startExploreDb } from "./explore-db"
 import { runLogsCommand } from "./logs"
@@ -191,6 +191,7 @@ async function runServeControlLoop(appSystem: string, context: ServeControlConte
   let outputScrollOffset = 0
   let prompt: PromptState | null = null
   let stackStatus: StackStatus = readStackStatus()
+  let statusPollInFlight = false
   const loginInfo = readLoginInfo(appSystem)
   const screenRenderer = createScreenRenderer({ interactionPauseMs: process.platform === "win32" ? 250 : 0 })
   const logoRowOffset = 1
@@ -292,15 +293,25 @@ async function runServeControlLoop(appSystem: string, context: ServeControlConte
     }
 
     statusTimer = setInterval(() => {
-      if (cleanedUpInput || suspendDashboardRefresh) {
+      if (cleanedUpInput || suspendDashboardRefresh || statusPollInFlight) {
         return
       }
 
-      const nextStatus = readStackStatus()
-      if (nextStatus.label !== stackStatus.label || nextStatus.detail !== stackStatus.detail) {
-        stackStatus = nextStatus
-        render()
-      }
+      statusPollInFlight = true
+      void readStackStatusAsync()
+        .then((nextStatus) => {
+          if (cleanedUpInput) {
+            return
+          }
+
+          if (nextStatus.label !== stackStatus.label || nextStatus.detail !== stackStatus.detail) {
+            stackStatus = nextStatus
+            render()
+          }
+        })
+        .finally(() => {
+          statusPollInFlight = false
+        })
     }, 3000)
   }
 

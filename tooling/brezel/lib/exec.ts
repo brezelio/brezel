@@ -75,6 +75,47 @@ export function runProjectCommandCaptured(command: ProjectCommand): CapturedComm
   }
 }
 
+export async function runProjectCommandCapturedAsync(command: ProjectCommand): Promise<CapturedCommandResult> {
+  const child = process.platform === "win32"
+    ? spawn("cmd.exe", ["/c", command.windowsCommand, ...command.args], {
+        cwd: projectDir,
+        stdio: ["inherit", "pipe", "pipe"],
+      })
+    : spawn(command.unixCommand, command.args, {
+        cwd: projectDir,
+        stdio: ["inherit", "pipe", "pipe"],
+      })
+
+  let stdout = ""
+  let stderr = ""
+
+  child.stdout?.on("data", (chunk) => {
+    stdout += chunk.toString()
+  })
+
+  child.stderr?.on("data", (chunk) => {
+    stderr += chunk.toString()
+  })
+
+  return await new Promise<CapturedCommandResult>((resolve) => {
+    child.on("error", (error) => {
+      resolve({
+        exitCode: 1,
+        stdout,
+        stderr: stderr ? `${stderr}\n${error.message}` : error.message,
+      })
+    })
+
+    child.on("exit", (code, signal) => {
+      resolve({
+        exitCode: signal ? 130 : (code ?? 0),
+        stdout,
+        stderr,
+      })
+    })
+  })
+}
+
 export async function runProjectCommandInteractive(command: ProjectCommand): Promise<number> {
   const child = process.platform === "win32"
     ? spawn("cmd.exe", ["/c", command.windowsCommand, ...command.args], {

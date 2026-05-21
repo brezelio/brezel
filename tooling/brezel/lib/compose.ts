@@ -1,4 +1,4 @@
-import { runProjectCommand, runProjectCommandCaptured, runProjectCommandInteractive, runProjectCommandStreamingCaptured, type CapturedCommandResult, type StreamingCaptureOptions } from "./exec"
+import { runProjectCommand, runProjectCommandCaptured, runProjectCommandCapturedAsync, runProjectCommandInteractive, runProjectCommandStreamingCaptured, type CapturedCommandResult, type StreamingCaptureOptions } from "./exec"
 
 type ComposeOptions = {
   profiles?: string[]
@@ -22,6 +22,14 @@ export async function runComposeCommandInteractive(args: string[], options: Comp
 
 export function runComposeCommandCaptured(args: string[], options: ComposeOptions = {}): CapturedCommandResult {
   return runProjectCommandCaptured({
+    unixCommand: "bin/compose",
+    windowsCommand: "bin\\compose.bat",
+    args: withProfiles(args, options.profiles),
+  })
+}
+
+export async function runComposeCommandCapturedAsync(args: string[], options: ComposeOptions = {}): Promise<CapturedCommandResult> {
+  return await runProjectCommandCapturedAsync({
     unixCommand: "bin/compose",
     windowsCommand: "bin\\compose.bat",
     args: withProfiles(args, options.profiles),
