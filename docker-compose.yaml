@@ -144,7 +144,7 @@ services:
     healthcheck:
       test:
         - CMD-SHELL
-        - php -r '$socket = @fsockopen("127.0.0.1", 8081); exit($socket ? 0 : 1);'
+        - "php -r \"exit(@fsockopen('127.0.0.1', 8081) ? 0 : 1);\""
       interval: 5s
       timeout: 3s
       retries: 20
