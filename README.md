@@ -1,106 +1,142 @@
 # Brezel Skeleton
 
-This is the skeleton for a Brezel instance.
+This repository is the starting point for a new Brezel instance.
 
-It represents the latest "recommended" setup for your Brezel Instance repo.
+It gives you a working local setup, a small example system, and a repo-local CLI so you can get from clone to running project quickly.
 
-> Note: This is for brezel/api 4.0 with brezel/spa ?.0 and up!
+## Why Brezel
 
-It contains a slim `example` system to get you up and running quickly.
+- Fast onboarding: one repo, one setup flow, one foreground control interface.
+- Pleasant day-to-day workflow: `brezel serve`, `brezel update`, `brezel apply`, and `brezel load` cover most local work.
+- Minimal host setup: install Docker and `mise`, then work through the Brezel CLI. Or use our [one-line-installer](https://gitlab.kiwis-and-brownies.de/kibro/brezel/one-line-installer), then you don't even need to clone this repository manually!
 
-Crucially, it creates two users for you to use:
-- `dev@example.com`: A "root" user that bypasses all permission checks. Use it e.g. for Bakery access. Since this user can do everything, but be careful when you test features with it as things that work with this user may not work with other users!
-- `admin@example.com`: A "normal" user with the `admin` role that has permissions for everything. This (or a similar user that is **not** root) should be used for normal development and interactive testing.
-
-> On local development only these users have the password `secret`.
-> 
-> You can (and should!) change these passwords in a production environment via your systems `.env` file!
+You do **not** need host installations of PHP, Composer, Node, MySQL, or FrankenPHP and we will NOT mess with your local
+environment if you have them. All dependencies run in Docker containers, and the Brezel CLI interacts with them for you.
 
 ## Quick Start
 
-Install these on your machine first:
+> The easiest way to get started is to follow the [one-line
+> installer](https://gitlab.kiwis-and-brownies.de/kibro/brezel/one-line-installer) instructions, which will set up this
+> skeleton for you and run through the initial setup steps automatically.
+
+### Manual Requirements
+
+Install these first:
 
 1. [Docker](https://www.docker.com/)
 2. [mise](https://mise.jdx.dev/)
 
-On macOS and Linux, the one-line installer can install these dependencies for you.
-On Windows, Docker Desktop must already be installed and running before you start the Brezel installer.
+Platform notes:
 
-### 1. Trust and install the local tooling
+- On macOS and Linux, the one-line installer can install missing dependencies for you.
+- On Windows, **Docker Desktop must already be installed** before you start the Brezel installer. See [Docker Desktop
+for Windows](https://docs.docker.com/desktop/windows/install/) for instructions.
+
+### Fast Path
+
+1. Trust and install the local tooling.
 
 ```bash
 mise trust
 mise install
 ```
 
-This installs the small project-local interaction tools only:
-
-- `bun`
-- `tailspin`
-- `zellij`
-
-Those power the repo-shipped `brezel` CLI and the local dashboard.
-
-Windows note:
-
-- `mise` shell aliases are not available in PowerShell.
-- In PowerShell, use `./brezel ...` from the project root, or `mise run <task>`.
-- Examples: `./brezel serve`, `./brezel setup`, `mise run serve`.
-
-### 2. Run the semantic system initialization step
+2. Run the semantic first-run step. This will ask you what you do and who you are to get a customized and personalized system starting point.
 
 ```bash
 brezel system initialize
 ```
 
-On Windows PowerShell from the project root, use `./brezel system initialize` instead.
-
-`brezel system initialize` is the semantic first-run step.
-
-Right now it asks for your company name and can rename the default `example` system accordingly.
-If you answer `no!`, it leaves the system bare and unchanged.
-
-### 3. Run the technical setup entrypoint
+3. Run the technical setup flow.
 
 ```bash
 brezel setup
 ```
 
-On Windows PowerShell from the project root, use `./brezel setup` instead.
-
-`brezel setup` is the technical local setup flow.
-
-On a fresh machine, this can take up to 10 minutes depending on specs, especially during the first Docker image build.
-
-It will:
-
-- copy `.env.example` to `.env` when needed
-- ask for package registry access tokens used by Brezel
-- ask for AI connection info and similar extras when configured
-- validate the setup by actually trying to use the dependency containers
-- start `brezel serve` when it is done
-
-### 4. Start Brezel
+4. Start Brezel manually later with:
 
 ```bash
 brezel serve
 ```
 
-On Windows PowerShell from the project root, use `./brezel serve` instead.
+Windows PowerShell notes:
 
-This will:
+- `mise` shell aliases are not available in PowerShell.
+- Use `.\brezel ...` from the project root, or `mise run <task>`.
+- Examples: `.\brezel setup`, `.\brezel serve`, `mise run serve`.
 
-- clean up any old stack for this project
-- check that the required local ports are free
-- start the Docker services
-- print where your local Brezel is available
-- stay attached in the foreground with a clean control view
+### What To Expect
 
-It will then be available at:
+- `brezel system initialize` asks for your company name and other information. This will determine the name of your
+system.
+- `brezel setup` prepares `.env`, asks for optional extras, validates dependencies, initializes Brezel, and ends by starting the local environment.
+  - > On a fresh machine, first-time setup can take up to 10 minutes on slower hardware or in VMs, especially during the first Docker image build.
+
+Once running, Brezel is available at:
 
 ```text
 http://<system-identifier>.localhost:2040
 ```
+
+## Default Local Users
+
+This skeleton creates two users for local development:
+
+- `dev@example.com`: a root-style development user that bypasses permission checks.
+- `admin@example.com`: a normal admin user with full application permissions.
+
+On local development only, both use the password `secret`.
+
+Change these in production via your system `.env`.
+
+## Everyday Usage
+
+### Main Commands
+
+The main commands you will use are:
+
+```bash
+brezel serve
+brezel update
+brezel apply
+brezel load
+brezel teardown
+```
+
+What they do:
+
+- `brezel serve`: start the local stack in the foreground with a clean control view.
+- `brezel update`: run migrations, then load workflows, then apply resources.
+- `brezel apply`: apply Brezel resource changes.
+- `brezel load`: reload workflow definitions.
+- `brezel teardown`: stop the stack and remove its containers, volumes, and local Compose images.
+
+If you prefer `mise` tasks, these also work:
+
+```bash
+mise run serve
+mise run update
+mise run apply
+mise run load
+```
+
+### Foreground Controls
+
+While `brezel serve` is running:
+
+- press `h` to show controls
+- press `q` to stop Brezel and clean up
+- press `u` for a full update
+- press `a` to apply config changes
+- press `l` to load workflow changes
+- press `e` to explore the database in phpMyAdmin
+- press `p` to show all container logs
+- press `j` for worker logs
+- press `b` to run an arbitrary Bakery command
+
+Stop the normal foreground mode with `Ctrl+C`.
+
+### Interactive Dashboard
 
 If you want the attached Zellij dashboard, use:
 
@@ -108,131 +144,46 @@ If you want the attached Zellij dashboard, use:
 brezel serve interactive
 ```
 
-If you want to force a rebuild first, use:
+It opens panes for:
+
+- SPA / Vite logs
+- API / app container logs
+- worker logs
+- scheduler logs
+- dependency bootstrap logs
+- a project shell pane
+
+Important:
+
+- Exit the interactive Zellij session with `Ctrl+Q` for a clean shutdown.
+- Killing the terminal abruptly can leave orphaned containers behind.
+
+### Rebuilds
+
+To force a rebuild first:
 
 ```bash
 brezel serve --rebuild
 brezel serve interactive --rebuild
 ```
 
-When you want to fully clean up the local stack again, use:
+## Technical Notes
 
-```bash
-brezel teardown
-```
+### Dependency Volumes
 
-This removes:
+For better filesystem performance on Windows and macOS:
 
-- containers
-- volumes
-- local Compose images for this Brezel stack
+- `vendor/` is stored in a Docker named volume
+- `node_modules/` is stored in a Docker named volume
 
-Technical note:
+You may still see empty `vendor/` and `node_modules/` folders on the host.
+That is expected: Docker creates those mount points so the volumes can be attached there inside containers.
 
-- `vendor/` and `node_modules/` are stored in Docker named volumes for better filesystem performance on Windows and macOS.
-- You may still see empty `vendor/` and `node_modules/` folders in the project directory on the host. That is expected: Docker creates those mount points so the named volumes can be attached there inside the containers.
-- `brezel teardown` removes these named volumes too, because it runs `docker compose down -v`.
+`brezel teardown` removes these named volumes too because it runs `docker compose down -v`.
 
-Stop the normal foreground mode with `Ctrl+C`.
+### Local Ports
 
-The foreground view starts in a clean mode.
-Press `h` to show the available controls.
-
-When the controls are visible, you can use:
-
-- `b` to run an arbitrary Bakery command
-- `u` for a full update
-- `a` to apply config changes
-- `l` to load workflow changes
-- `e` to explore the database in phpMyAdmin
-- `p` to peek behind the curtain (all container logs)
-- `j` for worker logs
-- `q` to stop Brezel and clean up
-
-> **Important:** Exit the interactive Zellij session with `Ctrl+Q` for a clean shutdown.
-> If you just kill the terminal window or otherwise leave the session abruptly, you may leave orphaned containers behind.
-
-## Why This Setup Is Nice
-
-You only need two real machine-wide dependencies:
-
-- [Docker](https://www.docker.com/)
-- [mise](https://mise.jdx.dev/)
-
-And only two project-local helper tools:
-
-- `bun`
-- `tailspin`
-- `zellij`
-
-Everything else runs inside containers:
-
-- PHP
-- FrankenPHP
-- Composer
-- Node/Vite
-- MariaDB
-- workers
-- scheduler
-
-So you do **not** need a host PHP, Node, Composer, MySQL, or FrankenPHP installation for normal local work.
-
-## Everyday Usage
-
-The main project interaction commands are now:
-
-```bash
-brezel apply
-brezel load
-brezel update
-```
-
-What they do:
-
-- `brezel apply`: apply Brezel resource changes
-- `brezel load`: reload workflow definitions
-- `brezel update`: run migrations, then load, then apply
-
-If you prefer the `mise` task aliases, these still work too:
-
-- `a` for apply
-- `l` for load
-- `u` for update
-
-Or explicitly:
-
-```bash
-mise run apply
-mise run load
-mise run update
-```
-
-For direct Bakery commands inside the app container:
-
-```bash
-brezel bakery plan
-brezel bakery system create example
-brezel bakery init
-```
-
-## Zellij Dashboard
-
-`brezel serve interactive` opens a Zellij session with attached panes so you can see what the local stack is doing.
-
-The panes are:
-
-- `spa`: Vite / SPA logs
-- `api`: FrankenPHP / app container logs
-- `workers`: worker and brotcast logs from the supervised workers container
-- `project`: your interactive shell in the project directory
-- `bootstrap`: one-shot dependency container logs (`deps` and `node_deps`)
-- `scheduler`: scheduler logs
-
-The interactive shell pane also prints the `Ctrl+Q` reminder when the session starts.
-
-## Ports
-
-The default local ports are:
+Default local ports:
 
 - `2040`: SPA
 - `2041`: API
@@ -240,9 +191,9 @@ The default local ports are:
 - `2043`: Brotcast / websocket endpoint
 - `2044`: phpMyAdmin via `brezel explore-db`
 
-## Systems and Example Data
+## Systems and Configuration
 
-The directory `systems/example` holds `.bake` configuration for a system called `example`.
+The directory `systems/example` contains `.bake` configuration for the example system included with this skeleton.
 
 Use:
 
@@ -250,14 +201,8 @@ Use:
 brezel update
 ```
 
-to sync it to the database and build the current system state.
+to sync it into the database and apply the current system state.
 
-## Environment
+Use `.env.example` as the template for local configuration and `.env` as your working config.
 
-Use `.env.example` as the reference template and `.env` as your local working config.
-
-For a broader list of Brezel environment variables, consult the [environment variable reference](https://docs.brezel.io/reference/env/#_top).
-
-## Deployment
-
-TBD
+For a broader list of environment variables, see the [environment variable reference](https://docs.brezel.io/reference/env).
