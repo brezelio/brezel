@@ -9,6 +9,7 @@ type ProjectCommand = {
   unixCommand: string
   windowsCommand: string
   args: string[]
+  windowsArgs?: string[]
 }
 
 export type CapturedCommandResult = {
@@ -30,7 +31,7 @@ export function getProjectDir(): string {
 
 export function runProjectCommand(command: ProjectCommand): number {
   const result = process.platform === "win32"
-    ? spawnSync("cmd.exe", ["/c", command.windowsCommand, ...command.args], {
+    ? spawnSync(command.windowsCommand, command.windowsArgs ?? command.args, {
         cwd: projectDir,
         stdio: "inherit",
       })
@@ -49,7 +50,7 @@ export function runProjectCommand(command: ProjectCommand): number {
 
 export function runProjectCommandCaptured(command: ProjectCommand): CapturedCommandResult {
   const result = process.platform === "win32"
-    ? spawnSync("cmd.exe", ["/c", command.windowsCommand, ...command.args], {
+    ? spawnSync(command.windowsCommand, command.windowsArgs ?? command.args, {
         cwd: projectDir,
         encoding: "utf-8",
         stdio: ["inherit", "pipe", "pipe"],
@@ -77,7 +78,7 @@ export function runProjectCommandCaptured(command: ProjectCommand): CapturedComm
 
 export async function runProjectCommandCapturedAsync(command: ProjectCommand): Promise<CapturedCommandResult> {
   const child = process.platform === "win32"
-    ? spawn("cmd.exe", ["/c", command.windowsCommand, ...command.args], {
+    ? spawn(command.windowsCommand, command.windowsArgs ?? command.args, {
         cwd: projectDir,
         stdio: ["inherit", "pipe", "pipe"],
       })
@@ -118,7 +119,7 @@ export async function runProjectCommandCapturedAsync(command: ProjectCommand): P
 
 export async function runProjectCommandInteractive(command: ProjectCommand): Promise<number> {
   const child = process.platform === "win32"
-    ? spawn("cmd.exe", ["/c", command.windowsCommand, ...command.args], {
+    ? spawn(command.windowsCommand, command.windowsArgs ?? command.args, {
         cwd: projectDir,
         stdio: "inherit",
       })
@@ -146,7 +147,7 @@ export async function runProjectCommandInteractive(command: ProjectCommand): Pro
 
 export async function runProjectCommandStreamingCaptured(command: ProjectCommand, options: StreamingCaptureOptions = {}): Promise<CapturedCommandResult> {
   const child = process.platform === "win32"
-    ? spawn("cmd.exe", ["/c", command.windowsCommand, ...command.args], {
+    ? spawn(command.windowsCommand, command.windowsArgs ?? command.args, {
         cwd: projectDir,
         stdio: ["inherit", "pipe", "pipe"],
       })

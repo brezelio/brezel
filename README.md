@@ -61,6 +61,7 @@ brezel serve
 
 Windows PowerShell notes:
 
+- `cmd.exe` is not supported for Brezel commands on Windows.
 - `mise` shell aliases are not available in PowerShell.
 - Use `.\brezel ...` from the project root, or `mise run <task>`.
 - Examples: `.\brezel setup`, `.\brezel serve`, `mise run serve`.
