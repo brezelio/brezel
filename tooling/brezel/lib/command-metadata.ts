@@ -99,6 +99,15 @@ export const commandMetadata: CommandMetadata[] = [
     },
   },
   {
+    name: "stop",
+    usage: "brezel stop",
+    description: "Stop the local Docker stack without removing containers, volumes, or images",
+    serveDashboard: {
+      allowed: false,
+      reason: "brezel stop stops the Docker stack that powers this dashboard, so it is blocked here.",
+    },
+  },
+  {
     name: "setup",
     usage: "brezel setup",
     description: "Run the technical local setup flow and then start Brezel",

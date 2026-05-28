@@ -10,6 +10,7 @@ import { runRestartCommand } from "./commands/restart"
 import { runShellCommand } from "./commands/shell"
 import { runServeCommand } from "./commands/serve"
 import { runSetupCommand } from "./commands/setup"
+import { runStopCommand } from "./commands/stop"
 import { runSystemCommand } from "./commands/system"
 import { runTeardownCommand } from "./commands/teardown"
 import { runUnlinkCommand } from "./commands/unlink"
@@ -39,6 +40,7 @@ const commandHandlers: Record<string, CommandHandler> = {
   update: runUpdateCommand,
   serve: runServeCommand,
   setup: runSetupCommand,
+  stop: runStopCommand,
   system: runSystemCommand,
   teardown: runTeardownCommand,
   unlink: runUnlinkCommand,
