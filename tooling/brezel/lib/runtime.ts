@@ -22,7 +22,7 @@ const preferredPorts: Record<RuntimeService, number> = {
   phpmyadmin: 2044,
 }
 
-const fallbackPortStart = 30040
+const fallbackPortStart = 2140
 
 export async function ensureRuntimeState(system: string): Promise<RuntimeState> {
   const existing = readRuntimeState()
