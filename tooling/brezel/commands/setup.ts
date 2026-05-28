@@ -67,7 +67,18 @@ export async function runSetupCommand(args: string[]): Promise<number> {
       return 1
     }
 
-    if (await runSetupStep(ui, "Installing Composer dependencies", ["run", "--rm", "deps"]) !== 0) {
+    const dependencyInstall = await runParallelSetupSteps(ui, "Installing project dependencies", [
+      {
+        title: "Composer dependencies",
+        composeArgs: ["run", "--rm", "deps"],
+      },
+      {
+        title: "npm dependencies",
+        composeArgs: ["run", "--rm", "node_deps"],
+      },
+    ])
+
+    if (dependencyInstall.composerExitCode !== 0) {
       appendSetupRecoveryHint(ui, [
         "Composer dependency installation failed.",
         "Double-check your Composer token and rerun `brezel setup`.",
@@ -75,7 +86,7 @@ export async function runSetupCommand(args: string[]): Promise<number> {
       return 1
     }
 
-    if (await runSetupStep(ui, "Installing npm dependencies", ["run", "--rm", "node_deps"]) !== 0) {
+    if (dependencyInstall.npmExitCode !== 0) {
       appendSetupRecoveryHint(ui, [
         "npm dependency installation failed.",
         "Double-check your npm token and rerun `brezel setup`.",
@@ -276,6 +287,81 @@ async function runSetupStep(ui: ReturnType<typeof createSetupUi>, title: string,
 
   ui.setOutput(output)
   return result.exitCode
+}
+
+async function runParallelSetupSteps(
+  ui: ReturnType<typeof createSetupUi>,
+  title: string,
+  steps: Array<{ title: string, composeArgs: string[] }>,
+): Promise<{ composerExitCode: number, npmExitCode: number }> {
+  ui.step = title
+
+  const sections = new Map<string, string[]>()
+  const updateOutput = () => {
+    const lines = steps.flatMap((step) => {
+      const sectionLines = sections.get(step.title) ?? ["Starting..."]
+      return [`${step.title}:`, ...sectionLines, ""]
+    })
+
+    ui.setOutput({
+      title,
+      lines,
+      success: true,
+      live: true,
+    })
+  }
+
+  updateOutput()
+
+  const results = await Promise.all(steps.map(async (step) => {
+    let stdout = ""
+    let stderr = ""
+
+    const result = await runComposeCommandStreamingCaptured(step.composeArgs, {
+      mirrorStdout: false,
+      mirrorStderr: false,
+      onStdoutChunk: (chunk) => {
+        stdout += chunk
+        sections.set(step.title, normalizeOutputLines(stdout, stderr))
+        updateOutput()
+      },
+      onStderrChunk: (chunk) => {
+        stderr += chunk
+        sections.set(step.title, normalizeOutputLines(stdout, stderr))
+        updateOutput()
+      },
+    })
+
+    const output = buildCommandOutput(step.title, result.stdout, result.stderr, result.exitCode)
+    if (!output.success && result.stdout.trim().length === 0 && result.stderr.trim().length === 0) {
+      output.lines = [
+        "Command failed without output.",
+        `Compose command: bin/compose ${step.composeArgs.join(" ")}`,
+        `Exit code: ${result.exitCode}`,
+      ]
+    }
+
+    sections.set(step.title, output.lines)
+    updateOutput()
+    return { step: step.title, exitCode: result.exitCode }
+  }))
+
+  const composerExitCode = results.find((result) => result.step === "Composer dependencies")?.exitCode ?? 1
+  const npmExitCode = results.find((result) => result.step === "npm dependencies")?.exitCode ?? 1
+  const success = composerExitCode === 0 && npmExitCode === 0
+
+  ui.setOutput({
+    title,
+    lines: steps.flatMap((step, index) => {
+      const sectionLines = sections.get(step.title) ?? ["No output."]
+      return index < steps.length - 1
+        ? [`${step.title}:`, ...sectionLines, ""]
+        : [`${step.title}:`, ...sectionLines]
+    }),
+    success,
+  })
+
+  return { composerExitCode, npmExitCode }
 }
 
 function renderSetupScreen(ui: SetupUi): string[] {
