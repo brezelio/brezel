@@ -1,9 +1,3 @@
-[CmdletBinding()]
-param(
-    [Parameter(ValueFromRemainingArguments = $true)]
-    [string[]]$Args
-)
-
 $scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 
 if (-not (Get-Command bun -ErrorAction SilentlyContinue)) {
@@ -11,5 +5,5 @@ if (-not (Get-Command bun -ErrorAction SilentlyContinue)) {
     exit 1
 }
 
-& bun run (Join-Path $scriptDir 'brezel.ts') @Args
+& bun run (Join-Path $scriptDir 'brezel.ts') @args
 exit $LASTEXITCODE

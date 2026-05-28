@@ -1,9 +1,3 @@
-[CmdletBinding()]
-param(
-    [Parameter(ValueFromRemainingArguments = $true)]
-    [string[]]$Args
-)
-
 $scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 $projectDir = Split-Path -Parent $scriptDir
 $localOverride = Join-Path $projectDir '.brezel-state\compose.links.yaml'
@@ -39,5 +33,5 @@ if (Test-Path $runtimeOverride) {
     $composeArgs += @('-f', $runtimeOverride)
 }
 
-& docker @composeArgs @Args
+& docker @composeArgs @args
 exit $LASTEXITCODE

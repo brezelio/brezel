@@ -1,8 +1,2 @@
-[CmdletBinding()]
-param(
-    [Parameter(ValueFromRemainingArguments = $true)]
-    [string[]]$Args
-)
-
-& (Join-Path $PSScriptRoot 'bin\brezel.ps1') @Args
+& (Join-Path $PSScriptRoot 'bin\brezel.ps1') @args
 exit $LASTEXITCODE
