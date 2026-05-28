@@ -4,6 +4,7 @@ setlocal
 set "SCRIPT_DIR=%~dp0"
 for %%I in ("%SCRIPT_DIR%..") do set "PROJECT_DIR=%%~fI"
 set "LOCAL_OVERRIDE=%PROJECT_DIR%\.brezel-state\compose.links.yaml"
+set "RUNTIME_OVERRIDE=%PROJECT_DIR%\.brezel-state\compose.runtime.yaml"
 
 where docker >nul 2>nul
 if errorlevel 1 (
@@ -15,8 +16,16 @@ for /f %%I in ('powershell -NoProfile -Command "$path = '%PROJECT_DIR%'; $base =
 set "PROJECT_NAME=brezel-%PROJECT_SUFFIX%"
 
 if exist "%LOCAL_OVERRIDE%" (
-  docker compose --project-name "%PROJECT_NAME%" --project-directory "%PROJECT_DIR%" -f "%PROJECT_DIR%\docker-compose.yaml" -f "%LOCAL_OVERRIDE%" %*
+  if exist "%RUNTIME_OVERRIDE%" (
+    docker compose --project-name "%PROJECT_NAME%" --project-directory "%PROJECT_DIR%" -f "%PROJECT_DIR%\docker-compose.yaml" -f "%LOCAL_OVERRIDE%" -f "%RUNTIME_OVERRIDE%" %*
+  ) else (
+    docker compose --project-name "%PROJECT_NAME%" --project-directory "%PROJECT_DIR%" -f "%PROJECT_DIR%\docker-compose.yaml" -f "%LOCAL_OVERRIDE%" %*
+  )
 ) else (
-  docker compose --project-name "%PROJECT_NAME%" --project-directory "%PROJECT_DIR%" -f "%PROJECT_DIR%\docker-compose.yaml" %*
+  if exist "%RUNTIME_OVERRIDE%" (
+    docker compose --project-name "%PROJECT_NAME%" --project-directory "%PROJECT_DIR%" -f "%PROJECT_DIR%\docker-compose.yaml" -f "%RUNTIME_OVERRIDE%" %*
+  ) else (
+    docker compose --project-name "%PROJECT_NAME%" --project-directory "%PROJECT_DIR%" -f "%PROJECT_DIR%\docker-compose.yaml" %*
+  )
 )
 exit /b %ERRORLEVEL%

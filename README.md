@@ -75,8 +75,10 @@ system.
 Once running, Brezel is available at:
 
 ```text
-http://<system-identifier>.localhost:2040
+http://<system-identifier>.localhost:<dynamic-port>
 ```
+
+`brezel serve` prints the exact runtime URL it selected. Brezel prefers the familiar `2040`/`2041`/`2043` range when available and falls back to other free local ports when needed.
 
 ## Default Local Users
 
@@ -183,13 +185,16 @@ That is expected: Docker creates those mount points so the volumes can be attach
 
 ### Local Ports
 
-Default local ports:
+Preferred local ports:
 
 - `2040`: SPA
 - `2041`: API
-- `2042`: MariaDB
 - `2043`: Brotcast / websocket endpoint
 - `2044`: phpMyAdmin via `brezel explore-db`
+
+Brezel uses these ports when they are free. If another local stack is already using them, `brezel serve` automatically selects other free ports for the user-facing services.
+
+MariaDB is kept on the internal Docker network and is not published to the host by default.
 
 ## Systems and Configuration
 

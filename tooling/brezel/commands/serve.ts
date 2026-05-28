@@ -9,20 +9,19 @@ import { getProjectDir, runProjectCommandInteractive, runProjectCommandStreaming
 import { readLoginInfo, type LoginInfo } from "../lib/login-info"
 import { sendLinuxNotification } from "../lib/notifications"
 import { buildCommandOutput, normalizeOutputLines } from "../lib/output"
+import { ensureRuntimeState, readRuntimeState } from "../lib/runtime"
 import { readStackStatus, readStackStatusAsync, type StackStatus } from "../lib/stack-status"
 import { ansi, brezelLogo, centerLine, createLogoShimmerController, createScreenRenderer, type CommandOutput, hotkey, hyperlink, isPrintableInput, padVisible, paint, paintReset, renderInlineBox, renderInlineBoxLines, renderLogoLine, statusLine, stripAnsi } from "../lib/ui"
 import { startExploreDb } from "./explore-db"
 import { runLogsCommand } from "./logs"
 import { restartStack } from "./restart"
-import { portIsBusy } from "../lib/ports"
-
-const ports = [2040, 2041, 2042, 2043]
 
 export async function runServeCommand(args: string[]): Promise<number> {
   let interactive = false
   let rebuild = false
   let skipStackStart = false
   const appSystem = getProjectEnvValue("APP_SYSTEM") || "example"
+  let runtimeState = readRuntimeState()
 
   for (const arg of args) {
     if (arg === "interactive") {
@@ -53,12 +52,7 @@ export async function runServeCommand(args: string[]): Promise<number> {
     console.log("Cleaning up any existing Docker stack for this project")
     runCompose(["down", "--remove-orphans"], { profiles: ["db-explore"] })
 
-    for (const port of ports) {
-      if (await portIsBusy(port)) {
-        showPortConflict(port)
-        return 1
-      }
-    }
+    runtimeState = await ensureRuntimeState(appSystem)
 
     console.log("Starting brezel using Docker Compose")
     if (rebuild) {
@@ -113,12 +107,13 @@ export async function runServeCommand(args: string[]): Promise<number> {
       args: ["--layout", layoutPath],
     })
   } else {
+    runtimeState = runtimeState ?? await ensureRuntimeState(appSystem)
     console.log("")
     console.log("Brezel stack has started.")
     console.log("")
     console.log("=== Service Dashboard ===")
 
-    sessionExitCode = await runServeControlLoop(appSystem, {
+    sessionExitCode = await runServeControlLoop(appSystem, runtimeState.urls.spa, {
       setForegroundAction(value) {
         inForegroundAction = value
       },
@@ -136,12 +131,8 @@ export async function runServeCommand(args: string[]): Promise<number> {
   return sessionExitCode
 }
 
-function getServeSpaUrl(appSystem: string): string {
-  return `http://${appSystem}.localhost:2040`
-}
-
-function renderServeEndpointLine(appSystem: string): string {
-  const url = getServeSpaUrl(appSystem)
+function renderServeEndpointLine(spaUrl: string): string {
+  const url = spaUrl
   return `Brezel is available at ${hyperlink(url)}`
 }
 
@@ -169,7 +160,7 @@ type ServeControlLayout = {
 
 const outputVisibleLineCount = 12
 
-async function runServeControlLoop(appSystem: string, context: ServeControlContext): Promise<number> {
+async function runServeControlLoop(appSystem: string, spaUrl: string, context: ServeControlContext): Promise<number> {
   if (!process.stdin.isTTY) {
     console.log("Brezel is running in the foreground.")
     console.log("Press Ctrl+C to stop it and clean up the local Docker stack.")
@@ -200,22 +191,22 @@ async function runServeControlLoop(appSystem: string, context: ServeControlConte
 
     renderLogoOnly()
   })
-  let currentLayout = buildServeControlLayout(appSystem, showHelp, shimmer.getFrame(), liveActionOutput ?? lastActionOutput, prompt, stackStatus, loginInfo, outputScrollOffset)
+  let currentLayout = buildServeControlLayout(spaUrl, showHelp, shimmer.getFrame(), liveActionOutput ?? lastActionOutput, prompt, stackStatus, loginInfo, outputScrollOffset)
 
   const render = () => {
-    currentLayout = buildServeControlLayout(appSystem, showHelp, shimmer.getFrame(), liveActionOutput ?? lastActionOutput, prompt, stackStatus, loginInfo, outputScrollOffset)
+    currentLayout = buildServeControlLayout(spaUrl, showHelp, shimmer.getFrame(), liveActionOutput ?? lastActionOutput, prompt, stackStatus, loginInfo, outputScrollOffset)
     screenRenderer.queueRender(currentLayout.lines)
   }
   const renderLogoOnly = () => screenRenderer.queueRenderRows(logoRowOffset, renderServeLogoLines(shimmer.getFrame()))
   const renderStatusAndHelpOnly = () => {
-    currentLayout = buildServeControlLayout(appSystem, showHelp, shimmer.getFrame(), liveActionOutput ?? lastActionOutput, prompt, stackStatus, loginInfo, outputScrollOffset)
+    currentLayout = buildServeControlLayout(spaUrl, showHelp, shimmer.getFrame(), liveActionOutput ?? lastActionOutput, prompt, stackStatus, loginInfo, outputScrollOffset)
     screenRenderer.queueRenderRows(
       currentLayout.statusRow,
       currentLayout.lines.slice(currentLayout.statusRow, currentLayout.helpRow + 1),
     )
   }
   const renderOutputOnly = () => {
-    currentLayout = buildServeControlLayout(appSystem, showHelp, shimmer.getFrame(), liveActionOutput ?? lastActionOutput, prompt, stackStatus, loginInfo, outputScrollOffset)
+    currentLayout = buildServeControlLayout(spaUrl, showHelp, shimmer.getFrame(), liveActionOutput ?? lastActionOutput, prompt, stackStatus, loginInfo, outputScrollOffset)
     if (currentLayout.outputStartRow !== null) {
       screenRenderer.queueRenderRows(currentLayout.outputStartRow, currentLayout.outputLines)
     }
@@ -545,7 +536,7 @@ async function runServeControlLoop(appSystem: string, context: ServeControlConte
   })
 }
 
-function buildServeControlLayout(appSystem: string, showHelp: boolean, shimmerFrame: number, lastActionOutput: LastActionOutput | null, prompt: PromptState | null, stackStatus: StackStatus, loginInfo: LoginInfo[], outputScrollOffset: number): ServeControlLayout {
+function buildServeControlLayout(spaUrl: string, showHelp: boolean, shimmerFrame: number, lastActionOutput: LastActionOutput | null, prompt: PromptState | null, stackStatus: StackStatus, loginInfo: LoginInfo[], outputScrollOffset: number): ServeControlLayout {
   const lines: string[] = []
   lines.push("")
   const statusLabel = showHelp ? "help: visible" : "help: hidden"
@@ -563,7 +554,7 @@ function buildServeControlLayout(appSystem: string, showHelp: boolean, shimmerFr
   const renderedStatusLine = centerLine(statusLine([stackStatus.label, stackStatus.detail, statusLabel]))
   lines.push(renderedStatusLine)
   lines.push("")
-  lines.push(centerLine(`${paint(ansi.bold)}${renderServeEndpointLine(appSystem)}${paintReset()}`))
+  lines.push(centerLine(`${paint(ansi.bold)}${renderServeEndpointLine(spaUrl)}${paintReset()}`))
   if (loginInfo.length > 0) {
     lines.push("")
     for (const line of renderLoginInfoBlock(loginInfo)) {
@@ -988,30 +979,4 @@ function commandExists(command: string): boolean {
     : spawnSync("sh", ["-lc", `command -v ${command}`], { stdio: "ignore" })
 
   return check.status === 0
-}
-
-function showPortConflict(port: number): void {
-  console.error(`Port ${port} is already in use.`)
-
-  const dockerPs = spawnSync("docker", ["ps", "--filter", `publish=${port}`, "--format", "Docker: {{.Names}} ({{.Image}}) -> {{.Ports}}"], {
-    stdio: ["ignore", "pipe", "ignore"],
-    encoding: "utf-8",
-  })
-
-  if (dockerPs.status === 0 && dockerPs.stdout.trim().length > 0) {
-    process.stderr.write(dockerPs.stdout)
-  }
-
-  if (process.platform !== "win32") {
-    const ss = spawnSync("sh", ["-lc", `command -v ss >/dev/null 2>&1 && ss -ltnp 'sport = :${port}' || true`], {
-      stdio: ["ignore", "pipe", "ignore"],
-      encoding: "utf-8",
-    })
-
-    if (ss.stdout.trim().length > 0) {
-      process.stderr.write(ss.stdout)
-    }
-  }
-
-  console.error("Stop the process using that port, or stop the other Brezel stack first.")
 }

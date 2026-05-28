@@ -1,11 +1,11 @@
 import { runComposeCommandStreamingCaptured } from "../lib/compose"
 import { buildCommandOutput } from "../lib/output"
+import { ensureRuntimeState, readRuntimeState } from "../lib/runtime"
 import { assertNoArgs } from "../lib/validation"
 import type { CommandOutput } from "../lib/ui"
+import { getProjectEnvValue } from "../lib/env"
 
 type LiveOutputUpdater = (title: string, lines: string[]) => void
-
-const exploreDbUrl = "http://localhost:2044"
 
 export async function runExploreDbCommand(args: string[]): Promise<number> {
   if (!assertNoArgs("brezel explore-db", args)) {
@@ -24,6 +24,8 @@ export async function runExploreDbCommand(args: string[]): Promise<number> {
 }
 
 export async function startExploreDb(onUpdate?: LiveOutputUpdater): Promise<CommandOutput> {
+  const appSystem = getProjectEnvValue("APP_SYSTEM") || "example"
+  const runtimeState = readRuntimeState() ?? await ensureRuntimeState(appSystem)
   let stdout = ""
   let stderr = ""
 
@@ -44,7 +46,7 @@ export async function startExploreDb(onUpdate?: LiveOutputUpdater): Promise<Comm
   const output = buildCommandOutput("brezel explore-db", result.stdout, result.stderr, result.exitCode)
   if (output.success) {
     output.lines.push("")
-    output.lines.push(`phpMyAdmin is available at ${exploreDbUrl}`)
+    output.lines.push(`phpMyAdmin is available at ${runtimeState.urls.phpmyadmin}`)
     output.lines.push("You are already connected with the configured Brezel database user.")
   }
 

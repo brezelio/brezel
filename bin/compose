@@ -5,6 +5,7 @@ set -euo pipefail
 script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 project_dir="$(cd -- "$script_dir/.." && pwd)"
 local_override="$project_dir/.brezel-state/compose.links.yaml"
+runtime_override="$project_dir/.brezel-state/compose.runtime.yaml"
 project_base="$(basename "$project_dir")"
 project_base="$(printf '%s' "$project_base" | tr '[:upper:]' '[:lower:]' | sed -E 's/[^a-z0-9]+/-/g; s/^-+//; s/-+$//; s/-+/-/g')"
 project_hash="$(printf '%s' "$project_dir" | cksum)"
@@ -24,6 +25,10 @@ compose_args=(
 
 if [ -f "$local_override" ]; then
   compose_args+=( -f "$local_override" )
+fi
+
+if [ -f "$runtime_override" ]; then
+  compose_args+=( -f "$runtime_override" )
 fi
 
 exec docker compose \

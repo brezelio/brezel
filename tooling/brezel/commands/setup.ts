@@ -3,6 +3,7 @@ import { emitKeypressEvents } from "node:readline"
 import { runComposeCommandStreamingCaptured } from "../lib/compose"
 import { ensureProjectEnvFile, getProjectEnvPath, readEnvValue, writeEnvValue } from "../lib/env"
 import { buildCommandOutput, normalizeOutputLines } from "../lib/output"
+import { ensureRuntimeState } from "../lib/runtime"
 import { getSingleSystemIdentifier } from "../lib/system-config"
 import { assertInteractiveTerminal, assertNoArgs } from "../lib/validation"
 import { ansi, brezelLogo, centerLine, createLogoShimmerController, createScreenRenderer, type CommandOutput, isPrintableInput, type LogoShimmerController, paint, paintReset, renderCommandOutputBlock, renderInlineBox, renderInlineBoxLines, renderLogoLine, statusLine } from "../lib/ui"
@@ -60,6 +61,7 @@ export async function runSetupCommand(args: string[]): Promise<number> {
     await ensureToken(ui, envPath, "NPM_TOKEN", "npm token")
 
     writeEnvValue(envPath, "APP_SYSTEM", currentSystemIdentifier)
+    await ensureRuntimeState(currentSystemIdentifier)
 
     if (await runSetupStep(ui, "Rebuilding local Docker images", ["build", "--quiet", "deps", "app", "workers", "scheduler", "mariadb"]) !== 0) {
       return 1
