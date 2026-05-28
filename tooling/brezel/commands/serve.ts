@@ -76,6 +76,7 @@ export async function runServeCommand(args: string[]): Promise<number> {
       return
     }
 
+    clearTerminalAfterDashboard()
     console.log("")
     console.log("Cleaning up and shutting down Brezel stack...")
     console.log("")
@@ -251,6 +252,7 @@ async function runServeControlLoop(appSystem: string, spaUrl: string, context: S
     disableRawMode()
     leaveAlternateScreen()
     screenRenderer.cleanup()
+    clearTerminalAfterDashboard()
     process.stdout.removeListener("resize", onResize)
     process.stdin.removeListener("keypress", onKeypress)
     process.removeListener("exit", cleanupInput)
@@ -979,4 +981,12 @@ function commandExists(command: string): boolean {
     : spawnSync("sh", ["-lc", `command -v ${command}`], { stdio: "ignore" })
 
   return check.status === 0
+}
+
+function clearTerminalAfterDashboard(): void {
+  if (!process.stdout.isTTY) {
+    return
+  }
+
+  process.stdout.write("\u001b[2J\u001b[H")
 }
