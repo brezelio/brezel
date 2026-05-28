@@ -2,5 +2,13 @@
 
 import { runCli } from "../tooling/brezel/cli"
 
-const exitCode = await runCli(process.argv.slice(2))
-process.exit(exitCode)
+try {
+  const exitCode = await runCli(process.argv.slice(2))
+  process.exit(exitCode)
+} catch (error) {
+  const message = error instanceof Error ? error.stack ?? error.message : String(error)
+  console.error("brezel failed unexpectedly.")
+  console.error("")
+  console.error(message)
+  process.exit(1)
+}
