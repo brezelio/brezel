@@ -18,12 +18,39 @@
                 {
                   "type": "field_group",
                   "options": {
+                    "vertical_labels": true,
                     "fields": [
                       "number",
                       "customer",
                       "partner",
                       ["status", "type"],
                       ["created_at", "valid_till"]
+                    ]
+                  }
+                },
+                {
+                  "type": "buttons",
+                  "options": {
+                    "buttons": [
+                      {
+                        "identifier": "CalculateOffer",
+                        "icon": "mdi:calculator-variant",
+                        "style": "primary",
+                        "options": {
+                          "recipes": {
+                            "hidden_from_frontend": "status != 'draft'"
+                          }
+                        }
+                      },
+                      {
+                        "identifier": "MarkOfferSent",
+                        "icon": "mdi:send",
+                        "options": {
+                          "recipes": {
+                            "hidden_from_frontend": "status != 'calculated'"
+                          }
+                        }
+                      }
                     ]
                   }
                 }
@@ -63,7 +90,20 @@
                     ],
                     "recipes": {
                       "fill": "{'offer': this, 'customer': this.customer, 'partner': this.partner}"
-                    }
+                    },
+                    "buttons": [
+                      {
+                        "identifier": "CreateContractFromPosition",
+                        "icon": "mdi:file-sign",
+                        "help": "Create contract",
+                        "event": "CreateContractFromPosition",
+                        "options": {
+                          "recipes": {
+                            "hidden_from_frontend": "$context.record.contract_id || $context.record.status != 'pending'"
+                          }
+                        }
+                      }
+                    ]
                   }
                 }
               ]

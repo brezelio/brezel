@@ -1,5 +1,9 @@
 {
-  "buttons": {},
+  "buttons": {
+    "CalculateOffer": "Calculate offer",
+    "MarkOfferSent": "Mark as sent",
+    "CreateContractFromPosition": "Create contract"
+  },
   "notifications": {},
   "modules": {
     "customers": {
@@ -308,6 +312,22 @@
     }
   },
   "widgets": {},
-  "workflows": {},
+  "workflows": {
+    "LimitPositionsOnNormalOffer": {
+      "limit_reached": "Normal offers can have at most 5 positions."
+    },
+    "CreateContractFromPosition": {
+      "invalid_position": "This position cannot be converted to a contract.",
+      "success": "Contract created successfully."
+    },
+    "CalculateOffer": {
+      "invalid_status": "Only draft offers can be calculated.",
+      "success": "Offer calculated successfully."
+    },
+    "MarkOfferSent": {
+      "invalid_status": "Only calculated offers can be marked as sent.",
+      "success": "Offer marked as sent."
+    }
+  },
   "calendar": {}
 }

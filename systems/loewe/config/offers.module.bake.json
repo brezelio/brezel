@@ -4,10 +4,20 @@
     "resource": {
       "identifier": "offers",
       "icon": "mdi:file-document-outline",
-      "title": "number",
+      "title": "\"Offer \".number.\" — \".customer->brezel_name",
       "layouts": {
         "detail": "config/offers.layout.detail",
         "index": "config/offers.layout.index"
+      },
+      "buttons": {
+        "CalculateOffer": {
+          "icon": "mdi:calculator-variant",
+          "show_in": ["module.show"]
+        },
+        "MarkOfferSent": {
+          "icon": "mdi:send",
+          "show_in": ["module.show"]
+        }
       },
       "fields": [
         {

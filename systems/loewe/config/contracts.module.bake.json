@@ -4,7 +4,7 @@
     "resource": {
       "identifier": "contracts",
       "icon": "mdi:file-sign",
-      "title": "number",
+      "title": "\"Contract \".number.\" — \".customer->brezel_name",
       "layouts": {
         "detail": "config/contracts.layout.detail",
         "index": "config/contracts.layout.index"

@@ -4,7 +4,7 @@
     "resource": {
       "identifier": "locations",
       "icon": "mdi:map-marker-radius",
-      "title": "number",
+      "title": "number.\" — \".address->brezel_name",
       "layouts": {
         "detail": "config/locations.layout.detail",
         "index": "config/locations.layout.index"

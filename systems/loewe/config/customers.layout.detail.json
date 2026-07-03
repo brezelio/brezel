@@ -18,6 +18,7 @@
                 {
                   "type": "field_group",
                   "options": {
+                    "vertical_labels": true,
                     "fields": [
                       "number",
                       "partner",

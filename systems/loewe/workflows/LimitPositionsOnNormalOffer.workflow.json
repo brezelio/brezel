@@ -1,0 +1,175 @@
+{
+  "identifier": "LimitPositionsOnNormalOffer",
+  "title": "Limit positions on normal offers to five",
+  "async": false,
+  "elements": [
+    {
+      "name": "beforeSavePosition",
+      "type": "event/beforeSave",
+      "options": {
+        "module": "positions"
+      },
+      "in": {},
+      "set": {
+        "entity": "default:"
+      },
+      "to": {
+        "default": {
+          "hasOffer": ["default"]
+        }
+      },
+      "meta": {
+        "position": [0, 0]
+      }
+    },
+    {
+      "name": "hasOffer",
+      "type": "flow/if",
+      "options": {
+        "condition": "$entity.offer_id"
+      },
+      "in": {},
+      "set": {},
+      "to": {
+        "default": {
+          "loadOffer": ["default"]
+        }
+      },
+      "meta": {
+        "position": [300, 0]
+      }
+    },
+    {
+      "name": "loadOffer",
+      "type": "source/entities",
+      "options": {
+        "module": "offers",
+        "first": true,
+        "filters": [
+          [
+            {
+              "left": {
+                "type": "field",
+                "value": "id"
+              },
+              "operator": "=",
+              "right": {
+                "type": "recipe",
+                "value": "$entity.offer_id"
+              }
+            }
+          ]
+        ],
+        "with": [],
+        "fields": [],
+        "permissions": false,
+        "hydrateRelations": false
+      },
+      "in": {},
+      "set": {
+        "offer": "default:"
+      },
+      "to": {
+        "default": {
+          "isNormalOffer": ["default"]
+        }
+      },
+      "meta": {
+        "position": [600, 0]
+      }
+    },
+    {
+      "name": "isNormalOffer",
+      "type": "flow/if",
+      "options": {
+        "condition": "$offer.type == 'normal'"
+      },
+      "in": {},
+      "set": {},
+      "to": {
+        "default": {
+          "countPositions": ["default"]
+        }
+      },
+      "meta": {
+        "position": [900, 0]
+      }
+    },
+    {
+      "name": "countPositions",
+      "type": "source/entities",
+      "options": {
+        "module": "positions",
+        "first": true,
+        "fields": [
+          "count(id) as total"
+        ],
+        "filters": [
+          [
+            {
+              "left": {
+                "type": "field",
+                "value": "offer.id"
+              },
+              "operator": "=",
+              "right": {
+                "type": "recipe",
+                "value": "$entity.offer_id"
+              }
+            },
+            {
+              "left": {
+                "type": "field",
+                "value": "id"
+              },
+              "operator": "!=",
+              "right": {
+                "type": "recipe",
+                "value": "$entity.id"
+              }
+            }
+          ]
+        ],
+        "permissions": false,
+        "hydrateRelations": false
+      },
+      "in": {},
+      "set": {
+        "positionCount": "default:"
+      },
+      "to": {
+        "default": {
+          "validateLimit": ["default"]
+        }
+      },
+      "meta": {
+        "position": [1200, 0]
+      }
+    },
+    {
+      "name": "validateLimit",
+      "type": "action/validate",
+      "options": {
+        "recipes": {
+          "offer": "$positionCount.total >= 5 ? invalid(t('workflows.LimitPositionsOnNormalOffer.limit_reached')) : true"
+        },
+        "runModuleValidations": false,
+        "markFailedFields": true
+      },
+      "in": {},
+      "set": {},
+      "to": {},
+      "meta": {
+        "position": [1500, 0]
+      }
+    }
+  ],
+  "events": [
+    {
+      "identifier": "beforeSavePosition",
+      "type": "beforeSave",
+      "module": "positions"
+    }
+  ],
+  "comments": []
+}

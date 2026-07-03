@@ -1,0 +1,202 @@
+{
+  "identifier": "CalculateOffer",
+  "title": "Calculate offer positions and mark as calculated",
+  "async": false,
+  "entry": "CalculateOffer",
+  "elements": [
+    {
+      "name": "CalculateOffer",
+      "type": "event/webhook",
+      "options": {
+        "module": "offers"
+      },
+      "in": {},
+      "set": {
+        "offer": "default:"
+      },
+      "to": {
+        "default": {
+          "isDraft": ["default"]
+        }
+      },
+      "meta": {
+        "position": [0, 0]
+      }
+    },
+    {
+      "name": "isDraft",
+      "type": "flow/if",
+      "options": {
+        "condition": "$offer.status == 'draft'"
+      },
+      "in": {},
+      "set": {},
+      "to": {
+        "default": {
+          "loadPositions": ["default"]
+        },
+        "else": {
+          "rejectStatus": ["default"]
+        }
+      },
+      "meta": {
+        "position": [300, 0]
+      }
+    },
+    {
+      "name": "rejectStatus",
+      "type": "action/validate",
+      "options": {
+        "recipes": {
+          "status": "invalid(t('workflows.CalculateOffer.invalid_status'))"
+        },
+        "runModuleValidations": false,
+        "markFailedFields": true
+      },
+      "in": {},
+      "set": {},
+      "to": {},
+      "meta": {
+        "position": [600, 200]
+      }
+    },
+    {
+      "name": "loadPositions",
+      "type": "source/entities",
+      "options": {
+        "module": "positions",
+        "filters": [
+          [
+            {
+              "left": {
+                "type": "field",
+                "value": "offer.id"
+              },
+              "operator": "=",
+              "right": {
+                "type": "recipe",
+                "value": "$offer.id"
+              }
+            }
+          ]
+        ],
+        "with": ["location"],
+        "permissions": false,
+        "hydrateRelations": true
+      },
+      "in": {},
+      "set": {
+        "positions": "default:"
+      },
+      "to": {
+        "default": {
+          "forEachPosition": ["default"]
+        }
+      },
+      "meta": {
+        "position": [600, 0]
+      }
+    },
+    {
+      "name": "forEachPosition",
+      "type": "flow/each",
+      "options": {},
+      "in": {
+        "default": "$positions"
+      },
+      "set": {},
+      "to": {
+        "each": {
+          "savePosition": ["default"]
+        },
+        "next": {
+          "setCalculated": ["default"]
+        }
+      },
+      "meta": {
+        "position": [900, 0]
+      }
+    },
+    {
+      "name": "savePosition",
+      "type": "action/save",
+      "options": {
+        "triggerEvents": false,
+        "skip_recipes": false
+      },
+      "in": {},
+      "set": {},
+      "to": {},
+      "meta": {
+        "position": [1200, 0]
+      }
+    },
+    {
+      "name": "setCalculated",
+      "type": "op/set",
+      "options": {
+        "recipes": {
+          "status": "\"calculated\""
+        },
+        "values": [],
+        "process": false
+      },
+      "in": {
+        "default": "$offer"
+      },
+      "set": {
+        "offer": "default:"
+      },
+      "to": {
+        "default": {
+          "saveOffer": ["default"]
+        }
+      },
+      "meta": {
+        "position": [1500, 0]
+      }
+    },
+    {
+      "name": "saveOffer",
+      "type": "action/save",
+      "options": {},
+      "in": {
+        "default": "$offer"
+      },
+      "set": {},
+      "to": {
+        "default": {
+          "notifySuccess": ["default"]
+        }
+      },
+      "meta": {
+        "position": [1800, 0]
+      }
+    },
+    {
+      "name": "notifySuccess",
+      "type": "action/notify",
+      "options": {
+        "toast": {
+          "message": "workflows.CalculateOffer.success",
+          "type": "success",
+          "duration": 4.5
+        }
+      },
+      "in": {},
+      "set": {},
+      "to": {},
+      "meta": {
+        "position": [2100, 0]
+      }
+    }
+  ],
+  "events": [
+    {
+      "identifier": "CalculateOffer",
+      "type": "webhook",
+      "module": "offers"
+    }
+  ],
+  "comments": []
+}

@@ -1,0 +1,131 @@
+{
+  "identifier": "MarkOfferSent",
+  "title": "Mark offer as sent",
+  "async": false,
+  "entry": "MarkOfferSent",
+  "elements": [
+    {
+      "name": "MarkOfferSent",
+      "type": "event/webhook",
+      "options": {
+        "module": "offers"
+      },
+      "in": {},
+      "set": {
+        "offer": "default:"
+      },
+      "to": {
+        "default": {
+          "isCalculated": ["default"]
+        }
+      },
+      "meta": {
+        "position": [0, 0]
+      }
+    },
+    {
+      "name": "isCalculated",
+      "type": "flow/if",
+      "options": {
+        "condition": "$offer.status == 'calculated'"
+      },
+      "in": {},
+      "set": {},
+      "to": {
+        "default": {
+          "setSent": ["default"]
+        },
+        "else": {
+          "rejectStatus": ["default"]
+        }
+      },
+      "meta": {
+        "position": [300, 0]
+      }
+    },
+    {
+      "name": "rejectStatus",
+      "type": "action/validate",
+      "options": {
+        "recipes": {
+          "status": "invalid(t('workflows.MarkOfferSent.invalid_status'))"
+        },
+        "runModuleValidations": false,
+        "markFailedFields": true
+      },
+      "in": {},
+      "set": {},
+      "to": {},
+      "meta": {
+        "position": [600, 200]
+      }
+    },
+    {
+      "name": "setSent",
+      "type": "op/set",
+      "options": {
+        "recipes": {
+          "status": "\"sent\""
+        },
+        "values": [],
+        "process": false
+      },
+      "in": {
+        "default": "$offer"
+      },
+      "set": {
+        "offer": "default:"
+      },
+      "to": {
+        "default": {
+          "saveOffer": ["default"]
+        }
+      },
+      "meta": {
+        "position": [600, 0]
+      }
+    },
+    {
+      "name": "saveOffer",
+      "type": "action/save",
+      "options": {},
+      "in": {
+        "default": "$offer"
+      },
+      "set": {},
+      "to": {
+        "default": {
+          "notifySuccess": ["default"]
+        }
+      },
+      "meta": {
+        "position": [900, 0]
+      }
+    },
+    {
+      "name": "notifySuccess",
+      "type": "action/notify",
+      "options": {
+        "toast": {
+          "message": "workflows.MarkOfferSent.success",
+          "type": "success",
+          "duration": 4.5
+        }
+      },
+      "in": {},
+      "set": {},
+      "to": {},
+      "meta": {
+        "position": [1200, 0]
+      }
+    }
+  ],
+  "events": [
+    {
+      "identifier": "MarkOfferSent",
+      "type": "webhook",
+      "module": "offers"
+    }
+  ],
+  "comments": []
+}

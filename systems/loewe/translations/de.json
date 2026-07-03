@@ -1,5 +1,9 @@
 {
-  "buttons": {},
+  "buttons": {
+    "CalculateOffer": "Angebot kalkulieren",
+    "MarkOfferSent": "Als versendet markieren",
+    "CreateContractFromPosition": "Vertrag erstellen"
+  },
   "notifications": {},
   "modules": {
     "customers": {
@@ -308,6 +312,22 @@
     }
   },
   "widgets": {},
-  "workflows": {},
+  "workflows": {
+    "LimitPositionsOnNormalOffer": {
+      "limit_reached": "Normal-Angebote dürfen höchstens 5 Positionen haben."
+    },
+    "CreateContractFromPosition": {
+      "invalid_position": "Diese Position kann nicht in einen Vertrag umgewandelt werden.",
+      "success": "Vertrag wurde erstellt."
+    },
+    "CalculateOffer": {
+      "invalid_status": "Nur Entwürfe können kalkuliert werden.",
+      "success": "Angebot kalkuliert."
+    },
+    "MarkOfferSent": {
+      "invalid_status": "Nur kalkulierte Angebote können als versendet markiert werden.",
+      "success": "Angebot als versendet markiert."
+    }
+  },
   "calendar": {}
 }

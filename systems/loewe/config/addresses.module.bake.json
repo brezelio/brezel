@@ -4,7 +4,7 @@
     "resource": {
       "identifier": "addresses",
       "icon": "mdi:map-marker",
-      "title": "street",
+      "title": "street.\" \".housenumber.\", \".zip.\" \".city",
       "layouts": {
         "detail": "config/addresses.layout.detail",
         "index": "config/addresses.layout.index"
