@@ -1,0 +1,51 @@
+{
+  "tabs": [
+    {
+      "identifier": "general",
+      "rows": [
+        {
+          "cols": [
+            {
+              "span": 24,
+              "components": [
+                {
+                  "type": "headline",
+                  "options": {
+                    "identifier": "basic"
+                  }
+                },
+                {
+                  "type": "field_group",
+                  "options": {
+                    "fields": [
+                      "name",
+                      "email",
+                      "password",
+                      "roles"
+                    ]
+                  }
+                },
+                {
+                  "type": "headline",
+                  "options": {
+                    "identifier": "partner"
+                  }
+                },
+                {
+                  "type": "field_group",
+                  "options": {
+                    "fields": [
+                      "company_name",
+                      "provision_type",
+                      "provision_default"
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

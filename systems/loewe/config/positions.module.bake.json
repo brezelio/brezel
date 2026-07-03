@@ -1,0 +1,203 @@
+[
+  {
+    "resource_module": "positions",
+    "resource": {
+      "identifier": "positions",
+      "icon": "mdi:format-list-numbered",
+      "title": "number",
+      "layouts": {
+        "detail": "config/positions.layout.detail",
+        "index": "config/positions.layout.index"
+      },
+      "fields": [
+        {
+          "identifier": "number",
+          "type": "incrementing",
+          "options": {
+            "decimal_digits": 0
+          }
+        },
+        {
+          "identifier": "offer",
+          "type": "select",
+          "options": {
+            "references": "offers",
+            "pre_filters": [
+              {
+                "column": "customer.id",
+                "operator": "=",
+                "field": "customer.id"
+              }
+            ]
+          }
+        },
+        {
+          "identifier": "contract",
+          "type": "select",
+          "options": {
+            "references": "contracts",
+            "pre_filters": [
+              {
+                "column": "customer.id",
+                "operator": "=",
+                "field": "customer.id"
+              }
+            ]
+          }
+        },
+        {
+          "identifier": "customer",
+          "type": "select",
+          "options": {
+            "references": "customers",
+            "rules": "required"
+          }
+        },
+        {
+          "identifier": "location",
+          "type": "select",
+          "options": {
+            "references": "locations",
+            "rules": "required",
+            "pre_filters": [
+              {
+                "column": "customer.id",
+                "operator": "=",
+                "field": "customer.id"
+              }
+            ]
+          }
+        },
+        {
+          "identifier": "partner",
+          "type": "select",
+          "options": {
+            "references": "users"
+          }
+        },
+        {
+          "identifier": "meter_type",
+          "type": "choice",
+          "options": {
+            "values": ["slp", "rlm"],
+            "default": "slp"
+          }
+        },
+        {
+          "identifier": "provider",
+          "type": "text"
+        },
+        {
+          "identifier": "tariff",
+          "type": "text"
+        },
+        {
+          "identifier": "duration",
+          "type": "number"
+        },
+        {
+          "identifier": "usage",
+          "type": "number"
+        },
+        {
+          "identifier": "start_date",
+          "type": "date"
+        },
+        {
+          "identifier": "prov_partner",
+          "type": "number"
+        },
+        {
+          "identifier": "prov_loewe",
+          "type": "number"
+        },
+        {
+          "identifier": "grid_usage_fee",
+          "type": "number"
+        },
+        {
+          "identifier": "grid_fixed_fee",
+          "type": "number"
+        },
+        {
+          "identifier": "concession_fee",
+          "type": "number"
+        },
+        {
+          "identifier": "metering_fee",
+          "type": "number"
+        },
+        {
+          "identifier": "grid_capacity_fee",
+          "type": "number",
+          "options": {
+            "recipes": {
+              "hidden_from_frontend": "meter_type != 'rlm'",
+              "frontend_disabled": "meter_type != 'rlm'"
+            }
+          }
+        },
+        {
+          "identifier": "grid_charges_total",
+          "type": "number"
+        },
+        {
+          "identifier": "kwkg_levy",
+          "type": "number"
+        },
+        {
+          "identifier": "special_grid_levy",
+          "type": "number"
+        },
+        {
+          "identifier": "offshore_levy",
+          "type": "number"
+        },
+        {
+          "identifier": "electricity_tax",
+          "type": "number"
+        },
+        {
+          "identifier": "state_levies_total",
+          "type": "number"
+        },
+        {
+          "identifier": "site_fixed_fee",
+          "type": "number"
+        },
+        {
+          "identifier": "energy_price",
+          "type": "number"
+        },
+        {
+          "identifier": "usage_price",
+          "type": "number"
+        },
+        {
+          "identifier": "supplier_energy_total",
+          "type": "number"
+        },
+        {
+          "identifier": "total_cost",
+          "type": "number"
+        },
+        {
+          "identifier": "total_savings",
+          "type": "number"
+        },
+        {
+          "identifier": "potential_savings",
+          "type": "number"
+        },
+        {
+          "identifier": "status",
+          "type": "choice",
+          "options": {
+            "values": ["pending", "signed", "active", "cancelled"],
+            "default": "pending"
+          }
+        }
+      ]
+    }
+  }
+]

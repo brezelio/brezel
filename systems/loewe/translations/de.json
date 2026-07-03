@@ -1,0 +1,313 @@
+{
+  "buttons": {},
+  "notifications": {},
+  "modules": {
+    "customers": {
+      "title": "Kunden",
+      "fields": {
+        "number": "Interne Nummer",
+        "partner": "Vertriebspartner",
+        "type": "Typ",
+        "company": "Firmenname",
+        "firstname": "Vorname",
+        "name": "Nachname",
+        "email": "E-Mail",
+        "phone": "Telefon",
+        "mobile": "Handy",
+        "iban": "IBAN",
+        "bic": "BIC",
+        "default_address": "Adresse",
+        "default_billing_address": "Rechnungsanschrift",
+        "default_bank": "Bank",
+        "default_iban": "IBAN (Standard)",
+        "default_bic": "BIC (Standard)",
+        "sf_account_id": "Salesforce Account ID",
+        "sf_contact_id": "Salesforce Contact ID",
+        "credit_status": "Bonitäts-Status"
+      },
+      "choice": {
+        "type": {
+          "b2b": "B2B",
+          "b2c": "B2C"
+        },
+        "credit_status": {
+          "pending": "Ausstehend",
+          "approved": "Genehmigt",
+          "rejected": "Abgelehnt"
+        }
+      },
+      "headlines": {
+        "basic": "Stammdaten",
+        "bank": "Bankverbindung",
+        "integration": "Integration & Bonität",
+        "addresses": "Standard-Adressen",
+        "address_list": "Adressen",
+        "locations": "Lieferstellen",
+        "meters": "Zähler",
+        "offers": "Angebote",
+        "contracts": "Verträge",
+        "customers": "Kunden"
+      },
+      "tabs": {
+        "general": "Allgemein",
+        "customers": "Kunden"
+      }
+    },
+    "addresses": {
+      "title": "Adressen",
+      "fields": {
+        "number": "Interne Nummer",
+        "partner": "Vertriebspartner",
+        "customer": "Kunde",
+        "line_1": "Anschriftzeile 1",
+        "line_2": "Anschriftzeile 2",
+        "line_3": "Anschriftzeile 3",
+        "street": "Straße",
+        "housenumber": "Hausnummer",
+        "zip": "PLZ",
+        "city": "Ort",
+        "country": "Land"
+      },
+      "headlines": {
+        "basic": "Adresse",
+        "addresses": "Adressen"
+      },
+      "tabs": {
+        "general": "Allgemein",
+        "addresses": "Adressen"
+      }
+    },
+    "locations": {
+      "title": "Lieferstellen",
+      "fields": {
+        "number": "Interne Nummer",
+        "customer": "Kunde",
+        "partner": "Vertriebspartner",
+        "address": "Lieferadresse",
+        "billing_address": "Rechnungsanschrift",
+        "bank": "Bank",
+        "iban": "IBAN",
+        "bic": "BIC",
+        "current_provider": "Aktueller Versorger",
+        "current_price_per_kwh": "Aktueller Arbeitspreis (ct/kWh)",
+        "current_baseprice": "Aktueller Grundpreis",
+        "current_customer_no": "Kundennummer beim Versorger",
+        "start_date": "Lieferbeginn"
+      },
+      "headlines": {
+        "basic": "Stammdaten",
+        "bank": "Bankverbindung",
+        "previous_provider": "Bisheriger Versorger",
+        "meters": "Zähler",
+        "locations": "Lieferstellen"
+      },
+      "tabs": {
+        "general": "Allgemein",
+        "locations": "Lieferstellen"
+      }
+    },
+    "meters": {
+      "title": "Zähler",
+      "fields": {
+        "number": "Interne Nummer",
+        "customer": "Kunde",
+        "partner": "Vertriebspartner",
+        "location": "Lieferstelle",
+        "type": "Energieträger",
+        "meter_type": "Zählertyp",
+        "peak_power": "Leistungsspitze (kW)",
+        "annual_peak_power": "Jahreshöchstleistung (kW)",
+        "meter_number": "Zählernummer",
+        "malo": "MaLo",
+        "usage": "Verbrauch (kWh)"
+      },
+      "choice": {
+        "type": {
+          "electricity": "Strom",
+          "gas": "Gas"
+        },
+        "meter_type": {
+          "slp": "SLP",
+          "rlm": "RLM"
+        }
+      },
+      "headlines": {
+        "basic": "Zählerdaten",
+        "meters": "Zähler"
+      },
+      "tabs": {
+        "general": "Allgemein",
+        "meters": "Zähler"
+      }
+    },
+    "offers": {
+      "title": "Angebote",
+      "fields": {
+        "number": "Angebotsnummer",
+        "customer": "Kunde",
+        "partner": "Vertriebspartner",
+        "status": "Status",
+        "type": "Angebotstyp",
+        "created_at": "Erstellt am",
+        "valid_till": "Gültig bis"
+      },
+      "choice": {
+        "status": {
+          "draft": "Entwurf",
+          "calculated": "Kalkuliert",
+          "sent": "Versendet",
+          "accepted": "Angenommen",
+          "rejected": "Abgelehnt"
+        },
+        "type": {
+          "normal": "Normal",
+          "individual": "Individuell"
+        }
+      },
+      "headlines": {
+        "basic": "Angebot",
+        "positions": "Positionen",
+        "offers": "Angebote"
+      },
+      "tabs": {
+        "general": "Allgemein",
+        "offers": "Angebote"
+      }
+    },
+    "contracts": {
+      "title": "Verträge",
+      "fields": {
+        "number": "Auftragsnummer",
+        "customer": "Kunde",
+        "partner": "Vertriebspartner",
+        "status": "Status",
+        "sf_opp_id": "Salesforce Opp ID",
+        "created_at": "Erstellt am"
+      },
+      "choice": {
+        "status": {
+          "accepted": "Angenommen",
+          "rejected": "Abgelehnt"
+        }
+      },
+      "headlines": {
+        "basic": "Vertrag",
+        "positions": "Positionen",
+        "contracts": "Verträge"
+      },
+      "tabs": {
+        "general": "Allgemein",
+        "contracts": "Verträge"
+      }
+    },
+    "positions": {
+      "title": "Positionen",
+      "fields": {
+        "number": "Interne Nummer",
+        "offer": "Angebot",
+        "contract": "Auftrag",
+        "customer": "Kunde",
+        "location": "Lieferstelle",
+        "partner": "Vertriebspartner",
+        "meter_type": "Zählertyp",
+        "provider": "Versorger",
+        "tariff": "Tarifname",
+        "duration": "Laufzeit (Monate)",
+        "usage": "Verbrauch",
+        "start_date": "Lieferstart",
+        "prov_partner": "Provision VP",
+        "prov_loewe": "Provision Löwe",
+        "grid_usage_fee": "Wirkarbeit Netz",
+        "grid_fixed_fee": "Grundpreis Netz",
+        "concession_fee": "Konzessionsabgabe",
+        "metering_fee": "Messstellenbetrieb",
+        "grid_capacity_fee": "Leistungspreis Netz",
+        "grid_charges_total": "Summe Netzentgelte",
+        "kwkg_levy": "KWKG-Umlage",
+        "special_grid_levy": "Aufschlag besondere Netznutzung",
+        "offshore_levy": "Offshore-Netzumlage",
+        "electricity_tax": "Stromsteuer",
+        "state_levies_total": "Summe staatliche Umlagen",
+        "site_fixed_fee": "Grundpreis pro Lieferstelle",
+        "energy_price": "Energiepreis",
+        "usage_price": "Arbeitspreis",
+        "supplier_energy_total": "Summe Energiekosten Versorger",
+        "total_cost": "Gesamtkosten",
+        "total_savings": "Gesamtersparnis",
+        "potential_savings": "Mögliche Einsparung",
+        "status": "Vertragsstatus"
+      },
+      "choice": {
+        "meter_type": {
+          "slp": "SLP",
+          "rlm": "RLM"
+        },
+        "status": {
+          "pending": "Ausstehend",
+          "signed": "Unterschrieben",
+          "active": "Aktiv",
+          "cancelled": "Storniert"
+        }
+      },
+      "headlines": {
+        "basic": "Stammdaten",
+        "grid_charges": "Netzentgelte",
+        "levies": "Staatliche Umlagen",
+        "energy_supplier": "Energieversorger",
+        "provision": "Provision",
+        "totals": "Summen",
+        "positions": "Positionen"
+      },
+      "tabs": {
+        "general": "Allgemein",
+        "grid": "Netzentgelte",
+        "pricing": "Preise & Summen",
+        "positions": "Positionen"
+      }
+    },
+    "users": {
+      "title": "Nutzer",
+      "fields": {
+        "name": "Name",
+        "email": "E-Mail",
+        "password": "Passwort",
+        "roles": "Rollen",
+        "company_name": "Firmenname (White-Label)",
+        "provision_type": "Provisionsart",
+        "provision_default": "Standard-Provision"
+      },
+      "choice": {
+        "provision_type": {
+          "surcharge": "Aufschlag",
+          "hidden": "Versteckt"
+        }
+      },
+      "headlines": {
+        "basic": "Benutzer",
+        "partner": "Vertriebspartner"
+      },
+      "tabs": {
+        "general": "Allgemein"
+      }
+    },
+    "clients": {
+      "title": "Mandanten",
+      "fields": {
+        "title": "Titel",
+        "color": "Farbe"
+      },
+      "headlines": {
+        "basic": "Mandant"
+      }
+    },
+    "roles": {
+      "title": "Rollen",
+      "tabs": {
+        "general": "Allgemein"
+      }
+    }
+  },
+  "widgets": {},
+  "workflows": {},
+  "calendar": {}
+}

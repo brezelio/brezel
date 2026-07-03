@@ -1,0 +1,41 @@
+{
+  "tabs": [
+    {
+      "identifier": "general",
+      "icon": "mdi:meter-electric",
+      "rows": [
+        {
+          "cols": [
+            {
+              "span": 24,
+              "components": [
+                {
+                  "type": "headline",
+                  "options": {
+                    "identifier": "basic"
+                  }
+                },
+                {
+                  "type": "field_group",
+                  "options": {
+                    "fields": [
+                      "number",
+                      "customer",
+                      "partner",
+                      "location",
+                      ["type", "meter_type"],
+                      "usage",
+                      ["peak_power", "annual_peak_power"],
+                      "meter_number",
+                      "malo"
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

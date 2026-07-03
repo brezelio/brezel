@@ -1,0 +1,37 @@
+{
+  "tabs": [
+    {
+      "identifier": "locations",
+      "icon": "mdi:map-marker-radius",
+      "rows": [
+        {
+          "cols": [
+            {
+              "components": [
+                {
+                  "type": "headline",
+                  "options": {
+                    "identifier": "locations"
+                  }
+                },
+                {
+                  "type": "resource_table",
+                  "options": {
+                    "module": "locations",
+                    "columns": [
+                      "number",
+                      "customer",
+                      "address",
+                      "current_provider",
+                      "start_date"
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

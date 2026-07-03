@@ -1,0 +1,24 @@
+[
+  {
+    "resource_menu": "main",
+    "resource": {
+      "name": "main",
+      "elements": [
+        {
+          "name": "customers",
+          "type": "entry",
+          "default": true
+        },
+        "addresses",
+        "locations",
+        "meters",
+        "offers",
+        "contracts",
+        "positions",
+        "users",
+        "roles",
+        "clients"
+      ]
+    }
+  }
+]

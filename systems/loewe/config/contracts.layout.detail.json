@@ -1,0 +1,76 @@
+{
+  "tabs": [
+    {
+      "identifier": "general",
+      "icon": "mdi:file-sign",
+      "rows": [
+        {
+          "cols": [
+            {
+              "span": 24,
+              "components": [
+                {
+                  "type": "headline",
+                  "options": {
+                    "identifier": "basic"
+                  }
+                },
+                {
+                  "type": "field_group",
+                  "options": {
+                    "fields": [
+                      "number",
+                      "customer",
+                      "partner",
+                      "status",
+                      ["created_at", "sf_opp_id"]
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "cols": [
+            {
+              "span": 24,
+              "options": {
+                "recipes": {
+                  "hidden_from_frontend": "!id"
+                }
+              },
+              "components": [
+                {
+                  "type": "headline",
+                  "options": {
+                    "identifier": "positions"
+                  }
+                },
+                {
+                  "type": "resource_table",
+                  "options": {
+                    "module": "positions",
+                    "create_in_modal": true,
+                    "edit_in_modal": true,
+                    "show_in_modal": true,
+                    "pre_filters": [
+                      {
+                        "column": "contract.id",
+                        "operator": "=",
+                        "recipe": "this.id"
+                      }
+                    ],
+                    "recipes": {
+                      "fill": "{'contract': this, 'customer': this.customer, 'partner': this.partner}"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

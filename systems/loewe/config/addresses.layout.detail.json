@@ -1,0 +1,40 @@
+{
+  "tabs": [
+    {
+      "identifier": "general",
+      "rows": [
+        {
+          "cols": [
+            {
+              "span": 24,
+              "components": [
+                {
+                  "type": "headline",
+                  "options": {
+                    "identifier": "basic"
+                  }
+                },
+                {
+                  "type": "field_group",
+                  "options": {
+                    "fields": [
+                      "number",
+                      "customer",
+                      "partner",
+                      "line_1",
+                      "line_2",
+                      "line_3",
+                      ["street", "housenumber"],
+                      ["zip", "city"],
+                      "country"
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

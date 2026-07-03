@@ -1,0 +1,7 @@
+{
+  "loaders": [
+    {
+      "type": "workflow"
+    }
+  ]
+}

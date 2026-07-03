@@ -1,0 +1,313 @@
+{
+  "buttons": {},
+  "notifications": {},
+  "modules": {
+    "customers": {
+      "title": "Customers",
+      "fields": {
+        "number": "Internal number",
+        "partner": "Sales partner",
+        "type": "Type",
+        "company": "Company name",
+        "firstname": "First name",
+        "name": "Last name",
+        "email": "Email",
+        "phone": "Phone",
+        "mobile": "Mobile",
+        "iban": "IBAN",
+        "bic": "BIC",
+        "default_address": "Address",
+        "default_billing_address": "Billing address",
+        "default_bank": "Bank",
+        "default_iban": "Default IBAN",
+        "default_bic": "Default BIC",
+        "sf_account_id": "Salesforce Account ID",
+        "sf_contact_id": "Salesforce Contact ID",
+        "credit_status": "Credit status"
+      },
+      "choice": {
+        "type": {
+          "b2b": "B2B",
+          "b2c": "B2C"
+        },
+        "credit_status": {
+          "pending": "Pending",
+          "approved": "Approved",
+          "rejected": "Rejected"
+        }
+      },
+      "headlines": {
+        "basic": "Master data",
+        "bank": "Bank details",
+        "integration": "Integration & credit check",
+        "addresses": "Default addresses",
+        "address_list": "Addresses",
+        "locations": "Delivery points",
+        "meters": "Meters",
+        "offers": "Offers",
+        "contracts": "Contracts",
+        "customers": "Customers"
+      },
+      "tabs": {
+        "general": "General",
+        "customers": "Customers"
+      }
+    },
+    "addresses": {
+      "title": "Addresses",
+      "fields": {
+        "number": "Internal number",
+        "partner": "Sales partner",
+        "customer": "Customer",
+        "line_1": "Address line 1",
+        "line_2": "Address line 2",
+        "line_3": "Address line 3",
+        "street": "Street",
+        "housenumber": "House number",
+        "zip": "Postal code",
+        "city": "City",
+        "country": "Country"
+      },
+      "headlines": {
+        "basic": "Address",
+        "addresses": "Addresses"
+      },
+      "tabs": {
+        "general": "General",
+        "addresses": "Addresses"
+      }
+    },
+    "locations": {
+      "title": "Delivery points",
+      "fields": {
+        "number": "Internal number",
+        "customer": "Customer",
+        "partner": "Sales partner",
+        "address": "Delivery address",
+        "billing_address": "Billing address",
+        "bank": "Bank",
+        "iban": "IBAN",
+        "bic": "BIC",
+        "current_provider": "Current supplier",
+        "current_price_per_kwh": "Current unit price (ct/kWh)",
+        "current_baseprice": "Current base price",
+        "current_customer_no": "Customer number at supplier",
+        "start_date": "Supply start date"
+      },
+      "headlines": {
+        "basic": "Master data",
+        "bank": "Bank details",
+        "previous_provider": "Previous supplier",
+        "meters": "Meters",
+        "locations": "Delivery points"
+      },
+      "tabs": {
+        "general": "General",
+        "locations": "Delivery points"
+      }
+    },
+    "meters": {
+      "title": "Meters",
+      "fields": {
+        "number": "Internal number",
+        "customer": "Customer",
+        "partner": "Sales partner",
+        "location": "Delivery point",
+        "type": "Energy type",
+        "meter_type": "Meter type",
+        "peak_power": "Peak power (kW)",
+        "annual_peak_power": "Annual peak power (kW)",
+        "meter_number": "Meter number",
+        "malo": "MaLo",
+        "usage": "Consumption (kWh)"
+      },
+      "choice": {
+        "type": {
+          "electricity": "Electricity",
+          "gas": "Gas"
+        },
+        "meter_type": {
+          "slp": "SLP",
+          "rlm": "RLM"
+        }
+      },
+      "headlines": {
+        "basic": "Meter data",
+        "meters": "Meters"
+      },
+      "tabs": {
+        "general": "General",
+        "meters": "Meters"
+      }
+    },
+    "offers": {
+      "title": "Offers",
+      "fields": {
+        "number": "Offer number",
+        "customer": "Customer",
+        "partner": "Sales partner",
+        "status": "Status",
+        "type": "Offer type",
+        "created_at": "Created at",
+        "valid_till": "Valid until"
+      },
+      "choice": {
+        "status": {
+          "draft": "Draft",
+          "calculated": "Calculated",
+          "sent": "Sent",
+          "accepted": "Accepted",
+          "rejected": "Rejected"
+        },
+        "type": {
+          "normal": "Normal",
+          "individual": "Individual"
+        }
+      },
+      "headlines": {
+        "basic": "Offer",
+        "positions": "Positions",
+        "offers": "Offers"
+      },
+      "tabs": {
+        "general": "General",
+        "offers": "Offers"
+      }
+    },
+    "contracts": {
+      "title": "Contracts",
+      "fields": {
+        "number": "Contract number",
+        "customer": "Customer",
+        "partner": "Sales partner",
+        "status": "Status",
+        "sf_opp_id": "Salesforce Opp ID",
+        "created_at": "Created at"
+      },
+      "choice": {
+        "status": {
+          "accepted": "Accepted",
+          "rejected": "Rejected"
+        }
+      },
+      "headlines": {
+        "basic": "Contract",
+        "positions": "Positions",
+        "contracts": "Contracts"
+      },
+      "tabs": {
+        "general": "General",
+        "contracts": "Contracts"
+      }
+    },
+    "positions": {
+      "title": "Positions",
+      "fields": {
+        "number": "Internal number",
+        "offer": "Offer",
+        "contract": "Contract",
+        "customer": "Customer",
+        "location": "Delivery point",
+        "partner": "Sales partner",
+        "meter_type": "Meter type",
+        "provider": "Supplier",
+        "tariff": "Tariff name",
+        "duration": "Term (months)",
+        "usage": "Consumption",
+        "start_date": "Supply start",
+        "prov_partner": "Partner commission",
+        "prov_loewe": "Löwe commission",
+        "grid_usage_fee": "Grid usage fee",
+        "grid_fixed_fee": "Grid fixed fee",
+        "concession_fee": "Concession fee",
+        "metering_fee": "Metering fee",
+        "grid_capacity_fee": "Grid capacity fee",
+        "grid_charges_total": "Total grid charges",
+        "kwkg_levy": "KWKG levy",
+        "special_grid_levy": "Special grid levy",
+        "offshore_levy": "Offshore levy",
+        "electricity_tax": "Electricity tax",
+        "state_levies_total": "Total state levies",
+        "site_fixed_fee": "Site fixed fee",
+        "energy_price": "Energy price",
+        "usage_price": "Usage price",
+        "supplier_energy_total": "Total supplier energy cost",
+        "total_cost": "Total cost",
+        "total_savings": "Total savings",
+        "potential_savings": "Potential savings",
+        "status": "Contract status"
+      },
+      "choice": {
+        "meter_type": {
+          "slp": "SLP",
+          "rlm": "RLM"
+        },
+        "status": {
+          "pending": "Pending",
+          "signed": "Signed",
+          "active": "Active",
+          "cancelled": "Cancelled"
+        }
+      },
+      "headlines": {
+        "basic": "Master data",
+        "grid_charges": "Grid charges",
+        "levies": "State levies",
+        "energy_supplier": "Energy supplier",
+        "provision": "Commission",
+        "totals": "Totals",
+        "positions": "Positions"
+      },
+      "tabs": {
+        "general": "General",
+        "grid": "Grid charges",
+        "pricing": "Pricing & totals",
+        "positions": "Positions"
+      }
+    },
+    "users": {
+      "title": "Users",
+      "fields": {
+        "name": "Name",
+        "email": "Email",
+        "password": "Password",
+        "roles": "Roles",
+        "company_name": "Company name (white-label)",
+        "provision_type": "Commission type",
+        "provision_default": "Default commission"
+      },
+      "choice": {
+        "provision_type": {
+          "surcharge": "Surcharge",
+          "hidden": "Hidden"
+        }
+      },
+      "headlines": {
+        "basic": "User",
+        "partner": "Sales partner"
+      },
+      "tabs": {
+        "general": "General"
+      }
+    },
+    "clients": {
+      "title": "Clients",
+      "fields": {
+        "title": "Title",
+        "color": "Color"
+      },
+      "headlines": {
+        "basic": "Client"
+      }
+    },
+    "roles": {
+      "title": "Roles",
+      "tabs": {
+        "general": "General"
+      }
+    }
+  },
+  "widgets": {},
+  "workflows": {},
+  "calendar": {}
+}

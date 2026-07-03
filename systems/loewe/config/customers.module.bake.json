@@ -1,0 +1,127 @@
+[
+  {
+    "resource_module": "customers",
+    "resource": {
+      "identifier": "customers",
+      "icon": "mdi:company",
+      "title": "company",
+      "layouts": {
+        "detail": "config/customers.layout.detail",
+        "index": "config/customers.layout.index"
+      },
+      "fields": [
+        {
+          "identifier": "number",
+          "type": "incrementing",
+          "options": {
+            "decimal_digits": 0
+          }
+        },
+        {
+          "identifier": "partner",
+          "type": "select",
+          "options": {
+            "references": "users"
+          }
+        },
+        {
+          "identifier": "type",
+          "type": "choice",
+          "options": {
+            "values": ["b2b", "b2c"],
+            "default": "b2b"
+          }
+        },
+        {
+          "identifier": "company",
+          "type": "text"
+        },
+        {
+          "identifier": "firstname",
+          "type": "text"
+        },
+        {
+          "identifier": "name",
+          "type": "text"
+        },
+        {
+          "identifier": "email",
+          "type": "email"
+        },
+        {
+          "identifier": "phone",
+          "type": "tel"
+        },
+        {
+          "identifier": "mobile",
+          "type": "tel"
+        },
+        {
+          "identifier": "iban",
+          "type": "text"
+        },
+        {
+          "identifier": "bic",
+          "type": "text"
+        },
+        {
+          "identifier": "default_address",
+          "type": "select",
+          "options": {
+            "references": "addresses",
+            "add_options": true,
+            "pre_filters": [
+              {
+                "column": "customer.id",
+                "operator": "=",
+                "field": "id"
+              }
+            ]
+          }
+        },
+        {
+          "identifier": "default_billing_address",
+          "type": "select",
+          "options": {
+            "references": "addresses",
+            "add_options": true,
+            "pre_filters": [
+              {
+                "column": "customer.id",
+                "operator": "=",
+                "field": "id"
+              }
+            ]
+          }
+        },
+        {
+          "identifier": "default_bank",
+          "type": "text"
+        },
+        {
+          "identifier": "default_iban",
+          "type": "text"
+        },
+        {
+          "identifier": "default_bic",
+          "type": "text"
+        },
+        {
+          "identifier": "sf_account_id",
+          "type": "text"
+        },
+        {
+          "identifier": "sf_contact_id",
+          "type": "text"
+        },
+        {
+          "identifier": "credit_status",
+          "type": "choice",
+          "options": {
+            "values": ["pending", "approved", "rejected"]
+          }
+        }
+      ]
+    }
+  }
+]

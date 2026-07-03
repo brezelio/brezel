@@ -1,0 +1,53 @@
+[
+  {
+    "resource_module": "users",
+    "resource": {
+      "identifier": "users",
+      "type": "users",
+      "icon": "user",
+      "title": "name",
+      "layouts": {
+        "detail": "config/users.layout.detail"
+      },
+      "fields": [
+        {
+          "identifier": "name",
+          "type": "text"
+        },
+        {
+          "identifier": "email",
+          "type": "email"
+        },
+        {
+          "identifier": "password",
+          "type": "password",
+          "options": {
+            "ignore_when_empty": true
+          }
+        },
+        {
+          "identifier": "roles",
+          "type": "multiselect",
+          "options": {
+            "references": "roles"
+          }
+        },
+        {
+          "identifier": "company_name",
+          "type": "text"
+        },
+        {
+          "identifier": "provision_type",
+          "type": "choice",
+          "options": {
+            "values": ["surcharge", "hidden"]
+          }
+        },
+        {
+          "identifier": "provision_default",
+          "type": "number"
+        }
+      ]
+    }
+  }
+]

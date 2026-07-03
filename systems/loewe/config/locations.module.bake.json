@@ -1,0 +1,100 @@
+[
+  {
+    "resource_module": "locations",
+    "resource": {
+      "identifier": "locations",
+      "icon": "mdi:map-marker-radius",
+      "title": "number",
+      "layouts": {
+        "detail": "config/locations.layout.detail",
+        "index": "config/locations.layout.index"
+      },
+      "fields": [
+        {
+          "identifier": "number",
+          "type": "incrementing",
+          "options": {
+            "decimal_digits": 0
+          }
+        },
+        {
+          "identifier": "customer",
+          "type": "select",
+          "options": {
+            "references": "customers",
+            "rules": "required"
+          }
+        },
+        {
+          "identifier": "partner",
+          "type": "select",
+          "options": {
+            "references": "users"
+          }
+        },
+        {
+          "identifier": "address",
+          "type": "select",
+          "options": {
+            "references": "addresses",
+            "add_options": true,
+            "pre_filters": [
+              {
+                "column": "customer.id",
+                "operator": "=",
+                "field": "customer.id"
+              }
+            ]
+          }
+        },
+        {
+          "identifier": "billing_address",
+          "type": "select",
+          "options": {
+            "references": "addresses",
+            "add_options": true,
+            "pre_filters": [
+              {
+                "column": "customer.id",
+                "operator": "=",
+                "field": "customer.id"
+              }
+            ]
+          }
+        },
+        {
+          "identifier": "bank",
+          "type": "text"
+        },
+        {
+          "identifier": "iban",
+          "type": "text"
+        },
+        {
+          "identifier": "bic",
+          "type": "text"
+        },
+        {
+          "identifier": "current_provider",
+          "type": "text"
+        },
+        {
+          "identifier": "current_price_per_kwh",
+          "type": "number"
+        },
+        {
+          "identifier": "current_baseprice",
+          "type": "number"
+        },
+        {
+          "identifier": "current_customer_no",
+          "type": "text"
+        },
+        {
+          "identifier": "start_date",
+          "type": "date"
+        }
+      ]
+    }
+  }
+]

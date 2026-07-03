@@ -1,0 +1,39 @@
+{
+  "tabs": [
+    {
+      "identifier": "offers",
+      "icon": "mdi:file-document-outline",
+      "rows": [
+        {
+          "cols": [
+            {
+              "components": [
+                {
+                  "type": "headline",
+                  "options": {
+                    "identifier": "offers"
+                  }
+                },
+                {
+                  "type": "resource_table",
+                  "options": {
+                    "module": "offers",
+                    "columns": [
+                      "number",
+                      "customer",
+                      "partner",
+                      "status",
+                      "type",
+                      "created_at",
+                      "valid_till"
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

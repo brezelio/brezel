@@ -1,0 +1,39 @@
+{
+  "tabs": [
+    {
+      "identifier": "meters",
+      "icon": "mdi:meter-electric",
+      "rows": [
+        {
+          "cols": [
+            {
+              "components": [
+                {
+                  "type": "headline",
+                  "options": {
+                    "identifier": "meters"
+                  }
+                },
+                {
+                  "type": "resource_table",
+                  "options": {
+                    "module": "meters",
+                    "columns": [
+                      "number",
+                      "customer",
+                      "location",
+                      "type",
+                      "meter_type",
+                      "usage",
+                      "meter_number"
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+[
+  {
+    "resource_client": "global",
+    "resource": {
+      "module": "clients",
+      "global": true,
+      "fields": {
+        "title": "Löwe Energie"
+      },
+      "hostnames": [
+        "${resource_hostname.loewe.hostname}"
+      ]
+    }
+  }
+]

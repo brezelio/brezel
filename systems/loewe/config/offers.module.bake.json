@@ -1,0 +1,62 @@
+[
+  {
+    "resource_module": "offers",
+    "resource": {
+      "identifier": "offers",
+      "icon": "mdi:file-document-outline",
+      "title": "number",
+      "layouts": {
+        "detail": "config/offers.layout.detail",
+        "index": "config/offers.layout.index"
+      },
+      "fields": [
+        {
+          "identifier": "number",
+          "type": "incrementing",
+          "options": {
+            "decimal_digits": 0
+          }
+        },
+        {
+          "identifier": "customer",
+          "type": "select",
+          "options": {
+            "references": "customers",
+            "rules": "required"
+          }
+        },
+        {
+          "identifier": "partner",
+          "type": "select",
+          "options": {
+            "references": "users"
+          }
+        },
+        {
+          "identifier": "status",
+          "type": "choice",
+          "options": {
+            "values": ["draft", "calculated", "sent", "accepted", "rejected"],
+            "default": "draft"
+          }
+        },
+        {
+          "identifier": "type",
+          "type": "choice",
+          "options": {
+            "values": ["normal", "individual"],
+            "default": "normal"
+          }
+        },
+        {
+          "identifier": "created_at",
+          "type": "date"
+        },
+        {
+          "identifier": "valid_till",
+          "type": "date"
+        }
+      ]
+    }
+  }
+]
