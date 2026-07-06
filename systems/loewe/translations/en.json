@@ -179,6 +179,57 @@
         "offers": "Offers"
       }
     },
+    "tariffs": {
+      "title": "Tariffs",
+      "fields": {
+        "number": "Internal number",
+        "name": "Tariff name",
+        "provider": "Supplier",
+        "type": "Energy type",
+        "meter_type": "Meter type",
+        "duration": "Term (months)",
+        "active": "Active",
+        "prov_partner": "Partner commission",
+        "prov_loewe": "Löwe commission",
+        "grid_usage_fee": "Grid usage fee",
+        "grid_fixed_fee": "Grid fixed fee",
+        "concession_fee": "Concession fee",
+        "metering_fee": "Metering fee",
+        "grid_capacity_fee": "Grid capacity fee",
+        "grid_charges_total": "Total grid charges",
+        "kwkg_levy": "KWKG levy",
+        "special_grid_levy": "Special grid levy",
+        "offshore_levy": "Offshore levy",
+        "electricity_tax": "Electricity tax",
+        "state_levies_total": "Total state levies",
+        "site_fixed_fee": "Site fixed fee",
+        "energy_price": "Energy price",
+        "usage_price": "Usage price"
+      },
+      "choice": {
+        "type": {
+          "electricity": "Electricity",
+          "gas": "Gas"
+        },
+        "meter_type": {
+          "slp": "SLP",
+          "rlm": "RLM"
+        }
+      },
+      "headlines": {
+        "basic": "Tariff",
+        "grid_charges": "Grid charges",
+        "levies": "State levies",
+        "energy_supplier": "Energy supplier",
+        "tariffs": "Tariffs"
+      },
+      "tabs": {
+        "general": "General",
+        "grid": "Grid charges",
+        "pricing": "Pricing",
+        "tariffs": "Tariffs"
+      }
+    },
     "contracts": {
       "title": "Contracts",
       "fields": {
@@ -215,6 +266,7 @@
         "location": "Delivery point",
         "partner": "Sales partner",
         "meter_type": "Meter type",
+        "tariff_catalog": "Tariff from catalog",
         "provider": "Supplier",
         "tariff": "Tariff name",
         "duration": "Term (months)",

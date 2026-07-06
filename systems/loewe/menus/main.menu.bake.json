@@ -12,6 +12,7 @@
         "addresses",
         "locations",
         "meters",
+        "tariffs",
         "offers",
         "contracts",
         "positions",

@@ -1,0 +1,60 @@
+[
+  {
+    "resource_entity": "tariff_basic_12",
+    "depends_on": "resource_module.tariffs",
+    "policy": "sync",
+    "resource": {
+      "module": "tariffs",
+      "client": "${resource_client.global}",
+      "fields": {
+        "name": "Basic 12",
+        "provider": "Loewe",
+        "type": "electricity",
+        "meter_type": "slp",
+        "duration": 12,
+        "active": true,
+        "grid_usage_fee": 8,
+        "grid_fixed_fee": 120,
+        "concession_fee": 2,
+        "metering_fee": 40,
+        "kwkg_levy": 0.5,
+        "special_grid_levy": 0.3,
+        "offshore_levy": 0.6,
+        "electricity_tax": 2.05,
+        "site_fixed_fee": 99,
+        "energy_price": 18,
+        "prov_partner": 50,
+        "prov_loewe": 30
+      }
+    }
+  },
+  {
+    "resource_entity": "tariff_green_24",
+    "depends_on": "resource_module.tariffs",
+    "policy": "sync",
+    "resource": {
+      "module": "tariffs",
+      "client": "${resource_client.global}",
+      "fields": {
+        "name": "Green 24",
+        "provider": "Loewe",
+        "type": "electricity",
+        "meter_type": "slp",
+        "duration": 24,
+        "active": true,
+        "grid_usage_fee": 8,
+        "grid_fixed_fee": 110,
+        "concession_fee": 2,
+        "metering_fee": 40,
+        "kwkg_levy": 0.5,
+        "special_grid_levy": 0.3,
+        "offshore_levy": 0.6,
+        "electricity_tax": 2.05,
+        "site_fixed_fee": 89,
+        "energy_price": 17,
+        "prov_partner": 55,
+        "prov_loewe": 32
+      }
+    }
+  }
+]

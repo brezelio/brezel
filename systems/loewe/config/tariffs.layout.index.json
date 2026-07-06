@@ -1,0 +1,40 @@
+{
+  "tabs": [
+    {
+      "identifier": "tariffs",
+      "icon": "mdi:lightning-bolt-outline",
+      "rows": [
+        {
+          "cols": [
+            {
+              "components": [
+                {
+                  "type": "headline",
+                  "options": {
+                    "identifier": "tariffs"
+                  }
+                },
+                {
+                  "type": "resource_table",
+                  "options": {
+                    "module": "tariffs",
+                    "columns": [
+                      "number",
+                      "name",
+                      "provider",
+                      "type",
+                      "meter_type",
+                      "duration",
+                      "active",
+                      "energy_price"
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

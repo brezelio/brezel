@@ -95,6 +95,26 @@
           }
         },
         {
+          "identifier": "tariff_catalog",
+          "type": "select",
+          "options": {
+            "references": "tariffs",
+            "add_options": true,
+            "pre_filters": [
+              {
+                "column": "meter_type",
+                "operator": "=",
+                "field": "meter_type"
+              },
+              {
+                "column": "active",
+                "operator": "=",
+                "value": true
+              }
+            ]
+          }
+        },
+        {
           "identifier": "provider",
           "type": "text"
         },

@@ -179,6 +179,57 @@
         "offers": "Angebote"
       }
     },
+    "tariffs": {
+      "title": "Tarife",
+      "fields": {
+        "number": "Interne Nummer",
+        "name": "Tarifname",
+        "provider": "Versorger",
+        "type": "Energieträger",
+        "meter_type": "Zählertyp",
+        "duration": "Laufzeit (Monate)",
+        "active": "Aktiv",
+        "prov_partner": "Provision VP",
+        "prov_loewe": "Provision Löwe",
+        "grid_usage_fee": "Wirkarbeit Netz",
+        "grid_fixed_fee": "Grundpreis Netz",
+        "concession_fee": "Konzessionsabgabe",
+        "metering_fee": "Messstellenbetrieb",
+        "grid_capacity_fee": "Leistungspreis Netz",
+        "grid_charges_total": "Summe Netzentgelte",
+        "kwkg_levy": "KWKG-Umlage",
+        "special_grid_levy": "Besondere Netznutzung",
+        "offshore_levy": "Offshore-Netzumlage",
+        "electricity_tax": "Stromsteuer",
+        "state_levies_total": "Summe staatliche Umlagen",
+        "site_fixed_fee": "Grundpreis pro Lieferstelle",
+        "energy_price": "Energiepreis",
+        "usage_price": "Arbeitspreis"
+      },
+      "choice": {
+        "type": {
+          "electricity": "Strom",
+          "gas": "Gas"
+        },
+        "meter_type": {
+          "slp": "SLP",
+          "rlm": "RLM"
+        }
+      },
+      "headlines": {
+        "basic": "Tarif",
+        "grid_charges": "Netzentgelte",
+        "levies": "Staatliche Umlagen",
+        "energy_supplier": "Energieversorger",
+        "tariffs": "Tarife"
+      },
+      "tabs": {
+        "general": "Allgemein",
+        "grid": "Netzentgelte",
+        "pricing": "Preise",
+        "tariffs": "Tarife"
+      }
+    },
     "contracts": {
       "title": "Verträge",
       "fields": {
@@ -215,6 +266,7 @@
         "location": "Lieferstelle",
         "partner": "Vertriebspartner",
         "meter_type": "Zählertyp",
+        "tariff_catalog": "Tarif aus Katalog",
         "provider": "Versorger",
         "tariff": "Tarifname",
         "duration": "Laufzeit (Monate)",
