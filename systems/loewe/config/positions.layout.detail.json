@@ -23,8 +23,9 @@
                       "number",
                       "customer",
                       "partner",
-                      ["offer", "contract"],
                       "location",
+                      "offer",
+                      "contract",
                       ["provider", "tariff"],
                       ["duration", "usage", "start_date"],
                       "meter_type",
@@ -62,8 +63,7 @@
                       "grid_fixed_fee",
                       "concession_fee",
                       "metering_fee",
-                      "grid_capacity_fee",
-                      "grid_charges_total"
+                      "grid_capacity_fee"
                     ]
                   }
                 }
@@ -81,12 +81,12 @@
                 {
                   "type": "field_group",
                   "options": {
+                    "vertical_labels": true,
                     "fields": [
                       "kwkg_levy",
                       "special_grid_levy",
                       "offshore_levy",
-                      "electricity_tax",
-                      "state_levies_total"
+                      "electricity_tax"
                     ]
                   }
                 }
@@ -114,11 +114,12 @@
                 {
                   "type": "field_group",
                   "options": {
+                    "vertical_labels": true,
                     "fields": [
                       "site_fixed_fee",
                       "energy_price",
-                      "usage_price",
-                      "supplier_energy_total"
+                      "prov_partner",
+                      "prov_loewe"
                     ]
                   }
                 }
@@ -126,22 +127,12 @@
             },
             {
               "span": 12,
+              "options": {
+                "recipes": {
+                  "hidden_from_frontend": "!id"
+                }
+              },
               "components": [
-                {
-                  "type": "headline",
-                  "options": {
-                    "identifier": "provision"
-                  }
-                },
-                {
-                  "type": "field_group",
-                  "options": {
-                    "fields": [
-                      "prov_partner",
-                      "prov_loewe"
-                    ]
-                  }
-                },
                 {
                   "type": "headline",
                   "options": {
@@ -151,7 +142,12 @@
                 {
                   "type": "field_group",
                   "options": {
+                    "vertical_labels": true,
                     "fields": [
+                      "grid_charges_total",
+                      "state_levies_total",
+                      "usage_price",
+                      "supplier_energy_total",
                       "total_cost",
                       "total_savings",
                       "potential_savings"

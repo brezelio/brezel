@@ -1,0 +1,195 @@
+{% block setup %}
+    {{ '{"orientation": "portrait", "format": "A4", "other": {"margin-top": "12", "margin-left": "12", "margin-right": "12", "margin-bottom": "12"}}' }}
+{% endblock %}
+{% block header %}
+<!DOCTYPE html>
+<html lang="de">
+<head><meta charset="UTF-8"></head>
+<body></body>
+</html>
+{% endblock %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 11px;
+            color: #1f2937;
+            line-height: 1.45;
+        }
+        .header {
+            border-bottom: 2px solid #c8102e;
+            padding-bottom: 12px;
+            margin-bottom: 18px;
+        }
+        .brand {
+            font-size: 22px;
+            font-weight: bold;
+            color: #c8102e;
+        }
+        .doc-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-top: 6px;
+        }
+        .meta-grid {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 18px;
+        }
+        .meta-grid td {
+            padding: 4px 8px 4px 0;
+            vertical-align: top;
+        }
+        .meta-label {
+            color: #6b7280;
+            width: 140px;
+        }
+        .section-title {
+            font-size: 13px;
+            font-weight: bold;
+            margin: 18px 0 8px;
+            color: #111827;
+        }
+        table.positions {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 16px;
+        }
+        table.positions th,
+        table.positions td {
+            border: 1px solid #d1d5db;
+            padding: 7px 8px;
+            text-align: left;
+            vertical-align: top;
+        }
+        table.positions th {
+            background: #f3f4f6;
+            font-size: 10px;
+            text-transform: uppercase;
+        }
+        .num {
+            text-align: right;
+            white-space: nowrap;
+        }
+        .totals {
+            width: 45%;
+            margin-left: auto;
+            border-collapse: collapse;
+        }
+        .totals td {
+            padding: 5px 8px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        .totals .label {
+            color: #4b5563;
+        }
+        .totals .value {
+            text-align: right;
+            font-weight: bold;
+        }
+        .empty {
+            padding: 16px;
+            border: 1px dashed #d1d5db;
+            color: #6b7280;
+        }
+        .footer-note {
+            margin-top: 24px;
+            font-size: 9px;
+            color: #6b7280;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="brand">Löwe Energie</div>
+        <div class="doc-title">Angebot {{ offer.number ?? '-' }}</div>
+    </div>
+
+    <table class="meta-grid">
+        <tr>
+            <td class="meta-label">Kunde</td>
+            <td>{{ offer.customer.company ?? '-' }}{% if offer.customer.firstname or offer.customer.name %} — {{ offer.customer.firstname }} {{ offer.customer.name }}{% endif %}</td>
+        </tr>
+        <tr>
+            <td class="meta-label">Vertriebspartner</td>
+            <td>{{ offer.partner.name ?? '-' }}</td>
+        </tr>
+        <tr>
+            <td class="meta-label">Angebotstyp</td>
+            <td>{{ offer.type == 'individual' ? 'Individuell' : 'Normal' }}</td>
+        </tr>
+        <tr>
+            <td class="meta-label">Status</td>
+            <td>{{ offer.status ?? '-' }}</td>
+        </tr>
+        <tr>
+            <td class="meta-label">Erstellt am</td>
+            <td>{{ offer.created_at ?? '-' }}</td>
+        </tr>
+        <tr>
+            <td class="meta-label">Gültig bis</td>
+            <td>{{ offer.valid_till ?? '-' }}</td>
+        </tr>
+    </table>
+
+    <div class="section-title">Positionen</div>
+
+    {% set rows = positions ?? [] %}
+    {% if rows|length %}
+        <table class="positions">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Versorger / Tarif</th>
+                    <th>Lieferstelle</th>
+                    <th class="num">Verbrauch</th>
+                    <th class="num">Gesamtkosten</th>
+                    <th class="num">Ersparnis</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for position in rows %}
+                    <tr>
+                        <td>{{ position.number ?? loop.index }}</td>
+                        <td>
+                            <strong>{{ position.provider ?? '-' }}</strong><br>
+                            {{ position.tariff ?? '-' }}
+                        </td>
+                        <td>
+                            {% set loc = position.location %}
+                            {% if loc.brezel_name %}
+                                {{ loc.brezel_name }}
+                            {% elseif loc.address %}
+                                {{ loc.address.street }} {{ loc.address.housenumber }}, {{ loc.address.zip }} {{ loc.address.city }}
+                            {% else %}
+                                {{ loc.number ?? '-' }}
+                            {% endif %}
+                        </td>
+                        <td class="num">{{ position.usage is not null ? position.usage ~ ' kWh' : '-' }}</td>
+                        <td class="num">{{ position.total_cost is not null ? position.total_cost|number_format(2, ',', '.') ~ ' €' : '-' }}</td>
+                        <td class="num">{{ position.total_savings is not null ? position.total_savings|number_format(2, ',', '.') ~ ' €' : '-' }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="empty">Keine Positionen vorhanden.</div>
+    {% endif %}
+
+    <div class="footer-note">
+        Dieses Dokument wurde automatisch erzeugt. Alle Angaben ohne Gewähr, verbindlich sind die jeweiligen Vertragsunterlagen.
+    </div>
+</body>
+</html>
+{% endblock %}
+{% block footer %}
+<!DOCTYPE html>
+<html lang="de">
+<head><meta charset="UTF-8"></head>
+<body></body>
+</html>
+{% endblock %}

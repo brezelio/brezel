@@ -1,0 +1,28 @@
+[
+  {
+    "resource_module": "views",
+    "import": true,
+    "resource": {
+      "identifier": "views",
+      "type": "views",
+      "title": "name",
+      "icon": "mdi:file-eye",
+      "layouts": {
+        "detail": "config/views.layout.detail"
+      },
+      "fields": [
+        {
+          "identifier": "name",
+          "type": "text",
+          "options": {
+            "rules": "required"
+          }
+        },
+        {
+          "identifier": "code",
+          "type": "code"
+        }
+      ]
+    }
+  }
+]

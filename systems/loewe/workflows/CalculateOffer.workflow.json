@@ -107,7 +107,7 @@
       "set": {},
       "to": {
         "each": {
-          "savePosition": ["default"]
+          "recalculatePosition": ["default"]
         },
         "next": {
           "setCalculated": ["default"]
@@ -118,13 +118,60 @@
       }
     },
     {
+      "name": "recalculatePosition",
+      "type": "action/recalculate",
+      "options": {},
+      "in": {
+        "default": "$position"
+      },
+      "set": {
+        "position": "default:"
+      },
+      "to": {
+        "default": {
+          "setSavings": ["default"]
+        }
+      },
+      "meta": {
+        "position": [1050, 0]
+      }
+    },
+    {
+      "name": "setSavings",
+      "type": "op/set",
+      "options": {
+        "recipes": {
+          "total_savings": "max(0, ((location.current_price_per_kwh ?? 0) * (usage ?? 0) / 100 + (location.current_baseprice ?? 0)) - (total_cost ?? 0))",
+          "potential_savings": "(max(0, ((location.current_price_per_kwh ?? 0) * (usage ?? 0) / 100 + (location.current_baseprice ?? 0)) - (total_cost ?? 0)) * (duration ?? 12)) / 12"
+        },
+        "values": [],
+        "process": false
+      },
+      "in": {
+        "default": "$position"
+      },
+      "set": {
+        "position": "default:"
+      },
+      "to": {
+        "default": {
+          "savePosition": ["default"]
+        }
+      },
+      "meta": {
+        "position": [1125, 0]
+      }
+    },
+    {
       "name": "savePosition",
       "type": "action/save",
       "options": {
         "triggerEvents": false,
         "skip_recipes": false
       },
-      "in": {},
+      "in": {
+        "default": "$position"
+      },
       "set": {},
       "to": {},
       "meta": {

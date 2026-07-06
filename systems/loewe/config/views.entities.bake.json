@@ -1,0 +1,15 @@
+[
+  {
+    "resource_view": "offer_pdf",
+    "depends_on": "resource_module.views",
+    "resource": {
+      "module": "views",
+      "client": "${resource_client.global}",
+      "fields": {
+        "name": "offer.pdf",
+        "code": "${file('views/pdf/offer.twig')}",
+        "type": "twig"
+      }
+    }
+  }
+]

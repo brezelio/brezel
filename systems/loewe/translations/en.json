@@ -2,7 +2,8 @@
   "buttons": {
     "CalculateOffer": "Calculate offer",
     "MarkOfferSent": "Mark as sent",
-    "CreateContractFromPosition": "Create contract"
+    "CreateContractFromPosition": "Create contract",
+    "ExportOfferPdf": "Export PDF"
   },
   "notifications": {},
   "modules": {
@@ -327,6 +328,9 @@
     "MarkOfferSent": {
       "invalid_status": "Only calculated offers can be marked as sent.",
       "success": "Offer marked as sent."
+    },
+    "ExportOfferPdf": {
+      "invalid_status": "Draft and rejected offers cannot be exported as PDF."
     }
   },
   "calendar": {}

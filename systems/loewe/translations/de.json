@@ -2,7 +2,8 @@
   "buttons": {
     "CalculateOffer": "Angebot kalkulieren",
     "MarkOfferSent": "Als versendet markieren",
-    "CreateContractFromPosition": "Vertrag erstellen"
+    "CreateContractFromPosition": "Vertrag erstellen",
+    "ExportOfferPdf": "PDF exportieren"
   },
   "notifications": {},
   "modules": {
@@ -327,6 +328,9 @@
     "MarkOfferSent": {
       "invalid_status": "Nur kalkulierte Angebote können als versendet markiert werden.",
       "success": "Angebot als versendet markiert."
+    },
+    "ExportOfferPdf": {
+      "invalid_status": "Entwürfe und abgelehnte Angebote können nicht als PDF exportiert werden."
     }
   },
   "calendar": {}

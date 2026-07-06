@@ -1,0 +1,24 @@
+{
+  "tabs": [
+    {
+      "identifier": "general",
+      "rows": [
+        {
+          "cols": [
+            {
+              "span": 24,
+              "components": [
+                {
+                  "type": "field_group",
+                  "options": {
+                    "fields": ["name", "code"]
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

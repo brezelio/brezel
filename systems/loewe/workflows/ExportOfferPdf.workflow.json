@@ -1,0 +1,196 @@
+{
+  "identifier": "ExportOfferPdf",
+  "title": "Export offer as PDF",
+  "async": false,
+  "entry": "ExportOfferPdf",
+  "elements": [
+    {
+      "name": "ExportOfferPdf",
+      "type": "event/webhook",
+      "options": {
+        "module": "offers"
+      },
+      "in": {},
+      "set": {
+        "offer": "default:"
+      },
+      "to": {
+        "default": {
+          "canExport": ["default"]
+        }
+      },
+      "meta": {
+        "position": [0, 0]
+      }
+    },
+    {
+      "name": "canExport",
+      "type": "flow/if",
+      "options": {
+        "condition": "$offer.status != 'draft' && $offer.status != 'rejected'"
+      },
+      "in": {},
+      "set": {},
+      "to": {
+        "default": {
+          "loadOffer": ["default"]
+        },
+        "else": {
+          "rejectExport": ["default"]
+        }
+      },
+      "meta": {
+        "position": [300, 0]
+      }
+    },
+    {
+      "name": "rejectExport",
+      "type": "action/validate",
+      "options": {
+        "recipes": {
+          "status": "invalid(t('workflows.ExportOfferPdf.invalid_status'))"
+        },
+        "runModuleValidations": false,
+        "markFailedFields": true
+      },
+      "in": {},
+      "set": {},
+      "to": {},
+      "meta": {
+        "position": [600, 200]
+      }
+    },
+    {
+      "name": "loadOffer",
+      "type": "source/entities",
+      "options": {
+        "module": "offers",
+        "first": true,
+        "with": ["customer", "partner"],
+        "filters": [
+          [
+            {
+              "left": {
+                "type": "field",
+                "value": "id"
+              },
+              "operator": "=",
+              "right": {
+                "type": "recipe",
+                "value": "$offer.id"
+              }
+            }
+          ]
+        ],
+        "permissions": false,
+        "hydrateRelations": true
+      },
+      "in": {},
+      "set": {
+        "loadedOffer": "default:"
+      },
+      "to": {
+        "default": {
+          "loadPositions": ["default"]
+        }
+      },
+      "meta": {
+        "position": [600, 0]
+      }
+    },
+    {
+      "name": "loadPositions",
+      "type": "source/entities",
+      "options": {
+        "module": "positions",
+        "with": ["location", "location.address"],
+        "filters": [
+          [
+            {
+              "left": {
+                "type": "field",
+                "value": "offer.id"
+              },
+              "operator": "=",
+              "right": {
+                "type": "recipe",
+                "value": "$loadedOffer.id"
+              }
+            }
+          ]
+        ],
+        "orderBy": [
+          {
+            "field": "number",
+            "direction": "asc"
+          }
+        ],
+        "permissions": false,
+        "hydrateRelations": true
+      },
+      "in": {},
+      "set": {
+        "positions": "default:"
+      },
+      "to": {
+        "default": {
+          "exportPdf": ["default"]
+        }
+      },
+      "meta": {
+        "position": [900, 0]
+      }
+    },
+    {
+      "name": "exportPdf",
+      "type": "action/export",
+      "options": {
+        "path": "\"/\" + $loadedOffer.module_id + \"/\" + $loadedOffer.id",
+        "type": "pdf",
+        "view": "offer.pdf",
+        "filename": {
+          ".recipe": "\"Angebot-\" + ($loadedOffer.number ?? $loadedOffer.id)"
+        },
+        "view_data": {
+          "offer": "$loadedOffer",
+          "positions": "$positions"
+        },
+        "view_module": "views",
+        "store_module": "files"
+      },
+      "in": {
+        "default": "{}"
+      },
+      "set": {
+        "pdf": "default:"
+      },
+      "to": {
+        "default": {
+          "showPdf": ["default"]
+        }
+      },
+      "meta": {
+        "position": [1200, 0]
+      }
+    },
+    {
+      "name": "showPdf",
+      "type": "action/viewFile",
+      "options": {},
+      "in": {},
+      "set": {},
+      "to": {},
+      "meta": {
+        "position": [1500, 0]
+      }
+    }
+  ],
+  "events": [
+    {
+      "identifier": "ExportOfferPdf",
+      "type": "webhook",
+      "module": "offers"
+    }
+  ],
+  "comments": []
+}

@@ -12,7 +12,12 @@
       "buttons": {
         "CreateContractFromPosition": {
           "icon": "mdi:file-sign",
-          "show_in": ["module.show"]
+          "show_in": ["module.show"],
+          "options": {
+            "recipes": {
+              "hidden_from_frontend": "!this.offer || this.contract || this.status != 'pending'"
+            }
+          }
         }
       },
       "fields": [
@@ -148,9 +153,7 @@
           "type": "number",
           "options": {
             "readonly": true,
-            "recipes": {
-              "frontend_disabled": true
-            }
+            "frontend_disabled": true
           },
           "recipe": "(grid_usage_fee ?? 0) + (grid_fixed_fee ?? 0) + (concession_fee ?? 0) + (metering_fee ?? 0) + (meter_type == 'rlm' ? (grid_capacity_fee ?? 0) : 0)"
         },
@@ -175,9 +178,7 @@
           "type": "number",
           "options": {
             "readonly": true,
-            "recipes": {
-              "frontend_disabled": true
-            }
+            "frontend_disabled": true
           },
           "recipe": "(kwkg_levy ?? 0) + (special_grid_levy ?? 0) + (offshore_levy ?? 0) + (electricity_tax ?? 0)"
         },
@@ -194,9 +195,7 @@
           "type": "number",
           "options": {
             "readonly": true,
-            "recipes": {
-              "frontend_disabled": true
-            }
+            "frontend_disabled": true
           },
           "recipe": "(grid_usage_fee ?? 0) + (concession_fee ?? 0) + (kwkg_levy ?? 0) + (special_grid_levy ?? 0) + (offshore_levy ?? 0) + (electricity_tax ?? 0) + (energy_price ?? 0)"
         },
@@ -205,9 +204,7 @@
           "type": "number",
           "options": {
             "readonly": true,
-            "recipes": {
-              "frontend_disabled": true
-            }
+            "frontend_disabled": true
           },
           "recipe": "(site_fixed_fee ?? 0) + ((usage ?? 0) * (usage_price ?? 0) / 100)"
         },
@@ -216,9 +213,7 @@
           "type": "number",
           "options": {
             "readonly": true,
-            "recipes": {
-              "frontend_disabled": true
-            }
+            "frontend_disabled": true
           },
           "recipe": "(grid_charges_total ?? 0) + (state_levies_total ?? 0) + (supplier_energy_total ?? 0)"
         },
@@ -227,22 +222,16 @@
           "type": "number",
           "options": {
             "readonly": true,
-            "recipes": {
-              "frontend_disabled": true
-            }
-          },
-          "recipe": "max(0, ((location.current_price_per_kwh ?? 0) * (usage ?? 0) / 100 + (location.current_baseprice ?? 0)) - (total_cost ?? 0))"
+            "frontend_disabled": true
+          }
         },
         {
           "identifier": "potential_savings",
           "type": "number",
           "options": {
             "readonly": true,
-            "recipes": {
-              "frontend_disabled": true
-            }
-          },
-          "recipe": "((total_savings ?? 0) * (duration ?? 12)) / 12"
+            "frontend_disabled": true
+          }
         },
         {
           "identifier": "status",

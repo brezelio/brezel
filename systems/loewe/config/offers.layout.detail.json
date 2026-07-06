@@ -50,6 +50,15 @@
                             "hidden_from_frontend": "status != 'calculated'"
                           }
                         }
+                      },
+                      {
+                        "identifier": "ExportOfferPdf",
+                        "icon": "mdi:file-pdf-box",
+                        "options": {
+                          "recipes": {
+                            "hidden_from_frontend": "status == 'draft' || status == 'rejected'"
+                          }
+                        }
                       }
                     ]
                   }
@@ -99,7 +108,7 @@
                         "event": "CreateContractFromPosition",
                         "options": {
                           "recipes": {
-                            "hidden_from_frontend": "$context.record.contract_id || $context.record.status != 'pending'"
+                            "hidden_from_frontend": "!$context.record.offer || $context.record.contract || $context.record.status != 'pending'"
                           }
                         }
                       }

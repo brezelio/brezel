@@ -17,6 +17,10 @@
         "MarkOfferSent": {
           "icon": "mdi:send",
           "show_in": ["module.show"]
+        },
+        "ExportOfferPdf": {
+          "icon": "mdi:file-pdf-box",
+          "show_in": ["module.show"]
         }
       },
       "fields": [

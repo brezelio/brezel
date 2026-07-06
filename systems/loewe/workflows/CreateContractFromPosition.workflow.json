@@ -27,7 +27,7 @@
       "name": "canCreateContract",
       "type": "flow/if",
       "options": {
-        "condition": "$position.offer_id && !$position.contract_id && $position.status == 'pending'"
+        "condition": "$position.offer && !$position.contract && $position.status == 'pending'"
       },
       "in": {},
       "set": {},
@@ -189,7 +189,7 @@
               "operator": "=",
               "right": {
                 "type": "recipe",
-                "value": "$position.offer_id"
+                "value": "$position.offer.id"
               }
             }
           ]
@@ -280,10 +280,11 @@
       "type": "action/redirect",
       "options": {
         "action": "module.show",
-        "module": "contracts",
-        "target": "$contract.id"
+        "module": "contracts"
       },
-      "in": {},
+      "in": {
+        "resource": "$contract"
+      },
       "set": {},
       "to": {},
       "meta": {
