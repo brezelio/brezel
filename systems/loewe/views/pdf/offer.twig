@@ -116,7 +116,7 @@
         </tr>
         <tr>
             <td class="meta-label">Vertriebspartner</td>
-            <td>{{ offer.partner.name ?? '-' }}</td>
+            <td>{{ offer.user.name ?? '-' }}</td>
         </tr>
         <tr>
             <td class="meta-label">Angebotstyp</td>
@@ -138,8 +138,9 @@
 
     <div class="section-title">Positionen</div>
 
-    {% set rows = positions ?? [] %}
-    {% if rows|length %}
+    {# merged PDF export passes rows as entities; view_data may also provide positions #}
+    {% set rows = collect(positions|default(entities|default([]))) %}
+    {% if rows|length > 0 %}
         <table class="positions">
             <thead>
                 <tr>

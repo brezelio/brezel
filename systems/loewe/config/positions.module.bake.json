@@ -80,6 +80,20 @@
           }
         },
         {
+          "identifier": "meter",
+          "type": "select",
+          "options": {
+            "references": "meters",
+            "pre_filters": [
+              {
+                "column": "customer.id",
+                "operator": "=",
+                "field": "customer.id"
+              }
+            ]
+          }
+        },
+        {
           "identifier": "partner",
           "type": "select",
           "options": {
@@ -113,6 +127,42 @@
               }
             ]
           }
+        },
+        {
+          "identifier": "compare_tariff_catalog",
+          "type": "select",
+          "options": {
+            "references": "tariffs",
+            "add_options": true,
+            "pre_filters": [
+              {
+                "column": "meter_type",
+                "operator": "=",
+                "field": "meter_type"
+              },
+              {
+                "column": "active",
+                "operator": "=",
+                "value": true
+              }
+            ]
+          }
+        },
+        {
+          "identifier": "current_provider",
+          "type": "text"
+        },
+        {
+          "identifier": "current_price_per_kwh",
+          "type": "number"
+        },
+        {
+          "identifier": "current_baseprice",
+          "type": "number"
+        },
+        {
+          "identifier": "current_customer_no",
+          "type": "text"
         },
         {
           "identifier": "provider",

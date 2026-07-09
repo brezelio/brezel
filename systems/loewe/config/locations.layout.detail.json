@@ -22,6 +22,7 @@
                       "number",
                       "customer",
                       "partner",
+                      "label",
                       "address",
                       "billing_address",
                       "start_date"

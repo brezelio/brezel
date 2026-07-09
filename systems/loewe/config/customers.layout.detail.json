@@ -89,7 +89,8 @@
                   "options": {
                     "fields": [
                       "default_address",
-                      "default_billing_address"
+                      "default_billing_address",
+                      "default_shipping_address"
                     ]
                   }
                 }

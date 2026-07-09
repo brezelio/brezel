@@ -3,7 +3,8 @@
     "CalculateOffer": "Angebot kalkulieren",
     "MarkOfferSent": "Als versendet markieren",
     "CreateContractFromPosition": "Vertrag erstellen",
-    "ExportOfferPdf": "PDF exportieren"
+    "ExportOfferPdf": "PDF exportieren",
+    "edit_in_wizard": "Im Tarifrechner bearbeiten"
   },
   "notifications": {},
   "modules": {
@@ -23,6 +24,7 @@
         "bic": "BIC",
         "default_address": "Adresse",
         "default_billing_address": "Rechnungsanschrift",
+        "default_shipping_address": "Lieferanschrift",
         "default_bank": "Bank",
         "default_iban": "IBAN (Standard)",
         "default_bic": "BIC (Standard)",
@@ -88,21 +90,22 @@
         "number": "Interne Nummer",
         "customer": "Kunde",
         "partner": "Vertriebspartner",
+        "label": "Standortname",
         "address": "Lieferadresse",
         "billing_address": "Rechnungsanschrift",
         "bank": "Bank",
         "iban": "IBAN",
         "bic": "BIC",
-        "current_provider": "Aktueller Versorger",
-        "current_price_per_kwh": "Aktueller Arbeitspreis (ct/kWh)",
-        "current_baseprice": "Aktueller Grundpreis",
-        "current_customer_no": "Kundennummer beim Versorger",
+        "current_provider": "Vorversorger",
+        "current_price_per_kwh": "Arbeitspreis Vorversorger",
+        "current_baseprice": "Grundpreis Vorversorger",
+        "current_customer_no": "Kundennummer Vorversorger",
         "start_date": "Lieferbeginn"
       },
       "headlines": {
         "basic": "Stammdaten",
         "bank": "Bankverbindung",
-        "previous_provider": "Bisheriger Versorger",
+        "previous_provider": "Vorversorger",
         "meters": "Zähler",
         "locations": "Lieferstellen"
       },
@@ -150,11 +153,13 @@
       "fields": {
         "number": "Angebotsnummer",
         "customer": "Kunde",
-        "partner": "Vertriebspartner",
+        "user": "Vertriebspartner",
         "status": "Status",
         "type": "Angebotstyp",
         "created_at": "Erstellt am",
-        "valid_till": "Gültig bis"
+        "valid_till": "Gültig bis",
+        "inquiry_notes": "Anfrage-Notizen",
+        "attachments": "Anhänge"
       },
       "choice": {
         "status": {
@@ -235,7 +240,7 @@
       "fields": {
         "number": "Auftragsnummer",
         "customer": "Kunde",
-        "partner": "Vertriebspartner",
+        "user": "Vertriebspartner",
         "status": "Status",
         "sf_opp_id": "Salesforce Opp ID",
         "created_at": "Erstellt am"
@@ -325,15 +330,25 @@
     "users": {
       "title": "Nutzer",
       "fields": {
+        "number": "Interne Nummer",
+        "role": "Rolle",
+        "parent_user": "Übergeordneter VP",
+        "firstname": "Vorname",
+        "lastname": "Nachname",
         "name": "Name",
         "email": "E-Mail",
         "password": "Passwort",
-        "roles": "Rollen",
+        "roles": "Brezel-Rollen",
         "company_name": "Firmenname (White-Label)",
         "provision_type": "Provisionsart",
         "provision_default": "Standard-Provision"
       },
       "choice": {
+        "role": {
+          "admin": "Admin",
+          "partner": "Partner",
+          "sub_partner": "Sub-Partner"
+        },
         "provision_type": {
           "surcharge": "Aufschlag",
           "hidden": "Versteckt"
@@ -362,9 +377,181 @@
       "tabs": {
         "general": "Allgemein"
       }
+    },
+    "quotation_wizard": {
+      "title": "Angebotserstellung"
     }
   },
-  "widgets": {},
+  "widgets": {
+    "quotation_wizard": {
+      "title": "Neues Angebot",
+      "page_title": "Angebotserstellung",
+      "page_title_edit": "Entwurf #{number} bearbeiten",
+      "editing_draft_hint": "Sie bearbeiten einen gespeicherten Entwurf. Änderungen aktualisieren das bestehende Angebot.",
+      "update_draft": "Entwurf aktualisieren",
+      "subtitle": "Kunde, Lieferstelle und Angebot Schritt für Schritt anlegen.",
+      "load_from_master": "Aus Stammdaten laden",
+      "b2b": "B2B (Gewerbe)",
+      "b2c": "B2C (Privat)",
+      "billing_payment": "Rechnung & Zahlung (Standard für alle Lieferstellen)",
+      "billing_address": "Rechnungsanschrift",
+      "billing_same": "Entspricht Vertragspartneranschrift",
+      "billing_different": "Abweichende Rechnungsanschrift erfassen…",
+      "shipping_same": "Entspricht Vertragspartneranschrift",
+      "shipping_different": "Abweichende Lieferanschrift erfassen…",
+      "meter_limit": "Zähler-Limit",
+      "location": "Lieferstelle",
+      "location_name": "Bezeichnung",
+      "unnamed_location": "Ohne Name",
+      "use_contract_address": "Vertragspartneranschrift verwenden",
+      "use_default_billing": "Standard-Rechnungsanschrift verwenden",
+      "shipping_address": "Lieferanschrift",
+      "meters": "Zähler",
+      "meter": "Zähler",
+      "custom_billing": "Abweichende Rechnungs- und Zahlungsdaten (Optional)",
+      "different_delivery_address": "Lieferanschrift",
+      "shipping_new": "Neue Lieferanschrift erfassen…",
+      "different_billing_address": "Abweichende Rechnungsanschrift",
+      "different_iban": "Abweichende IBAN",
+      "add_meter": "Weiteren Zähler hinzufügen",
+      "add_location": "Neue Lieferstelle anlegen",
+      "previous_supplier": "Aktueller Tarif (Vorversorger)",
+      "expand_capture": "Ausklappen & Erfassen",
+      "base_price_month": "Grundpreis (€/Monat)",
+      "work_price": "Arbeitspreis (ct/kWh)",
+      "calculate_tariffs": "Tarife berechnen",
+      "calculate_success": "Vergleich berechnet. Ersparnis siehe Tarifkarten unten.",
+      "previous_yearly_cost": "Aktuelle Jahreskosten (Vorversorger)",
+      "no_savings": "Keine Ersparnis",
+      "usage_required_for_comparison": "Bitte Jahresverbrauch beim Zähler eintragen für einen aussagekräftigen Vergleich.",
+      "energy_rate": "Arbeitspreis",
+      "base_fee": "Grundpreis",
+      "selected": "Ausgewählt",
+      "month": "Monat",
+      "year": "Jahr",
+      "savings": "Ersparnis",
+      "offer_total": "Gesamtwert des Angebots (Netto)",
+      "save_draft": "Als Entwurf speichern",
+      "finish_offer": "Angebot abschließen & PDF erstellen",
+      "creating": "Wird erstellt",
+      "customer_loaded": "Kundendaten geladen.",
+      "new_meter": "Neuer Zähler",
+      "remove": "Entfernen",
+      "edit": "Bearbeiten",
+      "done": "Fertig",
+      "remove_location": "Lieferstelle entfernen",
+      "billing_new": "Neue Rechnungsanschrift…",
+      "malo_hint": "11-stellige Marktlokations-ID (optional, kann später ergänzt werden).",
+      "malo_missing_warning": "Ohne MaLo kann der Antrag abgelehnt werden.",
+      "compare_tariff": "Vergleich",
+      "compare_hint": "Klicken Sie bis zu zwei Tarife pro Zähler an – einer als Auswahl, einer zum Vergleich.",
+      "individual_request": "Mehr als 5 Zähler erfordern eine Individualanfrage.",
+      "success_draft": "Angebot wurde als Entwurf gespeichert.",
+      "success_draft_updated": "Entwurf wurde aktualisiert.",
+      "load_draft_error": "Entwurf konnte nicht geladen werden.",
+      "edit_only_draft": "Nur Entwürfe können im Tarifrechner bearbeitet werden.",
+      "custom_inquiry": {
+        "open": "Individualanfrage",
+        "back_to_wizard": "Zurück zum Standardangebot",
+        "page_title": "Individualanfrage",
+        "page_desc": "Für komplexe Fälle oder mehr als 5 Lieferstellen. Das Backoffice erstellt das Angebot.",
+        "customer_desc": "Erfassen Sie alle bekannten Kundendaten. Unvollständige Angaben sind in Ordnung.",
+        "details_title": "Anfragedetails",
+        "details_desc": "Beschreiben Sie den Fall und laden Sie unterstützende Dokumente hoch.",
+        "notes_label": "Freitextbeschreibung",
+        "notes_placeholder": "z. B. 6 Standorte, gemischt RLM, besondere Netzsituation, gewünschter Lieferbeginn…",
+        "attachments_label": "Dokumente",
+        "attachments_hint": "z. B. Gewerbeanmeldung, Lastgänge, Mietverträge",
+        "footer_hint": "Wird als Individualangebot an das Backoffice übermittelt",
+        "submit": "Individualanfrage absenden",
+        "success": "Individualanfrage übermittelt. Das Backoffice erstellt das Angebot.",
+        "upload_error": "Ein oder mehrere Dokumente konnten nicht hochgeladen werden.",
+        "validation": {
+          "notes": "Bitte beschreiben Sie die Anfrage im Freitextfeld."
+        },
+        "edit_blocked": "Individualanfragen können nicht im Standard-Tarifrechner bearbeitet werden."
+      },
+      "success_finish": "Angebot wurde kalkuliert und das PDF wird geöffnet.",
+      "sections": {
+        "energy": {
+          "title": "Energieart wählen",
+          "desc": "Ein Angebot kann nur Strom oder Gas beinhalten."
+        },
+        "customer": {
+          "title": "Kundendaten",
+          "desc": "Stammdaten, Hauptanschrift und Standard-Zahlungsinformationen."
+        },
+        "locations": {
+          "title": "Lieferstellen & Zähler",
+          "desc": "Ordnen Sie die Zähler den jeweiligen Standorten zu."
+        },
+        "tariff": {
+          "title": "Tarifauswahl & Ersparnis",
+          "desc": "Wählen Sie für jeden Zähler den passenden Tarif."
+        }
+      },
+      "table": {
+        "medium_type": "Medium / Art",
+        "usage_year": "Verbrauch / Jahr",
+        "action": "Aktion"
+      },
+      "steps": {
+        "customer": "Kunde",
+        "delivery": "Lieferstelle",
+        "tariff": "Tarif",
+        "review": "Übersicht"
+      },
+      "customer_mode": {
+        "new": "Neuer Kunde",
+        "existing": "Bestehender Kunde"
+      },
+      "contract_address": "Vertragspartneranschrift",
+      "fields": {
+        "customer": "Kunde",
+        "medium": "Energieträger",
+        "start_date": "Lieferbeginn"
+      },
+      "placeholders": {
+        "customer": "Kunde suchen…",
+        "company": "z.B. Muster GmbH",
+        "street": "Straße & Hausnummer",
+        "location_name": "z.B. Hauptsitz"
+      },
+      "months": "Monate",
+      "no_tariffs": "Keine Tarife für den gewählten Zählertyp und Energieträger.",
+      "back": "Zurück",
+      "next": "Weiter",
+      "create_offer": "Angebot erstellen & kalkulieren",
+      "success": "Angebot wurde erstellt und kalkuliert.",
+      "error": "Angebot konnte nicht erstellt werden.",
+      "validation": {
+        "customer": "Bitte einen Kunden auswählen.",
+        "company": "Bitte einen Firmennamen eingeben.",
+        "contact": "Bitte Vor- und Nachname eingeben.",
+        "address": "Bitte die Anschrift vollständig ausfüllen.",
+        "billing_address": "Bitte die Rechnungsanschrift vollständig ausfüllen.",
+        "shipping_address": "Bitte die Lieferanschrift vollständig ausfüllen.",
+        "email": "Bitte eine E-Mail-Adresse eingeben.",
+        "phone": "Bitte eine Telefonnummer eingeben.",
+        "meter_number": "Bitte für jeden Zähler eine Zählernummer eingeben.",
+        "previous_supplier": "Bitte den Vorversorger für jeden Zähler eingeben.",
+        "iban": "Bitte eine IBAN eingeben.",
+        "location_address": "Bitte die Lieferstellenanschrift vollständig ausfüllen.",
+        "location_billing_address": "Bitte die Rechnungsanschrift der Lieferstelle vollständig ausfüllen.",
+        "usage": "Bitte den Jahresverbrauch eingeben.",
+        "start_date": "Bitte den Lieferbeginn wählen.",
+        "peak_power": "Bitte Leistungsspitze und Jahreshöchstleistung für RLM eingeben.",
+        "tariff": "Bitte für jeden Zähler einen Tarif auswählen.",
+        "previous_tariff": "Bitte mindestens Grundpreis oder Arbeitspreis des Vorversorgers eingeben.",
+        "malo": "Die MaLo muss genau 11 Ziffern haben."
+      },
+      "summary": {
+        "customer": "Kunde",
+        "address": "Anschrift",
+        "tariff": "Tarif"
+      }
+    }
+  },
   "workflows": {
     "LimitPositionsOnNormalOffer": {
       "limit_reached": "Normal-Angebote dürfen höchstens 5 Positionen haben."

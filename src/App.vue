@@ -35,4 +35,47 @@ export default {
 .main-logo {
   padding: 8px;
 }
+
+/* Field groups: label and value on one line, vertically centered */
+.ant-card-body {
+  .field-group-item-list {
+    width: 100%;
+
+    tr.field-group-item {
+      td {
+        vertical-align: middle !important;
+        padding-block: 6px;
+      }
+
+      td.field-group-label,
+      td.td-left-xs {
+        text-align: left !important;
+        white-space: nowrap;
+        padding-right: 16px;
+        width: 1%;
+      }
+
+      td.td-right-xs {
+        text-align: right;
+        width: 99%;
+      }
+
+      .field {
+        line-height: 1.5715;
+        margin: 0;
+      }
+    }
+  }
+
+  .field-group-item-list-vertical {
+    .field-group-label {
+      margin-bottom: 2px;
+      line-height: 1.5715;
+    }
+
+    .field-group-item .field .ant-form-item {
+      margin-bottom: 0;
+    }
+  }
+}
 </style>

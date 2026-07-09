@@ -26,6 +26,10 @@
           }
         },
         {
+          "identifier": "label",
+          "type": "text"
+        },
+        {
           "identifier": "partner",
           "type": "select",
           "options": {

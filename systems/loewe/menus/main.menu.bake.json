@@ -5,10 +5,11 @@
       "name": "main",
       "elements": [
         {
-          "name": "customers",
+          "name": "quotation_wizard",
           "type": "entry",
           "default": true
         },
+        "customers",
         "addresses",
         "locations",
         "meters",

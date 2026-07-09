@@ -85,7 +85,7 @@
       "options": {
         "recipes": {
           "customer": "$position.customer",
-          "partner": "$position.partner",
+          "user": "$position.partner",
           "status": "\"accepted\"",
           "created_at": "date()"
         },

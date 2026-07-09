@@ -58,7 +58,6 @@
                 {
                   "type": "field_group",
                   "options": {
-                    "vertical_labels": true,
                     "fields": [
                       "grid_usage_fee",
                       "grid_fixed_fee",
@@ -82,7 +81,6 @@
                 {
                   "type": "field_group",
                   "options": {
-                    "vertical_labels": true,
                     "fields": [
                       "kwkg_levy",
                       "special_grid_levy",
@@ -115,7 +113,6 @@
                 {
                   "type": "field_group",
                   "options": {
-                    "vertical_labels": true,
                     "fields": [
                       "site_fixed_fee",
                       "energy_price",
@@ -143,7 +140,6 @@
                 {
                   "type": "field_group",
                   "options": {
-                    "vertical_labels": true,
                     "fields": [
                       "grid_charges_total",
                       "state_levies_total",

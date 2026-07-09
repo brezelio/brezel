@@ -22,9 +22,11 @@
                     "fields": [
                       "number",
                       "customer",
-                      "partner",
+                      "user",
                       ["status", "type"],
-                      ["created_at", "valid_till"]
+                      ["created_at", "valid_till"],
+                      "inquiry_notes",
+                      "attachments"
                     ]
                   }
                 },
@@ -38,7 +40,7 @@
                         "style": "primary",
                         "options": {
                           "recipes": {
-                            "hidden_from_frontend": "status != 'draft'"
+                            "hidden_from_frontend": "status != 'draft' || type == 'individual'"
                           }
                         }
                       },
@@ -56,7 +58,28 @@
                         "icon": "mdi:file-pdf-box",
                         "options": {
                           "recipes": {
-                            "hidden_from_frontend": "status == 'draft' || status == 'rejected'"
+                            "hidden_from_frontend": "status == 'draft' || status == 'rejected' || type == 'individual'"
+                          }
+                        }
+                      },
+                      {
+                        "identifier": "edit_in_wizard",
+                        "icon": "mdi:pencil-outline",
+                        "style": "default",
+                        "event": {
+                          "action": "open",
+                          "type": "entity",
+                          "module": "quotation_wizard",
+                          "moduleAction": "module",
+                          "options": {
+                            "query": {
+                              "offer": "this.id"
+                            }
+                          }
+                        },
+                        "options": {
+                          "recipes": {
+                            "hidden_from_frontend": "status != 'draft' || type == 'individual'"
                           }
                         }
                       }
@@ -73,7 +96,7 @@
               "span": 24,
               "options": {
                 "recipes": {
-                  "hidden_from_frontend": "!id"
+                  "hidden_from_frontend": "!id || type == 'individual'"
                 }
               },
               "components": [
@@ -90,6 +113,16 @@
                     "create_in_modal": true,
                     "edit_in_modal": true,
                     "show_in_modal": true,
+                    "columns": [
+                      "number",
+                      "location",
+                      "provider",
+                      "tariff",
+                      "usage",
+                      "total_cost",
+                      "total_savings",
+                      "status"
+                    ],
                     "pre_filters": [
                       {
                         "column": "offer.id",
@@ -98,7 +131,7 @@
                       }
                     ],
                     "recipes": {
-                      "fill": "{'offer': this, 'customer': this.customer, 'partner': this.partner}"
+                      "fill": "{'offer': this, 'customer': this.customer, 'partner': this.user}"
                     },
                     "buttons": [
                       {

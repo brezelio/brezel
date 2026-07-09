@@ -22,7 +22,7 @@
                     "fields": [
                       "number",
                       "customer",
-                      "partner",
+                      "user",
                       "status",
                       ["created_at", "sf_opp_id"]
                     ]
@@ -63,7 +63,7 @@
                       }
                     ],
                     "recipes": {
-                      "fill": "{'contract': this, 'customer': this.customer, 'partner': this.partner}"
+                      "fill": "{'contract': this, 'customer': this.customer, 'partner': this.user}"
                     }
                   }
                 }

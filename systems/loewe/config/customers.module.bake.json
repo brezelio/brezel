@@ -95,6 +95,21 @@
           }
         },
         {
+          "identifier": "default_shipping_address",
+          "type": "select",
+          "options": {
+            "references": "addresses",
+            "add_options": true,
+            "pre_filters": [
+              {
+                "column": "customer.id",
+                "operator": "=",
+                "field": "id"
+              }
+            ]
+          }
+        },
+        {
           "identifier": "default_bank",
           "type": "text"
         },

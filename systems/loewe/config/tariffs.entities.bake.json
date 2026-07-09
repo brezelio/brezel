@@ -56,5 +56,183 @@
         "prov_loewe": 32
       }
     }
+  },
+  {
+    "resource_entity": "tariff_power_rlm_12",
+    "depends_on": "resource_module.tariffs",
+    "policy": "sync",
+    "resource": {
+      "module": "tariffs",
+      "client": "${resource_client.global}",
+      "fields": {
+        "name": "Power RLM 12",
+        "provider": "Loewe",
+        "type": "electricity",
+        "meter_type": "rlm",
+        "duration": 12,
+        "active": true,
+        "grid_usage_fee": 7.5,
+        "grid_fixed_fee": 180,
+        "concession_fee": 2,
+        "metering_fee": 120,
+        "grid_capacity_fee": 45,
+        "kwkg_levy": 0.5,
+        "special_grid_levy": 0.3,
+        "offshore_levy": 0.6,
+        "electricity_tax": 2.05,
+        "site_fixed_fee": 149,
+        "energy_price": 16.5,
+        "prov_partner": 60,
+        "prov_loewe": 35
+      }
+    }
+  },
+  {
+    "resource_entity": "tariff_power_rlm_24",
+    "depends_on": "resource_module.tariffs",
+    "policy": "sync",
+    "resource": {
+      "module": "tariffs",
+      "client": "${resource_client.global}",
+      "fields": {
+        "name": "Power RLM 24",
+        "provider": "Loewe",
+        "type": "electricity",
+        "meter_type": "rlm",
+        "duration": 24,
+        "active": true,
+        "grid_usage_fee": 7.2,
+        "grid_fixed_fee": 165,
+        "concession_fee": 2,
+        "metering_fee": 110,
+        "grid_capacity_fee": 42,
+        "kwkg_levy": 0.5,
+        "special_grid_levy": 0.3,
+        "offshore_levy": 0.6,
+        "electricity_tax": 2.05,
+        "site_fixed_fee": 129,
+        "energy_price": 15.8,
+        "prov_partner": 65,
+        "prov_loewe": 38
+      }
+    }
+  },
+  {
+    "resource_entity": "tariff_gas_basic_12",
+    "depends_on": "resource_module.tariffs",
+    "policy": "sync",
+    "resource": {
+      "module": "tariffs",
+      "client": "${resource_client.global}",
+      "fields": {
+        "name": "Gas Basic 12",
+        "provider": "Loewe",
+        "type": "gas",
+        "meter_type": "slp",
+        "duration": 12,
+        "active": true,
+        "grid_usage_fee": 1.8,
+        "grid_fixed_fee": 95,
+        "concession_fee": 0.5,
+        "metering_fee": 35,
+        "kwkg_levy": 0,
+        "special_grid_levy": 0,
+        "offshore_levy": 0,
+        "electricity_tax": 0,
+        "site_fixed_fee": 79,
+        "energy_price": 7.5,
+        "prov_partner": 40,
+        "prov_loewe": 25
+      }
+    }
+  },
+  {
+    "resource_entity": "tariff_gas_flex_24",
+    "depends_on": "resource_module.tariffs",
+    "policy": "sync",
+    "resource": {
+      "module": "tariffs",
+      "client": "${resource_client.global}",
+      "fields": {
+        "name": "Gas Flex 24",
+        "provider": "Loewe",
+        "type": "gas",
+        "meter_type": "slp",
+        "duration": 24,
+        "active": true,
+        "grid_usage_fee": 1.6,
+        "grid_fixed_fee": 85,
+        "concession_fee": 0.5,
+        "metering_fee": 32,
+        "kwkg_levy": 0,
+        "special_grid_levy": 0,
+        "offshore_levy": 0,
+        "electricity_tax": 0,
+        "site_fixed_fee": 69,
+        "energy_price": 7.1,
+        "prov_partner": 45,
+        "prov_loewe": 28
+      }
+    }
+  },
+  {
+    "resource_entity": "tariff_gas_rlm_12",
+    "depends_on": "resource_module.tariffs",
+    "policy": "sync",
+    "resource": {
+      "module": "tariffs",
+      "client": "${resource_client.global}",
+      "fields": {
+        "name": "Gas RLM 12",
+        "provider": "Loewe",
+        "type": "gas",
+        "meter_type": "rlm",
+        "duration": 12,
+        "active": true,
+        "grid_usage_fee": 1.5,
+        "grid_fixed_fee": 140,
+        "concession_fee": 0.5,
+        "metering_fee": 95,
+        "grid_capacity_fee": 28,
+        "kwkg_levy": 0,
+        "special_grid_levy": 0,
+        "offshore_levy": 0,
+        "electricity_tax": 0,
+        "site_fixed_fee": 119,
+        "energy_price": 6.8,
+        "prov_partner": 50,
+        "prov_loewe": 30
+      }
+    }
+  },
+  {
+    "resource_entity": "tariff_gas_rlm_24",
+    "depends_on": "resource_module.tariffs",
+    "policy": "sync",
+    "resource": {
+      "module": "tariffs",
+      "client": "${resource_client.global}",
+      "fields": {
+        "name": "Gas RLM 24",
+        "provider": "Loewe",
+        "type": "gas",
+        "meter_type": "rlm",
+        "duration": 24,
+        "active": true,
+        "grid_usage_fee": 1.4,
+        "grid_fixed_fee": 125,
+        "concession_fee": 0.5,
+        "metering_fee": 90,
+        "grid_capacity_fee": 25,
+        "kwkg_levy": 0,
+        "special_grid_levy": 0,
+        "offshore_levy": 0,
+        "electricity_tax": 0,
+        "site_fixed_fee": 109,
+        "energy_price": 6.4,
+        "prov_partner": 55,
+        "prov_loewe": 32
+      }
+    }
   }
 ]

@@ -21,7 +21,7 @@
                     "columns": [
                       "number",
                       "customer",
-                      "partner",
+                      "user",
                       "status",
                       "type",
                       "created_at",

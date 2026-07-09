@@ -104,7 +104,9 @@
       "in": {
         "default": "$positions"
       },
-      "set": {},
+      "set": {
+        "position": "each:"
+      },
       "to": {
         "each": {
           "recalculatePosition": ["default"]
@@ -129,7 +131,7 @@
       },
       "to": {
         "default": {
-          "setSavings": ["default"]
+          "loadRelations": ["default"]
         }
       },
       "meta": {
@@ -137,12 +139,33 @@
       }
     },
     {
+      "name": "loadRelations",
+      "type": "op/load",
+      "options": {
+        "fields": ["location", "offer", "customer", "tariff_catalog", "partner", "contract"]
+      },
+      "in": {
+        "default": "$position"
+      },
+      "set": {
+        "position": "default:"
+      },
+      "to": {
+        "default": {
+          "setSavings": ["default"]
+        }
+      },
+      "meta": {
+        "position": [1087, 0]
+      }
+    },
+    {
       "name": "setSavings",
       "type": "op/set",
       "options": {
         "recipes": {
-          "total_savings": "max(0, ((location.current_price_per_kwh ?? 0) * (usage ?? 0) / 100 + (location.current_baseprice ?? 0)) - (total_cost ?? 0))",
-          "potential_savings": "(max(0, ((location.current_price_per_kwh ?? 0) * (usage ?? 0) / 100 + (location.current_baseprice ?? 0)) - (total_cost ?? 0)) * (duration ?? 12)) / 12"
+          "total_savings": "max(0, (((current_baseprice ?? location.current_baseprice ?? 0) * 12) + ((current_price_per_kwh ?? location.current_price_per_kwh ?? 0) * (usage ?? 0) / 100)) - (total_cost ?? 0))",
+          "potential_savings": "(max(0, (((current_baseprice ?? location.current_baseprice ?? 0) * 12) + ((current_price_per_kwh ?? location.current_price_per_kwh ?? 0) * (usage ?? 0) / 100)) - (total_cost ?? 0)) * (duration ?? 12)) / 12"
         },
         "values": [],
         "process": false
@@ -167,7 +190,7 @@
       "type": "action/save",
       "options": {
         "triggerEvents": false,
-        "skip_recipes": false
+        "skip_recipes": true
       },
       "in": {
         "default": "$position"

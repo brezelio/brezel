@@ -3,7 +3,8 @@
     "CalculateOffer": "Calculate offer",
     "MarkOfferSent": "Mark as sent",
     "CreateContractFromPosition": "Create contract",
-    "ExportOfferPdf": "Export PDF"
+    "ExportOfferPdf": "Export PDF",
+    "edit_in_wizard": "Edit in wizard"
   },
   "notifications": {},
   "modules": {
@@ -23,6 +24,7 @@
         "bic": "BIC",
         "default_address": "Address",
         "default_billing_address": "Billing address",
+        "default_shipping_address": "Delivery address",
         "default_bank": "Bank",
         "default_iban": "Default IBAN",
         "default_bic": "Default BIC",
@@ -88,15 +90,16 @@
         "number": "Internal number",
         "customer": "Customer",
         "partner": "Sales partner",
+        "label": "Site name",
         "address": "Delivery address",
         "billing_address": "Billing address",
         "bank": "Bank",
         "iban": "IBAN",
         "bic": "BIC",
-        "current_provider": "Current supplier",
-        "current_price_per_kwh": "Current unit price (ct/kWh)",
-        "current_baseprice": "Current base price",
-        "current_customer_no": "Customer number at supplier",
+        "current_provider": "current_provider",
+        "current_price_per_kwh": "current_price_per_kwh",
+        "current_baseprice": "current_baseprice",
+        "current_customer_no": "current_customer_no",
         "start_date": "Supply start date"
       },
       "headlines": {
@@ -150,11 +153,13 @@
       "fields": {
         "number": "Offer number",
         "customer": "Customer",
-        "partner": "Sales partner",
+        "user": "Sales partner",
         "status": "Status",
         "type": "Offer type",
         "created_at": "Created at",
-        "valid_till": "Valid until"
+        "valid_till": "Valid until",
+        "inquiry_notes": "Inquiry notes",
+        "attachments": "Attachments"
       },
       "choice": {
         "status": {
@@ -184,7 +189,7 @@
       "fields": {
         "number": "Internal number",
         "name": "Tariff name",
-        "provider": "Supplier",
+        "provider": "Provider",
         "type": "Energy type",
         "meter_type": "Meter type",
         "duration": "Term (months)",
@@ -220,7 +225,7 @@
         "basic": "Tariff",
         "grid_charges": "Grid charges",
         "levies": "State levies",
-        "energy_supplier": "Energy supplier",
+        "energy_supplier": "Energy provider",
         "tariffs": "Tariffs"
       },
       "tabs": {
@@ -235,7 +240,7 @@
       "fields": {
         "number": "Contract number",
         "customer": "Customer",
-        "partner": "Sales partner",
+        "user": "Sales partner",
         "status": "Status",
         "sf_opp_id": "Salesforce Opp ID",
         "created_at": "Created at"
@@ -267,7 +272,7 @@
         "partner": "Sales partner",
         "meter_type": "Meter type",
         "tariff_catalog": "Tariff from catalog",
-        "provider": "Supplier",
+        "provider": "Provider",
         "tariff": "Tariff name",
         "duration": "Term (months)",
         "usage": "Consumption",
@@ -288,7 +293,7 @@
         "site_fixed_fee": "Site fixed fee",
         "energy_price": "Energy price",
         "usage_price": "Usage price",
-        "supplier_energy_total": "Total supplier energy cost",
+        "supplier_energy_total": "Total provider energy cost",
         "total_cost": "Total cost",
         "total_savings": "Total savings",
         "potential_savings": "Potential savings",
@@ -310,7 +315,7 @@
         "basic": "Master data",
         "grid_charges": "Grid charges",
         "levies": "State levies",
-        "energy_supplier": "Energy supplier",
+        "energy_supplier": "Energy provider",
         "provision": "Commission",
         "totals": "Totals",
         "positions": "Positions"
@@ -325,15 +330,25 @@
     "users": {
       "title": "Users",
       "fields": {
+        "number": "Internal number",
+        "role": "Role",
+        "parent_user": "Parent sales partner",
+        "firstname": "First name",
+        "lastname": "Last name",
         "name": "Name",
         "email": "Email",
         "password": "Password",
-        "roles": "Roles",
+        "roles": "Brezel roles",
         "company_name": "Company name (white-label)",
         "provision_type": "Commission type",
         "provision_default": "Default commission"
       },
       "choice": {
+        "role": {
+          "admin": "Admin",
+          "partner": "Partner",
+          "sub_partner": "Sub-partner"
+        },
         "provision_type": {
           "surcharge": "Surcharge",
           "hidden": "Hidden"
@@ -362,9 +377,181 @@
       "tabs": {
         "general": "General"
       }
+    },
+    "quotation_wizard": {
+      "title": "Create quotation"
     }
   },
-  "widgets": {},
+  "widgets": {
+    "quotation_wizard": {
+      "title": "New quotation",
+      "page_title": "Create quotation",
+      "page_title_edit": "Edit draft offer #{number}",
+      "editing_draft_hint": "You are editing a saved draft. Changes update the existing offer.",
+      "update_draft": "Update draft",
+      "subtitle": "Create a customer, delivery point, and offer in a guided flow.",
+      "load_from_master": "Load from master data",
+      "b2b": "B2B (business)",
+      "b2c": "B2C (private)",
+      "billing_payment": "Billing & payment (default for all delivery points)",
+      "billing_address": "Billing address",
+      "billing_same": "Same as contract partner address",
+      "billing_different": "Enter different billing address…",
+      "shipping_same": "Same as contract partner address",
+      "shipping_different": "Enter different delivery address…",
+      "meter_limit": "Meter limit",
+      "location": "Delivery point",
+      "location_name": "Site name",
+      "unnamed_location": "Unnamed",
+      "use_contract_address": "Use contract partner address",
+      "use_default_billing": "Use default billing address",
+      "shipping_address": "Delivery address",
+      "meters": "Meters",
+      "meter": "Meter",
+      "custom_billing": "Different billing & payment (optional)",
+      "different_delivery_address": "Delivery address",
+      "shipping_new": "Add new delivery address…",
+      "different_billing_address": "Different billing address",
+      "different_iban": "Different IBAN",
+      "add_meter": "Add another meter",
+      "add_location": "Add new delivery point",
+      "previous_supplier": "Current tariff (previous supplier)",
+      "expand_capture": "Expand & capture",
+      "base_price_month": "Base price (€/month)",
+      "work_price": "Energy price (ct/kWh)",
+      "calculate_tariffs": "Calculate tariffs",
+      "calculate_success": "Comparison calculated. See savings on the tariff cards below.",
+      "previous_yearly_cost": "Current yearly cost (previous supplier)",
+      "no_savings": "No savings",
+      "usage_required_for_comparison": "Please enter annual consumption on the meter for a meaningful comparison.",
+      "energy_rate": "Energy Rate",
+      "base_fee": "Base Fee",
+      "selected": "Selected",
+      "month": "month",
+      "year": "year",
+      "savings": "Savings",
+      "offer_total": "Total offer value (net)",
+      "save_draft": "Save as draft",
+      "finish_offer": "Complete offer & create PDF",
+      "creating": "Creating",
+      "customer_loaded": "Customer data loaded.",
+      "new_meter": "New meter",
+      "remove": "Remove",
+      "edit": "Edit",
+      "done": "Done",
+      "remove_location": "Remove delivery point",
+      "billing_new": "Add new billing address…",
+      "malo_hint": "11-digit market location ID (optional, can be added later).",
+      "malo_missing_warning": "Without a MaLo, the application may be rejected.",
+      "compare_tariff": "Compare",
+      "compare_hint": "Click up to two tariffs per meter — one as selection, one for comparison.",
+      "individual_request": "More than 5 meters require a custom inquiry.",
+      "success_draft": "Offer saved as draft.",
+      "success_draft_updated": "Draft offer updated.",
+      "load_draft_error": "Could not load the draft offer.",
+      "edit_only_draft": "Only draft offers can be edited in the wizard.",
+      "custom_inquiry": {
+        "open": "Custom inquiry",
+        "back_to_wizard": "Back to standard quote",
+        "page_title": "Custom inquiry",
+        "page_desc": "For complex cases or more than 5 delivery points. Back office will prepare the quote.",
+        "customer_desc": "Enter all known customer data. Incomplete data is fine.",
+        "details_title": "Request details",
+        "details_desc": "Describe the case and upload supporting documents.",
+        "notes_label": "Free-text description",
+        "notes_placeholder": "e.g. 6 locations, mixed RLM, special grid situation, required start date…",
+        "attachments_label": "Documents",
+        "attachments_hint": "e.g. business registration, load profiles, lease agreements",
+        "footer_hint": "Submitted to back office as an individual offer",
+        "submit": "Submit custom inquiry",
+        "success": "Custom inquiry submitted. Back office will prepare the quote.",
+        "upload_error": "Could not upload one or more documents.",
+        "validation": {
+          "notes": "Please describe the inquiry in the free-text field."
+        },
+        "edit_blocked": "Custom inquiries cannot be edited in the standard wizard."
+      },
+      "success_finish": "Offer calculated and PDF is opening.",
+      "sections": {
+        "energy": {
+          "title": "Choose energy type",
+          "desc": "An offer can include electricity or gas only."
+        },
+        "customer": {
+          "title": "Customer data",
+          "desc": "Master data, main address and default payment information."
+        },
+        "locations": {
+          "title": "Delivery points & meters",
+          "desc": "Assign meters to each site."
+        },
+        "tariff": {
+          "title": "Tariff selection & savings",
+          "desc": "Choose a tariff for each meter."
+        }
+      },
+      "table": {
+        "medium_type": "Medium / type",
+        "usage_year": "Consumption / year",
+        "action": "Action"
+      },
+      "steps": {
+        "customer": "Customer",
+        "delivery": "Delivery point",
+        "tariff": "Tariff",
+        "review": "Review"
+      },
+      "customer_mode": {
+        "new": "New customer",
+        "existing": "Existing customer"
+      },
+      "contract_address": "Contract partner address",
+      "fields": {
+        "customer": "Customer",
+        "medium": "Energy type",
+        "start_date": "Supply start"
+      },
+      "placeholders": {
+        "customer": "Search customer…",
+        "company": "e.g. Example Ltd",
+        "street": "Street & house number",
+        "location_name": "e.g. Main site"
+      },
+      "months": "months",
+      "no_tariffs": "No tariffs match the selected meter type and energy type.",
+      "back": "Back",
+      "next": "Next",
+      "create_offer": "Create & calculate offer",
+      "success": "Offer created and calculated.",
+      "error": "Could not create the quotation.",
+      "validation": {
+        "customer": "Please select a customer.",
+        "company": "Please enter a company name.",
+        "contact": "Please enter first and last name.",
+        "address": "Please complete the address.",
+        "billing_address": "Please complete the billing address.",
+        "shipping_address": "Please complete the delivery address.",
+        "email": "Please enter an email address.",
+        "phone": "Please enter a phone number.",
+        "meter_number": "Please enter a meter number for each meter.",
+        "previous_supplier": "Please enter the previous supplier for each meter.",
+        "iban": "Please enter an IBAN.",
+        "location_address": "Please complete the delivery point address.",
+        "location_billing_address": "Please complete the delivery point billing address.",
+        "usage": "Please enter annual consumption.",
+        "start_date": "Please select a supply start date.",
+        "peak_power": "Please enter peak power values for RLM.",
+        "tariff": "Please select a tariff for each meter.",
+        "previous_tariff": "Please enter at least a base price or energy price for the previous supplier.",
+        "malo": "MaLo must be exactly 11 digits."
+      },
+      "summary": {
+        "customer": "Customer",
+        "address": "Address",
+        "tariff": "Tariff"
+      }
+    }
+  },
   "workflows": {
     "LimitPositionsOnNormalOffer": {
       "limit_reached": "Normal offers can have at most 5 positions."

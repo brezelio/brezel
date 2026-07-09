@@ -21,7 +21,7 @@
                     "columns": [
                       "number",
                       "customer",
-                      "partner",
+                      "user",
                       "status",
                       "created_at",
                       "sf_opp_id"

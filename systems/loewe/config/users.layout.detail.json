@@ -17,8 +17,11 @@
                 {
                   "type": "field_group",
                   "options": {
+                    "vertical_labels": true,
                     "fields": [
-                      "name",
+                      "number",
+                      ["role", "parent_user"],
+                      ["firstname", "lastname"],
                       "email",
                       "password",
                       "roles"
@@ -34,10 +37,10 @@
                 {
                   "type": "field_group",
                   "options": {
+                    "vertical_labels": true,
                     "fields": [
                       "company_name",
-                      "provision_type",
-                      "provision_default"
+                      ["provision_type", "provision_default"]
                     ]
                   }
                 }

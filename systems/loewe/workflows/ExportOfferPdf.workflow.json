@@ -66,7 +66,7 @@
       "options": {
         "module": "offers",
         "first": true,
-        "with": ["customer", "partner"],
+        "with": ["customer", "user"],
         "filters": [
           [
             {
@@ -148,6 +148,7 @@
         "path": "\"/\" + $loadedOffer.module_id + \"/\" + $loadedOffer.id",
         "type": "pdf",
         "view": "offer.pdf",
+        "merged": true,
         "filename": {
           ".recipe": "\"Angebot-\" + ($loadedOffer.number ?? $loadedOffer.id)"
         },
@@ -159,7 +160,7 @@
         "store_module": "files"
       },
       "in": {
-        "default": "{}"
+        "default": "$positions"
       },
       "set": {
         "pdf": "default:"

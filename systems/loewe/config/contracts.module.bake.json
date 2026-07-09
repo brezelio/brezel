@@ -26,7 +26,7 @@
           }
         },
         {
-          "identifier": "partner",
+          "identifier": "user",
           "type": "select",
           "options": {
             "references": "users"

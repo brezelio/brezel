@@ -102,6 +102,26 @@
           "options": {
             "rules": "required"
           }
+        },
+        {
+          "identifier": "start_date",
+          "type": "date"
+        },
+        {
+          "identifier": "current_provider",
+          "type": "text"
+        },
+        {
+          "identifier": "current_price_per_kwh",
+          "type": "number"
+        },
+        {
+          "identifier": "current_baseprice",
+          "type": "number"
+        },
+        {
+          "identifier": "current_customer_no",
+          "type": "text"
         }
       ]
     }

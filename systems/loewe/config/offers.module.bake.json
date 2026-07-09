@@ -40,7 +40,7 @@
           }
         },
         {
-          "identifier": "partner",
+          "identifier": "user",
           "type": "select",
           "options": {
             "references": "users"
@@ -60,6 +60,26 @@
           "options": {
             "values": ["normal", "individual"],
             "default": "normal"
+          }
+        },
+        {
+          "identifier": "inquiry_notes",
+          "type": "textarea",
+          "options": {
+            "recipes": {
+              "hidden_from_frontend": "type != 'individual'"
+            }
+          }
+        },
+        {
+          "identifier": "attachments",
+          "type": "file",
+          "options": {
+            "references": "files",
+            "multiple": true,
+            "recipes": {
+              "hidden_from_frontend": "type != 'individual'"
+            }
           }
         },
         {

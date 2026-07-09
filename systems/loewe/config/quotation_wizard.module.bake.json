@@ -1,0 +1,13 @@
+[
+  {
+    "resource_module": "quotation_wizard",
+    "resource": {
+      "identifier": "quotation_wizard",
+      "icon": "mdi:file-document-edit-outline",
+      "title": "quotation_wizard",
+      "layouts": {
+        "index": "config/quotation_wizard.layout.index"
+      }
+    }
+  }
+]
