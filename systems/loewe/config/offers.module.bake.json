@@ -21,6 +21,10 @@
         "ExportOfferPdf": {
           "icon": "mdi:file-pdf-box",
           "show_in": ["module.show"]
+        },
+        "DuplicateOffer": {
+          "icon": "mdi:content-copy",
+          "show_in": ["module.show"]
         }
       },
       "fields": [
@@ -76,10 +80,7 @@
           "type": "file",
           "options": {
             "references": "files",
-            "multiple": true,
-            "recipes": {
-              "hidden_from_frontend": "type != 'individual'"
-            }
+            "multiple": true
           }
         },
         {

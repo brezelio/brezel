@@ -1,0 +1,346 @@
+{
+  "identifier": "DuplicateOffer",
+  "title": "Duplicate offer into a new draft",
+  "async": false,
+  "entry": "DuplicateOffer",
+  "elements": [
+    {
+      "name": "DuplicateOffer",
+      "type": "event/webhook",
+      "options": {
+        "module": "offers"
+      },
+      "in": {},
+      "set": {
+        "offer": "default:"
+      },
+      "to": {
+        "default": {
+          "hasOffer": ["default"]
+        }
+      },
+      "meta": {
+        "position": [0, 0]
+      }
+    },
+    {
+      "name": "hasOffer",
+      "type": "flow/if",
+      "options": {
+        "condition": "$offer.id"
+      },
+      "in": {},
+      "set": {},
+      "to": {
+        "default": {
+          "newOffer": ["default"]
+        },
+        "else": {
+          "rejectMissing": ["default"]
+        }
+      },
+      "meta": {
+        "position": [300, 0]
+      }
+    },
+    {
+      "name": "rejectMissing",
+      "type": "action/validate",
+      "options": {
+        "recipes": {
+          "status": "invalid(t('workflows.DuplicateOffer.invalid_offer'))"
+        },
+        "runModuleValidations": false,
+        "markFailedFields": true
+      },
+      "in": {},
+      "set": {},
+      "to": {},
+      "meta": {
+        "position": [600, 200]
+      }
+    },
+    {
+      "name": "newOffer",
+      "type": "source/new",
+      "options": {
+        "module": "offers"
+      },
+      "in": {},
+      "set": {
+        "newOffer": "default:"
+      },
+      "to": {
+        "default": {
+          "setOfferFields": ["default"]
+        }
+      },
+      "meta": {
+        "position": [600, 0]
+      }
+    },
+    {
+      "name": "setOfferFields",
+      "type": "op/set",
+      "options": {
+        "recipes": {
+          "customer": "$offer.customer",
+          "user": "$offer.user",
+          "status": "\"draft\"",
+          "type": "$offer.type ?? \"normal\"",
+          "inquiry_notes": "$offer.inquiry_notes",
+          "attachments": "$offer.attachments",
+          "created_at": "date()",
+          "valid_till": "null"
+        },
+        "values": [],
+        "process": false
+      },
+      "in": {
+        "default": "$newOffer"
+      },
+      "set": {
+        "newOffer": "default:"
+      },
+      "to": {
+        "default": {
+          "saveOffer": ["default"]
+        }
+      },
+      "meta": {
+        "position": [900, 0]
+      }
+    },
+    {
+      "name": "saveOffer",
+      "type": "action/save",
+      "options": {
+        "triggerEvents": false
+      },
+      "in": {
+        "default": "$newOffer"
+      },
+      "set": {
+        "newOffer": "default:"
+      },
+      "to": {
+        "default": {
+          "loadPositions": ["default"]
+        }
+      },
+      "meta": {
+        "position": [1200, 0]
+      }
+    },
+    {
+      "name": "loadPositions",
+      "type": "source/entities",
+      "options": {
+        "module": "positions",
+        "filters": [
+          [
+            {
+              "left": {
+                "type": "field",
+                "value": "offer.id"
+              },
+              "operator": "=",
+              "right": {
+                "type": "recipe",
+                "value": "$offer.id"
+              }
+            }
+          ]
+        ],
+        "with": [
+          "location",
+          "meter",
+          "customer",
+          "partner",
+          "tariff_catalog",
+          "compare_tariff_catalog"
+        ],
+        "orderBy": [
+          {
+            "field": "number",
+            "direction": "asc"
+          }
+        ],
+        "permissions": false,
+        "hydrateRelations": true
+      },
+      "in": {},
+      "set": {
+        "positions": "default:"
+      },
+      "to": {
+        "default": {
+          "forEachPosition": ["default"]
+        }
+      },
+      "meta": {
+        "position": [1500, 0]
+      }
+    },
+    {
+      "name": "forEachPosition",
+      "type": "flow/each",
+      "options": {},
+      "in": {
+        "default": "$positions"
+      },
+      "set": {
+        "position": "each:"
+      },
+      "to": {
+        "each": {
+          "newPosition": ["default"]
+        },
+        "next": {
+          "notifySuccess": ["default"]
+        }
+      },
+      "meta": {
+        "position": [1800, 0]
+      }
+    },
+    {
+      "name": "newPosition",
+      "type": "source/new",
+      "options": {
+        "module": "positions"
+      },
+      "in": {},
+      "set": {
+        "newPosition": "default:"
+      },
+      "to": {
+        "default": {
+          "setPositionFields": ["default"]
+        }
+      },
+      "meta": {
+        "position": [2100, 0]
+      }
+    },
+    {
+      "name": "setPositionFields",
+      "type": "op/set",
+      "options": {
+        "recipes": {
+          "offer": "$newOffer",
+          "customer": "$position.customer ?? $newOffer.customer",
+          "location": "$position.location",
+          "meter": "$position.meter",
+          "partner": "$position.partner ?? $newOffer.user",
+          "meter_type": "$position.meter_type",
+          "tariff_catalog": "$position.tariff_catalog",
+          "compare_tariff_catalog": "$position.compare_tariff_catalog",
+          "current_provider": "$position.current_provider",
+          "current_price_per_kwh": "$position.current_price_per_kwh",
+          "current_baseprice": "$position.current_baseprice",
+          "current_customer_no": "$position.current_customer_no",
+          "provider": "$position.provider",
+          "tariff": "$position.tariff",
+          "duration": "$position.duration",
+          "usage": "$position.usage",
+          "start_date": "$position.start_date",
+          "prov_partner": "$position.prov_partner",
+          "prov_loewe": "$position.prov_loewe",
+          "grid_usage_fee": "$position.grid_usage_fee",
+          "grid_fixed_fee": "$position.grid_fixed_fee",
+          "concession_fee": "$position.concession_fee",
+          "metering_fee": "$position.metering_fee",
+          "grid_capacity_fee": "$position.grid_capacity_fee",
+          "kwkg_levy": "$position.kwkg_levy",
+          "special_grid_levy": "$position.special_grid_levy",
+          "offshore_levy": "$position.offshore_levy",
+          "electricity_tax": "$position.electricity_tax",
+          "site_fixed_fee": "$position.site_fixed_fee",
+          "energy_price": "$position.energy_price",
+          "total_savings": "$position.total_savings",
+          "potential_savings": "$position.potential_savings",
+          "status": "\"pending\"",
+          "contract": "null"
+        },
+        "values": [],
+        "process": false
+      },
+      "in": {
+        "default": "$newPosition"
+      },
+      "set": {
+        "newPosition": "default:"
+      },
+      "to": {
+        "default": {
+          "savePosition": ["default"]
+        }
+      },
+      "meta": {
+        "position": [2400, 0]
+      }
+    },
+    {
+      "name": "savePosition",
+      "type": "action/save",
+      "options": {
+        "triggerEvents": false,
+        "skip_recipes": true
+      },
+      "in": {
+        "default": "$newPosition"
+      },
+      "set": {},
+      "to": {},
+      "meta": {
+        "position": [2700, 0]
+      }
+    },
+    {
+      "name": "notifySuccess",
+      "type": "action/notify",
+      "options": {
+        "toast": {
+          "message": "workflows.DuplicateOffer.success",
+          "type": "success",
+          "duration": 4.5
+        }
+      },
+      "in": {},
+      "set": {},
+      "to": {
+        "default": {
+          "openOffer": ["default"]
+        }
+      },
+      "meta": {
+        "position": [3000, 0]
+      }
+    },
+    {
+      "name": "openOffer",
+      "type": "action/redirect",
+      "options": {
+        "action": "module.show",
+        "module": "offers"
+      },
+      "in": {
+        "resource": "$newOffer"
+      },
+      "set": {},
+      "to": {},
+      "meta": {
+        "position": [3300, 0]
+      }
+    }
+  ],
+  "events": [
+    {
+      "identifier": "DuplicateOffer",
+      "type": "webhook",
+      "module": "offers"
+    }
+  ],
+  "comments": []
+}

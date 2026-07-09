@@ -4,7 +4,8 @@
     "MarkOfferSent": "Mark as sent",
     "CreateContractFromPosition": "Create contract",
     "ExportOfferPdf": "Export PDF",
-    "edit_in_wizard": "Edit in wizard"
+    "edit_in_wizard": "Edit in wizard",
+    "DuplicateOffer": "Duplicate offer"
   },
   "notifications": {},
   "modules": {
@@ -159,7 +160,10 @@
         "created_at": "Created at",
         "valid_till": "Valid until",
         "inquiry_notes": "Inquiry notes",
-        "attachments": "Attachments"
+        "attachments": "Files"
+      },
+      "help": {
+        "attachments": "Upload supporting documents such as business registration, load profiles, or lease agreements."
       },
       "choice": {
         "status": {
@@ -176,6 +180,7 @@
       },
       "headlines": {
         "basic": "Offer",
+        "documents": "Documents",
         "positions": "Positions",
         "offers": "Offers"
       },
@@ -570,6 +575,10 @@
     },
     "ExportOfferPdf": {
       "invalid_status": "Draft and rejected offers cannot be exported as PDF."
+    },
+    "DuplicateOffer": {
+      "invalid_offer": "Offer could not be duplicated.",
+      "success": "Offer duplicated as a new draft."
     }
   },
   "calendar": {}

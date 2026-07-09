@@ -25,8 +25,7 @@
                       "user",
                       ["status", "type"],
                       ["created_at", "valid_till"],
-                      "inquiry_notes",
-                      "attachments"
+                      "inquiry_notes"
                     ]
                   }
                 },
@@ -82,7 +81,41 @@
                             "hidden_from_frontend": "status != 'draft' || type == 'individual'"
                           }
                         }
+                      },
+                      {
+                        "identifier": "DuplicateOffer",
+                        "icon": "mdi:content-copy",
+                        "style": "default",
+                        "options": {
+                          "recipes": {
+                            "hidden_from_frontend": "!id"
+                          }
+                        }
                       }
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "cols": [
+            {
+              "span": 24,
+              "components": [
+                {
+                  "type": "headline",
+                  "options": {
+                    "identifier": "documents"
+                  }
+                },
+                {
+                  "type": "field_group",
+                  "options": {
+                    "vertical_labels": true,
+                    "fields": [
+                      "attachments"
                     ]
                   }
                 }
