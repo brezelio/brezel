@@ -1,0 +1,13 @@
+[
+  {
+    "resource_module": "dashboard",
+    "resource": {
+      "identifier": "dashboard",
+      "icon": "mdi:view-dashboard-outline",
+      "title": "dashboard",
+      "layouts": {
+        "index": "config/dashboard.layout.index"
+      }
+    }
+  }
+]

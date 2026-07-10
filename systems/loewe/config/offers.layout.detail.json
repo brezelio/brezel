@@ -147,16 +147,30 @@
                     "create_in_modal": true,
                     "edit_in_modal": true,
                     "show_in_modal": true,
-                    "columns": [
-                      "number",
-                      "location",
-                      "provider",
-                      "tariff",
-                      "usage",
-                      "total_cost",
-                      "total_savings",
-                      "status"
-                    ],
+                    "columns": {
+                      "display": [
+                        "number",
+                        "location",
+                        "provider",
+                        "tariff",
+                        "usage",
+                        "total_cost",
+                        "total_savings",
+                        "status"
+                      ],
+                      "fetch": [
+                        "number",
+                        "location",
+                        "provider",
+                        "tariff",
+                        "usage",
+                        "total_cost",
+                        "total_savings",
+                        "status",
+                        "offer",
+                        "contract"
+                      ]
+                    },
                     "pre_filters": [
                       {
                         "column": "offer.id",
@@ -171,11 +185,13 @@
                       {
                         "identifier": "CreateContractFromPosition",
                         "icon": "mdi:file-sign",
+                        "title": "CreateContractFromPosition",
                         "help": "Create contract",
+                        "style": "primary",
                         "event": "CreateContractFromPosition",
                         "options": {
                           "recipes": {
-                            "hidden_from_frontend": "!$context.record.offer || $context.record.contract || $context.record.status != 'pending'"
+                            "hidden_from_frontend": "!this.offer || this.contract || this.status != 'pending'"
                           }
                         }
                       }

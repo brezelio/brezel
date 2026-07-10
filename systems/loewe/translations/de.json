@@ -386,9 +386,31 @@
     },
     "quotation_wizard": {
       "title": "Angebotserstellung"
+    },
+    "dashboard": {
+      "title": "Dashboard",
+      "tabs": {
+        "home": "Start"
+      }
     }
   },
   "widgets": {
+    "dashboard": {
+      "brand": "LÖWE ENERGIE",
+      "greeting": "Bereit für das nächste Angebot",
+      "greeting_named": "Willkommen zurück, {name}",
+      "lead": "Angebote erstellen, Entwürfe weiterführen und angenommene Deals in Verträge überführen — alles an einem Ort.",
+      "cta_quote": "Angebot erstellen",
+      "cta_offers": "Angebote anzeigen",
+      "pipeline_title": "Angebots-Pipeline",
+      "pipeline_desc": "Status anklicken, um zu den Angeboten zu springen.",
+      "recent_title": "Aktuelle Angebote",
+      "recent_desc": "Dort weitermachen, wo Sie aufgehört haben.",
+      "recent_empty": "Noch keine Angebote. Starten Sie mit einer neuen Angebotserstellung.",
+      "shortcuts_title": "Schnellzugriff",
+      "shortcuts_desc": "Zu den Bereichen, die Sie am häufigsten nutzen.",
+      "no_customer": "Kein Kunde verknüpft"
+    },
     "quotation_wizard": {
       "title": "Neues Angebot",
       "page_title": "Angebotserstellung",

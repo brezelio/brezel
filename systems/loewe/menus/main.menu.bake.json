@@ -5,21 +5,14 @@
       "name": "main",
       "elements": [
         {
-          "name": "quotation_wizard",
+          "name": "dashboard",
           "type": "entry",
           "default": true
         },
-        "customers",
-        "addresses",
-        "locations",
-        "meters",
-        "tariffs",
+        "quotation_wizard",
         "offers",
-        "contracts",
-        "positions",
-        "users",
-        "roles",
-        "clients"
+        "customers",
+        "contracts"
       ]
     }
   }

@@ -386,9 +386,31 @@
     },
     "quotation_wizard": {
       "title": "Create quotation"
+    },
+    "dashboard": {
+      "title": "Dashboard",
+      "tabs": {
+        "home": "Home"
+      }
     }
   },
   "widgets": {
+    "dashboard": {
+      "brand": "LÖWE ENERGIE",
+      "greeting": "Ready for the next quotation",
+      "greeting_named": "Welcome back, {name}",
+      "lead": "Create offers, follow up drafts, and move accepted deals into contracts — all from one place.",
+      "cta_quote": "Create quotation",
+      "cta_offers": "View offers",
+      "pipeline_title": "Offer pipeline",
+      "pipeline_desc": "Open a status to jump into your offers.",
+      "recent_title": "Recent offers",
+      "recent_desc": "Pick up where you left off.",
+      "recent_empty": "No offers yet. Start with a new quotation.",
+      "shortcuts_title": "Shortcuts",
+      "shortcuts_desc": "Jump to the areas you use most.",
+      "no_customer": "No customer linked"
+    },
     "quotation_wizard": {
       "title": "New quotation",
       "page_title": "Create quotation",

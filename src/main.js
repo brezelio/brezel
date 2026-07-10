@@ -8,6 +8,7 @@ const brezel = new Brezel(import.meta.env.VITE_APP_API_URL, import.meta.env.VITE
 const app = brezel.bootstrap(App)
 
 app.component('QuotationWizard', defineAsyncComponent(() => import('./components/QuotationWizard.vue')))
+app.component('PartnerDashboard', defineAsyncComponent(() => import('./components/PartnerDashboard.vue')))
 
 // Ensure recipe helper t() and legacy callers always have a callable $t on window.app
 if (typeof app.$t !== 'function') {
