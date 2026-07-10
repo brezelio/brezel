@@ -62,19 +62,20 @@
                         }
                       },
                       {
+                        "identifier": "EmailOfferPdf",
+                        "icon": "mdi:email-outline",
+                        "options": {
+                          "recipes": {
+                            "hidden_from_frontend": "status == 'draft' || status == 'rejected' || type == 'individual'"
+                          }
+                        }
+                      },
+                      {
                         "identifier": "edit_in_wizard",
                         "icon": "mdi:pencil-outline",
                         "style": "default",
-                        "event": {
-                          "action": "open",
-                          "type": "entity",
-                          "module": "quotation_wizard",
-                          "moduleAction": "module",
-                          "options": {
-                            "query": {
-                              "offer": "this.id"
-                            }
-                          }
+                        "recipes": {
+                          "event": "{'action': 'open', 'type': 'entity', 'module': 'quotation_wizard', 'moduleAction': 'module', 'targetEntity': null, 'options': {'query': {'offer': this.id}}}"
                         },
                         "options": {
                           "recipes": {

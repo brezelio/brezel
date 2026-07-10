@@ -22,6 +22,10 @@
           "icon": "mdi:file-pdf-box",
           "show_in": ["module.show"]
         },
+        "EmailOfferPdf": {
+          "icon": "mdi:email-outline",
+          "show_in": ["module.show"]
+        },
         "DuplicateOffer": {
           "icon": "mdi:content-copy",
           "show_in": ["module.show"]

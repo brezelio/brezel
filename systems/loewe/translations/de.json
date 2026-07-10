@@ -4,6 +4,7 @@
     "MarkOfferSent": "Als versendet markieren",
     "CreateContractFromPosition": "Vertrag erstellen",
     "ExportOfferPdf": "PDF exportieren",
+    "EmailOfferPdf": "PDF per E-Mail",
     "edit_in_wizard": "Im Tarifrechner bearbeiten",
     "DuplicateOffer": "Angebot duplizieren"
   },
@@ -576,9 +577,25 @@
     "ExportOfferPdf": {
       "invalid_status": "Entwürfe und abgelehnte Angebote können nicht als PDF exportiert werden."
     },
+    "EmailOfferPdf": {
+      "invalid_status": "Entwürfe, abgelehnte und Individualangebote können nicht per E-Mail als PDF versendet werden.",
+      "missing_partner_email": "Keine E-Mail-Adresse des Vertriebspartners gefunden. Bitte Partner am Angebot setzen oder sicherstellen, dass Ihr Benutzer eine E-Mail hat.",
+      "success": "Angebots-PDF wurde an den Vertriebspartner per E-Mail gesendet.",
+      "mail_failed": "Angebots-PDF konnte nicht per E-Mail gesendet werden. Bitte Mail-Konfiguration prüfen."
+    },
     "DuplicateOffer": {
       "invalid_offer": "Angebot konnte nicht dupliziert werden.",
       "success": "Angebot wurde als neuer Entwurf dupliziert."
+    }
+  },
+  "mails": {
+    "offer_pdf": {
+      "subject": "Ihr Angebot {{ number }}",
+      "heading": "Angebots-PDF",
+      "greeting": "Hallo {{ name }},",
+      "intro": "anbei erhalten Sie das PDF zu Angebot {{ number }}.",
+      "attachment_hint": "Das Angebots-PDF ist dieser E-Mail als Anhang beigefügt.",
+      "footer": "Diese E-Mail wurde automatisch vom Löwe Energie Tarifrechner versendet."
     }
   },
   "calendar": {}

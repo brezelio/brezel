@@ -9,6 +9,10 @@ const app = brezel.bootstrap(App)
 
 app.component('QuotationWizard', defineAsyncComponent(() => import('./components/QuotationWizard.vue')))
 
+// Ensure recipe helper t() and legacy callers always have a callable $t on window.app
+if (typeof app.$t !== 'function') {
+  app.$t = app.config.globalProperties.$t
+}
 window.app = app
 
 export default app.mount('#app')

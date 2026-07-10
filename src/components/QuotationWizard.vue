@@ -1207,7 +1207,7 @@
 </template>
 
 <script setup>
-import { computed, h, onMounted, reactive, ref } from 'vue'
+import { computed, h, onMounted, reactive, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import {
@@ -1408,11 +1408,23 @@ onMounted(async () => {
   if (route.query.custom === '1' || route.query.mode === 'custom') {
     mode.value = 'custom'
   }
-  const offerQuery = route.query.offer || route.query.offerId
-  if (offerQuery) {
-    await loadOfferDraft(Number(offerQuery))
-  }
+  await maybeLoadOfferFromRoute()
 })
+
+watch(
+  () => route.query.offer || route.query.offerId,
+  async () => {
+    await maybeLoadOfferFromRoute()
+  },
+)
+
+async function maybeLoadOfferFromRoute() {
+  const offerQuery = route.query.offer || route.query.offerId
+  if (!offerQuery) {
+    return
+  }
+  await loadOfferDraft(Number(offerQuery))
+}
 
 function toggleMode() {
   mode.value = mode.value === 'custom' ? 'wizard' : 'custom'
@@ -1466,7 +1478,7 @@ async function uploadCustomAttachments() {
     const response = await Api.files().uploadFile({
       file,
       name: file.name,
-      module: 'offers',
+      module: 'files',
       virtualPath: 'custom-inquiries',
     })
     const json = await response.json()

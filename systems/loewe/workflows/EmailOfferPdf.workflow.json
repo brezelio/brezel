@@ -1,0 +1,324 @@
+{
+  "identifier": "EmailOfferPdf",
+  "title": "Email offer PDF to sales partner",
+  "async": false,
+  "entry": "EmailOfferPdf",
+  "elements": [
+    {
+      "name": "EmailOfferPdf",
+      "type": "event/webhook",
+      "options": {
+        "module": "offers"
+      },
+      "in": {},
+      "set": {
+        "offer": "default:"
+      },
+      "to": {
+        "default": {
+          "canExport": ["default"]
+        }
+      },
+      "meta": {
+        "position": [0, 0]
+      }
+    },
+    {
+      "name": "canExport",
+      "type": "flow/if",
+      "options": {
+        "condition": "$offer.status != 'draft' && $offer.status != 'rejected' && $offer.type != 'individual'"
+      },
+      "in": {},
+      "set": {},
+      "to": {
+        "default": {
+          "loadOffer": ["default"]
+        },
+        "else": {
+          "rejectExport": ["default"]
+        }
+      },
+      "meta": {
+        "position": [300, 0]
+      }
+    },
+    {
+      "name": "rejectExport",
+      "type": "action/validate",
+      "options": {
+        "recipes": {
+          "status": "invalid(t('workflows.EmailOfferPdf.invalid_status'))"
+        },
+        "runModuleValidations": false,
+        "markFailedFields": true
+      },
+      "in": {},
+      "set": {},
+      "to": {},
+      "meta": {
+        "position": [600, 200]
+      }
+    },
+    {
+      "name": "loadOffer",
+      "type": "source/entities",
+      "options": {
+        "module": "offers",
+        "first": true,
+        "with": ["customer", "user"],
+        "filters": [
+          [
+            {
+              "left": {
+                "type": "field",
+                "value": "id"
+              },
+              "operator": "=",
+              "right": {
+                "type": "recipe",
+                "value": "$offer.id"
+              }
+            }
+          ]
+        ],
+        "permissions": false,
+        "hydrateRelations": true
+      },
+      "in": {},
+      "set": {
+        "loadedOffer": "default:"
+      },
+      "to": {
+        "default": {
+          "hasPartnerEmail": ["default"]
+        }
+      },
+      "meta": {
+        "position": [600, 0]
+      }
+    },
+    {
+      "name": "hasPartnerEmail",
+      "type": "flow/if",
+      "options": {
+        "condition": "$loadedOffer.user.email ?? user().email"
+      },
+      "in": {},
+      "set": {},
+      "to": {
+        "default": {
+          "loadPositions": ["default"]
+        },
+        "else": {
+          "rejectPartnerEmail": ["default"]
+        }
+      },
+      "meta": {
+        "position": [900, 0]
+      }
+    },
+    {
+      "name": "rejectPartnerEmail",
+      "type": "action/validate",
+      "options": {
+        "recipes": {
+          "user": "invalid(t('workflows.EmailOfferPdf.missing_partner_email'))"
+        },
+        "runModuleValidations": false,
+        "markFailedFields": true
+      },
+      "in": {},
+      "set": {},
+      "to": {},
+      "meta": {
+        "position": [1200, 200]
+      }
+    },
+    {
+      "name": "loadPositions",
+      "type": "source/entities",
+      "options": {
+        "module": "positions",
+        "with": ["location", "location.address"],
+        "filters": [
+          [
+            {
+              "left": {
+                "type": "field",
+                "value": "offer.id"
+              },
+              "operator": "=",
+              "right": {
+                "type": "recipe",
+                "value": "$loadedOffer.id"
+              }
+            }
+          ]
+        ],
+        "orderBy": [
+          {
+            "field": "number",
+            "direction": "asc"
+          }
+        ],
+        "permissions": false,
+        "hydrateRelations": true
+      },
+      "in": {},
+      "set": {
+        "positions": "default:"
+      },
+      "to": {
+        "default": {
+          "logRecipient": ["default"]
+        }
+      },
+      "meta": {
+        "position": [1200, 0]
+      }
+    },
+    {
+      "name": "logRecipient",
+      "type": "action/log",
+      "options": {
+        "active": true
+      },
+      "in": {
+        "default": {
+          ".recipe": "\"[EmailOfferPdf demo] recipient=\" + ($loadedOffer.user.email ?? user().email)"
+        }
+      },
+      "set": {},
+      "to": {
+        "default": {
+          "exportPdf": ["default"]
+        }
+      },
+      "meta": {
+        "position": [1350, 0]
+      }
+    },
+    {
+      "name": "exportPdf",
+      "type": "action/export",
+      "options": {
+        "path": "\"/\" + $loadedOffer.module_id + \"/\" + $loadedOffer.id",
+        "type": "pdf",
+        "view": "offer.pdf",
+        "merged": true,
+        "filename": {
+          ".recipe": "\"Angebot-\" + ($loadedOffer.number ?? $loadedOffer.id)"
+        },
+        "view_data": {
+          "offer": "$loadedOffer",
+          "positions": "$positions"
+        },
+        "view_module": "views",
+        "store_module": "files"
+      },
+      "in": {
+        "default": "$positions"
+      },
+      "set": {
+        "pdf": "default:"
+      },
+      "to": {
+        "default": {
+          "sendMail": ["default"]
+        }
+      },
+      "meta": {
+        "position": [1500, 0]
+      }
+    },
+    {
+      "name": "sendMail",
+      "type": "action/mail",
+      "options": {
+        "view": "mail.offer_pdf",
+        "to": {
+          ".recipe": "$loadedOffer.user.email ?? user().email"
+        },
+        "cc": null,
+        "bcc": null,
+        "from": null,
+        "subject": null,
+        "attachments": {
+          ".recipe": "$pdf"
+        },
+        "headers": [],
+        "mailer_data": [],
+        "view_data": {
+          "offer": "$loadedOffer",
+          "customer": "$loadedOffer.customer",
+          "partner": "$loadedOffer.user ?? user()"
+        },
+        "send_directly": null,
+        "debug_to": null,
+        "debug_key": null
+      },
+      "in": {},
+      "set": {},
+      "to": {
+        "default": {},
+        "mailSuccessful": {
+          "notifySuccess": ["default"]
+        },
+        "mailFailed": {
+          "notifyMailFailed": ["default"]
+        }
+      },
+      "meta": {
+        "position": [1800, 0]
+      }
+    },
+    {
+      "name": "notifySuccess",
+      "type": "action/notify",
+      "options": {
+        "toast": {
+          "message": {
+            ".recipe": "t('workflows.EmailOfferPdf.success')"
+          },
+          "description": {
+            ".recipe": "\"To: \" + ($loadedOffer.user.email ?? user().email)"
+          },
+          "type": "success",
+          "duration": 8
+        }
+      },
+      "in": {},
+      "set": {},
+      "to": {},
+      "meta": {
+        "position": [2100, 0]
+      }
+    },
+    {
+      "name": "notifyMailFailed",
+      "type": "action/notify",
+      "options": {
+        "toast": {
+          "message": "workflows.EmailOfferPdf.mail_failed",
+          "type": "error",
+          "duration": 6
+        }
+      },
+      "in": {},
+      "set": {},
+      "to": {},
+      "meta": {
+        "position": [2100, 200]
+      }
+    }
+  ],
+  "events": [
+    {
+      "identifier": "EmailOfferPdf",
+      "type": "webhook",
+      "module": "offers"
+    }
+  ],
+  "comments": []
+}

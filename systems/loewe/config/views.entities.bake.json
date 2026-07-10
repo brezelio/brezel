@@ -11,5 +11,18 @@
         "type": "twig"
       }
     }
+  },
+  {
+    "resource_view": "mail_offer_pdf",
+    "depends_on": "resource_module.views",
+    "resource": {
+      "module": "views",
+      "client": "${resource_client.global}",
+      "fields": {
+        "name": "mail.offer_pdf",
+        "code": "${file('views/mail/offer_pdf.twig')}",
+        "type": "twig"
+      }
+    }
   }
 ]

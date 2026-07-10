@@ -4,6 +4,7 @@
     "MarkOfferSent": "Mark as sent",
     "CreateContractFromPosition": "Create contract",
     "ExportOfferPdf": "Export PDF",
+    "EmailOfferPdf": "Email PDF",
     "edit_in_wizard": "Edit in wizard",
     "DuplicateOffer": "Duplicate offer"
   },
@@ -576,9 +577,25 @@
     "ExportOfferPdf": {
       "invalid_status": "Draft and rejected offers cannot be exported as PDF."
     },
+    "EmailOfferPdf": {
+      "invalid_status": "Draft, rejected, and individual offers cannot be emailed as PDF.",
+      "missing_partner_email": "No sales partner email found. Set the offer partner or ensure your user has an email address.",
+      "success": "Offer PDF was emailed to the sales partner.",
+      "mail_failed": "Offer PDF could not be emailed. Check mail configuration."
+    },
     "DuplicateOffer": {
       "invalid_offer": "Offer could not be duplicated.",
       "success": "Offer duplicated as a new draft."
+    }
+  },
+  "mails": {
+    "offer_pdf": {
+      "subject": "Your offer {{ number }}",
+      "heading": "Offer PDF",
+      "greeting": "Hello {{ name }},",
+      "intro": "Attached you will find the PDF for offer {{ number }}.",
+      "attachment_hint": "The offer PDF is attached to this email.",
+      "footer": "This email was sent automatically by the Löwe Energie tariff calculator."
     }
   },
   "calendar": {}

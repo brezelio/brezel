@@ -1,0 +1,61 @@
+{% block subject %}
+{{ t('mails.offer_pdf.subject', { number: offer.number ?? offer.id }) }}
+{% endblock %}
+
+{% block body %}
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ t('mails.offer_pdf.subject', { number: offer.number ?? offer.id }) }}</title>
+</head>
+<body style="margin:0;padding:0;background:#f3f4f6;font-family:Helvetica,Arial,sans-serif;color:#111827;">
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#f3f4f6;padding:24px 0;">
+    <tr>
+        <td align="center">
+            <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background:#ffffff;border-radius:8px;overflow:hidden;">
+                <tr>
+                    <td style="padding:24px 28px;border-bottom:3px solid #c8102e;">
+                        <div style="font-size:20px;font-weight:bold;color:#c8102e;">Löwe Energie</div>
+                        <div style="font-size:16px;font-weight:bold;margin-top:8px;">{{ t('mails.offer_pdf.heading') }}</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding:28px;font-size:15px;line-height:1.5;">
+                        <p style="margin:0 0 16px;">
+                            {{ t('mails.offer_pdf.greeting', { name: partner.firstname ?? partner.name ?? '' }) }}
+                        </p>
+                        <p style="margin:0 0 16px;">
+                            {{ t('mails.offer_pdf.intro', { number: offer.number ?? offer.id }) }}
+                        </p>
+                        <table cellpadding="0" cellspacing="0" style="margin:0 0 16px;font-size:14px;">
+                            <tr>
+                                <td style="padding:4px 16px 4px 0;color:#6b7280;">{{ t('modules.offers.fields.number') }}</td>
+                                <td style="padding:4px 0;">{{ offer.number ?? offer.id }}</td>
+                            </tr>
+                            <tr>
+                                <td style="padding:4px 16px 4px 0;color:#6b7280;">{{ t('modules.offers.fields.customer') }}</td>
+                                <td style="padding:4px 0;">{{ customer.brezel_name ?? customer.company ?? ((customer.firstname ~ ' ' ~ customer.name)|trim) }}</td>
+                            </tr>
+                            {% if offer.valid_till %}
+                            <tr>
+                                <td style="padding:4px 16px 4px 0;color:#6b7280;">{{ t('modules.offers.fields.valid_till') }}</td>
+                                <td style="padding:4px 0;">{{ offer.valid_till }}</td>
+                            </tr>
+                            {% endif %}
+                        </table>
+                        <p style="margin:0 0 8px;">{{ t('mails.offer_pdf.attachment_hint') }}</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding:16px 28px 24px;font-size:12px;color:#6b7280;border-top:1px solid #e5e7eb;">
+                        {{ t('mails.offer_pdf.footer') }}
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+</body>
+</html>
+{% endblock %}
