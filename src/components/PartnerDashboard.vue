@@ -1,20 +1,14 @@
 <template>
   <div class="pd">
     <section class="pd-hero">
-      <div class="pd-hero__glow" aria-hidden="true" />
+      <div class="pd-hero__grid" aria-hidden="true" />
       <div class="pd-hero__inner">
-        <div class="pd-hero__brand">
-          <img
-            src="/assets/logo.svg"
-            alt=""
-            class="pd-hero__mark"
-          >
-          <p class="pd-hero__name">
-            {{ t('widgets.dashboard.brand') }}
-          </p>
-        </div>
         <h1 class="pd-hero__title">
-          {{ greeting }}
+          <span class="pd-hero__greeting">{{ greetingLine }}</span>
+          <span
+            v-if="displayName"
+            class="pd-hero__name"
+          >{{ displayName }}</span>
         </h1>
         <p class="pd-hero__lead">
           {{ t('widgets.dashboard.lead') }}
@@ -170,12 +164,12 @@ const counts = ref({
 const recentOffers = ref([])
 
 const user = computed(() => Api.getUser())
-const greeting = computed(() => {
-  const name = user.value?.firstname || user.value?.name || ''
-  return name
-    ? t('widgets.dashboard.greeting_named', { name })
+const displayName = computed(() => user.value?.firstname || user.value?.name || '')
+const greetingLine = computed(() => (
+  displayName.value
+    ? t('widgets.dashboard.greeting_named')
     : t('widgets.dashboard.greeting')
-})
+))
 
 const pipeline = computed(() => ([
   { status: 'draft', count: counts.value.draft, label: t('modules.offers.choice.status.draft') },
@@ -254,26 +248,25 @@ onMounted(loadDashboard)
 </script>
 
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,560;9..144,700&family=Manrope:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&family=Source+Sans+3:wght@400;500;600;700&display=swap');
 
 .pd {
-  --pd-ink: #1a0a0a;
-  --pd-muted: #6b4a4a;
-  --pd-paper: #fff8f0;
-  --pd-panel: rgba(255, 252, 247, 0.92);
-  --pd-line: rgba(109, 1, 1, 0.12);
-  --pd-red: #c40808;
-  --pd-red-deep: #6d0101;
-  --pd-gold: #ef9300;
-  --pd-gold-bright: #ffd60d;
-  --pd-shadow: 0 18px 50px rgba(63, 0, 1, 0.12);
-  font-family: Manrope, sans-serif;
+  --pd-ink: #141414;
+  --pd-muted: #5c5c5c;
+  --pd-paper: #f7f8f5;
+  --pd-panel: #ffffff;
+  --pd-line: rgba(20, 20, 20, 0.1);
+  --pd-green: #95c11f;
+  --pd-green-deep: #6f9114;
+  --pd-green-soft: rgba(149, 193, 31, 0.14);
+  --pd-shadow: 0 16px 40px rgba(20, 20, 20, 0.08);
+  font-family: 'Source Sans 3', sans-serif;
   color: var(--pd-ink);
   min-height: calc(100vh - 120px);
   background:
-    radial-gradient(ellipse 80% 50% at 10% -10%, rgba(255, 214, 13, 0.28), transparent 55%),
-    radial-gradient(ellipse 60% 40% at 100% 0%, rgba(196, 8, 8, 0.12), transparent 50%),
-    linear-gradient(180deg, #fff8f0 0%, #f4ebe3 48%, #efe4da 100%);
+    radial-gradient(ellipse 70% 45% at 0% 0%, rgba(149, 193, 31, 0.16), transparent 55%),
+    radial-gradient(ellipse 50% 35% at 100% 8%, rgba(149, 193, 31, 0.08), transparent 50%),
+    linear-gradient(180deg, #ffffff 0%, var(--pd-paper) 100%);
   margin: -16px;
   padding: 0 0 48px;
 }
@@ -281,65 +274,52 @@ onMounted(loadDashboard)
 .pd-hero {
   position: relative;
   overflow: hidden;
-  padding: 48px 40px 56px;
-  color: #fff8f0;
+  padding: 44px 40px 52px;
+  color: var(--pd-ink);
   background:
-    linear-gradient(135deg, rgba(63, 0, 1, 0.92) 0%, rgba(109, 1, 1, 0.88) 42%, rgba(196, 8, 8, 0.78) 100%),
-    linear-gradient(180deg, #3f0001, #6d0101);
-  animation: pd-fade-up 0.7s ease both;
+    linear-gradient(180deg, rgba(255, 255, 255, 0.92) 0%, rgba(247, 248, 245, 0.96) 100%);
+  border-bottom: 1px solid var(--pd-line);
+  animation: pd-fade-up 0.65s ease both;
 }
 
-.pd-hero__glow {
+.pd-hero__grid {
   position: absolute;
-  inset: auto -10% -40% 40%;
-  height: 70%;
-  background: radial-gradient(circle, rgba(255, 214, 13, 0.35), transparent 65%);
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(149, 193, 31, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(149, 193, 31, 0.07) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.55), transparent 85%);
   pointer-events: none;
-  animation: pd-pulse 6s ease-in-out infinite;
 }
 
 .pd-hero__inner {
   position: relative;
-  max-width: 760px;
-}
-
-.pd-hero__brand {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  margin-bottom: 28px;
-}
-
-.pd-hero__mark {
-  width: 52px;
-  height: auto;
-  filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.25));
-}
-
-.pd-hero__name {
-  margin: 0;
-  font-family: Fraunces, serif;
-  font-size: 1.05rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  max-width: 720px;
 }
 
 .pd-hero__title {
+  display: flex;
+  flex-direction: column;
   margin: 0 0 12px;
-  font-family: Fraunces, serif;
-  font-size: clamp(2rem, 4vw, 3rem);
+  font-family: Outfit, sans-serif;
+  font-size: clamp(1.85rem, 3.6vw, 2.65rem);
   font-weight: 700;
   line-height: 1.15;
-  max-width: 14ch;
+  letter-spacing: -0.02em;
+  max-width: 22ch;
+}
+
+.pd-hero__name {
+  display: block;
 }
 
 .pd-hero__lead {
   margin: 0 0 28px;
-  max-width: 38rem;
-  font-size: 1.05rem;
+  max-width: 36rem;
+  font-size: 1.08rem;
   line-height: 1.55;
-  color: rgba(255, 248, 240, 0.86);
+  color: var(--pd-muted);
 }
 
 .pd-hero__actions {
@@ -350,7 +330,7 @@ onMounted(loadDashboard)
 
 .pd-btn {
   border: 0;
-  border-radius: 999px;
+  border-radius: 4px;
   padding: 12px 22px;
   font: inherit;
   font-weight: 700;
@@ -359,28 +339,33 @@ onMounted(loadDashboard)
 }
 
 .pd-btn:hover {
-  transform: translateY(-2px);
+  transform: translateY(-1px);
 }
 
 .pd-btn--primary {
-  background: linear-gradient(135deg, var(--pd-gold-bright), var(--pd-gold));
-  color: var(--pd-red-deep);
-  box-shadow: 0 10px 28px rgba(239, 147, 0, 0.35);
+  background: var(--pd-green);
+  color: #fff;
+  box-shadow: 0 10px 24px rgba(149, 193, 31, 0.35);
+}
+
+.pd-btn--primary:hover {
+  background: #a6d12a;
+  color: #fff;
 }
 
 .pd-btn--ghost {
   background: transparent;
-  color: #fff8f0;
-  box-shadow: inset 0 0 0 1.5px rgba(255, 248, 240, 0.55);
+  color: var(--pd-ink);
+  box-shadow: inset 0 0 0 1.5px rgba(20, 20, 20, 0.28);
 }
 
 .pd-btn--ghost:hover {
-  background: rgba(255, 248, 240, 0.1);
+  background: rgba(20, 20, 20, 0.04);
 }
 
 .pd-section {
   padding: 36px 40px 0;
-  animation: pd-fade-up 0.7s ease 0.12s both;
+  animation: pd-fade-up 0.65s ease 0.1s both;
 }
 
 .pd-section--split {
@@ -388,7 +373,7 @@ onMounted(loadDashboard)
   grid-template-columns: minmax(0, 1.5fr) minmax(240px, 0.9fr);
   gap: 28px;
   align-items: start;
-  animation-delay: 0.2s;
+  animation-delay: 0.18s;
 }
 
 .pd-section__head {
@@ -397,10 +382,10 @@ onMounted(loadDashboard)
 
 .pd-section__title {
   margin: 0 0 6px;
-  font-family: Fraunces, serif;
-  font-size: 1.45rem;
+  font-family: Outfit, sans-serif;
+  font-size: 1.35rem;
   font-weight: 700;
-  color: var(--pd-red-deep);
+  color: var(--pd-ink);
 }
 
 .pd-section__desc {
@@ -412,12 +397,7 @@ onMounted(loadDashboard)
 .pd-pipeline {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 1px;
-  background: var(--pd-line);
-  border: 1px solid var(--pd-line);
-  border-radius: 18px;
-  overflow: hidden;
-  box-shadow: var(--pd-shadow);
+  gap: 12px;
 }
 
 .pd-pipeline--loading {
@@ -427,34 +407,37 @@ onMounted(loadDashboard)
 .pd-metric {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
   align-items: flex-start;
   padding: 22px 20px;
-  border: 0;
+  border: 1px solid var(--pd-line);
+  border-radius: 4px;
   background: var(--pd-panel);
   text-align: left;
   cursor: pointer;
-  transition: background 0.2s ease;
+  box-shadow: var(--pd-shadow);
+  transition: border-color 0.2s ease, transform 0.2s ease;
 }
 
 .pd-metric:hover {
-  background: #fff;
+  border-color: var(--pd-green);
+  transform: translateY(-2px);
 }
 
 .pd-metric__value {
-  font-family: Fraunces, serif;
+  font-family: Outfit, sans-serif;
   font-size: 2rem;
   font-weight: 700;
-  color: var(--pd-red);
+  color: var(--pd-green-deep);
   line-height: 1;
 }
 
 .pd-metric__label {
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   font-weight: 600;
   color: var(--pd-muted);
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.05em;
 }
 
 .pd-list {
@@ -509,24 +492,24 @@ onMounted(loadDashboard)
 
 .pd-list__status {
   flex-shrink: 0;
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: var(--pd-red-deep);
+  color: var(--pd-green-deep);
   padding: 6px 10px;
-  border-radius: 999px;
-  background: rgba(196, 8, 8, 0.08);
+  border-radius: 4px;
+  background: var(--pd-green-soft);
 }
 
 .pd-list__status[data-status='draft'] {
-  background: rgba(239, 147, 0, 0.14);
-  color: #9a5a00;
+  background: rgba(20, 20, 20, 0.06);
+  color: #444;
 }
 
 .pd-list__status[data-status='accepted'] {
-  background: rgba(34, 120, 60, 0.12);
-  color: #1f6b35;
+  background: rgba(149, 193, 31, 0.22);
+  color: #4d6a0c;
 }
 
 .pd-empty {
@@ -545,9 +528,9 @@ onMounted(loadDashboard)
   width: 100%;
   padding: 14px 16px;
   border: 1px solid var(--pd-line);
-  border-radius: 14px;
+  border-radius: 4px;
   background: var(--pd-panel);
-  color: var(--pd-red-deep);
+  color: var(--pd-ink);
   font: inherit;
   font-weight: 700;
   text-align: left;
@@ -557,24 +540,19 @@ onMounted(loadDashboard)
 
 .pd-shortcut:hover {
   transform: translateX(4px);
-  border-color: rgba(196, 8, 8, 0.35);
-  background: #fff;
+  border-color: var(--pd-green);
+  background: #fcfef6;
 }
 
 @keyframes pd-fade-up {
   from {
     opacity: 0;
-    transform: translateY(14px);
+    transform: translateY(12px);
   }
   to {
     opacity: 1;
     transform: translateY(0);
   }
-}
-
-@keyframes pd-pulse {
-  0%, 100% { opacity: 0.55; transform: scale(1); }
-  50% { opacity: 0.9; transform: scale(1.05); }
 }
 
 @media (max-width: 960px) {

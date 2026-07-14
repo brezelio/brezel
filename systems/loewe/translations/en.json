@@ -397,9 +397,10 @@
   "widgets": {
     "dashboard": {
       "brand": "LÖWE ENERGIE",
+      "brand_line": "Tarifrechner · ÖkoStrom & Gas",
       "greeting": "Ready for the next quotation",
-      "greeting_named": "Welcome back, {name}",
-      "lead": "Create offers, follow up drafts, and move accepted deals into contracts — all from one place.",
+      "greeting_named": "Welcome back,",
+      "lead": "Calculate electricity and gas offers for your customers — then follow drafts through to accepted deals and contracts.",
       "cta_quote": "Create quotation",
       "cta_offers": "View offers",
       "pipeline_title": "Offer pipeline",
@@ -422,6 +423,8 @@
       "b2b": "B2B (business)",
       "b2c": "B2C (private)",
       "billing_payment": "Billing & payment (default for all delivery points)",
+      "invoice_payment": "Invoice & Payment (Central Data)",
+      "account_holder": "Account holder",
       "billing_address": "Billing address",
       "billing_same": "Same as contract partner address",
       "billing_different": "Enter different billing address…",
@@ -431,7 +434,7 @@
       "location": "Delivery point",
       "location_name": "Site name",
       "unnamed_location": "Unnamed",
-      "use_contract_address": "Use contract partner address",
+      "use_contract_address": "Use primary address",
       "use_default_billing": "Use default billing address",
       "shipping_address": "Delivery address",
       "meters": "Meters",
@@ -448,7 +451,7 @@
       "base_price_month": "Base price (€/month)",
       "work_price": "Energy price (ct/kWh)",
       "calculate_tariffs": "Calculate tariffs",
-      "calculate_success": "Comparison calculated. See savings on the tariff cards below.",
+      "calculate_success": "Comparison calculated. See cost advantage in the tariff table.",
       "previous_yearly_cost": "Current yearly cost (previous supplier)",
       "no_savings": "No savings",
       "usage_required_for_comparison": "Please enter annual consumption on the meter for a meaningful comparison.",
@@ -472,7 +475,7 @@
       "malo_hint": "11-digit market location ID (optional, can be added later).",
       "malo_missing_warning": "Without a MaLo, the application may be rejected.",
       "compare_tariff": "Compare",
-      "compare_hint": "Click up to two tariffs per meter — one as selection, one for comparison.",
+      "compare_hint": "Select one tariff per meter.",
       "individual_request": "More than 5 meters require a custom inquiry.",
       "success_draft": "Offer saved as draft.",
       "success_draft_updated": "Draft offer updated.",
@@ -500,6 +503,8 @@
         "edit_blocked": "Custom inquiries cannot be edited in the standard wizard."
       },
       "success_finish": "Offer calculated and PDF is opening.",
+      "success_calculated": "Offer calculated successfully. You can export the PDF from the offer page.",
+      "pdf_export_failed": "PDF export failed. The offer was still calculated — try “Export PDF” on the offer page.",
       "sections": {
         "energy": {
           "title": "Choose energy type",
@@ -511,11 +516,19 @@
         },
         "locations": {
           "title": "Delivery points & meters",
-          "desc": "Assign meters to each site."
+          "desc": "Maximum 5 meters across all delivery points."
         },
         "tariff": {
-          "title": "Tariff selection & savings",
-          "desc": "Choose a tariff for each meter."
+          "title": "Tariff selection & comparison",
+          "desc": "Surcharge is included in the energy price. Choose one tariff per meter."
+        },
+        "address": {
+          "title": "Contract partner address",
+          "desc": "Where is the customer's headquarters located?"
+        },
+        "completion": {
+          "title": "Personal data & payment",
+          "desc": "Contact person and billing details to complete the offer."
         }
       },
       "table": {
@@ -527,13 +540,18 @@
         "customer": "Customer",
         "delivery": "Delivery point",
         "tariff": "Tariff",
-        "review": "Review"
+        "review": "Review",
+        "energy": "Energy",
+        "address": "Address",
+        "meters": "Meters",
+        "tariffs": "Tariffs",
+        "completion": "Data & completion"
       },
       "customer_mode": {
         "new": "New customer",
         "existing": "Existing customer"
       },
-      "contract_address": "Contract partner address",
+      "contract_address": "Primary Address (Contracting Party)",
       "fields": {
         "customer": "Customer",
         "medium": "Energy type",
@@ -542,8 +560,11 @@
       "placeholders": {
         "customer": "Search customer…",
         "company": "e.g. Example Ltd",
-        "street": "Street & house number",
-        "location_name": "e.g. Main site"
+        "street": "Street",
+        "location_name": "e.g. Main site",
+        "malo": "11 digits",
+        "base_rate": "€/month",
+        "electricity_rate": "ct/kWh"
       },
       "months": "months",
       "no_tariffs": "No tariffs match the selected meter type and energy type.",
@@ -562,8 +583,10 @@
         "email": "Please enter an email address.",
         "phone": "Please enter a phone number.",
         "meter_number": "Please enter a meter number for each meter.",
+        "at_least_one_meter": "Please add at least one meter.",
         "previous_supplier": "Please enter the previous supplier for each meter.",
         "iban": "Please enter an IBAN.",
+        "account_holder": "Please enter the account holder.",
         "location_address": "Please complete the delivery point address.",
         "location_billing_address": "Please complete the delivery point billing address.",
         "usage": "Please enter annual consumption.",
@@ -577,7 +600,31 @@
         "customer": "Customer",
         "address": "Address",
         "tariff": "Tariff"
-      }
+      },
+      "not_calculated": "Not calculated",
+      "choose": "Select",
+      "surcharge": "Price surcharge",
+      "surcharge_title": "Set price surcharge",
+      "surcharge_label": "Surcharge per kWh (net)",
+      "surcharge_hint": "This surcharge is added to the base energy price of all tariffs in step 4.",
+      "surcharge_apply": "Apply",
+      "surcharge_applied": "Surcharge applied to tariff prices.",
+      "next_address": "Continue to address",
+      "next_meters": "Continue to meters",
+      "next_tariffs": "Fetch tariffs",
+      "next_personal": "Continue to personal data",
+      "table_tariff": {
+        "provider": "Provider & tariff",
+        "ap": "AP (net)",
+        "gp": "GP (net)",
+        "yearly": "Cost / year",
+        "advantage": "Cost advantage",
+        "action": "Action"
+      },
+      "use_delivery_address": "Use delivery address",
+      "old_rate_comparison": "Enter your old rate for comparison:",
+      "base_rate": "Base rate",
+      "electricity_rate": "Electricity rate"
     }
   },
   "workflows": {

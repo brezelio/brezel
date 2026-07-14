@@ -397,9 +397,10 @@
   "widgets": {
     "dashboard": {
       "brand": "LÖWE ENERGIE",
+      "brand_line": "Tarifrechner · ÖkoStrom & Gas",
       "greeting": "Bereit für das nächste Angebot",
-      "greeting_named": "Willkommen zurück, {name}",
-      "lead": "Angebote erstellen, Entwürfe weiterführen und angenommene Deals in Verträge überführen — alles an einem Ort.",
+      "greeting_named": "Willkommen zurück,",
+      "lead": "Strom- und Gasangebote für Ihre Kunden kalkulieren — Entwürfe weiterführen bis zu angenommenen Deals und Verträgen.",
       "cta_quote": "Angebot erstellen",
       "cta_offers": "Angebote anzeigen",
       "pipeline_title": "Angebots-Pipeline",
@@ -422,6 +423,8 @@
       "b2b": "B2B (Gewerbe)",
       "b2c": "B2C (Privat)",
       "billing_payment": "Rechnung & Zahlung (Standard für alle Lieferstellen)",
+      "invoice_payment": "Rechnung & Zahlung (Stammdaten)",
+      "account_holder": "Kontoinhaber",
       "billing_address": "Rechnungsanschrift",
       "billing_same": "Entspricht Vertragspartneranschrift",
       "billing_different": "Abweichende Rechnungsanschrift erfassen…",
@@ -431,7 +434,7 @@
       "location": "Lieferstelle",
       "location_name": "Bezeichnung",
       "unnamed_location": "Ohne Name",
-      "use_contract_address": "Vertragspartneranschrift verwenden",
+      "use_contract_address": "Aus Vertragspartneranschrift übernehmen",
       "use_default_billing": "Standard-Rechnungsanschrift verwenden",
       "shipping_address": "Lieferanschrift",
       "meters": "Zähler",
@@ -448,7 +451,7 @@
       "base_price_month": "Grundpreis (€/Monat)",
       "work_price": "Arbeitspreis (ct/kWh)",
       "calculate_tariffs": "Tarife berechnen",
-      "calculate_success": "Vergleich berechnet. Ersparnis siehe Tarifkarten unten.",
+      "calculate_success": "Vergleich berechnet. Kostenvorteil siehe Tariftabelle.",
       "previous_yearly_cost": "Aktuelle Jahreskosten (Vorversorger)",
       "no_savings": "Keine Ersparnis",
       "usage_required_for_comparison": "Bitte Jahresverbrauch beim Zähler eintragen für einen aussagekräftigen Vergleich.",
@@ -472,7 +475,7 @@
       "malo_hint": "11-stellige Marktlokations-ID (optional, kann später ergänzt werden).",
       "malo_missing_warning": "Ohne MaLo kann der Antrag abgelehnt werden.",
       "compare_tariff": "Vergleich",
-      "compare_hint": "Klicken Sie bis zu zwei Tarife pro Zähler an – einer als Auswahl, einer zum Vergleich.",
+      "compare_hint": "Wählen Sie einen Tarif pro Zähler.",
       "individual_request": "Mehr als 5 Zähler erfordern eine Individualanfrage.",
       "success_draft": "Angebot wurde als Entwurf gespeichert.",
       "success_draft_updated": "Entwurf wurde aktualisiert.",
@@ -500,6 +503,8 @@
         "edit_blocked": "Individualanfragen können nicht im Standard-Tarifrechner bearbeitet werden."
       },
       "success_finish": "Angebot wurde kalkuliert und das PDF wird geöffnet.",
+      "success_calculated": "Angebot wurde kalkuliert. Das PDF können Sie auf der Angebotsseite exportieren.",
+      "pdf_export_failed": "PDF-Export fehlgeschlagen. Das Angebot wurde trotzdem kalkuliert — nutzen Sie „PDF exportieren“ auf der Angebotsseite.",
       "sections": {
         "energy": {
           "title": "Energieart wählen",
@@ -511,11 +516,19 @@
         },
         "locations": {
           "title": "Lieferstellen & Zähler",
-          "desc": "Ordnen Sie die Zähler den jeweiligen Standorten zu."
+          "desc": "Maximal 5 Zähler über alle Lieferstellen hinweg."
         },
         "tariff": {
-          "title": "Tarifauswahl & Ersparnis",
-          "desc": "Wählen Sie für jeden Zähler den passenden Tarif."
+          "title": "Tarifauswahl & Vergleich",
+          "desc": "Der eingestellte Aufschlag ist im Arbeitspreis enthalten. Wählen Sie einen Tarif pro Zähler."
+        },
+        "address": {
+          "title": "Vertragspartneranschrift",
+          "desc": "Wo befindet sich der Hauptsitz des Kunden?"
+        },
+        "completion": {
+          "title": "Persönliche Daten & Zahlung",
+          "desc": "Angaben zum Ansprechpartner und zur Rechnungsabwicklung."
         }
       },
       "table": {
@@ -527,7 +540,12 @@
         "customer": "Kunde",
         "delivery": "Lieferstelle",
         "tariff": "Tarif",
-        "review": "Übersicht"
+        "review": "Übersicht",
+        "energy": "Energieart",
+        "address": "Anschrift",
+        "meters": "Zähler",
+        "tariffs": "Tarife",
+        "completion": "Daten & Abschluss"
       },
       "customer_mode": {
         "new": "Neuer Kunde",
@@ -542,8 +560,11 @@
       "placeholders": {
         "customer": "Kunde suchen…",
         "company": "z.B. Muster GmbH",
-        "street": "Straße & Hausnummer",
-        "location_name": "z.B. Hauptsitz"
+        "street": "Straße",
+        "location_name": "z.B. Hauptsitz",
+        "malo": "11 Ziffern",
+        "base_rate": "€/Monat",
+        "electricity_rate": "ct/kWh"
       },
       "months": "Monate",
       "no_tariffs": "Keine Tarife für den gewählten Zählertyp und Energieträger.",
@@ -562,8 +583,10 @@
         "email": "Bitte eine E-Mail-Adresse eingeben.",
         "phone": "Bitte eine Telefonnummer eingeben.",
         "meter_number": "Bitte für jeden Zähler eine Zählernummer eingeben.",
+        "at_least_one_meter": "Bitte mindestens einen Zähler hinzufügen.",
         "previous_supplier": "Bitte den Vorversorger für jeden Zähler eingeben.",
         "iban": "Bitte eine IBAN eingeben.",
+        "account_holder": "Bitte den Kontoinhaber eingeben.",
         "location_address": "Bitte die Lieferstellenanschrift vollständig ausfüllen.",
         "location_billing_address": "Bitte die Rechnungsanschrift der Lieferstelle vollständig ausfüllen.",
         "usage": "Bitte den Jahresverbrauch eingeben.",
@@ -577,7 +600,31 @@
         "customer": "Kunde",
         "address": "Anschrift",
         "tariff": "Tarif"
-      }
+      },
+      "not_calculated": "Nicht berechnet",
+      "choose": "Wählen",
+      "surcharge": "Preis-Aufschlag",
+      "surcharge_title": "Preis-Aufschlag festlegen",
+      "surcharge_label": "Aufschlag pro kWh (Netto)",
+      "surcharge_hint": "Dieser Aufschlag wird im 4. Schritt automatisch zum Basis-Arbeitspreis aller Tarife addiert.",
+      "surcharge_apply": "Übernehmen",
+      "surcharge_applied": "Aufschlag auf die Tarifpreise angewendet.",
+      "next_address": "Weiter zur Anschrift",
+      "next_meters": "Weiter zu Zählern",
+      "next_tariffs": "Tarife abrufen",
+      "next_personal": "Weiter zu pers. Daten",
+      "table_tariff": {
+        "provider": "Anbieter & Tarif",
+        "ap": "AP (Netto)",
+        "gp": "GP (Netto)",
+        "yearly": "Kosten / Jahr",
+        "advantage": "Kostenvorteil",
+        "action": "Aktion"
+      },
+      "use_delivery_address": "Aus Lieferanschrift übernehmen",
+      "old_rate_comparison": "Alten Tarif zum Vergleich eingeben:",
+      "base_rate": "Grundpreis",
+      "electricity_rate": "Arbeitspreis"
     }
   },
   "workflows": {
