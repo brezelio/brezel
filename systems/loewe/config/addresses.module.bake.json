@@ -53,6 +53,10 @@
           "type": "text"
         },
         {
+          "identifier": "housenumber_addition",
+          "type": "text"
+        },
+        {
           "identifier": "zip",
           "type": "text"
         },

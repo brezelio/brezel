@@ -71,6 +71,14 @@
           }
         },
         {
+          "identifier": "procurement_type",
+          "type": "choice",
+          "options": {
+            "values": ["fixed", "spot"],
+            "default": "fixed"
+          }
+        },
+        {
           "identifier": "inquiry_notes",
           "type": "textarea",
           "options": {

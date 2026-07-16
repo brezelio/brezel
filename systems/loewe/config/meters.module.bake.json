@@ -122,6 +122,17 @@
         {
           "identifier": "current_customer_no",
           "type": "text"
+        },
+        {
+          "identifier": "switch_reason",
+          "type": "choice",
+          "options": {
+            "values": ["supplier_switch", "move_in"]
+          }
+        },
+        {
+          "identifier": "external_id",
+          "type": "text"
         }
       ]
     }

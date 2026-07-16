@@ -17,17 +17,24 @@
         "partner": "Vertriebspartner",
         "type": "Typ",
         "company": "Firmenname",
+        "company_type": "Unternehmensart",
+        "industry": "Branche",
+        "salutation": "Anrede",
         "firstname": "Vorname",
         "name": "Nachname",
+        "birthdate": "Geburtsdatum",
         "email": "E-Mail",
         "phone": "Telefon",
         "mobile": "Handy",
+        "marketing_post": "Werbeeinwilligung (Post)",
+        "marketing_email": "Werbeeinwilligung (E-Mail)",
+        "marketing_phone": "Werbeeinwilligung (Telefon)",
         "iban": "IBAN",
         "bic": "BIC",
         "default_address": "Adresse",
         "default_billing_address": "Rechnungsanschrift",
         "default_shipping_address": "Lieferanschrift",
-        "default_bank": "Bank",
+        "default_bank": "Kontoinhaber",
         "default_iban": "IBAN (Standard)",
         "default_bic": "BIC (Standard)",
         "sf_account_id": "Salesforce Account ID",
@@ -38,6 +45,24 @@
         "type": {
           "b2b": "B2B",
           "b2c": "B2C"
+        },
+        "company_type": {
+          "gmbh": "GmbH",
+          "ag": "AG",
+          "einzelunternehmen": "Einzelunternehmen",
+          "gbr": "GbR",
+          "other": "Sonstige"
+        },
+        "industry": {
+          "handel": "Handel",
+          "gastronomie": "Gastronomie",
+          "produktion": "Produktion",
+          "dienstleistung": "Dienstleistung",
+          "other": "Sonstige"
+        },
+        "salutation": {
+          "mr": "Herr",
+          "ms": "Frau"
         },
         "credit_status": {
           "pending": "Ausstehend",
@@ -73,6 +98,7 @@
         "line_3": "Anschriftzeile 3",
         "street": "Straße",
         "housenumber": "Hausnummer",
+        "housenumber_addition": "H. Zusatz",
         "zip": "PLZ",
         "city": "Ort",
         "country": "Land"
@@ -129,7 +155,14 @@
         "annual_peak_power": "Jahreshöchstleistung (kW)",
         "meter_number": "Zählernummer",
         "malo": "MaLo",
-        "usage": "Verbrauch (kWh)"
+        "usage": "Verbrauch (kWh)",
+        "start_date": "Lieferbeginn",
+        "current_provider": "Aktueller Anbieter",
+        "current_price_per_kwh": "Aktueller Arbeitspreis",
+        "current_baseprice": "Aktueller Grundpreis",
+        "current_customer_no": "Kundennummer beim Vorversorger",
+        "switch_reason": "Wechselgrund",
+        "external_id": "Eigene ID"
       },
       "choice": {
         "type": {
@@ -139,6 +172,10 @@
         "meter_type": {
           "slp": "SLP",
           "rlm": "RLM"
+        },
+        "switch_reason": {
+          "supplier_switch": "Lieferantenwechsel",
+          "move_in": "Einzug / Neuanlage"
         }
       },
       "headlines": {
@@ -158,6 +195,7 @@
         "user": "Vertriebspartner",
         "status": "Status",
         "type": "Angebotstyp",
+        "procurement_type": "Beschaffungsart",
         "created_at": "Erstellt am",
         "valid_till": "Gültig bis",
         "inquiry_notes": "Anfrage-Notizen",
@@ -177,6 +215,10 @@
         "type": {
           "normal": "Normal",
           "individual": "Individuell"
+        },
+        "procurement_type": {
+          "fixed": "Terminmarkt (Festpreis)",
+          "spot": "Spotmarkt (Flexibel)"
         }
       },
       "headlines": {
@@ -200,6 +242,7 @@
         "meter_type": "Zählertyp",
         "duration": "Laufzeit (Monate)",
         "active": "Aktiv",
+        "eco": "Ökotarif",
         "prov_partner": "Provision VP",
         "prov_loewe": "Provision Löwe",
         "grid_usage_fee": "Wirkarbeit Netz",
@@ -283,6 +326,10 @@
         "duration": "Laufzeit (Monate)",
         "usage": "Verbrauch",
         "start_date": "Lieferstart",
+        "current_provider": "Aktueller Anbieter",
+        "current_customer_no": "Kundennummer beim Vorversorger",
+        "switch_reason": "Wechselgrund",
+        "external_id": "Eigene ID",
         "prov_partner": "Provision VP",
         "prov_loewe": "Provision Löwe",
         "grid_usage_fee": "Wirkarbeit Netz",
@@ -309,6 +356,10 @@
         "meter_type": {
           "slp": "SLP",
           "rlm": "RLM"
+        },
+        "switch_reason": {
+          "supplier_switch": "Lieferantenwechsel",
+          "move_in": "Einzug / Neuanlage"
         },
         "status": {
           "pending": "Ausstehend",
@@ -431,6 +482,7 @@
       "shipping_same": "Entspricht Vertragspartneranschrift",
       "shipping_different": "Abweichende Lieferanschrift erfassen…",
       "meter_limit": "Zähler-Limit",
+      "meter_limit_label": "Zähler-Limit",
       "location": "Lieferstelle",
       "location_name": "Bezeichnung",
       "unnamed_location": "Ohne Name",
@@ -444,7 +496,17 @@
       "shipping_new": "Neue Lieferanschrift erfassen…",
       "different_billing_address": "Abweichende Rechnungsanschrift",
       "different_iban": "Abweichende IBAN",
-      "add_meter": "Weiteren Zähler hinzufügen",
+      "add_meter": "Zähler hinzufügen",
+      "malo_id": "MaLo-ID (11 Ziffern)",
+      "malo_id_short": "MaLo-ID",
+      "meter_type_label": "Zähler-Typ",
+      "usage_kwh": "Verbrauch (kWh)",
+      "external_id_optional": "Eigene ID (Optional)",
+      "contact_partner": "Globaler Vertragspartner / Ansprechpartner",
+      "location_data_for": "Daten für Lieferstelle:",
+      "section_delivery": "1. Lieferanschrift",
+      "section_billing": "2. Rechnungsanschrift",
+      "section_bank": "3. Bankverbindung",
       "add_location": "Neue Lieferstelle anlegen",
       "previous_supplier": "Aktueller Tarif (Vorversorger)",
       "expand_capture": "Ausklappen & Erfassen",
@@ -510,17 +572,29 @@
           "title": "Energieart wählen",
           "desc": "Ein Angebot kann nur Strom oder Gas beinhalten."
         },
+        "start": {
+          "title": "Energieart & Konfiguration",
+          "desc": "Energieart, Beschaffungsart und Tarifoptionen wählen."
+        },
+        "contract": {
+          "title": "Vertragsdaten erfassen",
+          "desc": "Ergänzen Sie die Wechseldaten für jeden Zähler."
+        },
+        "order": {
+          "title": "Vertragspartner, Adressen & Zahlungsart",
+          "desc": "Pflegen Sie die finalen Daten pro Lieferstelle."
+        },
         "customer": {
-          "title": "Kundendaten",
-          "desc": "Stammdaten, Hauptanschrift und Standard-Zahlungsinformationen."
+          "title": "Stammdaten & Hauptanschrift",
+          "desc": "Stammdaten und Hauptanschrift des Vertragspartners."
         },
         "locations": {
           "title": "Lieferstellen & Zähler",
           "desc": "Maximal 5 Zähler über alle Lieferstellen hinweg."
         },
         "tariff": {
-          "title": "Tarifauswahl & Vergleich",
-          "desc": "Der eingestellte Aufschlag ist im Arbeitspreis enthalten. Wählen Sie einen Tarif pro Zähler."
+          "title": "Tarifauswahl & Ersparnis",
+          "desc": "Wählen Sie Tarife. Wenn ein Tarif Mindestlaufzeiten hat, werden Alternativen berechnet."
         },
         "address": {
           "title": "Vertragspartneranschrift",
@@ -543,15 +617,18 @@
         "review": "Übersicht",
         "energy": "Energieart",
         "address": "Anschrift",
+        "start": "Start",
         "meters": "Zähler",
         "tariffs": "Tarife",
+        "contract_data": "Vertragsdaten",
+        "order_payment": "Auftrag & Zahlung",
         "completion": "Daten & Abschluss"
       },
       "customer_mode": {
         "new": "Neuer Kunde",
         "existing": "Bestehender Kunde"
       },
-      "contract_address": "Vertragspartneranschrift",
+      "contract_address": "Hauptanschrift (Vertragspartner)",
       "fields": {
         "customer": "Kunde",
         "medium": "Energieträger",
@@ -591,10 +668,16 @@
         "location_billing_address": "Bitte die Rechnungsanschrift der Lieferstelle vollständig ausfüllen.",
         "usage": "Bitte den Jahresverbrauch eingeben.",
         "start_date": "Bitte den Lieferbeginn wählen.",
-        "peak_power": "Bitte Leistungsspitze und Jahreshöchstleistung für RLM eingeben.",
+        "peak_power": "Bitte die Leistungsspitze für RLM eingeben.",
         "tariff": "Bitte für jeden Zähler einen Tarif auswählen.",
         "previous_tariff": "Bitte mindestens Grundpreis oder Arbeitspreis des Vorversorgers eingeben.",
-        "malo": "Die MaLo muss genau 11 Ziffern haben."
+        "malo": "Die MaLo muss genau 11 Ziffern haben.",
+        "malo_required": "Bitte für jeden Zähler eine MaLo mit genau 11 Ziffern eingeben.",
+        "medium": "Bitte eine Energieart wählen.",
+        "company_type": "Bitte eine Unternehmensart wählen.",
+        "industry": "Bitte eine Branche wählen.",
+        "switch_reason": "Bitte für jeden Zähler einen Wechselgrund wählen.",
+        "current_provider": "Bitte für jeden Zähler den aktuellen Anbieter wählen."
       },
       "summary": {
         "customer": "Kunde",
@@ -603,23 +686,41 @@
       },
       "not_calculated": "Nicht berechnet",
       "choose": "Wählen",
-      "surcharge": "Preis-Aufschlag",
+      "surcharge": "Aufschlag",
       "surcharge_title": "Preis-Aufschlag festlegen",
       "surcharge_label": "Aufschlag pro kWh (Netto)",
-      "surcharge_hint": "Dieser Aufschlag wird im 4. Schritt automatisch zum Basis-Arbeitspreis aller Tarife addiert.",
+      "surcharge_hint": "Dieser Aufschlag wird im 3. Schritt automatisch zum Basis-Arbeitspreis aller Tarife addiert.",
       "surcharge_apply": "Übernehmen",
       "surcharge_applied": "Aufschlag auf die Tarifpreise angewendet.",
       "next_address": "Weiter zur Anschrift",
       "next_meters": "Weiter zu Zählern",
       "next_tariffs": "Tarife abrufen",
       "next_personal": "Weiter zu pers. Daten",
+      "next_contract": "Weiter zur Auftragserfassung",
+      "next_payment": "Weiter zu Adressen & Zahlung",
+      "create_offer_pdf": "Angebot (PDF) erstellen",
+      "place_order": "Kostenpflichtig beauftragen",
+      "procurement_type": "Beschaffungsart",
+      "eco_only": "Nur Ökotarife anzeigen",
+      "phone_prefix": "Vorwahl",
+      "phone_number": "Rufnummer",
+      "marketing_consent": "Werbeeinwilligung (Kontaktweg)",
+      "marketing_post": "Post",
+      "contract_data_for_meter": "Vertragsdaten für Zähler:",
+      "marketing_email": "E-Mail",
+      "marketing_phone": "Telefon",
+      "billing_like_delivery": "Wie Lieferanschrift",
+      "billing_like_contract": "Wie Vertragspartner",
+      "please_select": "Bitte wählen…",
       "table_tariff": {
+        "tariff": "Tarif",
         "provider": "Anbieter & Tarif",
+        "duration": "Laufzeit",
         "ap": "AP (Netto)",
         "gp": "GP (Netto)",
         "yearly": "Kosten / Jahr",
         "advantage": "Kostenvorteil",
-        "action": "Aktion"
+        "action": "Wahl"
       },
       "use_delivery_address": "Aus Lieferanschrift übernehmen",
       "old_rate_comparison": "Alten Tarif zum Vergleich eingeben:",

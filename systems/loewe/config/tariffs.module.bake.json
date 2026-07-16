@@ -64,6 +64,13 @@
           }
         },
         {
+          "identifier": "eco",
+          "type": "checkbox",
+          "options": {
+            "default": false
+          }
+        },
+        {
           "identifier": "prov_partner",
           "type": "number"
         },

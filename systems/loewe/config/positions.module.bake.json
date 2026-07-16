@@ -165,6 +165,17 @@
           "type": "text"
         },
         {
+          "identifier": "switch_reason",
+          "type": "choice",
+          "options": {
+            "values": ["supplier_switch", "move_in"]
+          }
+        },
+        {
+          "identifier": "external_id",
+          "type": "text"
+        },
+        {
           "identifier": "provider",
           "type": "text"
         },

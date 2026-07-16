@@ -37,12 +37,37 @@
           "type": "text"
         },
         {
+          "identifier": "company_type",
+          "type": "choice",
+          "options": {
+            "values": ["gmbh", "ag", "einzelunternehmen", "gbr", "other"]
+          }
+        },
+        {
+          "identifier": "industry",
+          "type": "choice",
+          "options": {
+            "values": ["handel", "gastronomie", "produktion", "dienstleistung", "other"]
+          }
+        },
+        {
+          "identifier": "salutation",
+          "type": "choice",
+          "options": {
+            "values": ["mr", "ms"]
+          }
+        },
+        {
           "identifier": "firstname",
           "type": "text"
         },
         {
           "identifier": "name",
           "type": "text"
+        },
+        {
+          "identifier": "birthdate",
+          "type": "date"
         },
         {
           "identifier": "email",
@@ -55,6 +80,27 @@
         {
           "identifier": "mobile",
           "type": "tel"
+        },
+        {
+          "identifier": "marketing_post",
+          "type": "checkbox",
+          "options": {
+            "default": false
+          }
+        },
+        {
+          "identifier": "marketing_email",
+          "type": "checkbox",
+          "options": {
+            "default": false
+          }
+        },
+        {
+          "identifier": "marketing_phone",
+          "type": "checkbox",
+          "options": {
+            "default": false
+          }
         },
         {
           "identifier": "iban",

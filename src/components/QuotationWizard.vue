@@ -262,41 +262,52 @@
       <template v-else>
       <!-- VP bar + surcharge (calc.html reference) -->
       <div class="qw-vpbar">
-        <div class="qw-vpbar__left">
-          <span v-if="vpName" class="qw-vpbar__vp">VP: {{ vpName }}</span>
+        <div class="qw-vpbar__brand">
+          <span class="qw-vpbar__badge" aria-hidden="true">LÖ</span>
+          <span class="qw-vpbar__brand-name">
+            Löwe<span class="qw-vpbar__brand-light">Sales</span>
+          </span>
         </div>
-        <button
-          type="button"
-          class="qw-vpbar__surcharge"
-          :title="$t('widgets.quotation_wizard.surcharge_title')"
-          :aria-label="$t('widgets.quotation_wizard.surcharge_title')"
-          @click="openSurchargeModal"
-        >
-          <svg
-            class="qw-vpbar__surcharge-icon"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            aria-hidden="true"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
-            />
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-            />
-          </svg>
+        <div class="qw-vpbar__right">
+          <span v-if="vpName" class="qw-vpbar__vp">VP: {{ vpName }}</span>
           <span
-            v-if="surcharge"
-            class="qw-vpbar__surcharge-value"
-          >{{ formatPrice(surcharge) }} ct</span>
-        </button>
+            v-if="vpName"
+            class="qw-vpbar__divider"
+            aria-hidden="true"
+          />
+          <button
+            type="button"
+            class="qw-vpbar__surcharge"
+            :title="$t('widgets.quotation_wizard.surcharge_title')"
+            :aria-label="$t('widgets.quotation_wizard.surcharge_title')"
+            @click="openSurchargeModal"
+          >
+            <svg
+              class="qw-vpbar__surcharge-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              aria-hidden="true"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+              />
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+              />
+            </svg>
+            <span class="qw-vpbar__surcharge-label">
+              {{ $t('widgets.quotation_wizard.surcharge') }}:
+              <span class="qw-vpbar__surcharge-value">{{ formatPrice(surcharge) }} ct</span>
+            </span>
+          </button>
+        </div>
       </div>
 
       <div
@@ -320,7 +331,6 @@
               >
               <span>ct/kWh</span>
             </div>
-            <p class="qw-hint">{{ $t('widgets.quotation_wizard.surcharge_hint') }}</p>
           </div>
           <footer class="qw-modal__foot">
             <button type="button" class="qw-btn qw-btn--primary" @click="applySurcharge">
@@ -350,108 +360,172 @@
         </button>
       </div>
 
-      <!-- Step 1: Energy type -->
-      <section v-if="currentStep === 1" class="qw-section">
-        <div class="qw-section__accent qw-section__accent--green" />
-        <header class="qw-section__head">
-          <div>
-            <h2 class="qw-section__title">{{ $t('widgets.quotation_wizard.sections.energy.title') }}</h2>
-            <p class="qw-section__desc">{{ $t('widgets.quotation_wizard.sections.energy.desc') }}</p>
-          </div>
-        </header>
-        <div class="qw-energy">
-          <label
-            v-for="option in mediumOptions"
-            :key="option.value"
-            class="qw-energy__card"
-            :class="{ 'qw-energy__card--active': form.medium === option.value }"
-          >
-            <input
-              v-model="form.medium"
-              type="radio"
-              name="medium"
-              class="qw-sr-only"
-              :value="option.value"
-              @change="onMediumChange"
-            >
-            <component
-              :is="option.icon"
-              class="qw-energy__icon"
-              :class="option.iconClass"
-            />
-            <span class="qw-energy__label">{{ option.label }}</span>
-            <span class="qw-radio-dot" />
-          </label>
-        </div>
-        <div class="qw-step-nav">
-          <span />
-          <button type="button" class="qw-btn qw-btn--primary" @click.prevent="nextStep">
-            {{ $t('widgets.quotation_wizard.next_address') }}
-          </button>
-        </div>
-      </section>
-
-      <!-- Step 2: Contract partner address only -->
-      <section v-if="currentStep === 2" class="qw-section">
-        <div class="qw-section__accent qw-section__accent--green" />
-        <header class="qw-section__head qw-section__head--split">
-          <div class="qw-section__head-left">
+      <!-- Step 1: Start (energy, configuration, customer, main address) -->
+      <template v-if="currentStep === 1">
+        <section class="qw-section">
+          <div class="qw-section__accent qw-section__accent--green" />
+          <header class="qw-section__head">
             <div>
-              <h2 class="qw-section__title">{{ $t('widgets.quotation_wizard.sections.address.title') }}</h2>
-              <p class="qw-section__desc">{{ $t('widgets.quotation_wizard.sections.address.desc') }}</p>
+              <h2 class="qw-section__title">{{ $t('widgets.quotation_wizard.sections.start.title') }}</h2>
+              <p class="qw-section__desc">{{ $t('widgets.quotation_wizard.sections.start.desc') }}</p>
             </div>
+          </header>
+          <div class="qw-energy">
+            <label
+              v-for="option in mediumOptions"
+              :key="option.value"
+              class="qw-energy__card"
+              :class="{ 'qw-energy__card--active': form.medium === option.value }"
+            >
+              <input
+                v-model="form.medium"
+                type="radio"
+                name="medium"
+                class="qw-sr-only"
+                :value="option.value"
+                @change="onMediumChange"
+              >
+              <component
+                :is="option.icon"
+                class="qw-energy__icon"
+                :class="option.iconClass"
+              />
+              <span class="qw-energy__label">{{ option.label }}</span>
+              <span class="qw-radio-dot" />
+            </label>
           </div>
-          <button
-            type="button"
-            class="qw-btn qw-btn--outline qw-btn--sm"
-            @click="loadExistingCustomer"
-          >
-            {{ $t('widgets.quotation_wizard.load_from_master') }}
-          </button>
-        </header>
-        <div class="qw-form">
-          <div class="qw-form__row qw-form__row--full">
-            <label class="qw-label">{{ $t('widgets.quotation_wizard.contract_address') }} *</label>
-            <div class="qw-address-inline">
-              <input
-                v-model="form.street"
-                type="text"
-                class="qw-input qw-address-inline__street"
-                :placeholder="$t('modules.addresses.fields.street')"
-              >
-              <input
-                v-model="form.housenumber"
-                type="text"
-                class="qw-input qw-address-inline__house"
-                :placeholder="$t('modules.addresses.fields.housenumber')"
-              >
-              <input
-                v-model="form.zip"
-                type="text"
-                class="qw-input qw-address-inline__zip"
-                :placeholder="$t('modules.addresses.fields.zip')"
-              >
-              <input
-                v-model="form.city"
-                type="text"
-                class="qw-input qw-address-inline__city"
-                :placeholder="$t('modules.addresses.fields.city')"
-              >
+          <div class="qw-config">
+            <div>
+              <label class="qw-label">{{ $t('widgets.quotation_wizard.procurement_type') }} *</label>
+              <select v-model="form.procurementType" class="qw-input">
+                <option value="fixed">{{ $t('modules.offers.choice.procurement_type.fixed') }}</option>
+                <option value="spot">{{ $t('modules.offers.choice.procurement_type.spot') }}</option>
+              </select>
             </div>
+            <label class="qw-config__toggle">
+              <span class="qw-toggle">
+                <input v-model="form.ecoOnly" type="checkbox">
+                <span class="qw-toggle__track" />
+              </span>
+              <span>{{ $t('widgets.quotation_wizard.eco_only') }}</span>
+            </label>
           </div>
-        </div>
-        <div class="qw-step-nav">
-          <button type="button" class="qw-btn qw-btn--outline" @click.prevent="prevStep">
-            {{ $t('widgets.quotation_wizard.back') }}
-          </button>
-          <button type="button" class="qw-btn qw-btn--primary" @click.prevent="nextStep">
-            {{ $t('widgets.quotation_wizard.next_meters') }}
-          </button>
-        </div>
-      </section>
+        </section>
 
-      <!-- Step 3: Locations & meters -->
-      <section v-if="currentStep === 3" class="qw-section qw-section--locations">
+        <section class="qw-section">
+          <div class="qw-section__accent qw-section__accent--blue" />
+          <header class="qw-section__head qw-section__head--split">
+            <div class="qw-section__head-left">
+              <div>
+                <h2 class="qw-section__title">{{ $t('widgets.quotation_wizard.sections.customer.title') }}</h2>
+                <p class="qw-section__desc">{{ $t('widgets.quotation_wizard.sections.customer.desc') }}</p>
+              </div>
+            </div>
+            <button
+              type="button"
+              class="qw-btn qw-btn--outline qw-btn--sm"
+              @click="loadExistingCustomer"
+            >
+              {{ $t('widgets.quotation_wizard.load_from_master') }}
+            </button>
+          </header>
+          <div class="qw-form">
+            <div class="qw-form__row qw-form__row--full">
+              <label class="qw-radio-inline">
+                <input v-model="form.type" type="radio" value="b2b">
+                {{ $t('widgets.quotation_wizard.b2b') }}
+              </label>
+              <label class="qw-radio-inline">
+                <input v-model="form.type" type="radio" value="b2c">
+                {{ $t('widgets.quotation_wizard.b2c') }}
+              </label>
+            </div>
+            <div
+              v-if="form.type === 'b2b'"
+              class="qw-form__grid"
+            >
+              <div class="qw-form__row--full">
+                <label class="qw-label">{{ $t('modules.customers.fields.company') }} *</label>
+                <input
+                  v-model="form.company"
+                  type="text"
+                  class="qw-input"
+                  :placeholder="$t('widgets.quotation_wizard.placeholders.company')"
+                >
+              </div>
+              <div>
+                <label class="qw-label">{{ $t('modules.customers.fields.company_type') }} *</label>
+                <select v-model="form.companyType" class="qw-input">
+                  <option
+                    v-for="opt in companyTypeOptions"
+                    :key="opt"
+                    :value="opt"
+                  >
+                    {{ $t(`modules.customers.choice.company_type.${opt}`) }}
+                  </option>
+                </select>
+              </div>
+              <div>
+                <label class="qw-label">{{ $t('modules.customers.fields.industry') }} *</label>
+                <select v-model="form.industry" class="qw-input">
+                  <option value="">{{ $t('widgets.quotation_wizard.please_select') }}</option>
+                  <option
+                    v-for="opt in industryOptions"
+                    :key="opt"
+                    :value="opt"
+                  >
+                    {{ $t(`modules.customers.choice.industry.${opt}`) }}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="qw-form__row qw-form__row--full">
+              <label class="qw-label">{{ $t('widgets.quotation_wizard.contract_address') }} *</label>
+              <div class="qw-address-inline qw-address-inline--5">
+                <input
+                  v-model="form.street"
+                  type="text"
+                  class="qw-input qw-address-inline__street"
+                  :placeholder="$t('modules.addresses.fields.street')"
+                >
+                <input
+                  v-model="form.housenumber"
+                  type="text"
+                  class="qw-input qw-address-inline__house"
+                  :placeholder="$t('modules.addresses.fields.housenumber')"
+                >
+                <input
+                  v-model="form.housenumberAddition"
+                  type="text"
+                  class="qw-input qw-address-inline__house"
+                  :placeholder="$t('modules.addresses.fields.housenumber_addition')"
+                >
+                <input
+                  v-model="form.zip"
+                  type="text"
+                  class="qw-input qw-address-inline__zip"
+                  :placeholder="$t('modules.addresses.fields.zip')"
+                >
+                <input
+                  v-model="form.city"
+                  type="text"
+                  class="qw-input qw-address-inline__city"
+                  :placeholder="$t('modules.addresses.fields.city')"
+                >
+              </div>
+            </div>
+          </div>
+          <div class="qw-step-nav">
+            <span />
+            <button type="button" class="qw-btn qw-btn--primary" @click.prevent="nextStep">
+              {{ $t('widgets.quotation_wizard.next_meters') }}
+            </button>
+          </div>
+        </section>
+      </template>
+
+      <!-- Step 2: Locations & meters -->
+      <section v-if="currentStep === 2" class="qw-section qw-section--locations">
         <div class="qw-section__accent qw-section__accent--blue" />
         <header class="qw-section__head qw-section__head--split">
           <div class="qw-section__head-left">
@@ -461,13 +535,16 @@
             </div>
           </div>
           <div class="qw-meter-limit">
-            <span class="qw-meter-limit__label">{{ $t('widgets.quotation_wizard.meter_limit') }}:</span>
+            <span class="qw-meter-limit__label">{{ $t('widgets.quotation_wizard.meter_limit_label') }}:</span>
             <div class="qw-meter-limit__bars">
               <span
                 v-for="n in 5"
                 :key="n"
                 class="qw-meter-limit__bar"
-                :class="{ 'qw-meter-limit__bar--on': n <= meterCount }"
+                :class="{
+                  'qw-meter-limit__bar--on': n <= meterCount && meterCount < 5,
+                  'qw-meter-limit__bar--full': n <= meterCount && meterCount >= 5,
+                }"
               />
             </div>
             <span class="qw-meter-limit__count">{{ meterCount }} / 5</span>
@@ -511,7 +588,7 @@
                   {{ $t('widgets.quotation_wizard.use_contract_address') }}
                 </button>
               </div>
-              <div class="qw-address-inline">
+              <div class="qw-address-inline qw-address-inline--5">
                 <input
                   v-model="location.street"
                   type="text"
@@ -524,6 +601,13 @@
                   type="text"
                   class="qw-input qw-address-inline__house"
                   :placeholder="$t('modules.addresses.fields.housenumber')"
+                  @input="location.deliveryAddressMode = 'new'"
+                >
+                <input
+                  v-model="location.housenumberAddition"
+                  type="text"
+                  class="qw-input qw-address-inline__house"
+                  :placeholder="$t('modules.addresses.fields.housenumber_addition')"
                   @input="location.deliveryAddressMode = 'new'"
                 >
                 <input
@@ -543,249 +627,78 @@
               </div>
             </div>
 
-            <div
-              class="qw-location__billing"
-              :class="{ 'qw-location__billing--open': location.customBilling }"
-            >
-              <div class="qw-location__billing-head">
-                <span>{{ $t('widgets.quotation_wizard.custom_billing') }}</span>
-                <label class="qw-toggle">
-                  <input
-                    v-model="location.customBilling"
-                    type="checkbox"
-                    @change="onCustomBillingToggle(location)"
-                  >
-                  <span class="qw-toggle__track" />
-                </label>
-              </div>
+            <div class="qw-meters">
               <div
-                v-if="location.customBilling"
-                class="qw-location__billing-fields"
+                v-for="(meter, meterIndex) in location.meters"
+                :key="meter.uid"
+                class="qw-meter-card"
               >
-                <div class="qw-location__delivery-head">
-                  <label class="qw-label">{{ $t('widgets.quotation_wizard.billing_address') }}</label>
-                  <button
-                    type="button"
-                    class="qw-chip-btn"
-                    @click="copyDeliveryAddressToBilling(location)"
-                  >
-                    {{ $t('widgets.quotation_wizard.use_delivery_address') }}
-                  </button>
+                <button
+                  v-if="location.meters.length > 1 || form.locations.length > 1"
+                  type="button"
+                  class="qw-meter-card__remove"
+                  :title="$t('widgets.quotation_wizard.remove')"
+                  @click="removeMeter(locIndex, meterIndex)"
+                >
+                  ×
+                </button>
+                <div class="qw-meter-card__grid">
+                  <div class="qw-meter-card__field">
+                    <label class="qw-label qw-label--sm">{{ $t('modules.meters.fields.meter_number') }} *</label>
+                    <input
+                      v-model="meter.meter_number"
+                      type="text"
+                      class="qw-input qw-input--sm"
+                    >
+                  </div>
+                  <div class="qw-meter-card__field">
+                    <label class="qw-label qw-label--sm">{{ $t('widgets.quotation_wizard.malo_id') }} *</label>
+                    <input
+                      v-model="meter.malo"
+                      type="text"
+                      maxlength="11"
+                      class="qw-input qw-input--sm qw-input--mono"
+                      :class="{ 'qw-input--invalid': meter.malo && meter.malo.length > 0 && meter.malo.length < 11 }"
+                      :placeholder="$t('widgets.quotation_wizard.placeholders.malo')"
+                      @input="meter.malo = (meter.malo || '').replace(/[^0-9]/g, '')"
+                    >
+                  </div>
+                  <div class="qw-meter-card__field">
+                    <label class="qw-label qw-label--sm">{{ $t('widgets.quotation_wizard.meter_type_label') }} *</label>
+                    <select
+                      v-model="meter.meter_type"
+                      class="qw-input qw-input--sm"
+                      @change="onMeterTypeChange(meter)"
+                    >
+                      <option value="slp">SLP</option>
+                      <option value="rlm">RLM</option>
+                    </select>
+                  </div>
+                  <div class="qw-meter-card__field">
+                    <label class="qw-label qw-label--sm">{{ $t('widgets.quotation_wizard.usage_kwh') }} *</label>
+                    <input
+                      v-model.number="meter.usage"
+                      type="number"
+                      min="1"
+                      class="qw-input qw-input--sm"
+                    >
+                  </div>
                 </div>
-                <div class="qw-address-inline">
+                <div
+                  v-if="meter.meter_type === 'rlm'"
+                  class="qw-meter-card__rlm"
+                >
+                  <label class="qw-label qw-label--sm qw-label--accent">{{ $t('modules.meters.fields.peak_power') }}</label>
                   <input
-                    v-model="location.billingStreet"
-                    type="text"
-                    class="qw-input qw-address-inline__street"
-                    :placeholder="$t('modules.addresses.fields.street')"
-                    @input="location.billingAddressMode = 'new'"
-                  >
-                  <input
-                    v-model="location.billingHousenumber"
-                    type="text"
-                    class="qw-input qw-address-inline__house"
-                    :placeholder="$t('modules.addresses.fields.housenumber')"
-                    @input="location.billingAddressMode = 'new'"
-                  >
-                  <input
-                    v-model="location.billingZip"
-                    type="text"
-                    class="qw-input qw-address-inline__zip"
-                    :placeholder="$t('modules.addresses.fields.zip')"
-                    @input="location.billingAddressMode = 'new'"
-                  >
-                  <input
-                    v-model="location.billingCity"
-                    type="text"
-                    class="qw-input qw-address-inline__city"
-                    :placeholder="$t('modules.addresses.fields.city')"
-                    @input="location.billingAddressMode = 'new'"
-                  >
-                </div>
-                <div class="qw-location__iban">
-                  <label class="qw-label">{{ $t('modules.customers.fields.iban') }}</label>
-                  <input
-                    v-model="location.iban"
-                    type="text"
-                    class="qw-input qw-input--mono"
-                    placeholder="DE00 0000 0000 0000 0000 00"
+                    v-model.number="meter.peak_power"
+                    type="number"
+                    class="qw-input qw-input--sm qw-input--accent"
                   >
                 </div>
               </div>
-            </div>
-
-            <div class="qw-table-wrap">
-              <table class="qw-table">
-                <colgroup>
-                  <col>
-                  <col>
-                  <col class="qw-table__malo-col">
-                  <col class="qw-table__date-col">
-                  <col>
-                  <col class="qw-table__action-col">
-                </colgroup>
-                <thead>
-                  <tr>
-                    <th>{{ $t('widgets.quotation_wizard.table.medium_type') }}</th>
-                    <th>{{ $t('modules.meters.fields.meter_number') }} *</th>
-                    <th>{{ $t('modules.meters.fields.malo') }}</th>
-                    <th>{{ $t('widgets.quotation_wizard.fields.start_date') }} *</th>
-                    <th>{{ $t('widgets.quotation_wizard.table.usage_year') }} *</th>
-                    <th class="qw-table__action-head">{{ $t('widgets.quotation_wizard.table.action') }}</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <template
-                    v-for="(meter, meterIndex) in location.meters"
-                    :key="meter.uid"
-                  >
-                    <tr>
-                      <td>
-                        <div class="qw-table__medium">
-                          <span
-                            class="qw-dot"
-                            :class="form.medium === 'electricity' ? 'qw-dot--electricity' : 'qw-dot--gas'"
-                          />
-                          {{ mediumLabel }} ({{ meter.meter_type.toUpperCase() }})
-                        </div>
-                      </td>
-                      <td>{{ meter.meter_number || '—' }}</td>
-                      <td class="qw-table__malo">{{ meter.malo || '—' }}</td>
-                      <td class="qw-table__date">{{ meter.start_date ? formatDate(meter.start_date) : '—' }}</td>
-                      <td class="qw-table__usage">
-                        {{ meter.usage ? `${formatNumber(meter.usage)} kWh` : '—' }}
-                      </td>
-                      <td
-                        class="qw-table__action"
-                        :rowspan="meter.editing ? 2 : 1"
-                      >
-                        <button
-                          v-if="!meter.editing"
-                          type="button"
-                          class="qw-text-btn"
-                          @click="toggleMeterEdit(location, meter)"
-                        >
-                          {{ $t('widgets.quotation_wizard.edit') }}
-                        </button>
-                        <button
-                          v-else
-                          type="button"
-                          class="qw-text-btn"
-                          @click="toggleMeterEdit(location, meter)"
-                        >
-                          {{ $t('widgets.quotation_wizard.done') }}
-                        </button>
-                        <button
-                          v-if="!meter.editing && (location.meters.length > 1 || form.locations.length > 1)"
-                          type="button"
-                          class="qw-text-btn qw-text-btn--danger qw-table__action-remove"
-                          @click="removeMeter(locIndex, meterIndex)"
-                        >
-                          {{ $t('widgets.quotation_wizard.remove') }}
-                        </button>
-                      </td>
-                    </tr>
-                    <tr
-                      v-if="meter.editing"
-                      class="qw-table__expand"
-                    >
-                      <td
-                        colspan="5"
-                        class="qw-meter-edit__fields"
-                      >
-                        <div class="qw-meter-edit">
-                          <div class="qw-meter-edit__cols">
-                            <div class="qw-meter-edit__col">
-                              <div class="qw-meter-edit__field">
-                                <label class="qw-label qw-label--sm">{{ $t('modules.meters.fields.meter_type') }} *</label>
-                                <select
-                                  v-model="meter.meter_type"
-                                  class="qw-input qw-input--sm"
-                                  @change="onMeterTypeChange(meter)"
-                                >
-                                  <option value="slp">SLP</option>
-                                  <option value="rlm">RLM</option>
-                                </select>
-                              </div>
-                              <div class="qw-meter-edit__field">
-                                <label class="qw-label qw-label--sm">{{ $t('modules.meters.fields.meter_number') }} *</label>
-                                <input
-                                  v-model="meter.meter_number"
-                                  type="text"
-                                  class="qw-input qw-input--sm"
-                                  required
-                                >
-                              </div>
-                              <div class="qw-meter-edit__field">
-                                <label class="qw-label qw-label--sm">{{ $t('modules.meters.fields.malo') }}</label>
-                                <input
-                                  v-model="meter.malo"
-                                  type="text"
-                                  maxlength="11"
-                                  class="qw-input qw-input--sm qw-input--mono"
-                                  :placeholder="$t('widgets.quotation_wizard.placeholders.malo')"
-                                >
-                                <p
-                                  v-if="!meter.malo?.trim()"
-                                  class="qw-hint qw-hint--warning"
-                                >
-                                  {{ $t('widgets.quotation_wizard.malo_missing_warning') }}
-                                </p>
-                                <p
-                                  v-else
-                                  class="qw-hint"
-                                >
-                                  {{ $t('widgets.quotation_wizard.malo_hint') }}
-                                </p>
-                              </div>
-                            </div>
-                            <div class="qw-meter-edit__col">
-                              <div class="qw-meter-edit__field">
-                                <label class="qw-label qw-label--sm">{{ $t('widgets.quotation_wizard.fields.start_date') }} *</label>
-                                <input
-                                  v-model="meter.start_date"
-                                  type="date"
-                                  class="qw-input qw-input--sm"
-                                >
-                              </div>
-                              <div class="qw-meter-edit__field">
-                                <label class="qw-label qw-label--sm">{{ $t('widgets.quotation_wizard.table.usage_year') }} *</label>
-                                <input
-                                  v-model.number="meter.usage"
-                                  type="number"
-                                  min="1"
-                                  class="qw-input qw-input--sm"
-                                >
-                              </div>
-                              <template v-if="meter.meter_type === 'rlm'">
-                                <div class="qw-meter-edit__field">
-                                  <label class="qw-label qw-label--sm">{{ $t('modules.meters.fields.peak_power') }} *</label>
-                                  <input
-                                    v-model.number="meter.peak_power"
-                                    type="number"
-                                    class="qw-input qw-input--sm"
-                                  >
-                                </div>
-                                <div class="qw-meter-edit__field">
-                                  <label class="qw-label qw-label--sm">{{ $t('modules.meters.fields.annual_peak_power') }} *</label>
-                                  <input
-                                    v-model.number="meter.annual_peak_power"
-                                    type="number"
-                                    class="qw-input qw-input--sm"
-                                  >
-                                </div>
-                              </template>
-                            </div>
-                          </div>
-                        </div>
-                      </td>
-                    </tr>
-                  </template>
-                </tbody>
-              </table>
               <div
                 v-if="meterCount < 5"
-                class="qw-table__footer"
+                class="qw-meters__footer"
               >
                 <button
                   type="button"
@@ -831,8 +744,8 @@
         </div>
       </section>
 
-      <!-- Step 4: Tariff selection (table) -->
-      <div v-if="currentStep === 4">
+      <!-- Step 3: Tariff selection (table) -->
+      <div v-if="currentStep === 3">
       <div class="qw-tariff-head">
         <div>
           <h2 class="qw-tariff-head__title">{{ $t('widgets.quotation_wizard.sections.tariff.title') }}</h2>
@@ -862,50 +775,9 @@
         </header>
 
         <div class="qw-meter-tariff__body">
-          <div class="qw-previous qw-previous--expanded">
-            <div class="qw-previous__head">
-              <h3>{{ $t('widgets.quotation_wizard.old_rate_comparison') }}</h3>
-            </div>
-            <div class="qw-previous__body">
-              <div class="qw-previous__grid qw-previous__grid--calc">
-                <div>
-                  <label class="qw-label qw-label--sm">{{ $t('widgets.quotation_wizard.base_rate') }} *</label>
-                  <input
-                    v-model.number="entry.meter.current_baseprice"
-                    type="number"
-                    step="0.01"
-                    class="qw-input qw-input--sm"
-                    :placeholder="$t('widgets.quotation_wizard.placeholders.base_rate')"
-                    @input="onPreviousSupplierChange(entry.meter)"
-                  >
-                </div>
-                <div>
-                  <label class="qw-label qw-label--sm">{{ $t('widgets.quotation_wizard.electricity_rate') }} *</label>
-                  <input
-                    v-model.number="entry.meter.current_price_per_kwh"
-                    type="number"
-                    step="0.01"
-                    class="qw-input qw-input--sm"
-                    :placeholder="$t('widgets.quotation_wizard.placeholders.electricity_rate')"
-                    @input="onPreviousSupplierChange(entry.meter)"
-                  >
-                </div>
-                <div class="qw-previous__calc">
-                  <button
-                    type="button"
-                    class="qw-btn qw-btn--orange qw-btn--sm qw-btn--block"
-                    @click="calculatePreviousTariff(entry.meter)"
-                  >
-                    {{ $t('widgets.quotation_wizard.calculate_tariffs') }}
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-
           <a-spin :spinning="loadingTariffs">
             <div
-              v-if="tariffsForMeter(entry.meter).length === 0 && !loadingTariffs"
+              v-if="tariffRowsForMeter(entry.meter).length === 0 && !loadingTariffs"
               class="qw-empty"
             >
               {{ $t('widgets.quotation_wizard.no_tariffs') }}
@@ -917,63 +789,65 @@
               <table class="qw-tariff-table">
                 <thead>
                   <tr>
-                    <th>{{ $t('widgets.quotation_wizard.table_tariff.provider') }}</th>
+                    <th>{{ $t('widgets.quotation_wizard.table_tariff.tariff') }}</th>
+                    <th>{{ $t('widgets.quotation_wizard.table_tariff.duration') }}</th>
                     <th>{{ $t('widgets.quotation_wizard.table_tariff.ap') }}</th>
                     <th>{{ $t('widgets.quotation_wizard.table_tariff.gp') }}</th>
                     <th>{{ $t('widgets.quotation_wizard.table_tariff.yearly') }}</th>
-                    <th>{{ $t('widgets.quotation_wizard.table_tariff.advantage') }}</th>
                     <th class="qw-tariff-table__action">{{ $t('widgets.quotation_wizard.table_tariff.action') }}</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr
-                    v-for="tariff in tariffsForMeter(entry.meter)"
-                    :key="tariff.id"
-                    :class="{ 'qw-tariff-table__row--selected': entry.meter.tariffId === tariff.id }"
+                    v-for="row in tariffRowsForMeter(entry.meter)"
+                    :key="row.key"
+                    :class="{ 'qw-tariff-table__row--selected': entry.meter.tariffId === row.selected.id }"
                   >
                     <td>
                       <div class="qw-tariff-table__brand">
                         <span
                           class="qw-tariff-avatar"
-                          :style="tariffAvatarStyle(tariff)"
-                        >{{ tariffInitials(tariff) }}</span>
+                          :style="tariffAvatarStyle(row.selected)"
+                        >{{ tariffInitials(row.selected) }}</span>
                         <div class="qw-tariff-table__brand-text">
-                          <div class="qw-tariff-table__name">{{ tariff.name }}</div>
-                          <div class="qw-tariff-table__meta">{{ tariff.provider || tariff.brezel_name || '' }}</div>
+                          <div class="qw-tariff-table__name">{{ row.displayName }}</div>
+                          <div class="qw-tariff-table__meta">{{ row.selected.provider || row.selected.brezel_name || '' }}</div>
                         </div>
                       </div>
                     </td>
                     <td>
-                      <strong>{{ formatPrice(energyPriceWithSurcharge(tariff)) }}</strong>
+                      <select
+                        class="qw-input qw-input--sm qw-tariff-duration"
+                        :value="row.selected.duration"
+                        @change="onTariffDurationChange(entry.meter, row, $event.target.value)"
+                      >
+                        <option
+                          v-for="variant in row.variants"
+                          :key="variant.id"
+                          :value="variant.duration"
+                        >
+                          {{ variant.duration }} {{ $t('widgets.quotation_wizard.months') }}
+                        </option>
+                      </select>
+                    </td>
+                    <td>
+                      <strong>{{ formatPrice(energyPriceWithSurcharge(row.selected)) }}</strong>
                       <span class="qw-tariff-table__unit">ct/kWh</span>
                     </td>
                     <td>
-                      <strong>{{ formatPrice(tariff.site_fixed_fee) }}</strong>
+                      <strong>{{ formatPrice(row.selected.site_fixed_fee) }}</strong>
                       <span class="qw-tariff-table__unit">€/{{ $t('widgets.quotation_wizard.month') }}</span>
                     </td>
                     <td>
-                      <strong>{{ formatCurrency(estimateYearlyCost(tariff, entry.meter)) }}</strong>
-                    </td>
-                    <td>
-                      <template v-if="costAdvantage(entry.meter, tariff) == null">
-                        <span class="qw-tariff-table__muted">{{ $t('widgets.quotation_wizard.not_calculated') }}</span>
-                      </template>
-                      <span
-                        v-else-if="costAdvantage(entry.meter, tariff) >= 0"
-                        class="qw-advantage qw-advantage--pos"
-                      >+ {{ formatCurrency(costAdvantage(entry.meter, tariff)) }}</span>
-                      <span
-                        v-else
-                        class="qw-advantage qw-advantage--neg"
-                      >{{ formatCurrency(costAdvantage(entry.meter, tariff)) }}</span>
+                      <strong>{{ formatCurrency(estimateYearlyCost(row.selected, entry.meter)) }}</strong>
                     </td>
                     <td class="qw-tariff-table__action">
                       <label class="qw-radio-inline">
                         <input
                           type="radio"
                           :name="'tariff-' + entry.uid"
-                          :checked="entry.meter.tariffId === tariff.id"
-                          @change="selectTariffPrimary(entry.meter, tariff.id)"
+                          :checked="entry.meter.tariffId === row.selected.id"
+                          @change="selectTariffPrimary(entry.meter, row.selected.id)"
                         >
                         {{ $t('widgets.quotation_wizard.choose') }}
                       </label>
@@ -986,46 +860,154 @@
         </div>
       </section>
 
-      <div class="qw-step-nav">
+      <div class="qw-footer">
         <button type="button" class="qw-btn qw-btn--outline" @click.prevent="prevStep">
           {{ $t('widgets.quotation_wizard.back') }}
         </button>
-        <button type="button" class="qw-btn qw-btn--primary" @click.prevent="nextStep">
-          {{ $t('widgets.quotation_wizard.next_personal') }}
-        </button>
+        <div class="qw-footer__actions">
+          <button
+            type="button"
+            class="qw-btn qw-btn--outline"
+            :disabled="submitting"
+            @click="createOfferPdf"
+          >
+            {{ $t('widgets.quotation_wizard.create_offer_pdf') }}
+          </button>
+          <button
+            type="button"
+            class="qw-btn qw-btn--primary"
+            @click.prevent="nextStep"
+          >
+            {{ $t('widgets.quotation_wizard.next_contract') }}
+          </button>
+        </div>
       </div>
       </div>
 
-      <!-- Step 5: Personal data & completion -->
-      <section v-if="currentStep === 5" class="qw-section">
+      <!-- Step 4: Contract data (per meter) -->
+      <div v-if="currentStep === 4">
+        <div class="qw-tariff-head">
+          <div>
+            <h2 class="qw-tariff-head__title">{{ $t('widgets.quotation_wizard.sections.contract.title') }}</h2>
+            <p class="qw-section__desc">{{ $t('widgets.quotation_wizard.sections.contract.desc') }}</p>
+          </div>
+        </div>
+
+        <section
+          v-for="entry in meterEntries"
+          :key="entry.uid"
+          class="qw-section"
+        >
+          <div class="qw-section__accent qw-section__accent--blue" />
+          <header class="qw-section__head">
+            <div>
+              <h2 class="qw-section__title">
+                {{ $t('widgets.quotation_wizard.contract_data_for_meter') }}
+                {{ entry.meter.meter_number || $t('widgets.quotation_wizard.new_meter') }}
+              </h2>
+            </div>
+          </header>
+          <div class="qw-form">
+            <div class="qw-form__grid qw-form__grid--2">
+              <div>
+                <label class="qw-label">{{ $t('modules.meters.fields.switch_reason') }} *</label>
+                <select v-model="entry.meter.switch_reason" class="qw-input">
+                  <option
+                    v-for="opt in switchReasonOptions"
+                    :key="opt"
+                    :value="opt"
+                  >
+                    {{ $t(`modules.meters.choice.switch_reason.${opt}`) }}
+                  </option>
+                </select>
+              </div>
+              <div>
+                <label class="qw-label">{{ $t('widgets.quotation_wizard.fields.start_date') }} *</label>
+                <input
+                  v-model="entry.meter.start_date"
+                  type="date"
+                  class="qw-input"
+                >
+              </div>
+              <div>
+                <label class="qw-label">{{ $t('modules.meters.fields.current_provider') }} *</label>
+                <select
+                  v-model="entry.meter.current_provider"
+                  class="qw-input"
+                >
+                  <option value="">{{ $t('widgets.quotation_wizard.please_select') }}</option>
+                  <option
+                    v-for="opt in currentProviderOptions"
+                    :key="opt"
+                    :value="opt"
+                  >
+                    {{ opt }}
+                  </option>
+                </select>
+              </div>
+              <div>
+                <label class="qw-label">{{ $t('modules.meters.fields.current_customer_no') }}</label>
+                <input
+                  v-model="entry.meter.current_customer_no"
+                  type="text"
+                  class="qw-input"
+                >
+              </div>
+              <div>
+                <label class="qw-label">{{ $t('widgets.quotation_wizard.malo_id_short') }}</label>
+                <input
+                  :value="entry.meter.malo"
+                  type="text"
+                  class="qw-input qw-input--mono"
+                  readonly
+                >
+              </div>
+              <div>
+                <label class="qw-label">{{ $t('widgets.quotation_wizard.external_id_optional') }}</label>
+                <input
+                  v-model="entry.meter.external_id"
+                  type="text"
+                  class="qw-input"
+                >
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <div class="qw-step-nav">
+          <button type="button" class="qw-btn qw-btn--outline" @click.prevent="prevStep">
+            {{ $t('widgets.quotation_wizard.back') }}
+          </button>
+          <button type="button" class="qw-btn qw-btn--primary" @click.prevent="nextStep">
+            {{ $t('widgets.quotation_wizard.next_payment') }}
+          </button>
+        </div>
+      </div>
+
+      <!-- Step 5: Order & payment -->
+      <template v-if="currentStep === 5">
+      <section class="qw-section">
         <div class="qw-section__accent qw-section__accent--green" />
         <header class="qw-section__head">
           <div>
-            <h2 class="qw-section__title">{{ $t('widgets.quotation_wizard.sections.completion.title') }}</h2>
-            <p class="qw-section__desc">{{ $t('widgets.quotation_wizard.sections.completion.desc') }}</p>
+            <h2 class="qw-section__title">{{ $t('widgets.quotation_wizard.sections.order.title') }}</h2>
+            <p class="qw-section__desc">{{ $t('widgets.quotation_wizard.sections.order.desc') }}</p>
           </div>
         </header>
         <div class="qw-form">
-          <div class="qw-form__row qw-form__row--full">
-            <label class="qw-radio-inline">
-              <input v-model="form.type" type="radio" value="b2b">
-              {{ $t('widgets.quotation_wizard.b2b') }}
-            </label>
-            <label class="qw-radio-inline">
-              <input v-model="form.type" type="radio" value="b2c">
-              {{ $t('widgets.quotation_wizard.b2c') }}
-            </label>
-          </div>
-
+          <h3 class="qw-form__block-title">{{ $t('widgets.quotation_wizard.contact_partner') }}</h3>
           <div class="qw-form__grid">
-            <div v-if="form.type === 'b2b'">
-              <label class="qw-label">{{ $t('modules.customers.fields.company') }}</label>
-              <input
-                v-model="form.company"
-                type="text"
-                class="qw-input"
-                :placeholder="$t('widgets.quotation_wizard.placeholders.company')"
-              >
+            <div>
+              <label class="qw-label">{{ $t('modules.customers.fields.salutation') }}</label>
+              <select v-model="form.salutation" class="qw-input">
+                <option
+                  v-for="opt in salutationOptions"
+                  :key="opt"
+                  :value="opt"
+                >
+                  {{ $t(`modules.customers.choice.salutation.${opt}`) }}
+                </option>
+              </select>
             </div>
             <div>
               <label class="qw-label">{{ $t('modules.customers.fields.firstname') }} *</label>
@@ -1036,69 +1018,172 @@
               <input v-model="form.name" type="text" class="qw-input">
             </div>
             <div>
+              <label class="qw-label">{{ $t('modules.customers.fields.birthdate') }}</label>
+              <input v-model="form.birthdate" type="date" class="qw-input">
+            </div>
+            <div class="qw-form__span-2">
               <label class="qw-label">{{ $t('modules.customers.fields.email') }}</label>
               <input v-model="form.email" type="email" class="qw-input">
             </div>
             <div>
-              <label class="qw-label">{{ $t('modules.customers.fields.phone') }}</label>
-              <input v-model="form.phone" type="tel" class="qw-input">
+              <label class="qw-label">{{ $t('widgets.quotation_wizard.phone_prefix') }}</label>
+              <input v-model="form.phonePrefix" type="text" class="qw-input">
+            </div>
+            <div class="qw-form__span-2">
+              <label class="qw-label">{{ $t('widgets.quotation_wizard.phone_number') }}</label>
+              <input v-model="form.phoneNumber" type="tel" class="qw-input">
+            </div>
+          </div>
+          <div class="qw-form__divider">
+            <h3 class="qw-form__subhead">{{ $t('widgets.quotation_wizard.marketing_consent') }}</h3>
+            <div class="qw-form__row qw-form__row--full">
+              <label class="qw-radio-inline">
+                <input v-model="form.marketingPost" type="checkbox">
+                {{ $t('widgets.quotation_wizard.marketing_post') }}
+              </label>
+              <label class="qw-radio-inline">
+                <input v-model="form.marketingEmail" type="checkbox">
+                {{ $t('widgets.quotation_wizard.marketing_email') }}
+              </label>
+              <label class="qw-radio-inline">
+                <input v-model="form.marketingPhone" type="checkbox">
+                {{ $t('widgets.quotation_wizard.marketing_phone') }}
+              </label>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section
+        v-for="(location, locIndex) in form.locations"
+        :key="location.uid"
+        class="qw-section"
+      >
+        <div class="qw-section__accent qw-section__accent--blue" />
+        <header class="qw-section__head">
+          <div>
+            <h2 class="qw-section__title">
+              {{ $t('widgets.quotation_wizard.location_data_for') }} {{ location.label || `${$t('widgets.quotation_wizard.location')} ${locIndex + 1}` }}
+            </h2>
+          </div>
+        </header>
+        <div class="qw-form">
+          <div class="qw-form__row qw-form__row--full">
+            <div class="qw-location__delivery-head">
+              <h4 class="qw-form__numbered">{{ $t('widgets.quotation_wizard.section_delivery') }}</h4>
+              <button
+                type="button"
+                class="qw-chip-btn"
+                @click="copyContractAddressToLocation(location)"
+              >
+                {{ $t('widgets.quotation_wizard.use_contract_address') }}
+              </button>
+            </div>
+            <div class="qw-address-inline qw-address-inline--5">
+              <input
+                v-model="location.street"
+                type="text"
+                class="qw-input qw-address-inline__street"
+                :placeholder="$t('modules.addresses.fields.street')"
+                @input="location.deliveryAddressMode = 'new'"
+              >
+              <input
+                v-model="location.housenumber"
+                type="text"
+                class="qw-input qw-address-inline__house"
+                :placeholder="$t('modules.addresses.fields.housenumber')"
+                @input="location.deliveryAddressMode = 'new'"
+              >
+              <input
+                v-model="location.housenumberAddition"
+                type="text"
+                class="qw-input qw-address-inline__house"
+                :placeholder="$t('modules.addresses.fields.housenumber_addition')"
+                @input="location.deliveryAddressMode = 'new'"
+              >
+              <input
+                v-model="location.zip"
+                type="text"
+                class="qw-input qw-address-inline__zip"
+                :placeholder="$t('modules.addresses.fields.zip')"
+                @input="location.deliveryAddressMode = 'new'"
+              >
+              <input
+                v-model="location.city"
+                type="text"
+                class="qw-input qw-address-inline__city"
+                :placeholder="$t('modules.addresses.fields.city')"
+                @input="location.deliveryAddressMode = 'new'"
+              >
+            </div>
+          </div>
+
+          <div class="qw-form__row qw-form__row--full">
+            <h4 class="qw-form__numbered">{{ $t('widgets.quotation_wizard.section_billing') }}</h4>
+            <select v-model="location.billingMode" class="qw-input qw-input--half">
+              <option value="delivery">{{ $t('widgets.quotation_wizard.billing_like_delivery') }}</option>
+              <option value="contract">{{ $t('widgets.quotation_wizard.billing_like_contract') }}</option>
+              <option value="new">{{ $t('widgets.quotation_wizard.billing_different') }}</option>
+            </select>
+          </div>
+          <div
+            v-if="location.billingMode === 'new'"
+            class="qw-form__row qw-form__row--full"
+          >
+            <div class="qw-address-inline qw-address-inline--5">
+              <input
+                v-model="location.billingStreet"
+                type="text"
+                class="qw-input qw-address-inline__street"
+                :placeholder="$t('modules.addresses.fields.street')"
+              >
+              <input
+                v-model="location.billingHousenumber"
+                type="text"
+                class="qw-input qw-address-inline__house"
+                :placeholder="$t('modules.addresses.fields.housenumber')"
+              >
+              <input
+                v-model="location.billingHousenumberAddition"
+                type="text"
+                class="qw-input qw-address-inline__house"
+                :placeholder="$t('modules.addresses.fields.housenumber_addition')"
+              >
+              <input
+                v-model="location.billingZip"
+                type="text"
+                class="qw-input qw-address-inline__zip"
+                :placeholder="$t('modules.addresses.fields.zip')"
+              >
+              <input
+                v-model="location.billingCity"
+                type="text"
+                class="qw-input qw-address-inline__city"
+                :placeholder="$t('modules.addresses.fields.city')"
+              >
             </div>
           </div>
 
           <div class="qw-form__divider">
-            <h3 class="qw-form__subhead">{{ $t('widgets.quotation_wizard.invoice_payment') }}</h3>
-            <div class="qw-form__grid qw-form__grid--2">
-              <div>
-                <label class="qw-label">{{ $t('widgets.quotation_wizard.billing_address') }}</label>
-                <select v-model="form.billingSameAsContract" class="qw-input">
-                  <option :value="true">{{ $t('widgets.quotation_wizard.billing_same') }}</option>
-                  <option :value="false">{{ $t('widgets.quotation_wizard.billing_different') }}</option>
-                </select>
-              </div>
-            </div>
-            <div
-              v-if="!form.billingSameAsContract"
-              class="qw-form__grid qw-form__grid--2 qw-address-grid qw-form__row--full"
-            >
-              <div>
-                <label class="qw-label qw-label--sm">{{ $t('modules.addresses.fields.street') }} *</label>
-                <input v-model="form.billingStreet" type="text" class="qw-input">
-              </div>
-              <div>
-                <label class="qw-label qw-label--sm">{{ $t('modules.addresses.fields.housenumber') }}</label>
-                <input v-model="form.billingHousenumber" type="text" class="qw-input">
-              </div>
-              <div>
-                <label class="qw-label qw-label--sm">{{ $t('modules.addresses.fields.zip') }} *</label>
-                <input v-model="form.billingZip" type="text" class="qw-input">
-              </div>
-              <div>
-                <label class="qw-label qw-label--sm">{{ $t('modules.addresses.fields.city') }} *</label>
-                <input v-model="form.billingCity" type="text" class="qw-input">
-              </div>
-            </div>
+            <h4 class="qw-form__numbered">{{ $t('widgets.quotation_wizard.section_bank') }}</h4>
             <div class="qw-form__grid qw-form__grid--3 qw-form__row--full">
               <div>
                 <label class="qw-label">{{ $t('widgets.quotation_wizard.account_holder') }} *</label>
-                <input
-                  v-model="form.accountHolder"
-                  type="text"
-                  class="qw-input"
-                >
+                <input v-model="location.bank" type="text" class="qw-input">
               </div>
               <div>
                 <label class="qw-label">{{ $t('modules.customers.fields.iban') }} *</label>
                 <input
-                  v-model="form.iban"
+                  v-model="location.iban"
                   type="text"
                   class="qw-input qw-input--mono"
-                  placeholder="DE00 0000 0000 0000 0000 00"
+                  placeholder="DEXX…"
                 >
               </div>
               <div>
                 <label class="qw-label">{{ $t('modules.customers.fields.bic') }}</label>
                 <input
-                  v-model="form.bic"
+                  v-model="location.bic"
                   type="text"
                   class="qw-input qw-input--mono"
                   placeholder="XXXXDEXX"
@@ -1107,38 +1192,39 @@
             </div>
           </div>
         </div>
-
-        <footer class="qw-footer qw-footer--inline">
-          <div class="qw-footer__total">
-            {{ $t('widgets.quotation_wizard.offer_total') }}:
-            <strong>{{ formatCurrency(totalYearlyCost) }} / {{ $t('widgets.quotation_wizard.year') }}</strong>
-          </div>
-          <div class="qw-footer__actions">
-            <button type="button" class="qw-btn qw-btn--outline" @click.prevent="prevStep">
-              {{ $t('widgets.quotation_wizard.back') }}
-            </button>
-            <button
-              type="button"
-              class="qw-btn qw-btn--outline"
-              :disabled="submitting"
-              @click="saveDraft"
-            >
-              {{ editingOfferId
-                ? $t('widgets.quotation_wizard.update_draft')
-                : $t('widgets.quotation_wizard.save_draft') }}
-            </button>
-            <button
-              type="button"
-              class="qw-btn qw-btn--success"
-              :disabled="submitting || meterCount > MAX_METERS"
-              @click="finishQuotation"
-            >
-              <span v-if="submitting">{{ $t('widgets.quotation_wizard.creating') }}…</span>
-              <span v-else>{{ $t('widgets.quotation_wizard.finish_offer') }}</span>
-            </button>
-          </div>
-        </footer>
       </section>
+
+      <footer class="qw-footer qw-footer--inline">
+        <div class="qw-footer__total">
+          {{ $t('widgets.quotation_wizard.offer_total') }}:
+          <strong>{{ formatCurrency(totalYearlyCost) }} / {{ $t('widgets.quotation_wizard.year') }}</strong>
+        </div>
+        <div class="qw-footer__actions">
+          <button type="button" class="qw-btn qw-btn--outline" @click.prevent="prevStep">
+            {{ $t('widgets.quotation_wizard.back') }}
+          </button>
+          <button
+            type="button"
+            class="qw-btn qw-btn--outline"
+            :disabled="submitting"
+            @click="saveDraft"
+          >
+            {{ editingOfferId
+              ? $t('widgets.quotation_wizard.update_draft')
+              : $t('widgets.quotation_wizard.save_draft') }}
+          </button>
+          <button
+            type="button"
+            class="qw-btn qw-btn--success"
+            :disabled="submitting || meterCount > MAX_METERS"
+            @click="finishQuotation"
+          >
+            <span v-if="submitting">{{ $t('widgets.quotation_wizard.creating') }}…</span>
+            <span v-else>{{ $t('widgets.quotation_wizard.place_order') }}</span>
+          </button>
+        </div>
+      </footer>
+      </template>
       </template>
     </div>
 
@@ -1221,6 +1307,8 @@ function createMeter(overrides = {}) {
     start_date: null,
     peak_power: null,
     annual_peak_power: null,
+    switch_reason: 'supplier_switch',
+    external_id: '',
     current_provider: '',
     current_customer_no: '',
     current_price_per_kwh: null,
@@ -1243,15 +1331,20 @@ function createLocation(label = '', overrides = {}) {
     deliveryAddressMode: 'new',
     street: '',
     housenumber: '',
+    housenumberAddition: '',
     zip: '',
     city: '',
+    billingMode: 'delivery',
     customBilling: false,
     billingAddressMode: 'new',
     billingStreet: '',
     billingHousenumber: '',
+    billingHousenumberAddition: '',
     billingZip: '',
     billingCity: '',
+    bank: '',
     iban: '',
+    bic: '',
     addressDbId: null,
     billingAddressDbId: null,
     meters: [createMeter()],
@@ -1263,20 +1356,16 @@ function copyContractAddressToLocation(location) {
   location.deliveryAddressMode = 'contract'
   location.street = form.street || ''
   location.housenumber = form.housenumber || ''
+  location.housenumberAddition = form.housenumberAddition || ''
   location.zip = form.zip || ''
   location.city = form.city || ''
 }
 
-function onCustomBillingToggle(location) {
-  if (location.customBilling) {
-    location.billingAddressMode = 'new'
-  }
-}
-
 function copyDeliveryAddressToBilling(location) {
-  location.billingAddressMode = 'new'
+  location.billingMode = 'new'
   location.billingStreet = location.street || ''
   location.billingHousenumber = location.housenumber || ''
+  location.billingHousenumberAddition = location.housenumberAddition || ''
   location.billingZip = location.zip || ''
   location.billingCity = location.city || ''
 }
@@ -1327,25 +1416,37 @@ const vpName = computed(() => {
 })
 
 const stepLabels = computed(() => ([
-  t('widgets.quotation_wizard.steps.energy'),
-  t('widgets.quotation_wizard.steps.address'),
+  t('widgets.quotation_wizard.steps.start'),
   t('widgets.quotation_wizard.steps.meters'),
   t('widgets.quotation_wizard.steps.tariffs'),
-  t('widgets.quotation_wizard.steps.completion'),
+  t('widgets.quotation_wizard.steps.contract_data'),
+  t('widgets.quotation_wizard.steps.order_payment'),
 ]))
 
 const progressPercent = computed(() => ((currentStep.value - 1) / (TOTAL_STEPS - 1)) * 100)
 
 const form = reactive({
   medium: 'electricity',
+  procurementType: 'fixed',
+  ecoOnly: false,
   type: 'b2b',
   company: '',
+  companyType: 'gmbh',
+  industry: '',
+  salutation: 'mr',
   firstname: '',
   name: '',
+  birthdate: '',
   email: '',
   phone: '',
+  phonePrefix: '',
+  phoneNumber: '',
+  marketingPost: false,
+  marketingEmail: false,
+  marketingPhone: false,
   street: '',
   housenumber: '',
+  housenumberAddition: '',
   zip: '',
   city: '',
   iban: '',
@@ -1362,6 +1463,19 @@ const form = reactive({
   shippingZip: '',
   shippingCity: '',
   locations: [createLocation()],
+})
+
+const companyTypeOptions = ['gmbh', 'ag', 'einzelunternehmen', 'gbr', 'other']
+const industryOptions = ['handel', 'gastronomie', 'produktion', 'dienstleistung', 'other']
+const salutationOptions = ['mr', 'ms']
+const switchReasonOptions = ['supplier_switch', 'move_in']
+const currentProviderOptions = ['Vattenfall', 'E.ON', 'Sonstige']
+
+const composedPhone = computed(() => {
+  const prefix = (form.phonePrefix || '').trim()
+  const number = (form.phoneNumber || '').trim()
+  const combined = [prefix, number].filter(Boolean).join(' ').trim()
+  return combined || number || form.phone || ''
 })
 
 const mediumOptions = computed(() => [
@@ -1473,7 +1587,7 @@ function goToStep(step) {
     }
   }
   currentStep.value = step
-  if (step === 4) {
+  if (step === 3) {
     loadTariffs()
   }
   scrollWizardTop()
@@ -1485,7 +1599,7 @@ function nextStep() {
   }
   if (currentStep.value < TOTAL_STEPS) {
     currentStep.value += 1
-    if (currentStep.value === 4) {
+    if (currentStep.value === 3) {
       loadTariffs()
     }
     scrollWizardTop()
@@ -1500,14 +1614,30 @@ function prevStep() {
 }
 
 function validateStep(step) {
-  if (step === 2) {
-    if (!form.street?.trim() || !form.zip?.trim() || !form.city?.trim()) {
+  if (step === 1) {
+    if (!form.medium) {
+      showMessage('error', { content: t('widgets.quotation_wizard.validation.medium') })
+      return false
+    }
+    if (form.type === 'b2b' && !form.company?.trim()) {
+      showMessage('error', { content: t('widgets.quotation_wizard.validation.company') })
+      return false
+    }
+    if (form.type === 'b2b' && !form.companyType) {
+      showMessage('error', { content: t('widgets.quotation_wizard.validation.company_type') })
+      return false
+    }
+    if (form.type === 'b2b' && !form.industry) {
+      showMessage('error', { content: t('widgets.quotation_wizard.validation.industry') })
+      return false
+    }
+    if (!form.street?.trim() || !form.housenumber?.trim() || !form.zip?.trim() || !form.city?.trim()) {
       showMessage('error', { content: t('widgets.quotation_wizard.validation.address') })
       return false
     }
     return true
   }
-  if (step === 3) {
+  if (step === 2) {
     if (meterCount.value === 0) {
       showMessage('error', { content: t('widgets.quotation_wizard.validation.at_least_one_meter') })
       return false
@@ -1517,36 +1647,27 @@ function validateStep(step) {
       return false
     }
     for (const location of form.locations) {
-      if (location.deliveryAddressMode === 'new') {
-        if (!location.street?.trim() || !location.zip?.trim() || !location.city?.trim()) {
-          showMessage('error', { content: t('widgets.quotation_wizard.validation.location_address') })
-          return false
-        }
-      }
-      if (location.customBilling && location.billingAddressMode === 'new') {
-        if (!location.billingStreet?.trim() || !location.billingZip?.trim() || !location.billingCity?.trim()) {
-          showMessage('error', { content: t('widgets.quotation_wizard.validation.location_billing_address') })
-          return false
-        }
+      const hasLocationAddress = location.deliveryAddressMode === 'contract'
+        ? !!(form.street?.trim() && form.zip?.trim() && form.city?.trim())
+        : !!(location.street?.trim() && location.zip?.trim() && location.city?.trim())
+      if (!hasLocationAddress) {
+        showMessage('error', { content: t('widgets.quotation_wizard.validation.location_address') })
+        return false
       }
       for (const meter of location.meters) {
         if (!meter.meter_number?.trim()) {
           showMessage('error', { content: t('widgets.quotation_wizard.validation.meter_number') })
           return false
         }
+        if (!meter.malo?.trim() || String(meter.malo).length !== 11) {
+          showMessage('error', { content: t('widgets.quotation_wizard.validation.malo_required') })
+          return false
+        }
         if (!meter.usage || meter.usage <= 0) {
           showMessage('error', { content: t('widgets.quotation_wizard.validation.usage') })
           return false
         }
-        if (!meter.start_date) {
-          showMessage('error', { content: t('widgets.quotation_wizard.validation.start_date') })
-          return false
-        }
-        if (meter.malo && String(meter.malo).length !== 11) {
-          showMessage('error', { content: t('widgets.quotation_wizard.validation.malo') })
-          return false
-        }
-        if (meter.meter_type === 'rlm' && (!meter.peak_power || !meter.annual_peak_power)) {
+        if (meter.meter_type === 'rlm' && !meter.peak_power) {
           showMessage('error', { content: t('widgets.quotation_wizard.validation.peak_power') })
           return false
         }
@@ -1554,17 +1675,27 @@ function validateStep(step) {
     }
     return true
   }
-  if (step === 4) {
+  if (step === 3) {
     for (const entry of meterEntries.value) {
-      if (!hasPreviousTariffPrices(entry.meter)) {
-        showMessage('error', { content: t('widgets.quotation_wizard.validation.previous_tariff') })
-        return false
-      }
-      if (!entry.meter.previousSupplierCalculated) {
-        entry.meter.previousSupplierCalculated = true
-      }
       if (!entry.meter.tariffId) {
         showMessage('error', { content: t('widgets.quotation_wizard.validation.tariff') })
+        return false
+      }
+    }
+    return true
+  }
+  if (step === 4) {
+    for (const entry of meterEntries.value) {
+      if (!entry.meter.switch_reason) {
+        showMessage('error', { content: t('widgets.quotation_wizard.validation.switch_reason') })
+        return false
+      }
+      if (!entry.meter.start_date) {
+        showMessage('error', { content: t('widgets.quotation_wizard.validation.start_date') })
+        return false
+      }
+      if (!entry.meter.current_provider?.trim()) {
+        showMessage('error', { content: t('widgets.quotation_wizard.validation.current_provider') })
         return false
       }
     }
@@ -1660,13 +1791,9 @@ async function submitCustomInquiry() {
   try {
     const customer = await resolveCustomer()
     const partner = currentPartnerRelation()
-    const contractFields = contractAddressFields()
     const contractAddress = await upsertAddress(
       customer.id,
-      contractFields.street,
-      contractFields.housenumber,
-      contractFields.zip,
-      contractFields.city,
+      contractAddressFields(),
       contractAddressId.value,
     )
     contractAddressId.value = contractAddress.id
@@ -1779,7 +1906,55 @@ function tariffAvatarStyle(tariff) {
 }
 
 function tariffsForMeter(meter) {
-  return tariffs.value.filter(item => item.type === form.medium && item.meter_type === meter.meter_type)
+  return tariffs.value.filter((item) => {
+    if (item.type !== form.medium || item.meter_type !== meter.meter_type) {
+      return false
+    }
+    if (form.ecoOnly && !item.eco) {
+      return false
+    }
+    return true
+  })
+}
+
+function normalizeTariffFamilyName(name) {
+  return String(name || '')
+    .replace(/\s*\d+\s*(monate|months|m)?\s*$/i, '')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .toLowerCase()
+}
+
+function tariffRowsForMeter(meter) {
+  const list = tariffsForMeter(meter)
+  const groups = new Map()
+  for (const tariff of list) {
+    const key = `${tariff.provider || ''}|${normalizeTariffFamilyName(tariff.name)}|${tariff.meter_type || ''}`
+    if (!groups.has(key)) {
+      groups.set(key, [])
+    }
+    groups.get(key).push(tariff)
+  }
+  return Array.from(groups.entries()).map(([key, variants]) => {
+    const sorted = [...variants].sort((a, b) => (Number(a.duration) || 0) - (Number(b.duration) || 0))
+    const selected = sorted.find(item => item.id === meter.tariffId) || sorted[0]
+    return {
+      key,
+      variants: sorted,
+      selected,
+      displayName: normalizeTariffFamilyName(selected?.name)
+        ? (selected?.name || '').replace(/\s*\d+\s*$/, '').trim() || selected?.name
+        : (selected?.name || ''),
+    }
+  })
+}
+
+function onTariffDurationChange(meter, row, durationValue) {
+  const duration = Number(durationValue)
+  const match = row.variants.find(item => Number(item.duration) === duration) || row.variants[0]
+  if (match) {
+    selectTariffPrimary(meter, match.id)
+  }
 }
 
 function previousYearlyCost(meter) {
@@ -1890,6 +2065,7 @@ function contractAddressFields() {
   return {
     street: form.street,
     housenumber: form.housenumber,
+    housenumberAddition: form.housenumberAddition,
     zip: form.zip,
     city: form.city,
   }
@@ -1902,6 +2078,7 @@ function billingAddressFields() {
   return {
     street: form.billingStreet,
     housenumber: form.billingHousenumber,
+    housenumberAddition: '',
     zip: form.billingZip,
     city: form.billingCity,
   }
@@ -1914,8 +2091,29 @@ function shippingAddressFields() {
   return {
     street: form.shippingStreet,
     housenumber: form.shippingHousenumber,
+    housenumberAddition: '',
     zip: form.shippingZip,
     city: form.shippingCity,
+  }
+}
+
+function locationAddressFields(location) {
+  return {
+    street: location.street,
+    housenumber: location.housenumber,
+    housenumberAddition: location.housenumberAddition,
+    zip: location.zip,
+    city: location.city,
+  }
+}
+
+function locationBillingAddressFields(location) {
+  return {
+    street: location.billingStreet,
+    housenumber: location.billingHousenumber,
+    housenumberAddition: location.billingHousenumberAddition,
+    zip: location.billingZip,
+    city: location.billingCity,
   }
 }
 
@@ -1931,6 +2129,9 @@ function applyAddressToForm(address, prefix = '') {
   form[houseKey] = address.housenumber || ''
   form[zipKey] = address.zip || ''
   form[cityKey] = address.city || ''
+  if (!prefix) {
+    form.housenumberAddition = address.housenumber_addition || ''
+  }
 }
 
 function meterFromEntities(meterEntity, positionEntity = null) {
@@ -1950,6 +2151,8 @@ function meterFromEntities(meterEntity, positionEntity = null) {
     start_date: positionEntity?.start_date || meterEntity?.start_date || null,
     peak_power: meterEntity?.peak_power ?? null,
     annual_peak_power: meterEntity?.annual_peak_power ?? null,
+    switch_reason: positionEntity?.switch_reason || meterEntity?.switch_reason || 'supplier_switch',
+    external_id: positionEntity?.external_id || meterEntity?.external_id || '',
     current_provider: previous.current_provider,
     current_customer_no: previous.current_customer_no,
     current_price_per_kwh: previous.current_price_per_kwh,
@@ -1982,14 +2185,25 @@ async function loadOfferDraft(offerId) {
     editingOfferNumber.value = offer.number
     currentStep.value = 1
 
+    form.procurementType = offer.procurement_type || form.procurementType
+
     const customer = await Api.fetchEntity(offer.customer.id, customersModule)
     existingCustomerId.value = customer.id
     form.type = customer.type || 'b2b'
     form.company = customer.company || ''
+    form.companyType = customer.company_type || form.companyType
+    form.industry = customer.industry || ''
+    form.salutation = customer.salutation || form.salutation
     form.firstname = customer.firstname || ''
     form.name = customer.name || ''
+    form.birthdate = customer.birthdate || ''
     form.email = customer.email || ''
     form.phone = customer.phone || ''
+    form.phonePrefix = ''
+    form.phoneNumber = customer.phone || ''
+    form.marketingPost = !!customer.marketing_post
+    form.marketingEmail = !!customer.marketing_email
+    form.marketingPhone = !!customer.marketing_phone
     form.iban = customer.iban || customer.default_iban || ''
     form.bic = customer.bic || customer.default_bic || ''
     form.accountHolder = customer.default_bank || ''
@@ -2063,14 +2277,15 @@ async function loadOfferDraft(offerId) {
           locationBillingAddress = await Api.fetchEntity(locationEntity.billing_address.id, addressesModule)
         }
 
-        let customBilling = false
-        let billingAddressMode = 'new'
-        if (locationBillingAddress && billingAddressId.value) {
-          const defaultBilling = await Api.fetchEntity(billingAddressId.value, addressesModule)
-          customBilling = !addressFieldsMatch(locationBillingAddress, defaultBilling)
-          billingAddressMode = customBilling ? 'new' : 'default'
-        } else if (locationBillingAddress) {
-          customBilling = true
+        let billingMode = 'delivery'
+        if (locationBillingAddress) {
+          if (locationAddress && addressFieldsMatch(locationBillingAddress, locationAddress)) {
+            billingMode = 'delivery'
+          } else if (addressFieldsMatch(contractAddressFields(), locationBillingAddress)) {
+            billingMode = 'contract'
+          } else {
+            billingMode = 'new'
+          }
         }
 
         locationForm = createLocation(locationEntity.label || '', {
@@ -2080,15 +2295,18 @@ async function loadOfferDraft(offerId) {
           deliveryAddressMode,
           street: locationAddress?.street || form.street || '',
           housenumber: locationAddress?.housenumber || form.housenumber || '',
+          housenumberAddition: locationAddress?.housenumber_addition || '',
           zip: locationAddress?.zip || form.zip || '',
           city: locationAddress?.city || form.city || '',
-          customBilling,
-          billingAddressMode,
+          billingMode,
           billingStreet: locationBillingAddress?.street || '',
           billingHousenumber: locationBillingAddress?.housenumber || '',
+          billingHousenumberAddition: locationBillingAddress?.housenumber_addition || '',
           billingZip: locationBillingAddress?.zip || '',
           billingCity: locationBillingAddress?.city || '',
-          iban: locationEntity.iban || '',
+          bank: locationEntity.bank || customer.default_bank || '',
+          iban: locationEntity.iban || customer.iban || customer.default_iban || '',
+          bic: locationEntity.bic || customer.bic || customer.default_bic || '',
           meters: [],
         })
         locationMap.set(locationKey, locationForm)
@@ -2138,18 +2356,6 @@ async function loadOfferDraft(offerId) {
 
 function toggleLocationEdit(location) {
   location.editing = !location.editing
-}
-
-function toggleMeterEdit(location, meter) {
-  const willOpen = !meter.editing
-  if (willOpen) {
-    location.meters.forEach((item) => {
-      if (item.uid !== meter.uid) {
-        item.editing = false
-      }
-    })
-  }
-  meter.editing = willOpen
 }
 
 function addLocation() {
@@ -2293,10 +2499,19 @@ async function applyExistingCustomer() {
   existingCustomerId.value = customer.id
   form.type = customer.type || 'b2b'
   form.company = customer.company || ''
+  form.companyType = customer.company_type || form.companyType
+  form.industry = customer.industry || ''
+  form.salutation = customer.salutation || form.salutation
   form.firstname = customer.firstname || ''
   form.name = customer.name || ''
+  form.birthdate = customer.birthdate || ''
   form.email = customer.email || ''
   form.phone = customer.phone || ''
+  form.phonePrefix = ''
+  form.phoneNumber = customer.phone || ''
+  form.marketingPost = !!customer.marketing_post
+  form.marketingEmail = !!customer.marketing_email
+  form.marketingPhone = !!customer.marketing_phone
   form.iban = customer.iban || customer.default_iban || ''
   form.bic = customer.bic || customer.default_bic || ''
   form.accountHolder = customer.default_bank || ''
@@ -2337,27 +2552,17 @@ async function applyExistingCustomer() {
 }
 
 function validate(mode = 'finish') {
-  if (!form.firstname?.trim() || !form.name?.trim()) {
-    showMessage('error', { content: t('widgets.quotation_wizard.validation.contact') })
+  if (form.type === 'b2b' && !form.company?.trim()) {
+    showMessage('error', { content: t('widgets.quotation_wizard.validation.company') })
     return false
   }
   if (!form.street?.trim() || !form.zip?.trim() || !form.city?.trim()) {
     showMessage('error', { content: t('widgets.quotation_wizard.validation.address') })
     return false
   }
-  if (!form.billingSameAsContract) {
-    if (!form.billingStreet?.trim() || !form.billingZip?.trim() || !form.billingCity?.trim()) {
-      showMessage('error', { content: t('widgets.quotation_wizard.validation.billing_address') })
-      return false
-    }
-  }
   if (mode === 'finish') {
-    if (!form.accountHolder?.trim()) {
-      showMessage('error', { content: t('widgets.quotation_wizard.validation.account_holder') })
-      return false
-    }
-    if (!form.iban?.trim()) {
-      showMessage('error', { content: t('widgets.quotation_wizard.validation.iban') })
+    if (!form.firstname?.trim() || !form.name?.trim()) {
+      showMessage('error', { content: t('widgets.quotation_wizard.validation.contact') })
       return false
     }
   }
@@ -2372,40 +2577,59 @@ function validate(mode = 'finish') {
         return false
       }
     }
-    if (location.customBilling && location.billingAddressMode === 'new') {
-      if (!location.billingStreet?.trim() || !location.billingZip?.trim() || !location.billingCity?.trim()) {
-        showMessage('error', { content: t('widgets.quotation_wizard.validation.location_billing_address') })
+    if (mode === 'finish') {
+      if (!location.bank?.trim()) {
+        showMessage('error', { content: t('widgets.quotation_wizard.validation.account_holder') })
         return false
+      }
+      if (!location.iban?.trim()) {
+        showMessage('error', { content: t('widgets.quotation_wizard.validation.iban') })
+        return false
+      }
+      if (location.billingMode === 'new') {
+        if (!location.billingStreet?.trim() || !location.billingZip?.trim() || !location.billingCity?.trim()) {
+          showMessage('error', { content: t('widgets.quotation_wizard.validation.location_billing_address') })
+          return false
+        }
       }
     }
     for (const meter of location.meters) {
-      if (meter.malo && meter.malo.length !== 11) {
-        showMessage('error', { content: t('widgets.quotation_wizard.validation.malo') })
-        return false
-      }
-      if (mode === 'finish') {
+      if (mode !== 'draft') {
         if (!meter.meter_number?.trim()) {
           showMessage('error', { content: t('widgets.quotation_wizard.validation.meter_number') })
           return false
         }
-        if (!hasPreviousTariffPrices(meter)) {
-          showMessage('error', { content: t('widgets.quotation_wizard.validation.previous_tariff') })
+        if (!meter.malo?.trim() || meter.malo.length !== 11) {
+          showMessage('error', { content: t('widgets.quotation_wizard.validation.malo_required') })
           return false
         }
         if (!meter.usage || meter.usage <= 0) {
           showMessage('error', { content: t('widgets.quotation_wizard.validation.usage') })
           return false
         }
-        if (!meter.start_date) {
-          showMessage('error', { content: t('widgets.quotation_wizard.validation.start_date') })
-          return false
-        }
-        if (meter.meter_type === 'rlm' && (!meter.peak_power || !meter.annual_peak_power)) {
+        if (meter.meter_type === 'rlm' && !meter.peak_power) {
           showMessage('error', { content: t('widgets.quotation_wizard.validation.peak_power') })
           return false
         }
         if (!meter.tariffId) {
           showMessage('error', { content: t('widgets.quotation_wizard.validation.tariff') })
+          return false
+        }
+      } else if (meter.malo && meter.malo.length !== 11) {
+        showMessage('error', { content: t('widgets.quotation_wizard.validation.malo') })
+        return false
+      }
+      if (mode === 'finish') {
+        if (!meter.switch_reason) {
+          showMessage('error', { content: t('widgets.quotation_wizard.validation.switch_reason') })
+          return false
+        }
+        if (!meter.start_date) {
+          showMessage('error', { content: t('widgets.quotation_wizard.validation.start_date') })
+          return false
+        }
+        if (!meter.current_provider?.trim()) {
+          showMessage('error', { content: t('widgets.quotation_wizard.validation.current_provider') })
           return false
         }
       }
@@ -2428,52 +2652,59 @@ function relation(id, moduleIdentifier = null) {
   return payload
 }
 
+function customerFieldsPayload() {
+  const primaryBank = form.locations[0]?.bank || form.accountHolder || null
+  const primaryIban = form.locations[0]?.iban || form.iban || null
+  const primaryBic = form.locations[0]?.bic || form.bic || null
+  return {
+    type: form.type,
+    company: form.type === 'b2b' ? (form.company || null) : null,
+    company_type: form.type === 'b2b' ? (form.companyType || null) : null,
+    industry: form.type === 'b2b' ? (form.industry || null) : null,
+    salutation: form.salutation || null,
+    firstname: form.firstname || null,
+    name: form.name || null,
+    birthdate: form.birthdate || null,
+    email: form.email || null,
+    phone: composedPhone.value || null,
+    marketing_post: !!form.marketingPost,
+    marketing_email: !!form.marketingEmail,
+    marketing_phone: !!form.marketingPhone,
+    iban: primaryIban,
+    default_iban: primaryIban,
+    bic: primaryBic,
+    default_bic: primaryBic,
+    default_bank: primaryBank,
+  }
+}
+
 async function resolveCustomer() {
   const partner = currentPartnerRelation()
   if (existingCustomerId.value) {
     const customer = customersModule.makeEntity({
       id: existingCustomerId.value,
-      type: form.type,
-      company: form.company || null,
-      firstname: form.firstname || null,
-      name: form.name || null,
-      email: form.email || null,
-      phone: form.phone || null,
-      iban: form.iban || null,
-      default_iban: form.iban || null,
-      bic: form.bic || null,
-      default_bic: form.bic || null,
-      default_bank: form.accountHolder || null,
+      ...customerFieldsPayload(),
       partner,
     })
     await Api.updateEntity(customer)
     return customer
   }
   const customer = customersModule.makeEntity({
-    type: form.type,
-    company: form.company || null,
-    firstname: form.firstname || null,
-    name: form.name || null,
-    email: form.email || null,
-    phone: form.phone || null,
-    iban: form.iban || null,
-    default_iban: form.iban || null,
-    bic: form.bic || null,
-    default_bic: form.bic || null,
-    default_bank: form.accountHolder || null,
+    ...customerFieldsPayload(),
     partner,
   })
   const response = await Api.createEntity(customer)
   return customersModule.makeEntity(response.resource)
 }
 
-async function upsertAddress(customerId, street, housenumber, zip, city, existingId = null) {
+async function upsertAddress(customerId, fields, existingId = null) {
   const payload = {
     customer: relation(customerId, 'customers'),
-    street,
-    housenumber,
-    zip,
-    city,
+    street: fields.street || null,
+    housenumber: fields.housenumber || null,
+    housenumber_addition: fields.housenumberAddition || null,
+    zip: fields.zip || null,
+    city: fields.city || null,
     country: 'DE',
   }
   if (existingId) {
@@ -2481,18 +2712,7 @@ async function upsertAddress(customerId, street, housenumber, zip, city, existin
     const response = await Api.updateEntity(address)
     return addressesModule.makeEntity(response.resource)
   }
-  return createAddress(customerId, street, housenumber, zip, city)
-}
-
-async function createAddress(customerId, street, housenumber, zip, city) {
-  const address = addressesModule.makeEntity({
-    customer: relation(customerId, 'customers'),
-    street,
-    housenumber,
-    zip,
-    city,
-    country: 'DE',
-  })
+  const address = addressesModule.makeEntity(payload)
   const response = await Api.createEntity(address)
   return addressesModule.makeEntity(response.resource)
 }
@@ -2501,7 +2721,8 @@ async function createQuotation(mode = 'finish') {
   if (!validate(mode)) {
     return
   }
-  if (mode === 'finish') {
+  const calculateAndExport = mode === 'finish' || mode === 'offer'
+  if (calculateAndExport) {
     const missingMalo = form.locations.some(location => location.meters.some(meter => !meter.malo?.trim()))
     if (missingMalo) {
       showMessage('warning', { content: t('widgets.quotation_wizard.malo_missing_warning') })
@@ -2511,16 +2732,10 @@ async function createQuotation(mode = 'finish') {
   try {
     const customer = await resolveCustomer()
     const partner = currentPartnerRelation()
-    const contractFields = contractAddressFields()
-    const billingFields = billingAddressFields()
-    const shippingFields = shippingAddressFields()
 
     const contractAddress = await upsertAddress(
       customer.id,
-      contractFields.street,
-      contractFields.housenumber,
-      contractFields.zip,
-      contractFields.city,
+      contractAddressFields(),
       contractAddressId.value,
     )
     contractAddressId.value = contractAddress.id
@@ -2529,10 +2744,7 @@ async function createQuotation(mode = 'finish') {
       ? contractAddress
       : await upsertAddress(
         customer.id,
-        billingFields.street,
-        billingFields.housenumber,
-        billingFields.zip,
-        billingFields.city,
+        billingAddressFields(),
         billingAddressId.value,
       )
     if (!form.billingSameAsContract) {
@@ -2545,10 +2757,7 @@ async function createQuotation(mode = 'finish') {
       ? contractAddress
       : await upsertAddress(
         customer.id,
-        shippingFields.street,
-        shippingFields.housenumber,
-        shippingFields.zip,
-        shippingFields.city,
+        shippingAddressFields(),
         shippingAddressId.value,
       )
     if (!form.shippingSameAsContract) {
@@ -2557,19 +2766,22 @@ async function createQuotation(mode = 'finish') {
       shippingAddressId.value = contractAddress.id
     }
 
+    const primaryBank = form.locations[0]?.bank || form.accountHolder || null
+    const primaryIban = form.locations[0]?.iban || form.iban || null
+    const primaryBic = form.locations[0]?.bic || form.bic || null
     customer.default_address = relation(contractAddress.id, 'addresses')
     customer.default_billing_address = relation(billingAddress.id, 'addresses')
     customer.default_shipping_address = relation(shippingAddress.id, 'addresses')
-    if (form.iban) {
-      customer.default_iban = form.iban
-      customer.iban = form.iban
+    if (primaryIban) {
+      customer.default_iban = primaryIban
+      customer.iban = primaryIban
     }
-    if (form.bic) {
-      customer.default_bic = form.bic
-      customer.bic = form.bic
+    if (primaryBic) {
+      customer.default_bic = primaryBic
+      customer.bic = primaryBic
     }
-    if (form.accountHolder) {
-      customer.default_bank = form.accountHolder
+    if (primaryBank) {
+      customer.default_bank = primaryBank
     }
     await Api.updateEntity(customer)
 
@@ -2583,8 +2795,9 @@ async function createQuotation(mode = 'finish') {
         user: partner,
         type: offerType,
         status: 'draft',
+        procurement_type: form.procurementType || null,
       })
-      if (mode === 'finish') {
+      if (calculateAndExport) {
         offerUpdate.valid_till = formatDateISO(addDays(new Date(), OFFER_VALID_DAYS))
         offerUpdate.created_at = today
       }
@@ -2596,8 +2809,9 @@ async function createQuotation(mode = 'finish') {
         user: partner,
         status: 'draft',
         type: offerType,
+        procurement_type: form.procurementType || null,
         created_at: today,
-        valid_till: mode === 'finish' ? formatDateISO(addDays(new Date(), OFFER_VALID_DAYS)) : null,
+        valid_till: calculateAndExport ? formatDateISO(addDays(new Date(), OFFER_VALID_DAYS)) : null,
       })
       const offerResponse = await Api.createEntity(offer)
       savedOffer = offersModule.makeEntity(offerResponse.resource)
@@ -2609,18 +2823,17 @@ async function createQuotation(mode = 'finish') {
       const address = await resolveLocationAddress(customer.id, contractAddress, shippingAddress, location)
 
       let billingForLocation = billingAddress
-      if (location.customBilling) {
-        if (location.billingAddressMode === 'new') {
-          billingForLocation = await upsertAddress(
-            customer.id,
-            location.billingStreet,
-            location.billingHousenumber || '',
-            location.billingZip,
-            location.billingCity,
-            location.billingAddressDbId || null,
-          )
-          location.billingAddressDbId = billingForLocation.id
-        }
+      if (location.billingMode === 'delivery') {
+        billingForLocation = address
+      } else if (location.billingMode === 'contract') {
+        billingForLocation = contractAddress
+      } else if (location.billingMode === 'new') {
+        billingForLocation = await upsertAddress(
+          customer.id,
+          locationBillingAddressFields(location),
+          location.billingAddressDbId || null,
+        )
+        location.billingAddressDbId = billingForLocation.id
       }
 
       const locationPayload = {
@@ -2629,7 +2842,9 @@ async function createQuotation(mode = 'finish') {
         label: location.label?.trim() || null,
         address: relation(address.id, 'addresses'),
         billing_address: relation(billingForLocation.id, 'addresses'),
-        iban: location.customBilling && location.iban ? location.iban : form.iban,
+        bank: location.bank || form.accountHolder || null,
+        iban: location.iban || form.iban || null,
+        bic: location.bic || form.bic || null,
         start_date: location.meters[0]?.start_date || null,
       }
 
@@ -2660,6 +2875,8 @@ async function createQuotation(mode = 'finish') {
           annual_peak_power: meter.meter_type === 'rlm' ? meter.annual_peak_power : null,
           usage: meter.usage,
           start_date: meter.start_date,
+          switch_reason: meter.switch_reason || null,
+          external_id: meter.external_id || null,
           current_provider: meter.current_provider || null,
           current_price_per_kwh: meter.current_price_per_kwh,
           current_baseprice: meter.current_baseprice,
@@ -2694,6 +2911,8 @@ async function createQuotation(mode = 'finish') {
             current_price_per_kwh: meter.current_price_per_kwh,
             current_baseprice: meter.current_baseprice,
             current_customer_no: meter.current_customer_no || null,
+            switch_reason: meter.switch_reason || null,
+            external_id: meter.external_id || null,
             meter_type: meter.meter_type,
             usage: meter.usage,
             start_date: meter.start_date,
@@ -2746,7 +2965,7 @@ async function createQuotation(mode = 'finish') {
 
     const offerEntity = offersModule.makeEntity({ id: savedOffer.id })
 
-    if (mode === 'finish') {
+    if (calculateAndExport) {
       await BrezelActionFactory.create('CalculateOffer', offerEntity, {}, {}).fire(offerEntity)
       try {
         const offerForExport = await Api.fetchEntity(savedOffer.id, offersModule)
@@ -2784,16 +3003,17 @@ async function resolveLocationAddress(customerId, contractAddress, shippingAddre
   }
   return upsertAddress(
     customerId,
-    location.street,
-    location.housenumber || '',
-    location.zip,
-    location.city,
+    locationAddressFields(location),
     location.addressDbId || null,
   )
 }
 
 function saveDraft() {
   createQuotation('draft')
+}
+
+function createOfferPdf() {
+  createQuotation('offer')
 }
 
 function finishQuotation() {
@@ -3078,6 +3298,27 @@ $loewe-green-soft: #eef6d4;
   margin: 0 0 1rem;
 }
 
+.qw-form__block-title {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: $slate-800;
+  margin: 0 0 1rem;
+  padding: 0.75rem 0 0;
+}
+
+.qw-form__numbered {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: $slate-700;
+  margin: 0 0 0.5rem;
+  padding-bottom: 0.25rem;
+  border-bottom: 1px solid $slate-100;
+}
+
+.qw-form__span-2 {
+  grid-column: span 2;
+}
+
 .qw-label {
   display: block;
   font-size: 0.875rem;
@@ -3087,6 +3328,11 @@ $loewe-green-soft: #eef6d4;
 
   &--sm {
     font-size: 0.75rem;
+  }
+
+  &--accent {
+    color: #c2410c;
+    font-weight: 700;
   }
 }
 
@@ -3116,6 +3362,20 @@ $loewe-green-soft: #eef6d4;
   &--sm {
     padding: 0.35rem 0.6rem;
     font-size: 0.8125rem;
+  }
+
+  &--invalid {
+    border-color: #ef4444;
+
+    &:focus {
+      border-color: #ef4444;
+      box-shadow: 0 0 0 2px rgb(239 68 68 / 25%);
+    }
+  }
+
+  &--accent {
+    border-color: #fdba74;
+    background: #fff7ed;
   }
 
   &--table {
@@ -3158,6 +3418,53 @@ $loewe-green-soft: #eef6d4;
   &--sm {
     margin-top: 0.5rem;
   }
+
+  &--5 {
+    @media (min-width: 768px) {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+
+      > :nth-child(1) {
+        grid-column: span 6;
+      }
+
+      > :nth-child(2),
+      > :nth-child(3) {
+        grid-column: span 3;
+      }
+
+      > :nth-child(4) {
+        grid-column: span 4;
+      }
+
+      > :nth-child(5) {
+        grid-column: span 8;
+      }
+    }
+  }
+}
+
+.qw-config {
+  display: grid;
+  grid-template-columns: minmax(0, 22rem) 1fr;
+  gap: 1.5rem;
+  align-items: center;
+  padding: 0 1.5rem 1.5rem 1.75rem;
+  margin-left: 0.5rem;
+}
+
+.qw-config__toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: $slate-700;
+  cursor: pointer;
+  margin-top: 1.35rem;
+}
+
+.qw-input--half {
+  max-width: 24rem;
 }
 
 .qw-radio-inline {
@@ -3196,6 +3503,10 @@ $loewe-green-soft: #eef6d4;
 
   &--on {
     background: $blue-600;
+  }
+
+  &--full {
+    background: #ef4444;
   }
 }
 
@@ -3389,6 +3700,66 @@ $loewe-green-soft: #eef6d4;
 .qw-table-wrap {
   padding: 0;
   overflow-x: auto;
+}
+
+.qw-meters {
+  padding: 1rem;
+  background: #fff;
+}
+
+.qw-meter-card {
+  position: relative;
+  border: 1px solid $slate-200;
+  border-radius: 0.375rem;
+  padding: 0.75rem 1rem 0.75rem 0.75rem;
+  margin-bottom: 0.75rem;
+  background: #fff;
+
+  &:last-of-type {
+    margin-bottom: 0;
+  }
+}
+
+.qw-meter-card__remove {
+  position: absolute;
+  top: 0.35rem;
+  right: 0.5rem;
+  border: none;
+  background: none;
+  color: $slate-400;
+  font-size: 1.1rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0.15rem 0.35rem;
+
+  &:hover {
+    color: #ef4444;
+  }
+}
+
+.qw-meter-card__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.75rem 1rem;
+  padding-right: 1.25rem;
+}
+
+.qw-meter-card__field {
+  display: flex;
+  flex-direction: column;
+}
+
+.qw-meter-card__rlm {
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid $slate-100;
+  max-width: 25%;
+}
+
+.qw-meters__footer {
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid $slate-100;
 }
 
 .qw-table__footer {
@@ -4113,10 +4484,24 @@ $loewe-green-soft: #eef6d4;
 @media (max-width: 768px) {
   .qw-energy,
   .qw-form__grid,
+  .qw-config,
   .qw-previous__grid,
   .qw-tariff-grid,
-  .qw-meter-edit__cols {
+  .qw-meter-edit__cols,
+  .qw-meter-card__grid {
     grid-template-columns: 1fr;
+  }
+
+  .qw-form__span-2 {
+    grid-column: auto;
+  }
+
+  .qw-meter-card__rlm {
+    max-width: none;
+  }
+
+  .qw-config__toggle {
+    margin-top: 0;
   }
 
   .qw-meter-tariff__meta {
@@ -4138,32 +4523,86 @@ $loewe-green-soft: #eef6d4;
   align-items: center;
   gap: 1rem;
   margin-bottom: 1.25rem;
-  padding: 0.75rem 1rem;
+  padding: 0.85rem 1.25rem;
   background: #0f172a;
   color: #e2e8f0;
   border-radius: 0.75rem;
+  box-shadow: 0 4px 12px rgb(15 23 42 / 18%);
+}
+
+.qw-vpbar__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+}
+
+.qw-vpbar__badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 0.375rem;
+  background: $loewe-green;
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  flex-shrink: 0;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 12%);
+}
+
+.qw-vpbar__brand-name {
+  font-size: 1.125rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: #fff;
+  white-space: nowrap;
+}
+
+.qw-vpbar__brand-light {
+  font-weight: 300;
 }
 
 .qw-vpbar__vp {
   font-size: 0.875rem;
-  font-weight: 600;
+  font-weight: 500;
+  color: #cbd5e1;
+  white-space: nowrap;
+}
+
+.qw-vpbar__right {
+  display: inline-flex;
+  align-items: center;
+  gap: 1rem;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.qw-vpbar__divider {
+  width: 1px;
+  height: 1.25rem;
+  background: #334155;
+  flex-shrink: 0;
 }
 
 .qw-vpbar__surcharge {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.4rem;
+  gap: 0.5rem;
   background: #1e293b;
   border: 1px solid #334155;
   color: #fff;
   border-radius: 0.5rem;
-  padding: 0.45rem 0.65rem;
-  min-width: 2.25rem;
+  padding: 0.4rem 0.75rem;
   min-height: 2.25rem;
   cursor: pointer;
   font: inherit;
   font-size: 0.8125rem;
+  font-weight: 500;
+  white-space: nowrap;
 
   &:hover {
     background: #334155;
@@ -4171,16 +4610,19 @@ $loewe-green-soft: #eef6d4;
 }
 
 .qw-vpbar__surcharge-icon {
-  width: 1.15rem;
-  height: 1.15rem;
+  width: 1rem;
+  height: 1rem;
   color: $loewe-green;
   flex-shrink: 0;
+}
+
+.qw-vpbar__surcharge-label {
+  color: #fff;
 }
 
 .qw-vpbar__surcharge-value {
   color: $loewe-green;
   font-weight: 700;
-  font-size: 0.8125rem;
 }
 
 .qw-modal-backdrop {
