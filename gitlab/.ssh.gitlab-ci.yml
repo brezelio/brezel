@@ -168,12 +168,12 @@ stages:
         composer install --no-interaction --no-dev --optimize-autoloader
 
         echo "--- Running application setup (Bakery) ---"
-        php bakery init --force
-        php bakery migrate --force
-        php bakery apply
-        php bakery load --force
-        php bakery queue:restart
-        php bakery make:supervisor
+        "${BREZEL_PHP:-php}" bakery init --force
+        "${BREZEL_PHP:-php}" bakery migrate --force
+        "${BREZEL_PHP:-php}" bakery apply
+        "${BREZEL_PHP:-php}" bakery load --force
+        "${BREZEL_PHP:-php}" bakery queue:restart
+        "${BREZEL_PHP:-php}" bakery make:supervisor
 
         echo "-- Updating Supervisor configuration ---"
         # '|| true' prevents the job from failing if supervisor has no changes to apply
