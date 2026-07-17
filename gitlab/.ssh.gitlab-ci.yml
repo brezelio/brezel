@@ -162,10 +162,18 @@ stages:
         fi
 
         echo "--- Configuring Composer authentication ---"
-        composer config --auth "gitlab-token.gitlab.kiwis-and-brownies.de" "${PACKAGE_TOKEN_USER}" "${PACKAGE_TOKEN}" --no-ansi --no-interaction
+        if [ -n "${BREZEL_COMPOSER:-}" ]; then
+          "${BREZEL_PHP:-php}" "${BREZEL_COMPOSER}" config --auth "gitlab-token.gitlab.kiwis-and-brownies.de" "${PACKAGE_TOKEN_USER}" "${PACKAGE_TOKEN}" --no-ansi --no-interaction
+        else
+          composer config --auth "gitlab-token.gitlab.kiwis-and-brownies.de" "${PACKAGE_TOKEN_USER}" "${PACKAGE_TOKEN}" --no-ansi --no-interaction
+        fi
 
         echo "--- Installing Composer dependencies ---"
-        composer install --no-interaction --no-dev --optimize-autoloader
+        if [ -n "${BREZEL_COMPOSER:-}" ]; then
+          "${BREZEL_PHP:-php}" "${BREZEL_COMPOSER}" install --no-interaction --no-dev --optimize-autoloader
+        else
+          composer install --no-interaction --no-dev --optimize-autoloader
+        fi
 
         echo "--- Running application setup (Bakery) ---"
         "${BREZEL_PHP:-php}" bakery init --force
