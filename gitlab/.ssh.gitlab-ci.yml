@@ -161,6 +161,9 @@ stages:
           git clone --recurse-submodules --branch "$CI_COMMIT_BRANCH" "git@${CI_SERVER_HOST}:${CI_PROJECT_PATH}.git" .
         fi
 
+        export BREZEL_PHP="${BREZEL_PHP:-php}"
+        export BREZEL_COMPOSER="${BREZEL_COMPOSER:-}"
+
         echo "--- Configuring Composer authentication ---"
         if [ -n "${BREZEL_COMPOSER:-}" ]; then
           "${BREZEL_PHP:-php}" "${BREZEL_COMPOSER}" config --auth "gitlab-token.gitlab.kiwis-and-brownies.de" "${PACKAGE_TOKEN_USER}" "${PACKAGE_TOKEN}" --no-ansi --no-interaction
