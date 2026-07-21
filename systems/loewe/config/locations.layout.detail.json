@@ -1,0 +1,116 @@
+{
+  "tabs": [
+    {
+      "identifier": "general",
+      "icon": "mdi:map-marker-radius",
+      "rows": [
+        {
+          "cols": [
+            {
+              "span": 12,
+              "components": [
+                {
+                  "type": "headline",
+                  "options": {
+                    "identifier": "basic"
+                  }
+                },
+                {
+                  "type": "field_group",
+                  "options": {
+                    "fields": [
+                      "number",
+                      "customer",
+                      "partner",
+                      "label",
+                      "address",
+                      "billing_address",
+                      "start_date"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "span": 12,
+              "components": [
+                {
+                  "type": "headline",
+                  "options": {
+                    "identifier": "bank"
+                  }
+                },
+                {
+                  "type": "field_group",
+                  "options": {
+                    "fields": [
+                      "bank",
+                      "iban",
+                      "bic"
+                    ]
+                  }
+                },
+                {
+                  "type": "headline",
+                  "options": {
+                    "identifier": "previous_provider"
+                  }
+                },
+                {
+                  "type": "field_group",
+                  "options": {
+                    "fields": [
+                      "current_provider",
+                      "current_price_per_kwh",
+                      "current_baseprice",
+                      "current_customer_no"
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "cols": [
+            {
+              "span": 24,
+              "options": {
+                "recipes": {
+                  "hidden_from_frontend": "!id"
+                }
+              },
+              "components": [
+                {
+                  "type": "headline",
+                  "options": {
+                    "identifier": "meters"
+                  }
+                },
+                {
+                  "type": "resource_table",
+                  "options": {
+                    "module": "meters",
+                    "create_in_modal": true,
+                    "edit_in_modal": true,
+                    "show_in_modal": true,
+                    "pre_filters": [
+                      {
+                        "column": "location.id",
+                        "operator": "=",
+                        "recipe": "this.id"
+                      }
+                    ],
+                    "recipes": {
+                      "fill": "{'location': this, 'customer': this.customer}"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+[
+  {
+    "resource_menu": "main",
+    "resource": {
+      "name": "main",
+      "elements": [
+        {
+          "name": "dashboard",
+          "type": "entry",
+          "default": true
+        },
+        "quotation_wizard",
+        "offers",
+        "customers",
+        "contracts"
+      ]
+    }
+  }
+]

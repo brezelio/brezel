@@ -1,0 +1,303 @@
+{
+  "identifier": "CreateContractFromPosition",
+  "title": "Create contract from offer position",
+  "async": false,
+  "entry": "CreateContractFromPosition",
+  "elements": [
+    {
+      "name": "CreateContractFromPosition",
+      "type": "event/webhook",
+      "options": {
+        "module": "positions"
+      },
+      "in": {},
+      "set": {
+        "position": "default:"
+      },
+      "to": {
+        "default": {
+          "canCreateContract": ["default"]
+        }
+      },
+      "meta": {
+        "position": [0, 0]
+      }
+    },
+    {
+      "name": "canCreateContract",
+      "type": "flow/if",
+      "options": {
+        "condition": "$position.offer && !$position.contract && $position.status == 'pending'"
+      },
+      "in": {},
+      "set": {},
+      "to": {
+        "default": {
+          "newContract": ["default"]
+        },
+        "else": {
+          "rejectInvalidPosition": ["default"]
+        }
+      },
+      "meta": {
+        "position": [300, 0]
+      }
+    },
+    {
+      "name": "rejectInvalidPosition",
+      "type": "action/validate",
+      "options": {
+        "recipes": {
+          "status": "invalid(t('workflows.CreateContractFromPosition.invalid_position'))"
+        },
+        "runModuleValidations": false,
+        "markFailedFields": true
+      },
+      "in": {},
+      "set": {},
+      "to": {},
+      "meta": {
+        "position": [600, 200]
+      }
+    },
+    {
+      "name": "newContract",
+      "type": "source/new",
+      "options": {
+        "module": "contracts"
+      },
+      "in": {},
+      "set": {
+        "newContract": "default:"
+      },
+      "to": {
+        "default": {
+          "setContractFields": ["default"]
+        }
+      },
+      "meta": {
+        "position": [600, 0]
+      }
+    },
+    {
+      "name": "setContractFields",
+      "type": "op/set",
+      "options": {
+        "recipes": {
+          "customer": "$position.customer",
+          "user": "$position.partner",
+          "status": "\"accepted\"",
+          "created_at": "date()"
+        },
+        "values": [],
+        "process": false
+      },
+      "in": {
+        "default": "$newContract"
+      },
+      "set": {
+        "newContract": "default:"
+      },
+      "to": {
+        "default": {
+          "saveContract": ["default"]
+        }
+      },
+      "meta": {
+        "position": [900, 0]
+      }
+    },
+    {
+      "name": "saveContract",
+      "type": "action/save",
+      "options": {
+        "triggerEvents": false
+      },
+      "in": {
+        "default": "$newContract"
+      },
+      "set": {
+        "contract": "default:"
+      },
+      "to": {
+        "default": {
+          "linkPositionToContract": ["default"]
+        }
+      },
+      "meta": {
+        "position": [1200, 0]
+      }
+    },
+    {
+      "name": "linkPositionToContract",
+      "type": "op/set",
+      "options": {
+        "recipes": {
+          "contract": "$contract",
+          "status": "\"signed\""
+        },
+        "values": [],
+        "process": false
+      },
+      "in": {
+        "default": "$position"
+      },
+      "set": {
+        "position": "default:"
+      },
+      "to": {
+        "default": {
+          "savePosition": ["default"]
+        }
+      },
+      "meta": {
+        "position": [1500, 0]
+      }
+    },
+    {
+      "name": "savePosition",
+      "type": "action/save",
+      "options": {
+        "triggerEvents": false
+      },
+      "in": {
+        "default": "$position"
+      },
+      "set": {},
+      "to": {
+        "default": {
+          "loadOffer": ["default"]
+        }
+      },
+      "meta": {
+        "position": [1800, 0]
+      }
+    },
+    {
+      "name": "loadOffer",
+      "type": "source/entities",
+      "options": {
+        "module": "offers",
+        "first": true,
+        "filters": [
+          [
+            {
+              "left": {
+                "type": "field",
+                "value": "id"
+              },
+              "operator": "=",
+              "right": {
+                "type": "recipe",
+                "value": "$position.offer.id"
+              }
+            }
+          ]
+        ],
+        "permissions": false,
+        "hydrateRelations": false
+      },
+      "in": {},
+      "set": {
+        "offer": "default:"
+      },
+      "to": {
+        "default": {
+          "acceptOffer": ["default"]
+        }
+      },
+      "meta": {
+        "position": [2100, 0]
+      }
+    },
+    {
+      "name": "acceptOffer",
+      "type": "op/set",
+      "options": {
+        "recipes": {
+          "status": "\"accepted\""
+        },
+        "values": [],
+        "process": false
+      },
+      "in": {
+        "default": "$offer"
+      },
+      "set": {
+        "offer": "default:"
+      },
+      "to": {
+        "default": {
+          "saveOffer": ["default"]
+        }
+      },
+      "meta": {
+        "position": [2400, 0]
+      }
+    },
+    {
+      "name": "saveOffer",
+      "type": "action/save",
+      "options": {
+        "triggerEvents": false
+      },
+      "in": {
+        "default": "$offer"
+      },
+      "set": {},
+      "to": {
+        "default": {
+          "notifySuccess": ["default"]
+        }
+      },
+      "meta": {
+        "position": [2700, 0]
+      }
+    },
+    {
+      "name": "notifySuccess",
+      "type": "action/notify",
+      "options": {
+        "toast": {
+          "message": "workflows.CreateContractFromPosition.success",
+          "type": "success",
+          "duration": 4.5
+        }
+      },
+      "in": {},
+      "set": {},
+      "to": {
+        "default": {
+          "openContract": ["default"]
+        }
+      },
+      "meta": {
+        "position": [3000, 0]
+      }
+    },
+    {
+      "name": "openContract",
+      "type": "action/redirect",
+      "options": {
+        "action": "module.show",
+        "module": "contracts"
+      },
+      "in": {
+        "resource": "$contract"
+      },
+      "set": {},
+      "to": {},
+      "meta": {
+        "position": [3300, 0]
+      }
+    }
+  ],
+  "events": [
+    {
+      "identifier": "CreateContractFromPosition",
+      "type": "webhook",
+      "module": "positions"
+    }
+  ],
+  "comments": []
+}

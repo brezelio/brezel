@@ -1,0 +1,95 @@
+[
+  {
+    "resource_module": "users",
+    "resource": {
+      "identifier": "users",
+      "type": "users",
+      "icon": "user",
+      "title": "firstname.\" \".lastname",
+      "layouts": {
+        "detail": "config/users.layout.detail"
+      },
+      "fields": [
+        {
+          "identifier": "number",
+          "type": "incrementing",
+          "options": {
+            "decimal_digits": 0
+          }
+        },
+        {
+          "identifier": "role",
+          "type": "choice",
+          "options": {
+            "values": ["admin", "partner", "sub_partner"],
+            "default": "partner"
+          }
+        },
+        {
+          "identifier": "parent_user",
+          "type": "select",
+          "options": {
+            "references": "users",
+            "rules": "required_if:role,sub_partner",
+            "recipes": {
+              "hidden_from_frontend": "role != 'sub_partner'",
+              "frontend_disabled": "role != 'sub_partner'"
+            }
+          }
+        },
+        {
+          "identifier": "firstname",
+          "type": "text",
+          "options": {
+            "rules": "required"
+          }
+        },
+        {
+          "identifier": "lastname",
+          "type": "text",
+          "options": {
+            "rules": "required"
+          }
+        },
+        {
+          "identifier": "name",
+          "type": "text",
+          "recipe": "firstname.\" \".lastname"
+        },
+        {
+          "identifier": "email",
+          "type": "email"
+        },
+        {
+          "identifier": "password",
+          "type": "password",
+          "options": {
+            "ignore_when_empty": true
+          }
+        },
+        {
+          "identifier": "roles",
+          "type": "multiselect",
+          "options": {
+            "references": "roles"
+          }
+        },
+        {
+          "identifier": "company_name",
+          "type": "text"
+        },
+        {
+          "identifier": "provision_type",
+          "type": "choice",
+          "options": {
+            "values": ["surcharge", "hidden"]
+          }
+        },
+        {
+          "identifier": "provision_default",
+          "type": "number"
+        }
+      ]
+    }
+  }
+]

@@ -1,0 +1,208 @@
+{
+  "tabs": [
+    {
+      "identifier": "general",
+      "icon": "mdi:file-document-outline",
+      "rows": [
+        {
+          "cols": [
+            {
+              "span": 24,
+              "components": [
+                {
+                  "type": "headline",
+                  "options": {
+                    "identifier": "basic"
+                  }
+                },
+                {
+                  "type": "field_group",
+                  "options": {
+                    "vertical_labels": true,
+                    "fields": [
+                      "number",
+                      "customer",
+                      "user",
+                      ["status", "type"],
+                      ["created_at", "valid_till"],
+                      "inquiry_notes"
+                    ]
+                  }
+                },
+                {
+                  "type": "buttons",
+                  "options": {
+                    "buttons": [
+                      {
+                        "identifier": "CalculateOffer",
+                        "icon": "mdi:calculator-variant",
+                        "style": "primary",
+                        "options": {
+                          "recipes": {
+                            "hidden_from_frontend": "status != 'draft' || type == 'individual'"
+                          }
+                        }
+                      },
+                      {
+                        "identifier": "MarkOfferSent",
+                        "icon": "mdi:send",
+                        "options": {
+                          "recipes": {
+                            "hidden_from_frontend": "status != 'calculated'"
+                          }
+                        }
+                      },
+                      {
+                        "identifier": "ExportOfferPdf",
+                        "icon": "mdi:file-pdf-box",
+                        "options": {
+                          "recipes": {
+                            "hidden_from_frontend": "status == 'draft' || status == 'rejected' || type == 'individual'"
+                          }
+                        }
+                      },
+                      {
+                        "identifier": "EmailOfferPdf",
+                        "icon": "mdi:email-outline",
+                        "options": {
+                          "recipes": {
+                            "hidden_from_frontend": "status == 'draft' || status == 'rejected' || type == 'individual'"
+                          }
+                        }
+                      },
+                      {
+                        "identifier": "edit_in_wizard",
+                        "icon": "mdi:pencil-outline",
+                        "style": "default",
+                        "recipes": {
+                          "event": "{'action': 'open', 'type': 'entity', 'module': 'quotation_wizard', 'moduleAction': 'module', 'targetEntity': null, 'options': {'query': {'offer': this.id}}}"
+                        },
+                        "options": {
+                          "recipes": {
+                            "hidden_from_frontend": "status != 'draft' || type == 'individual'"
+                          }
+                        }
+                      },
+                      {
+                        "identifier": "DuplicateOffer",
+                        "icon": "mdi:content-copy",
+                        "style": "default",
+                        "options": {
+                          "recipes": {
+                            "hidden_from_frontend": "!id"
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "cols": [
+            {
+              "span": 24,
+              "components": [
+                {
+                  "type": "headline",
+                  "options": {
+                    "identifier": "documents"
+                  }
+                },
+                {
+                  "type": "field_group",
+                  "options": {
+                    "vertical_labels": true,
+                    "fields": [
+                      "attachments"
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "cols": [
+            {
+              "span": 24,
+              "options": {
+                "recipes": {
+                  "hidden_from_frontend": "!id || type == 'individual'"
+                }
+              },
+              "components": [
+                {
+                  "type": "headline",
+                  "options": {
+                    "identifier": "positions"
+                  }
+                },
+                {
+                  "type": "resource_table",
+                  "options": {
+                    "module": "positions",
+                    "create_in_modal": true,
+                    "edit_in_modal": true,
+                    "show_in_modal": true,
+                    "columns": {
+                      "display": [
+                        "number",
+                        "location",
+                        "provider",
+                        "tariff",
+                        "usage",
+                        "total_cost",
+                        "total_savings",
+                        "status"
+                      ],
+                      "fetch": [
+                        "number",
+                        "location",
+                        "provider",
+                        "tariff",
+                        "usage",
+                        "total_cost",
+                        "total_savings",
+                        "status",
+                        "offer",
+                        "contract"
+                      ]
+                    },
+                    "pre_filters": [
+                      {
+                        "column": "offer.id",
+                        "operator": "=",
+                        "recipe": "this.id"
+                      }
+                    ],
+                    "recipes": {
+                      "fill": "{'offer': this, 'customer': this.customer, 'partner': this.user}"
+                    },
+                    "buttons": [
+                      {
+                        "identifier": "CreateContractFromPosition",
+                        "icon": "mdi:file-sign",
+                        "title": "CreateContractFromPosition",
+                        "help": "Create contract",
+                        "style": "primary",
+                        "event": "CreateContractFromPosition",
+                        "options": {
+                          "recipes": {
+                            "hidden_from_frontend": "!this.offer || this.contract || this.status != 'pending'"
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

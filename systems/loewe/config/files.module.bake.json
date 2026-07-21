@@ -1,0 +1,45 @@
+[
+  {
+    "resource_module": "files",
+    "import": true,
+    "resource": {
+      "identifier": "files",
+      "type": "files",
+      "title": "name",
+      "icon": "mdi:file",
+      "layouts": {
+        "detail": "config/files.layout.detail"
+      },
+      "fields": [
+        {
+          "identifier": "name",
+          "type": "text",
+          "options": {
+            "rules": "required"
+          }
+        },
+        {
+          "identifier": "path",
+          "type": "text",
+          "options": {
+            "rules": "required"
+          }
+        },
+        {
+          "identifier": "mime_type",
+          "type": "text",
+          "options": {
+            "readonly": true
+          }
+        },
+        {
+          "identifier": "size",
+          "type": "number",
+          "options": {
+            "readonly": true
+          }
+        }
+      ]
+    }
+  }
+]

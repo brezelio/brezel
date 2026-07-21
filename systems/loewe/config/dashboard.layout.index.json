@@ -1,0 +1,27 @@
+{
+  "tab_position": "top",
+  "tabs": [
+    {
+      "identifier": "home",
+      "rows": [
+        {
+          "cols": [
+            {
+              "span": 24,
+              "components": [
+                {
+                  "type": "widget",
+                  "options": {
+                    "widget": "custom",
+                    "component": "PartnerDashboard",
+                    "dynamic_height": true
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

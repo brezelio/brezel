@@ -1,0 +1,38 @@
+{
+  "tabs": [
+    {
+      "identifier": "addresses",
+      "icon": "mdi:map-marker",
+      "rows": [
+        {
+          "cols": [
+            {
+              "components": [
+                {
+                  "type": "headline",
+                  "options": {
+                    "identifier": "addresses"
+                  }
+                },
+                {
+                  "type": "resource_table",
+                  "options": {
+                    "module": "addresses",
+                    "columns": [
+                      "number",
+                      "customer",
+                      "street",
+                      "zip",
+                      "city",
+                      "country"
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

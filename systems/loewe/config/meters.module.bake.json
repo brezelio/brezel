@@ -1,0 +1,140 @@
+[
+  {
+    "resource_module": "meters",
+    "resource": {
+      "identifier": "meters",
+      "icon": "mdi:meter-electric",
+      "title": "meter_number",
+      "layouts": {
+        "detail": "config/meters.layout.detail",
+        "index": "config/meters.layout.index"
+      },
+      "fields": [
+        {
+          "identifier": "number",
+          "type": "incrementing",
+          "options": {
+            "decimal_digits": 0
+          }
+        },
+        {
+          "identifier": "customer",
+          "type": "select",
+          "options": {
+            "references": "customers",
+            "rules": "required"
+          }
+        },
+        {
+          "identifier": "partner",
+          "type": "select",
+          "options": {
+            "references": "users"
+          }
+        },
+        {
+          "identifier": "location",
+          "type": "select",
+          "options": {
+            "references": "locations",
+            "rules": "required",
+            "pre_filters": [
+              {
+                "column": "customer.id",
+                "operator": "=",
+                "field": "customer.id"
+              }
+            ]
+          }
+        },
+        {
+          "identifier": "type",
+          "type": "choice",
+          "options": {
+            "values": ["electricity", "gas"],
+            "rules": "required"
+          }
+        },
+        {
+          "identifier": "meter_type",
+          "type": "choice",
+          "options": {
+            "values": ["slp", "rlm"],
+            "rules": "required"
+          }
+        },
+        {
+          "identifier": "peak_power",
+          "type": "number",
+          "options": {
+            "recipes": {
+              "hidden_from_frontend": "meter_type != 'rlm'",
+              "frontend_disabled": "meter_type != 'rlm'"
+            },
+            "rules": "required_if:meter_type,rlm"
+          }
+        },
+        {
+          "identifier": "annual_peak_power",
+          "type": "number",
+          "options": {
+            "recipes": {
+              "hidden_from_frontend": "meter_type != 'rlm'",
+              "frontend_disabled": "meter_type != 'rlm'"
+            },
+            "rules": "required_if:meter_type,rlm"
+          }
+        },
+        {
+          "identifier": "meter_number",
+          "type": "text"
+        },
+        {
+          "identifier": "malo",
+          "type": "text",
+          "options": {
+            "rules": "nullable|size:11"
+          }
+        },
+        {
+          "identifier": "usage",
+          "type": "number",
+          "options": {
+            "rules": "required"
+          }
+        },
+        {
+          "identifier": "start_date",
+          "type": "date"
+        },
+        {
+          "identifier": "current_provider",
+          "type": "text"
+        },
+        {
+          "identifier": "current_price_per_kwh",
+          "type": "number"
+        },
+        {
+          "identifier": "current_baseprice",
+          "type": "number"
+        },
+        {
+          "identifier": "current_customer_no",
+          "type": "text"
+        },
+        {
+          "identifier": "switch_reason",
+          "type": "choice",
+          "options": {
+            "values": ["supplier_switch", "move_in"]
+          }
+        },
+        {
+          "identifier": "external_id",
+          "type": "text"
+        }
+      ]
+    }
+  }
+]

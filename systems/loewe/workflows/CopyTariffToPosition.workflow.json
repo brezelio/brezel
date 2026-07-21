@@ -1,0 +1,197 @@
+{
+  "identifier": "CopyTariffToPosition",
+  "title": "Copy tariff catalog prices to position on save",
+  "async": false,
+  "elements": [
+    {
+      "name": "updateCopyTariff",
+      "type": "event/update",
+      "options": {
+        "module": "positions"
+      },
+      "in": {},
+      "set": {
+        "entity": "default:"
+      },
+      "to": {
+        "default": {
+          "hasCatalog": ["default"]
+        }
+      },
+      "meta": {
+        "position": [0, 0]
+      }
+    },
+    {
+      "name": "createCopyTariff",
+      "type": "event/create",
+      "options": {
+        "module": "positions"
+      },
+      "in": {},
+      "set": {
+        "entity": "default:"
+      },
+      "to": {
+        "default": {
+          "hasCatalog": ["default"]
+        }
+      },
+      "meta": {
+        "position": [0, 200]
+      }
+    },
+    {
+      "name": "hasCatalog",
+      "type": "flow/if",
+      "options": {
+        "condition": "$entity.tariff_catalog"
+      },
+      "in": {},
+      "set": {},
+      "to": {
+        "default": {
+          "copyTariffFields": ["default"]
+        }
+      },
+      "meta": {
+        "position": [300, 0]
+      }
+    },
+    {
+      "name": "copyTariffFields",
+      "type": "op/set",
+      "options": {
+        "recipes": {
+          "provider": "$entity.tariff_catalog.provider",
+          "tariff": "$entity.tariff_catalog.name",
+          "duration": "$entity.tariff_catalog.duration",
+          "prov_partner": "$entity.tariff_catalog.prov_partner",
+          "prov_loewe": "$entity.tariff_catalog.prov_loewe",
+          "grid_usage_fee": "$entity.tariff_catalog.grid_usage_fee",
+          "grid_fixed_fee": "$entity.tariff_catalog.grid_fixed_fee",
+          "concession_fee": "$entity.tariff_catalog.concession_fee",
+          "metering_fee": "$entity.tariff_catalog.metering_fee",
+          "grid_capacity_fee": "$entity.tariff_catalog.grid_capacity_fee",
+          "kwkg_levy": "$entity.tariff_catalog.kwkg_levy",
+          "special_grid_levy": "$entity.tariff_catalog.special_grid_levy",
+          "offshore_levy": "$entity.tariff_catalog.offshore_levy",
+          "electricity_tax": "$entity.tariff_catalog.electricity_tax",
+          "site_fixed_fee": "$entity.tariff_catalog.site_fixed_fee",
+          "energy_price": "$entity.tariff_catalog.energy_price"
+        },
+        "values": [],
+        "process": false
+      },
+      "in": {
+        "default": "$entity"
+      },
+      "set": {
+        "entity": "default:"
+      },
+      "to": {
+        "default": {
+          "recalculatePosition": ["default"]
+        }
+      },
+      "meta": {
+        "position": [600, 0]
+      }
+    },
+    {
+      "name": "recalculatePosition",
+      "type": "action/recalculate",
+      "options": {},
+      "in": {
+        "default": "$entity"
+      },
+      "set": {
+        "entity": "default:"
+      },
+      "to": {
+        "default": {
+          "loadRelations": ["default"]
+        }
+      },
+      "meta": {
+        "position": [750, 0]
+      }
+    },
+    {
+      "name": "loadRelations",
+      "type": "op/load",
+      "options": {
+        "fields": ["location", "offer", "customer", "tariff_catalog", "partner", "contract"]
+      },
+      "in": {
+        "default": "$entity"
+      },
+      "set": {
+        "entity": "default:"
+      },
+      "to": {
+        "default": {
+          "setSavings": ["default"]
+        }
+      },
+      "meta": {
+        "position": [787, 0]
+      }
+    },
+    {
+      "name": "setSavings",
+      "type": "op/set",
+      "options": {
+        "recipes": {
+          "total_savings": "max(0, (((current_baseprice ?? location.current_baseprice ?? 0) * 12) + ((current_price_per_kwh ?? location.current_price_per_kwh ?? 0) * (usage ?? 0) / 100)) - (total_cost ?? 0))",
+          "potential_savings": "(max(0, (((current_baseprice ?? location.current_baseprice ?? 0) * 12) + ((current_price_per_kwh ?? location.current_price_per_kwh ?? 0) * (usage ?? 0) / 100)) - (total_cost ?? 0)) * (duration ?? 12)) / 12"
+        },
+        "values": [],
+        "process": false
+      },
+      "in": {
+        "default": "$entity"
+      },
+      "set": {
+        "entity": "default:"
+      },
+      "to": {
+        "default": {
+          "savePosition": ["default"]
+        }
+      },
+      "meta": {
+        "position": [825, 0]
+      }
+    },
+    {
+      "name": "savePosition",
+      "type": "action/save",
+      "options": {
+        "triggerEvents": false,
+        "skip_recipes": true
+      },
+      "in": {
+        "default": "$entity"
+      },
+      "set": {},
+      "to": {},
+      "meta": {
+        "position": [900, 0]
+      }
+    }
+  ],
+  "events": [
+    {
+      "identifier": "updateCopyTariff",
+      "type": "update",
+      "module": "positions"
+    },
+    {
+      "identifier": "createCopyTariff",
+      "type": "create",
+      "module": "positions"
+    }
+  ],
+  "comments": []
+}

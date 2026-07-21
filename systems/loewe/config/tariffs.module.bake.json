@@ -1,0 +1,161 @@
+[
+  {
+    "resource_module": "tariffs",
+    "resource": {
+      "identifier": "tariffs",
+      "icon": "mdi:lightning-bolt-outline",
+      "title": "name.\" — \".provider",
+      "layouts": {
+        "detail": "config/tariffs.layout.detail",
+        "index": "config/tariffs.layout.index"
+      },
+      "fields": [
+        {
+          "identifier": "number",
+          "type": "incrementing",
+          "options": {
+            "decimal_digits": 0
+          }
+        },
+        {
+          "identifier": "name",
+          "type": "text",
+          "options": {
+            "rules": "required"
+          }
+        },
+        {
+          "identifier": "provider",
+          "type": "text",
+          "options": {
+            "rules": "required"
+          }
+        },
+        {
+          "identifier": "type",
+          "type": "choice",
+          "options": {
+            "values": ["electricity", "gas"],
+            "default": "electricity",
+            "rules": "required"
+          }
+        },
+        {
+          "identifier": "meter_type",
+          "type": "choice",
+          "options": {
+            "values": ["slp", "rlm"],
+            "default": "slp",
+            "rules": "required"
+          }
+        },
+        {
+          "identifier": "duration",
+          "type": "number",
+          "options": {
+            "rules": "required"
+          }
+        },
+        {
+          "identifier": "active",
+          "type": "checkbox",
+          "options": {
+            "default": true
+          }
+        },
+        {
+          "identifier": "eco",
+          "type": "checkbox",
+          "options": {
+            "default": false
+          }
+        },
+        {
+          "identifier": "prov_partner",
+          "type": "number"
+        },
+        {
+          "identifier": "prov_loewe",
+          "type": "number"
+        },
+        {
+          "identifier": "grid_usage_fee",
+          "type": "number"
+        },
+        {
+          "identifier": "grid_fixed_fee",
+          "type": "number"
+        },
+        {
+          "identifier": "concession_fee",
+          "type": "number"
+        },
+        {
+          "identifier": "metering_fee",
+          "type": "number"
+        },
+        {
+          "identifier": "grid_capacity_fee",
+          "type": "number",
+          "options": {
+            "recipes": {
+              "hidden_from_frontend": "meter_type != 'rlm'",
+              "frontend_disabled": "meter_type != 'rlm'"
+            }
+          }
+        },
+        {
+          "identifier": "grid_charges_total",
+          "type": "number",
+          "options": {
+            "readonly": true,
+            "frontend_disabled": true
+          },
+          "recipe": "(grid_usage_fee ?? 0) + (grid_fixed_fee ?? 0) + (concession_fee ?? 0) + (metering_fee ?? 0) + (meter_type == 'rlm' ? (grid_capacity_fee ?? 0) : 0)"
+        },
+        {
+          "identifier": "kwkg_levy",
+          "type": "number"
+        },
+        {
+          "identifier": "special_grid_levy",
+          "type": "number"
+        },
+        {
+          "identifier": "offshore_levy",
+          "type": "number"
+        },
+        {
+          "identifier": "electricity_tax",
+          "type": "number"
+        },
+        {
+          "identifier": "state_levies_total",
+          "type": "number",
+          "options": {
+            "readonly": true,
+            "frontend_disabled": true
+          },
+          "recipe": "(kwkg_levy ?? 0) + (special_grid_levy ?? 0) + (offshore_levy ?? 0) + (electricity_tax ?? 0)"
+        },
+        {
+          "identifier": "site_fixed_fee",
+          "type": "number"
+        },
+        {
+          "identifier": "energy_price",
+          "type": "number"
+        },
+        {
+          "identifier": "usage_price",
+          "type": "number",
+          "options": {
+            "readonly": true,
+            "frontend_disabled": true
+          },
+          "recipe": "(grid_usage_fee ?? 0) + (concession_fee ?? 0) + (kwkg_levy ?? 0) + (special_grid_levy ?? 0) + (offshore_levy ?? 0) + (electricity_tax ?? 0) + (energy_price ?? 0)"
+        }
+      ]
+    }
+  }
+]

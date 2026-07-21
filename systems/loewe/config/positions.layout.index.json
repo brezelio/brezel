@@ -1,0 +1,41 @@
+{
+  "tabs": [
+    {
+      "identifier": "positions",
+      "icon": "mdi:format-list-numbered",
+      "rows": [
+        {
+          "cols": [
+            {
+              "components": [
+                {
+                  "type": "headline",
+                  "options": {
+                    "identifier": "positions"
+                  }
+                },
+                {
+                  "type": "resource_table",
+                  "options": {
+                    "module": "positions",
+                    "columns": [
+                      "number",
+                      "customer",
+                      "offer",
+                      "contract",
+                      "location",
+                      "provider",
+                      "tariff",
+                      "status",
+                      "total_cost"
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

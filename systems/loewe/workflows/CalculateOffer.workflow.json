@@ -1,0 +1,272 @@
+{
+  "identifier": "CalculateOffer",
+  "title": "Calculate offer positions and mark as calculated",
+  "async": false,
+  "entry": "CalculateOffer",
+  "elements": [
+    {
+      "name": "CalculateOffer",
+      "type": "event/webhook",
+      "options": {
+        "module": "offers"
+      },
+      "in": {},
+      "set": {
+        "offer": "default:"
+      },
+      "to": {
+        "default": {
+          "isDraft": ["default"]
+        }
+      },
+      "meta": {
+        "position": [0, 0]
+      }
+    },
+    {
+      "name": "isDraft",
+      "type": "flow/if",
+      "options": {
+        "condition": "$offer.status == 'draft'"
+      },
+      "in": {},
+      "set": {},
+      "to": {
+        "default": {
+          "loadPositions": ["default"]
+        },
+        "else": {
+          "rejectStatus": ["default"]
+        }
+      },
+      "meta": {
+        "position": [300, 0]
+      }
+    },
+    {
+      "name": "rejectStatus",
+      "type": "action/validate",
+      "options": {
+        "recipes": {
+          "status": "invalid(t('workflows.CalculateOffer.invalid_status'))"
+        },
+        "runModuleValidations": false,
+        "markFailedFields": true
+      },
+      "in": {},
+      "set": {},
+      "to": {},
+      "meta": {
+        "position": [600, 200]
+      }
+    },
+    {
+      "name": "loadPositions",
+      "type": "source/entities",
+      "options": {
+        "module": "positions",
+        "filters": [
+          [
+            {
+              "left": {
+                "type": "field",
+                "value": "offer.id"
+              },
+              "operator": "=",
+              "right": {
+                "type": "recipe",
+                "value": "$offer.id"
+              }
+            }
+          ]
+        ],
+        "with": ["location"],
+        "permissions": false,
+        "hydrateRelations": true
+      },
+      "in": {},
+      "set": {
+        "positions": "default:"
+      },
+      "to": {
+        "default": {
+          "forEachPosition": ["default"]
+        }
+      },
+      "meta": {
+        "position": [600, 0]
+      }
+    },
+    {
+      "name": "forEachPosition",
+      "type": "flow/each",
+      "options": {},
+      "in": {
+        "default": "$positions"
+      },
+      "set": {
+        "position": "each:"
+      },
+      "to": {
+        "each": {
+          "recalculatePosition": ["default"]
+        },
+        "next": {
+          "setCalculated": ["default"]
+        }
+      },
+      "meta": {
+        "position": [900, 0]
+      }
+    },
+    {
+      "name": "recalculatePosition",
+      "type": "action/recalculate",
+      "options": {},
+      "in": {
+        "default": "$position"
+      },
+      "set": {
+        "position": "default:"
+      },
+      "to": {
+        "default": {
+          "loadRelations": ["default"]
+        }
+      },
+      "meta": {
+        "position": [1050, 0]
+      }
+    },
+    {
+      "name": "loadRelations",
+      "type": "op/load",
+      "options": {
+        "fields": ["location", "offer", "customer", "tariff_catalog", "partner", "contract"]
+      },
+      "in": {
+        "default": "$position"
+      },
+      "set": {
+        "position": "default:"
+      },
+      "to": {
+        "default": {
+          "setSavings": ["default"]
+        }
+      },
+      "meta": {
+        "position": [1087, 0]
+      }
+    },
+    {
+      "name": "setSavings",
+      "type": "op/set",
+      "options": {
+        "recipes": {
+          "total_savings": "max(0, (((current_baseprice ?? location.current_baseprice ?? 0) * 12) + ((current_price_per_kwh ?? location.current_price_per_kwh ?? 0) * (usage ?? 0) / 100)) - (total_cost ?? 0))",
+          "potential_savings": "(max(0, (((current_baseprice ?? location.current_baseprice ?? 0) * 12) + ((current_price_per_kwh ?? location.current_price_per_kwh ?? 0) * (usage ?? 0) / 100)) - (total_cost ?? 0)) * (duration ?? 12)) / 12"
+        },
+        "values": [],
+        "process": false
+      },
+      "in": {
+        "default": "$position"
+      },
+      "set": {
+        "position": "default:"
+      },
+      "to": {
+        "default": {
+          "savePosition": ["default"]
+        }
+      },
+      "meta": {
+        "position": [1125, 0]
+      }
+    },
+    {
+      "name": "savePosition",
+      "type": "action/save",
+      "options": {
+        "triggerEvents": false,
+        "skip_recipes": true
+      },
+      "in": {
+        "default": "$position"
+      },
+      "set": {},
+      "to": {},
+      "meta": {
+        "position": [1200, 0]
+      }
+    },
+    {
+      "name": "setCalculated",
+      "type": "op/set",
+      "options": {
+        "recipes": {
+          "status": "\"calculated\""
+        },
+        "values": [],
+        "process": false
+      },
+      "in": {
+        "default": "$offer"
+      },
+      "set": {
+        "offer": "default:"
+      },
+      "to": {
+        "default": {
+          "saveOffer": ["default"]
+        }
+      },
+      "meta": {
+        "position": [1500, 0]
+      }
+    },
+    {
+      "name": "saveOffer",
+      "type": "action/save",
+      "options": {},
+      "in": {
+        "default": "$offer"
+      },
+      "set": {},
+      "to": {
+        "default": {
+          "notifySuccess": ["default"]
+        }
+      },
+      "meta": {
+        "position": [1800, 0]
+      }
+    },
+    {
+      "name": "notifySuccess",
+      "type": "action/notify",
+      "options": {
+        "toast": {
+          "message": "workflows.CalculateOffer.success",
+          "type": "success",
+          "duration": 4.5
+        }
+      },
+      "in": {},
+      "set": {},
+      "to": {},
+      "meta": {
+        "position": [2100, 0]
+      }
+    }
+  ],
+  "events": [
+    {
+      "identifier": "CalculateOffer",
+      "type": "webhook",
+      "module": "offers"
+    }
+  ],
+  "comments": []
+}

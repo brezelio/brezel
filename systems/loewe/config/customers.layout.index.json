@@ -1,0 +1,38 @@
+{
+  "tabs": [
+    {
+      "identifier": "customers",
+      "icon": "mdi:company",
+      "rows": [
+        {
+          "cols": [
+            {
+              "components": [
+                {
+                  "type": "headline",
+                  "options": {
+                    "identifier": "customers"
+                  }
+                },
+                {
+                  "type": "resource_table",
+                  "options": {
+                    "module": "customers",
+                    "columns": [
+                      "number",
+                      "company",
+                      "type",
+                      "email",
+                      "phone",
+                      "credit_status"
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

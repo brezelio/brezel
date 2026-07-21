@@ -1,0 +1,772 @@
+{
+  "buttons": {
+    "CalculateOffer": "Calculate offer",
+    "MarkOfferSent": "Mark as sent",
+    "CreateContractFromPosition": "Create contract",
+    "ExportOfferPdf": "Export PDF",
+    "EmailOfferPdf": "Email PDF",
+    "edit_in_wizard": "Edit in wizard",
+    "DuplicateOffer": "Duplicate offer"
+  },
+  "notifications": {},
+  "modules": {
+    "customers": {
+      "title": "Customers",
+      "fields": {
+        "number": "Internal number",
+        "partner": "Sales partner",
+        "type": "Type",
+        "company": "Company name",
+        "company_type": "Company type",
+        "industry": "Industry",
+        "salutation": "Salutation",
+        "firstname": "First name",
+        "name": "Last name",
+        "birthdate": "Date of birth",
+        "email": "Email",
+        "phone": "Phone",
+        "mobile": "Mobile",
+        "marketing_post": "Marketing consent (post)",
+        "marketing_email": "Marketing consent (email)",
+        "marketing_phone": "Marketing consent (phone)",
+        "iban": "IBAN",
+        "bic": "BIC",
+        "default_address": "Address",
+        "default_billing_address": "Billing address",
+        "default_shipping_address": "Delivery address",
+        "default_bank": "Account holder",
+        "default_iban": "Default IBAN",
+        "default_bic": "Default BIC",
+        "sf_account_id": "Salesforce Account ID",
+        "sf_contact_id": "Salesforce Contact ID",
+        "credit_status": "Credit status"
+      },
+      "choice": {
+        "type": {
+          "b2b": "B2B",
+          "b2c": "B2C"
+        },
+        "company_type": {
+          "gmbh": "GmbH",
+          "ag": "AG",
+          "einzelunternehmen": "Sole proprietorship",
+          "gbr": "GbR",
+          "other": "Other"
+        },
+        "industry": {
+          "handel": "Trade",
+          "gastronomie": "Hospitality",
+          "produktion": "Production",
+          "dienstleistung": "Services",
+          "other": "Other"
+        },
+        "salutation": {
+          "mr": "Mr",
+          "ms": "Ms"
+        },
+        "credit_status": {
+          "pending": "Pending",
+          "approved": "Approved",
+          "rejected": "Rejected"
+        }
+      },
+      "headlines": {
+        "basic": "Master data",
+        "bank": "Bank details",
+        "integration": "Integration & credit check",
+        "addresses": "Default addresses",
+        "address_list": "Addresses",
+        "locations": "Delivery points",
+        "meters": "Meters",
+        "offers": "Offers",
+        "contracts": "Contracts",
+        "customers": "Customers"
+      },
+      "tabs": {
+        "general": "General",
+        "customers": "Customers"
+      }
+    },
+    "addresses": {
+      "title": "Addresses",
+      "fields": {
+        "number": "Internal number",
+        "partner": "Sales partner",
+        "customer": "Customer",
+        "line_1": "Address line 1",
+        "line_2": "Address line 2",
+        "line_3": "Address line 3",
+        "street": "Street",
+        "housenumber": "House number",
+        "housenumber_addition": "H. Additional information",
+        "zip": "Postal code",
+        "city": "City",
+        "country": "Country"
+      },
+      "headlines": {
+        "basic": "Address",
+        "addresses": "Addresses"
+      },
+      "tabs": {
+        "general": "General",
+        "addresses": "Addresses"
+      }
+    },
+    "locations": {
+      "title": "Delivery points",
+      "fields": {
+        "number": "Internal number",
+        "customer": "Customer",
+        "partner": "Sales partner",
+        "label": "Site name",
+        "address": "Delivery address",
+        "billing_address": "Billing address",
+        "bank": "Bank",
+        "iban": "IBAN",
+        "bic": "BIC",
+        "current_provider": "current_provider",
+        "current_price_per_kwh": "current_price_per_kwh",
+        "current_baseprice": "current_baseprice",
+        "current_customer_no": "current_customer_no",
+        "start_date": "Supply start date"
+      },
+      "headlines": {
+        "basic": "Master data",
+        "bank": "Bank details",
+        "previous_provider": "Previous supplier",
+        "meters": "Meters",
+        "locations": "Delivery points"
+      },
+      "tabs": {
+        "general": "General",
+        "locations": "Delivery points"
+      }
+    },
+    "meters": {
+      "title": "Meters",
+      "fields": {
+        "number": "Internal number",
+        "customer": "Customer",
+        "partner": "Sales partner",
+        "location": "Delivery point",
+        "type": "Energy type",
+        "meter_type": "Meter type",
+        "peak_power": "Peak power (kW)",
+        "annual_peak_power": "Annual peak power (kW)",
+        "meter_number": "Meter number",
+        "malo": "MaLo",
+        "usage": "Consumption (kWh)",
+        "start_date": "Supply start",
+        "current_provider": "Current Provider",
+        "current_price_per_kwh": "Current energy price",
+        "current_baseprice": "Current base price",
+        "current_customer_no": "Customer Number with Previous Provider",
+        "switch_reason": "Reason for Switching",
+        "external_id": "Custom ID"
+      },
+      "choice": {
+        "type": {
+          "electricity": "Electricity",
+          "gas": "Gas"
+        },
+        "meter_type": {
+          "slp": "SLP",
+          "rlm": "RLM"
+        },
+        "switch_reason": {
+          "supplier_switch": "Supplier switch",
+          "move_in": "Move-in / new connection"
+        }
+      },
+      "headlines": {
+        "basic": "Meter data",
+        "meters": "Meters"
+      },
+      "tabs": {
+        "general": "General",
+        "meters": "Meters"
+      }
+    },
+    "offers": {
+      "title": "Offers",
+      "fields": {
+        "number": "Offer number",
+        "customer": "Customer",
+        "user": "Sales partner",
+        "status": "Status",
+        "type": "Offer type",
+        "procurement_type": "Procurement type",
+        "created_at": "Created at",
+        "valid_till": "Valid until",
+        "inquiry_notes": "Inquiry notes",
+        "attachments": "Files"
+      },
+      "help": {
+        "attachments": "Upload supporting documents such as business registration, load profiles, or lease agreements."
+      },
+      "choice": {
+        "status": {
+          "draft": "Draft",
+          "calculated": "Calculated",
+          "sent": "Sent",
+          "accepted": "Accepted",
+          "rejected": "Rejected"
+        },
+        "type": {
+          "normal": "Normal",
+          "individual": "Individual"
+        },
+        "procurement_type": {
+          "fixed": "Forward market (fixed price)",
+          "spot": "Spot market (flexible)"
+        }
+      },
+      "headlines": {
+        "basic": "Offer",
+        "documents": "Documents",
+        "positions": "Positions",
+        "offers": "Offers"
+      },
+      "tabs": {
+        "general": "General",
+        "offers": "Offers"
+      }
+    },
+    "tariffs": {
+      "title": "Tariffs",
+      "fields": {
+        "number": "Internal number",
+        "name": "Tariff name",
+        "provider": "Provider",
+        "type": "Energy type",
+        "meter_type": "Meter type",
+        "duration": "Term (months)",
+        "active": "Active",
+        "eco": "Eco tariff",
+        "prov_partner": "Partner commission",
+        "prov_loewe": "Löwe commission",
+        "grid_usage_fee": "Grid usage fee",
+        "grid_fixed_fee": "Grid fixed fee",
+        "concession_fee": "Concession fee",
+        "metering_fee": "Metering fee",
+        "grid_capacity_fee": "Grid capacity fee",
+        "grid_charges_total": "Total grid charges",
+        "kwkg_levy": "KWKG levy",
+        "special_grid_levy": "Special grid levy",
+        "offshore_levy": "Offshore levy",
+        "electricity_tax": "Electricity tax",
+        "state_levies_total": "Total state levies",
+        "site_fixed_fee": "Site fixed fee",
+        "energy_price": "Energy price",
+        "usage_price": "Usage price"
+      },
+      "choice": {
+        "type": {
+          "electricity": "Electricity",
+          "gas": "Gas"
+        },
+        "meter_type": {
+          "slp": "SLP",
+          "rlm": "RLM"
+        }
+      },
+      "headlines": {
+        "basic": "Tariff",
+        "grid_charges": "Grid charges",
+        "levies": "State levies",
+        "energy_supplier": "Energy provider",
+        "tariffs": "Tariffs"
+      },
+      "tabs": {
+        "general": "General",
+        "grid": "Grid charges",
+        "pricing": "Pricing",
+        "tariffs": "Tariffs"
+      }
+    },
+    "contracts": {
+      "title": "Contracts",
+      "fields": {
+        "number": "Contract number",
+        "customer": "Customer",
+        "user": "Sales partner",
+        "status": "Status",
+        "sf_opp_id": "Salesforce Opp ID",
+        "created_at": "Created at"
+      },
+      "choice": {
+        "status": {
+          "accepted": "Accepted",
+          "rejected": "Rejected"
+        }
+      },
+      "headlines": {
+        "basic": "Contract",
+        "positions": "Positions",
+        "contracts": "Contracts"
+      },
+      "tabs": {
+        "general": "General",
+        "contracts": "Contracts"
+      }
+    },
+    "positions": {
+      "title": "Positions",
+      "fields": {
+        "number": "Internal number",
+        "offer": "Offer",
+        "contract": "Contract",
+        "customer": "Customer",
+        "location": "Delivery point",
+        "partner": "Sales partner",
+        "meter_type": "Meter type",
+        "tariff_catalog": "Tariff from catalog",
+        "provider": "Provider",
+        "tariff": "Tariff name",
+        "duration": "Term (months)",
+        "usage": "Consumption",
+        "start_date": "Supply start",
+        "current_provider": "Current Provider",
+        "current_customer_no": "Customer Number with Previous Provider",
+        "switch_reason": "Reason for Switching",
+        "external_id": "Custom ID",
+        "prov_partner": "Partner commission",
+        "prov_loewe": "Löwe commission",
+        "grid_usage_fee": "Grid usage fee",
+        "grid_fixed_fee": "Grid fixed fee",
+        "concession_fee": "Concession fee",
+        "metering_fee": "Metering fee",
+        "grid_capacity_fee": "Grid capacity fee",
+        "grid_charges_total": "Total grid charges",
+        "kwkg_levy": "KWKG levy",
+        "special_grid_levy": "Special grid levy",
+        "offshore_levy": "Offshore levy",
+        "electricity_tax": "Electricity tax",
+        "state_levies_total": "Total state levies",
+        "site_fixed_fee": "Site fixed fee",
+        "energy_price": "Energy price",
+        "usage_price": "Usage price",
+        "supplier_energy_total": "Total provider energy cost",
+        "total_cost": "Total cost",
+        "total_savings": "Total savings",
+        "potential_savings": "Potential savings",
+        "status": "Contract status"
+      },
+      "choice": {
+        "meter_type": {
+          "slp": "SLP",
+          "rlm": "RLM"
+        },
+        "switch_reason": {
+          "supplier_switch": "Supplier switch",
+          "move_in": "Move-in / new connection"
+        },
+        "status": {
+          "pending": "Pending",
+          "signed": "Signed",
+          "active": "Active",
+          "cancelled": "Cancelled"
+        }
+      },
+      "headlines": {
+        "basic": "Master data",
+        "grid_charges": "Grid charges",
+        "levies": "State levies",
+        "energy_supplier": "Energy provider",
+        "provision": "Commission",
+        "totals": "Totals",
+        "positions": "Positions"
+      },
+      "tabs": {
+        "general": "General",
+        "grid": "Grid charges",
+        "pricing": "Pricing & totals",
+        "positions": "Positions"
+      }
+    },
+    "users": {
+      "title": "Users",
+      "fields": {
+        "number": "Internal number",
+        "role": "Role",
+        "parent_user": "Parent sales partner",
+        "firstname": "First name",
+        "lastname": "Last name",
+        "name": "Name",
+        "email": "Email",
+        "password": "Password",
+        "roles": "Brezel roles",
+        "company_name": "Company name (white-label)",
+        "provision_type": "Commission type",
+        "provision_default": "Default commission"
+      },
+      "choice": {
+        "role": {
+          "admin": "Admin",
+          "partner": "Partner",
+          "sub_partner": "Sub-partner"
+        },
+        "provision_type": {
+          "surcharge": "Surcharge",
+          "hidden": "Hidden"
+        }
+      },
+      "headlines": {
+        "basic": "User",
+        "partner": "Sales partner"
+      },
+      "tabs": {
+        "general": "General"
+      }
+    },
+    "clients": {
+      "title": "Clients",
+      "fields": {
+        "title": "Title",
+        "color": "Color"
+      },
+      "headlines": {
+        "basic": "Client"
+      }
+    },
+    "roles": {
+      "title": "Roles",
+      "tabs": {
+        "general": "General"
+      }
+    },
+    "quotation_wizard": {
+      "title": "Create quotation"
+    },
+    "dashboard": {
+      "title": "Dashboard",
+      "tabs": {
+        "home": "Home"
+      }
+    }
+  },
+  "widgets": {
+    "dashboard": {
+      "brand": "LÖWE ENERGIE",
+      "brand_line": "Tarifrechner · ÖkoStrom & Gas",
+      "greeting": "Ready for the next quotation",
+      "greeting_named": "Welcome back,",
+      "lead": "Calculate electricity and gas offers for your customers — then follow drafts through to accepted deals and contracts.",
+      "cta_quote": "Create quotation",
+      "cta_offers": "View offers",
+      "pipeline_title": "Offer pipeline",
+      "pipeline_desc": "Open a status to jump into your offers.",
+      "recent_title": "Recent offers",
+      "recent_desc": "Pick up where you left off.",
+      "recent_empty": "No offers yet. Start with a new quotation.",
+      "shortcuts_title": "Shortcuts",
+      "shortcuts_desc": "Jump to the areas you use most.",
+      "no_customer": "No customer linked"
+    },
+    "quotation_wizard": {
+      "title": "New quotation",
+      "page_title": "Create quotation",
+      "page_title_edit": "Edit draft offer #{number}",
+      "editing_draft_hint": "You are editing a saved draft. Changes update the existing offer.",
+      "update_draft": "Update draft",
+      "subtitle": "Create a customer, delivery point, and offer in a guided flow.",
+      "load_from_master": "Load from master data",
+      "b2b": "B2B (business)",
+      "b2c": "B2C (private)",
+      "billing_payment": "Billing & payment (default for all delivery points)",
+      "invoice_payment": "Invoice & Payment (Central Data)",
+      "account_holder": "Account holder",
+      "billing_address": "Billing address",
+      "billing_same": "Same as contract partner address",
+      "billing_different": "Enter different billing address…",
+      "shipping_same": "Same as contract partner address",
+      "shipping_different": "Enter different delivery address…",
+      "meter_limit": "Meter limit",
+      "meter_limit_label": "Meter limit",
+      "location": "Delivery point",
+      "location_name": "Site name",
+      "unnamed_location": "Unnamed",
+      "use_contract_address": "Use primary address",
+      "use_default_billing": "Use default billing address",
+      "shipping_address": "Delivery address",
+      "meters": "Meters",
+      "meter": "Meter",
+      "custom_billing": "Different billing & payment (optional)",
+      "different_delivery_address": "Delivery address",
+      "shipping_new": "Add new delivery address…",
+      "different_billing_address": "Different billing address",
+      "different_iban": "Different IBAN",
+      "add_meter": "Add meter",
+      "malo_id": "MaLo ID (11 digits)",
+      "malo_id_short": "MaLo ID",
+      "meter_type_label": "Meter type",
+      "usage_kwh": "Usage (kWh)",
+      "external_id_optional": "Custom ID (Optional)",
+      "contact_partner": "Global contracting party / contact person",
+      "location_data_for": "Data for location:",
+      "section_delivery": "1. Delivery address",
+      "section_billing": "2. Billing address",
+      "section_bank": "3. Bank details",
+      "add_location": "Add new delivery point",
+      "previous_supplier": "Current tariff (previous supplier)",
+      "expand_capture": "Expand & capture",
+      "base_price_month": "Base price (€/month)",
+      "work_price": "Energy price (ct/kWh)",
+      "calculate_tariffs": "Calculate tariffs",
+      "calculate_success": "Comparison calculated. See cost advantage in the tariff table.",
+      "previous_yearly_cost": "Current yearly cost (previous supplier)",
+      "no_savings": "No savings",
+      "usage_required_for_comparison": "Please enter annual consumption on the meter for a meaningful comparison.",
+      "energy_rate": "Energy Rate",
+      "base_fee": "Base Fee",
+      "selected": "Selected",
+      "month": "month",
+      "year": "year",
+      "savings": "Savings",
+      "offer_total": "Total offer value (net)",
+      "save_draft": "Save as draft",
+      "finish_offer": "Complete offer & create PDF",
+      "creating": "Creating",
+      "customer_loaded": "Customer data loaded.",
+      "new_meter": "New meter",
+      "remove": "Remove",
+      "edit": "Edit",
+      "done": "Done",
+      "remove_location": "Remove delivery point",
+      "billing_new": "Add new billing address…",
+      "malo_hint": "11-digit market location ID (optional, can be added later).",
+      "malo_missing_warning": "Without a MaLo, the application may be rejected.",
+      "compare_tariff": "Compare",
+      "compare_hint": "Select one tariff per meter.",
+      "individual_request": "More than 5 meters require a custom inquiry.",
+      "success_draft": "Offer saved as draft.",
+      "success_draft_updated": "Draft offer updated.",
+      "load_draft_error": "Could not load the draft offer.",
+      "edit_only_draft": "Only draft offers can be edited in the wizard.",
+      "custom_inquiry": {
+        "open": "Custom inquiry",
+        "back_to_wizard": "Back to standard quote",
+        "page_title": "Custom inquiry",
+        "page_desc": "For complex cases or more than 5 delivery points. Back office will prepare the quote.",
+        "customer_desc": "Enter all known customer data. Incomplete data is fine.",
+        "details_title": "Request details",
+        "details_desc": "Describe the case and upload supporting documents.",
+        "notes_label": "Free-text description",
+        "notes_placeholder": "e.g. 6 locations, mixed RLM, special grid situation, required start date…",
+        "attachments_label": "Documents",
+        "attachments_hint": "e.g. business registration, load profiles, lease agreements",
+        "footer_hint": "Submitted to back office as an individual offer",
+        "submit": "Submit custom inquiry",
+        "success": "Custom inquiry submitted. Back office will prepare the quote.",
+        "upload_error": "Could not upload one or more documents.",
+        "validation": {
+          "notes": "Please describe the inquiry in the free-text field."
+        },
+        "edit_blocked": "Custom inquiries cannot be edited in the standard wizard."
+      },
+      "success_finish": "Offer calculated and PDF is opening.",
+      "success_calculated": "Offer calculated successfully. You can export the PDF from the offer page.",
+      "pdf_export_failed": "PDF export failed. The offer was still calculated — try “Export PDF” on the offer page.",
+      "sections": {
+        "energy": {
+          "title": "Choose energy type",
+          "desc": "An offer can include electricity or gas only."
+        },
+        "start": {
+          "title": "Energy type & configuration",
+          "desc": "Choose energy type, procurement type and tariff options."
+        },
+        "contract": {
+          "title": "Collect contract data",
+          "desc": "Please add the specific exchange data for each meter."
+        },
+        "order": {
+          "title": "Contract partner, addresses & payment",
+          "desc": "Finalize the data per delivery point."
+        },
+        "customer": {
+          "title": "Master data & main address",
+          "desc": "Master data and main address of the contracting party."
+        },
+        "locations": {
+          "title": "Delivery points & meters",
+          "desc": "Maximum 5 meters across all delivery points."
+        },
+        "tariff": {
+          "title": "Tariff selection & savings",
+          "desc": "Choose tariffs. If a tariff has multiple terms, alternatives are calculated."
+        },
+        "address": {
+          "title": "Contract partner address",
+          "desc": "Where is the customer's headquarters located?"
+        },
+        "completion": {
+          "title": "Personal data & payment",
+          "desc": "Contact person and billing details to complete the offer."
+        }
+      },
+      "table": {
+        "medium_type": "Medium / type",
+        "usage_year": "Consumption / year",
+        "action": "Action"
+      },
+      "steps": {
+        "customer": "Customer",
+        "delivery": "Delivery point",
+        "tariff": "Tariff",
+        "review": "Review",
+        "energy": "Energy",
+        "address": "Address",
+        "start": "Start",
+        "meters": "Meters",
+        "tariffs": "Tariffs",
+        "contract_data": "Contract data",
+        "order_payment": "Order & payment",
+        "completion": "Data & completion"
+      },
+      "customer_mode": {
+        "new": "New customer",
+        "existing": "Existing customer"
+      },
+      "contract_address": "Primary address (contracting party)",
+      "fields": {
+        "customer": "Customer",
+        "medium": "Energy type",
+        "start_date": "Start of Service"
+      },
+      "placeholders": {
+        "customer": "Search customer…",
+        "company": "e.g. Example Ltd",
+        "street": "Street",
+        "location_name": "e.g. Main site",
+        "malo": "11 digits",
+        "base_rate": "€/month",
+        "electricity_rate": "ct/kWh"
+      },
+      "months": "months",
+      "no_tariffs": "No tariffs match the selected meter type and energy type.",
+      "back": "Back",
+      "next": "Next",
+      "create_offer": "Create & calculate offer",
+      "success": "Offer created and calculated.",
+      "error": "Could not create the quotation.",
+      "validation": {
+        "customer": "Please select a customer.",
+        "company": "Please enter a company name.",
+        "contact": "Please enter first and last name.",
+        "address": "Please complete the address.",
+        "billing_address": "Please complete the billing address.",
+        "shipping_address": "Please complete the delivery address.",
+        "email": "Please enter an email address.",
+        "phone": "Please enter a phone number.",
+        "meter_number": "Please enter a meter number for each meter.",
+        "at_least_one_meter": "Please add at least one meter.",
+        "previous_supplier": "Please enter the previous supplier for each meter.",
+        "iban": "Please enter an IBAN.",
+        "account_holder": "Please enter the account holder.",
+        "location_address": "Please complete the delivery point address.",
+        "location_billing_address": "Please complete the delivery point billing address.",
+        "usage": "Please enter annual consumption.",
+        "start_date": "Please select a supply start date.",
+        "peak_power": "Please enter peak power for RLM.",
+        "tariff": "Please select a tariff for each meter.",
+        "previous_tariff": "Please enter at least a base price or energy price for the previous supplier.",
+        "malo": "MaLo must be exactly 11 digits.",
+        "malo_required": "Please enter a MaLo with exactly 11 digits for each meter.",
+        "medium": "Please choose an energy type.",
+        "company_type": "Please select a company type.",
+        "industry": "Please select an industry.",
+        "switch_reason": "Please select a switch reason for each meter.",
+        "current_provider": "Please select the current supplier for each meter."
+      },
+      "summary": {
+        "customer": "Customer",
+        "address": "Address",
+        "tariff": "Tariff"
+      },
+      "not_calculated": "Not calculated",
+      "choose": "Select",
+      "surcharge": "Surcharge",
+      "surcharge_title": "Set price surcharge",
+      "surcharge_label": "Surcharge per kWh (net)",
+      "surcharge_hint": "This surcharge is added to the base energy price of all tariffs in step 3.",
+      "surcharge_apply": "Apply",
+      "surcharge_applied": "Surcharge applied to tariff prices.",
+      "next_address": "Continue to address",
+      "next_meters": "Continue to meters",
+      "next_tariffs": "Fetch tariffs",
+      "next_personal": "Continue to personal data",
+      "next_contract": "Continue to order entry",
+      "next_payment": "Continue to addresses & payment",
+      "create_offer_pdf": "Create offer PDF",
+      "place_order": "Place binding order",
+      "procurement_type": "Procurement type",
+      "eco_only": "Show eco tariffs only",
+      "phone_prefix": "Area Code",
+      "phone_number": "Phone number",
+      "marketing_consent": "Marketing consent (contact channel)",
+      "contract_data_for_meter": "Contract Data for Meter:",
+      "marketing_post": "Post",
+      "marketing_email": "Email",
+      "marketing_phone": "Phone",
+      "billing_like_delivery": "Same as delivery address",
+      "billing_like_contract": "Same as contract partner",
+      "please_select": "Please select…",
+      "table_tariff": {
+        "tariff": "Tariff",
+        "provider": "Provider & tariff",
+        "duration": "Term",
+        "ap": "AP (net)",
+        "gp": "GP (net)",
+        "yearly": "Cost / year",
+        "advantage": "Cost advantage",
+        "action": "Select"
+      },
+      "use_delivery_address": "Use delivery address",
+      "old_rate_comparison": "Enter your old rate for comparison:",
+      "base_rate": "Base rate",
+      "electricity_rate": "Electricity rate"
+    }
+  },
+  "workflows": {
+    "LimitPositionsOnNormalOffer": {
+      "limit_reached": "Normal offers can have at most 5 positions."
+    },
+    "CreateContractFromPosition": {
+      "invalid_position": "This position cannot be converted to a contract.",
+      "success": "Contract created successfully."
+    },
+    "CalculateOffer": {
+      "invalid_status": "Only draft offers can be calculated.",
+      "success": "Offer calculated successfully."
+    },
+    "MarkOfferSent": {
+      "invalid_status": "Only calculated offers can be marked as sent.",
+      "success": "Offer marked as sent."
+    },
+    "ExportOfferPdf": {
+      "invalid_status": "Draft and rejected offers cannot be exported as PDF."
+    },
+    "EmailOfferPdf": {
+      "invalid_status": "Draft, rejected, and individual offers cannot be emailed as PDF.",
+      "missing_partner_email": "No sales partner email found. Set the offer partner or ensure your user has an email address.",
+      "success": "Offer PDF was emailed to the sales partner.",
+      "mail_failed": "Offer PDF could not be emailed. Check mail configuration."
+    },
+    "DuplicateOffer": {
+      "invalid_offer": "Offer could not be duplicated.",
+      "success": "Offer duplicated as a new draft."
+    }
+  },
+  "mails": {
+    "offer_pdf": {
+      "subject": "Your offer {{ number }}",
+      "heading": "Offer PDF",
+      "greeting": "Hello {{ name }},",
+      "intro": "Attached you will find the PDF for offer {{ number }}.",
+      "attachment_hint": "The offer PDF is attached to this email.",
+      "footer": "This email was sent automatically by the Löwe Energie tariff calculator."
+    }
+  },
+  "calendar": {}
+}

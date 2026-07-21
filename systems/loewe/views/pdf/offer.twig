@@ -1,0 +1,213 @@
+{% block setup %}
+    {{ '{"orientation": "portrait", "format": "A4", "other": {"margin-top": "18", "margin-left": "16", "margin-right": "16", "margin-bottom": "18"}}' }}
+{% endblock %}
+{% block header %}
+<!DOCTYPE html>
+<html lang="de">
+<head><meta charset="UTF-8"></head>
+<body></body>
+</html>
+{% endblock %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            font-family: DejaVu Sans, Arial, Helvetica, sans-serif;
+            font-size: 9px;
+            color: #222222;
+            line-height: 1.5;
+        }
+        .brand {
+            font-size: 14px;
+            font-weight: bold;
+            color: #c8102e;
+        }
+        .doc-title {
+            font-size: 12px;
+            font-weight: bold;
+            color: #222222;
+        }
+        .line {
+            border-bottom: 1px solid #c8102e;
+            height: 1px;
+            font-size: 1px;
+            line-height: 1px;
+        }
+        .meta {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .meta td {
+            padding: 10px 0;
+            vertical-align: top;
+            font-size: 9px;
+        }
+        .meta .label {
+            width: 140px;
+            color: #666666;
+        }
+        .section-title {
+            font-size: 10px;
+            font-weight: bold;
+            color: #222222;
+        }
+        .empty {
+            padding: 16px;
+            border: 1px solid #dddddd;
+            color: #666666;
+            font-size: 9px;
+        }
+        .footer-note {
+            font-size: 7.5px;
+            color: #888888;
+        }
+        .spacer {
+            font-size: 1px;
+            line-height: 1px;
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+    {% set rows = collect(positions|default(entities|default([]))) %}
+    {% set totalCost = 0 %}
+    {% set totalSavings = 0 %}
+    {% for position in rows %}
+        {% set totalCost = totalCost + (position.total_cost ?? 0) %}
+        {% set totalSavings = totalSavings + (position.total_savings ?? 0) %}
+    {% endfor %}
+
+    {# Brand + title close together #}
+    <div class="brand">Löwe Energie</div>
+    <div class="doc-title">Angebot {{ offer.number ?? '—' }}</div>
+
+    {# Small space, then red line #}
+    <table cellpadding="0" cellspacing="0" border="0" width="100%"><tr><td class="spacer" style="height:10px;">&nbsp;</td></tr></table>
+    <div class="line">&nbsp;</div>
+
+    {# Larger space above Kunde #}
+    <table cellpadding="0" cellspacing="0" border="0" width="100%"><tr><td class="spacer" style="height:28px;">&nbsp;</td></tr></table>
+
+    <table class="meta">
+        <tr>
+            <td class="label">Kunde</td>
+            <td>
+                {% if offer.customer.company %}
+                    {{ offer.customer.company }}{% if offer.customer.firstname or offer.customer.name %} — {{ offer.customer.firstname }} {{ offer.customer.name }}{% endif %}
+                {% else %}
+                    {{ offer.customer.firstname }} {{ offer.customer.name }}
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <td class="label">Vertriebspartner</td>
+            <td>{{ offer.user.name ?? offer.user.email ?? '—' }}</td>
+        </tr>
+        <tr>
+            <td class="label">Angebotstyp</td>
+            <td>{{ offer.type == 'individual' ? 'Individuell' : 'Normal' }}</td>
+        </tr>
+        <tr>
+            <td class="label">Erstellt am</td>
+            <td>{{ offer.created_at ?? '—' }}</td>
+        </tr>
+        <tr>
+            <td class="label">Gültig bis</td>
+            <td>{{ offer.valid_till ?? '—' }}</td>
+        </tr>
+    </table>
+
+    {# Larger space above Positionen #}
+    <table cellpadding="0" cellspacing="0" border="0" width="100%"><tr><td class="spacer" style="height:36px;">&nbsp;</td></tr></table>
+    <div class="section-title">Positionen</div>
+    <table cellpadding="0" cellspacing="0" border="0" width="100%"><tr><td class="spacer" style="height:12px;">&nbsp;</td></tr></table>
+
+    {% if rows|length > 0 %}
+        <table border="1" cellpadding="5" cellspacing="0" width="100%" style="border-collapse:collapse; border-color:#cccccc;">
+            <tr style="background-color:#f5f5f5;">
+                <th width="5%" align="center" style="font-size:8px; color:#444444;">#</th>
+                <th width="24%" align="left" style="font-size:8px; color:#444444;">Versorger / Tarif</th>
+                <th width="27%" align="left" style="font-size:8px; color:#444444;">Lieferstelle</th>
+                <th width="14%" align="right" style="font-size:8px; color:#444444;">Verbrauch</th>
+                <th width="16%" align="right" style="font-size:8px; color:#444444;">Gesamtkosten</th>
+                <th width="14%" align="right" style="font-size:8px; color:#444444;">Ersparnis</th>
+            </tr>
+            {% for position in rows %}
+                {% set loc = position.location %}
+                <tr>
+                    <td width="5%" align="center" style="font-size:8px; vertical-align:top;">{{ position.number ?? loop.index }}</td>
+                    <td width="24%" align="left" style="font-size:8px; vertical-align:top;">
+                        <b>{{ position.provider ?? '—' }}</b><br/>
+                        {{ position.tariff ?? '—' }}{% if position.duration %} ({{ position.duration }} Mon.){% endif %}
+                    </td>
+                    <td width="27%" align="left" style="font-size:8px; vertical-align:top;">
+                        {% if loc.label or loc.brezel_name %}
+                            <b>{{ loc.label ?? loc.brezel_name }}</b>
+                            {% if loc.address %}<br/>{{ loc.address.street }} {{ loc.address.housenumber }}<br/>{{ loc.address.zip }} {{ loc.address.city }}{% endif %}
+                        {% elseif loc.address %}
+                            {{ loc.address.street }} {{ loc.address.housenumber }}<br/>
+                            {{ loc.address.zip }} {{ loc.address.city }}
+                        {% else %}
+                            {{ loc.number ?? '—' }}
+                        {% endif %}
+                    </td>
+                    <td width="14%" align="right" style="font-size:8px; vertical-align:top;">
+                        {% if position.usage is not null %}{{ position.usage|number_format(0, ',', '.') }} kWh{% else %}—{% endif %}
+                    </td>
+                    <td width="16%" align="right" style="font-size:8px; vertical-align:top;">
+                        {% if position.total_cost is not null %}{{ position.total_cost|number_format(2, ',', '.') }} €{% else %}—{% endif %}
+                    </td>
+                    <td width="14%" align="right" style="font-size:8px; vertical-align:top;">
+                        {% if position.total_savings is not null %}{{ position.total_savings|number_format(2, ',', '.') }} €{% else %}—{% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+
+        <table cellpadding="0" cellspacing="0" border="0" width="100%"><tr><td class="spacer" style="height:28px;">&nbsp;</td></tr></table>
+        <table border="0" cellpadding="0" cellspacing="0" width="100%">
+            <tr>
+                <td width="50%">&nbsp;</td>
+                <td width="50%">
+                    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                        <tr>
+                            <td width="60%" style="padding:12px 0; font-size:9px; color:#666666;">Summe Gesamtkosten</td>
+                            <td width="40%" align="right" style="padding:12px 0; font-size:9px; font-weight:bold;">{{ totalCost|number_format(2, ',', '.') }} €</td>
+                        </tr>
+                        {% if totalSavings > 0 %}
+                        <tr>
+                            <td width="60%" style="padding:12px 0; font-size:9px; color:#666666;">Summe Ersparnis</td>
+                            <td width="40%" align="right" style="padding:12px 0; font-size:9px; font-weight:bold;">{{ totalSavings|number_format(2, ',', '.') }} €</td>
+                        </tr>
+                        {% endif %}
+                        <tr>
+                            <td width="60%" style="padding:18px 0 12px 0; border-top:1px solid #cccccc; font-size:9px; font-weight:bold;">Angebotssumme</td>
+                            <td width="40%" align="right" style="padding:18px 0 12px 0; border-top:1px solid #cccccc; font-size:9px; font-weight:bold;">{{ totalCost|number_format(2, ',', '.') }} €</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    {% else %}
+        <div class="empty">Keine Positionen vorhanden.</div>
+    {% endif %}
+
+    <table cellpadding="0" cellspacing="0" border="0" width="100%"><tr><td class="spacer" style="height:40px;">&nbsp;</td></tr></table>
+    <div class="line" style="border-bottom:1px solid #eeeeee;">&nbsp;</div>
+    <table cellpadding="0" cellspacing="0" border="0" width="100%"><tr><td class="spacer" style="height:12px;">&nbsp;</td></tr></table>
+    <div class="footer-note">
+        Dieses Dokument wurde automatisch erzeugt. Alle Angaben ohne Gewähr, verbindlich sind die jeweiligen Vertragsunterlagen.
+    </div>
+</body>
+</html>
+{% endblock %}
+{% block footer %}
+<!DOCTYPE html>
+<html lang="de">
+<head><meta charset="UTF-8"></head>
+<body></body>
+</html>
+{% endblock %}

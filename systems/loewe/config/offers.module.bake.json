@@ -1,0 +1,109 @@
+[
+  {
+    "resource_module": "offers",
+    "resource": {
+      "identifier": "offers",
+      "icon": "mdi:file-document-outline",
+      "title": "\"Offer \".number.\" — \".customer->brezel_name",
+      "layouts": {
+        "detail": "config/offers.layout.detail",
+        "index": "config/offers.layout.index"
+      },
+      "buttons": {
+        "CalculateOffer": {
+          "icon": "mdi:calculator-variant",
+          "show_in": ["module.show"]
+        },
+        "MarkOfferSent": {
+          "icon": "mdi:send",
+          "show_in": ["module.show"]
+        },
+        "ExportOfferPdf": {
+          "icon": "mdi:file-pdf-box",
+          "show_in": ["module.show"]
+        },
+        "EmailOfferPdf": {
+          "icon": "mdi:email-outline",
+          "show_in": ["module.show"]
+        },
+        "DuplicateOffer": {
+          "icon": "mdi:content-copy",
+          "show_in": ["module.show"]
+        }
+      },
+      "fields": [
+        {
+          "identifier": "number",
+          "type": "incrementing",
+          "options": {
+            "decimal_digits": 0
+          }
+        },
+        {
+          "identifier": "customer",
+          "type": "select",
+          "options": {
+            "references": "customers",
+            "rules": "required"
+          }
+        },
+        {
+          "identifier": "user",
+          "type": "select",
+          "options": {
+            "references": "users"
+          }
+        },
+        {
+          "identifier": "status",
+          "type": "choice",
+          "options": {
+            "values": ["draft", "calculated", "sent", "accepted", "rejected"],
+            "default": "draft"
+          }
+        },
+        {
+          "identifier": "type",
+          "type": "choice",
+          "options": {
+            "values": ["normal", "individual"],
+            "default": "normal"
+          }
+        },
+        {
+          "identifier": "procurement_type",
+          "type": "choice",
+          "options": {
+            "values": ["fixed", "spot"],
+            "default": "fixed"
+          }
+        },
+        {
+          "identifier": "inquiry_notes",
+          "type": "textarea",
+          "options": {
+            "recipes": {
+              "hidden_from_frontend": "type != 'individual'"
+            }
+          }
+        },
+        {
+          "identifier": "attachments",
+          "type": "file",
+          "options": {
+            "references": "files",
+            "multiple": true
+          }
+        },
+        {
+          "identifier": "created_at",
+          "type": "date"
+        },
+        {
+          "identifier": "valid_till",
+          "type": "date"
+        }
+      ]
+    }
+  }
+]

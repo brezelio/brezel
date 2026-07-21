@@ -1,0 +1,116 @@
+{
+  "identifier": "RecalculatePositionSavings",
+  "title": "Recalculate position savings on save",
+  "async": false,
+  "elements": [
+    {
+      "name": "updatePositionSavings",
+      "type": "event/update",
+      "options": {
+        "module": "positions"
+      },
+      "in": {},
+      "set": {
+        "entity": "default:"
+      },
+      "to": {
+        "default": {
+          "recalculatePosition": ["default"]
+        }
+      },
+      "meta": {
+        "position": [0, 0]
+      }
+    },
+    {
+      "name": "recalculatePosition",
+      "type": "action/recalculate",
+      "options": {},
+      "in": {
+        "default": "$entity"
+      },
+      "set": {
+        "entity": "default:"
+      },
+      "to": {
+        "default": {
+          "loadRelations": ["default"]
+        }
+      },
+      "meta": {
+        "position": [300, 0]
+      }
+    },
+    {
+      "name": "loadRelations",
+      "type": "op/load",
+      "options": {
+        "fields": ["location", "offer", "customer", "tariff_catalog", "partner", "contract"]
+      },
+      "in": {
+        "default": "$entity"
+      },
+      "set": {
+        "entity": "default:"
+      },
+      "to": {
+        "default": {
+          "setSavings": ["default"]
+        }
+      },
+      "meta": {
+        "position": [375, 0]
+      }
+    },
+    {
+      "name": "setSavings",
+      "type": "op/set",
+      "options": {
+        "recipes": {
+          "total_savings": "max(0, (((current_baseprice ?? location.current_baseprice ?? 0) * 12) + ((current_price_per_kwh ?? location.current_price_per_kwh ?? 0) * (usage ?? 0) / 100)) - (total_cost ?? 0))",
+          "potential_savings": "(max(0, (((current_baseprice ?? location.current_baseprice ?? 0) * 12) + ((current_price_per_kwh ?? location.current_price_per_kwh ?? 0) * (usage ?? 0) / 100)) - (total_cost ?? 0)) * (duration ?? 12)) / 12"
+        },
+        "values": [],
+        "process": false
+      },
+      "in": {
+        "default": "$entity"
+      },
+      "set": {
+        "entity": "default:"
+      },
+      "to": {
+        "default": {
+          "savePosition": ["default"]
+        }
+      },
+      "meta": {
+        "position": [450, 0]
+      }
+    },
+    {
+      "name": "savePosition",
+      "type": "action/save",
+      "options": {
+        "triggerEvents": false,
+        "skip_recipes": true
+      },
+      "in": {
+        "default": "$entity"
+      },
+      "set": {},
+      "to": {},
+      "meta": {
+        "position": [600, 0]
+      }
+    }
+  ],
+  "events": [
+    {
+      "identifier": "updatePositionSavings",
+      "type": "update",
+      "module": "positions"
+    }
+  ],
+  "comments": []
+}

@@ -1,0 +1,78 @@
+[
+  {
+    "resource_module": "addresses",
+    "resource": {
+      "identifier": "addresses",
+      "icon": "mdi:map-marker",
+      "title": "street.\" \".housenumber.\", \".zip.\" \".city",
+      "layouts": {
+        "detail": "config/addresses.layout.detail",
+        "index": "config/addresses.layout.index"
+      },
+      "fields": [
+        {
+          "identifier": "number",
+          "type": "incrementing",
+          "options": {
+            "decimal_digits": 0
+          }
+        },
+        {
+          "identifier": "partner",
+          "type": "select",
+          "options": {
+            "references": "users"
+          }
+        },
+        {
+          "identifier": "customer",
+          "type": "select",
+          "options": {
+            "references": "customers",
+            "rules": "required"
+          }
+        },
+        {
+          "identifier": "line_1",
+          "type": "text"
+        },
+        {
+          "identifier": "line_2",
+          "type": "text"
+        },
+        {
+          "identifier": "line_3",
+          "type": "text"
+        },
+        {
+          "identifier": "street",
+          "type": "text"
+        },
+        {
+          "identifier": "housenumber",
+          "type": "text"
+        },
+        {
+          "identifier": "housenumber_addition",
+          "type": "text"
+        },
+        {
+          "identifier": "zip",
+          "type": "text"
+        },
+        {
+          "identifier": "city",
+          "type": "text"
+        },
+        {
+          "identifier": "country",
+          "type": "choice",
+          "options": {
+            "values": ["DE"],
+            "default": "DE"
+          }
+        }
+      ]
+    }
+  }
+]

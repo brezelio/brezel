@@ -1,0 +1,54 @@
+{
+  "tabs": [
+    {
+      "identifier": "general",
+      "rows": [
+        {
+          "cols": [
+            {
+              "span": 24,
+              "components": [
+                {
+                  "type": "headline",
+                  "options": {
+                    "identifier": "basic"
+                  }
+                },
+                {
+                  "type": "field_group",
+                  "options": {
+                    "vertical_labels": true,
+                    "fields": [
+                      "number",
+                      ["role", "parent_user"],
+                      ["firstname", "lastname"],
+                      "email",
+                      "password",
+                      "roles"
+                    ]
+                  }
+                },
+                {
+                  "type": "headline",
+                  "options": {
+                    "identifier": "partner"
+                  }
+                },
+                {
+                  "type": "field_group",
+                  "options": {
+                    "vertical_labels": true,
+                    "fields": [
+                      "company_name",
+                      ["provision_type", "provision_default"]
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

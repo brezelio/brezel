@@ -1,0 +1,299 @@
+{
+  "tabs": [
+    {
+      "identifier": "general",
+      "icon": "mdi:company",
+      "rows": [
+        {
+          "cols": [
+            {
+              "span": 12,
+              "components": [
+                {
+                  "type": "headline",
+                  "options": {
+                    "identifier": "basic"
+                  }
+                },
+                {
+                  "type": "field_group",
+                  "options": {
+                    "vertical_labels": true,
+                    "fields": [
+                      "number",
+                      "partner",
+                      "type",
+                      "company",
+                      ["firstname", "name"],
+                      "email",
+                      ["phone", "mobile"]
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "span": 12,
+              "components": [
+                {
+                  "type": "headline",
+                  "options": {
+                    "identifier": "bank"
+                  }
+                },
+                {
+                  "type": "field_group",
+                  "options": {
+                    "fields": [
+                      "iban",
+                      "bic",
+                      "default_bank",
+                      "default_iban",
+                      "default_bic"
+                    ]
+                  }
+                },
+                {
+                  "type": "headline",
+                  "options": {
+                    "identifier": "integration"
+                  }
+                },
+                {
+                  "type": "field_group",
+                  "options": {
+                    "fields": [
+                      "sf_account_id",
+                      "sf_contact_id",
+                      "credit_status"
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "cols": [
+            {
+              "span": 24,
+              "components": [
+                {
+                  "type": "headline",
+                  "options": {
+                    "identifier": "addresses"
+                  }
+                },
+                {
+                  "type": "field_group",
+                  "options": {
+                    "fields": [
+                      "default_address",
+                      "default_billing_address",
+                      "default_shipping_address"
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "cols": [
+            {
+              "span": 24,
+              "options": {
+                "recipes": {
+                  "hidden_from_frontend": "!id"
+                }
+              },
+              "components": [
+                {
+                  "type": "headline",
+                  "options": {
+                    "identifier": "address_list"
+                  }
+                },
+                {
+                  "type": "resource_table",
+                  "options": {
+                    "module": "addresses",
+                    "create_in_modal": true,
+                    "edit_in_modal": true,
+                    "show_in_modal": true,
+                    "pre_filters": [
+                      {
+                        "column": "customer.id",
+                        "operator": "=",
+                        "recipe": "this.id"
+                      }
+                    ],
+                    "recipes": {
+                      "fill": "{'customer': this}"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "cols": [
+            {
+              "span": 24,
+              "options": {
+                "recipes": {
+                  "hidden_from_frontend": "!id"
+                }
+              },
+              "components": [
+                {
+                  "type": "headline",
+                  "options": {
+                    "identifier": "locations"
+                  }
+                },
+                {
+                  "type": "resource_table",
+                  "options": {
+                    "module": "locations",
+                    "create_in_modal": true,
+                    "edit_in_modal": true,
+                    "show_in_modal": true,
+                    "pre_filters": [
+                      {
+                        "column": "customer.id",
+                        "operator": "=",
+                        "recipe": "this.id"
+                      }
+                    ],
+                    "recipes": {
+                      "fill": "{'customer': this}"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "cols": [
+            {
+              "span": 24,
+              "options": {
+                "recipes": {
+                  "hidden_from_frontend": "!id"
+                }
+              },
+              "components": [
+                {
+                  "type": "headline",
+                  "options": {
+                    "identifier": "meters"
+                  }
+                },
+                {
+                  "type": "resource_table",
+                  "options": {
+                    "module": "meters",
+                    "create_in_modal": true,
+                    "edit_in_modal": true,
+                    "show_in_modal": true,
+                    "pre_filters": [
+                      {
+                        "column": "customer.id",
+                        "operator": "=",
+                        "recipe": "this.id"
+                      }
+                    ],
+                    "recipes": {
+                      "fill": "{'customer': this}"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "cols": [
+            {
+              "span": 24,
+              "options": {
+                "recipes": {
+                  "hidden_from_frontend": "!id"
+                }
+              },
+              "components": [
+                {
+                  "type": "headline",
+                  "options": {
+                    "identifier": "offers"
+                  }
+                },
+                {
+                  "type": "resource_table",
+                  "options": {
+                    "module": "offers",
+                    "create_in_modal": true,
+                    "edit_in_modal": true,
+                    "show_in_modal": true,
+                    "pre_filters": [
+                      {
+                        "column": "customer.id",
+                        "operator": "=",
+                        "recipe": "this.id"
+                      }
+                    ],
+                    "recipes": {
+                      "fill": "{'customer': this}"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "cols": [
+            {
+              "span": 24,
+              "options": {
+                "recipes": {
+                  "hidden_from_frontend": "!id"
+                }
+              },
+              "components": [
+                {
+                  "type": "headline",
+                  "options": {
+                    "identifier": "contracts"
+                  }
+                },
+                {
+                  "type": "resource_table",
+                  "options": {
+                    "module": "contracts",
+                    "create_in_modal": true,
+                    "edit_in_modal": true,
+                    "show_in_modal": true,
+                    "pre_filters": [
+                      {
+                        "column": "customer.id",
+                        "operator": "=",
+                        "recipe": "this.id"
+                      }
+                    ],
+                    "recipes": {
+                      "fill": "{'customer': this}"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

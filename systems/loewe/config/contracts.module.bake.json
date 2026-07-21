@@ -1,0 +1,54 @@
+[
+  {
+    "resource_module": "contracts",
+    "resource": {
+      "identifier": "contracts",
+      "icon": "mdi:file-sign",
+      "title": "\"Contract \".number.\" — \".customer->brezel_name",
+      "layouts": {
+        "detail": "config/contracts.layout.detail",
+        "index": "config/contracts.layout.index"
+      },
+      "fields": [
+        {
+          "identifier": "number",
+          "type": "incrementing",
+          "options": {
+            "decimal_digits": 0
+          }
+        },
+        {
+          "identifier": "customer",
+          "type": "select",
+          "options": {
+            "references": "customers",
+            "rules": "required"
+          }
+        },
+        {
+          "identifier": "user",
+          "type": "select",
+          "options": {
+            "references": "users"
+          }
+        },
+        {
+          "identifier": "status",
+          "type": "choice",
+          "options": {
+            "values": ["accepted", "rejected"],
+            "default": "accepted"
+          }
+        },
+        {
+          "identifier": "sf_opp_id",
+          "type": "text"
+        },
+        {
+          "identifier": "created_at",
+          "type": "date"
+        }
+      ]
+    }
+  }
+]

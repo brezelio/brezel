@@ -11,12 +11,12 @@
   },
   "type": "module",
   "dependencies": {
-    "@kibro/brezel-spa": "5.20.2",
+    "@kibro/brezel-spa": "5.18.4",
     "lodash-es": "*"
   },
   "devDependencies": {
     "eslint": "*",
-    "vite": "*",
+    "vite": "7.1.6",
     "vue": "*",
     "workbox-window": "*",
     "sass": "*"

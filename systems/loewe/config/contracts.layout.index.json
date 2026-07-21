@@ -1,0 +1,38 @@
+{
+  "tabs": [
+    {
+      "identifier": "contracts",
+      "icon": "mdi:file-sign",
+      "rows": [
+        {
+          "cols": [
+            {
+              "components": [
+                {
+                  "type": "headline",
+                  "options": {
+                    "identifier": "contracts"
+                  }
+                },
+                {
+                  "type": "resource_table",
+                  "options": {
+                    "module": "contracts",
+                    "columns": [
+                      "number",
+                      "customer",
+                      "user",
+                      "status",
+                      "created_at",
+                      "sf_opp_id"
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "tab_position": "top",
+  "tabs": [
+    {
+      "identifier": "wizard",
+      "rows": [
+        {
+          "cols": [
+            {
+              "span": 24,
+              "components": [
+                {
+                  "type": "widget",
+                  "options": {
+                    "widget": "custom",
+                    "component": "QuotationWizard",
+                    "dynamic_height": true
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

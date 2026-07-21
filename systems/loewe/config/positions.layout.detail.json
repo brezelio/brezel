@@ -1,0 +1,161 @@
+{
+  "tabs": [
+    {
+      "identifier": "general",
+      "icon": "mdi:format-list-numbered",
+      "rows": [
+        {
+          "cols": [
+            {
+              "span": 24,
+              "components": [
+                {
+                  "type": "headline",
+                  "options": {
+                    "identifier": "basic"
+                  }
+                },
+                {
+                  "type": "field_group",
+                  "options": {
+                    "vertical_labels": true,
+                    "fields": [
+                      "number",
+                      "customer",
+                      "partner",
+                      "location",
+                      "offer",
+                      "contract",
+                      "tariff_catalog",
+                      ["provider", "tariff"],
+                      ["duration", "usage", "start_date"],
+                      "meter_type",
+                      "status"
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "identifier": "grid",
+      "icon": "mdi:transmission-tower",
+      "rows": [
+        {
+          "cols": [
+            {
+              "span": 12,
+              "components": [
+                {
+                  "type": "headline",
+                  "options": {
+                    "identifier": "grid_charges"
+                  }
+                },
+                {
+                  "type": "field_group",
+                  "options": {
+                    "fields": [
+                      "grid_usage_fee",
+                      "grid_fixed_fee",
+                      "concession_fee",
+                      "metering_fee",
+                      "grid_capacity_fee"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "span": 12,
+              "components": [
+                {
+                  "type": "headline",
+                  "options": {
+                    "identifier": "levies"
+                  }
+                },
+                {
+                  "type": "field_group",
+                  "options": {
+                    "fields": [
+                      "kwkg_levy",
+                      "special_grid_levy",
+                      "offshore_levy",
+                      "electricity_tax"
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "identifier": "pricing",
+      "icon": "mdi:currency-eur",
+      "rows": [
+        {
+          "cols": [
+            {
+              "span": 12,
+              "components": [
+                {
+                  "type": "headline",
+                  "options": {
+                    "identifier": "energy_supplier"
+                  }
+                },
+                {
+                  "type": "field_group",
+                  "options": {
+                    "fields": [
+                      "site_fixed_fee",
+                      "energy_price",
+                      "prov_partner",
+                      "prov_loewe"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "span": 12,
+              "options": {
+                "recipes": {
+                  "hidden_from_frontend": "!id"
+                }
+              },
+              "components": [
+                {
+                  "type": "headline",
+                  "options": {
+                    "identifier": "totals"
+                  }
+                },
+                {
+                  "type": "field_group",
+                  "options": {
+                    "fields": [
+                      "grid_charges_total",
+                      "state_levies_total",
+                      "usage_price",
+                      "supplier_energy_total",
+                      "total_cost",
+                      "total_savings",
+                      "potential_savings"
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

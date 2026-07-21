@@ -8,7 +8,7 @@ It represents the latest "recommended" setup for your Brezel Instance repo.
 > 
 > For the pre PHP 8 versions, please refer to the [1.x branch](https://gitlab.kiwis-and-brownies.de/kibro/brezel/brezel/-/tree/1.x).
 
-It contains a slim `example` system to get you up and running quickly.
+It contains the `loewe` system for the Löwe Energie Tarifrechner.
 
 Crucially, it creates two users for you to use:
 - `dev@example.com`: A "root" user that bypasses all permission checks. Use it e.g. for Bakery access. Since this user can do everything, but be careful when you test features with it as things that work with this user may not work with other users!
@@ -86,7 +86,7 @@ Note: variables that are prefixed with `VITE_` are baked into client JS scripts.
 
 ```dotenv
 APP_URL="http://mybrezel.test"
-APP_SYSTEM=example
+APP_SYSTEM=loewe
 ```
 
 ##### Database settings
@@ -121,7 +121,7 @@ php bakery system create <system>
 
 Run ``bin/u`` to apply the current system config.
 
-The directory `systems/example` holds `.bake`-configuration files for a system called `example`. 
+The directory `systems/loewe` holds `.bake`-configuration files for the Löwe Energie system.
 `bin/u` will sync these to the DB and build your system.
 If you did not change any workflows and only want to update .bake configurations like modules or entities, use the bakery planner:
 
