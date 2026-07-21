@@ -578,51 +578,48 @@
             </div>
 
             <div class="qw-location__delivery">
-              <div class="qw-location__delivery-head">
-                <label class="qw-label">{{ $t('widgets.quotation_wizard.shipping_address') }}</label>
-                <button
-                  type="button"
-                  class="qw-chip-btn"
-                  @click="copyContractAddressToLocation(location)"
-                >
-                  {{ $t('widgets.quotation_wizard.use_contract_address') }}
-                </button>
-              </div>
-              <div class="qw-address-inline qw-address-inline--5">
+              <label class="qw-label">{{ $t('widgets.quotation_wizard.shipping_address') }}</label>
+              <select
+                v-model="location.deliveryAddressMode"
+                class="qw-input qw-input--half"
+                @change="onDeliveryAddressModeChange(location)"
+              >
+                <option value="contract">{{ $t('widgets.quotation_wizard.shipping_same') }}</option>
+                <option value="new">{{ $t('widgets.quotation_wizard.shipping_different') }}</option>
+              </select>
+              <div
+                v-if="location.deliveryAddressMode === 'new'"
+                class="qw-address-inline qw-address-inline--5 qw-location__delivery-fields"
+              >
                 <input
                   v-model="location.street"
                   type="text"
                   class="qw-input qw-address-inline__street"
                   :placeholder="$t('modules.addresses.fields.street')"
-                  @input="location.deliveryAddressMode = 'new'"
                 >
                 <input
                   v-model="location.housenumber"
                   type="text"
                   class="qw-input qw-address-inline__house"
                   :placeholder="$t('modules.addresses.fields.housenumber')"
-                  @input="location.deliveryAddressMode = 'new'"
                 >
                 <input
                   v-model="location.housenumberAddition"
                   type="text"
                   class="qw-input qw-address-inline__house"
                   :placeholder="$t('modules.addresses.fields.housenumber_addition')"
-                  @input="location.deliveryAddressMode = 'new'"
                 >
                 <input
                   v-model="location.zip"
                   type="text"
                   class="qw-input qw-address-inline__zip"
                   :placeholder="$t('modules.addresses.fields.zip')"
-                  @input="location.deliveryAddressMode = 'new'"
                 >
                 <input
                   v-model="location.city"
                   type="text"
                   class="qw-input qw-address-inline__city"
                   :placeholder="$t('modules.addresses.fields.city')"
-                  @input="location.deliveryAddressMode = 'new'"
                 >
               </div>
             </div>
@@ -1328,7 +1325,7 @@ function createLocation(label = '', overrides = {}) {
     dbId: null,
     label,
     editing: false,
-    deliveryAddressMode: 'new',
+    deliveryAddressMode: 'contract',
     street: '',
     housenumber: '',
     housenumberAddition: '',
@@ -1359,6 +1356,12 @@ function copyContractAddressToLocation(location) {
   location.housenumberAddition = form.housenumberAddition || ''
   location.zip = form.zip || ''
   location.city = form.city || ''
+}
+
+function onDeliveryAddressModeChange(location) {
+  if (location.deliveryAddressMode === 'contract') {
+    copyContractAddressToLocation(location)
+  }
 }
 
 function copyDeliveryAddressToBilling(location) {
@@ -3566,6 +3569,10 @@ $loewe-green-soft: #eef6d4;
   padding: 1rem;
   border-bottom: 1px solid $slate-200;
   background: #fff;
+}
+
+.qw-location__delivery-fields {
+  margin-top: 0.75rem;
 }
 
 .qw-location__delivery-head {
