@@ -21,6 +21,7 @@
   },
   "devDependencies": {
     "eslint": "*",
+    "less": "*",
     "vite": "*",
     "vue": "*",
     "workbox-window": "*",
