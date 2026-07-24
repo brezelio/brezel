@@ -11,11 +11,17 @@
   },
   "type": "module",
   "dependencies": {
-    "@kibro/brezel-spa": "5.21.2",
-    "lodash-es": "*"
+    "@kibro/brezel-spa": "5.27.8",
+    "lodash-es": "*",
+    "moment": "*",
+    "tinycolor2": "*",
+    "vue-i18n": "*",
+    "vue-router": "*",
+    "vuex": "*"
   },
   "devDependencies": {
     "eslint": "*",
+    "less": "*",
     "vite": "*",
     "vue": "*",
     "workbox-window": "*",

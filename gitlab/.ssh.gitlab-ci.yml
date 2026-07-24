@@ -161,19 +161,30 @@ stages:
           git clone --recurse-submodules --branch "$CI_COMMIT_BRANCH" "git@${CI_SERVER_HOST}:${CI_PROJECT_PATH}.git" .
         fi
 
+        export BREZEL_PHP="${BREZEL_PHP:-php}"
+        export BREZEL_COMPOSER="${BREZEL_COMPOSER:-}"
+
         echo "--- Configuring Composer authentication ---"
-        composer config --auth "gitlab-token.gitlab.kiwis-and-brownies.de" "${PACKAGE_TOKEN_USER}" "${PACKAGE_TOKEN}" --no-ansi --no-interaction
+        if [ -n "${BREZEL_COMPOSER:-}" ]; then
+          "${BREZEL_PHP:-php}" "${BREZEL_COMPOSER}" config --auth "gitlab-token.gitlab.kiwis-and-brownies.de" "${PACKAGE_TOKEN_USER}" "${PACKAGE_TOKEN}" --no-ansi --no-interaction
+        else
+          composer config --auth "gitlab-token.gitlab.kiwis-and-brownies.de" "${PACKAGE_TOKEN_USER}" "${PACKAGE_TOKEN}" --no-ansi --no-interaction
+        fi
 
         echo "--- Installing Composer dependencies ---"
-        composer install --no-interaction --no-dev --optimize-autoloader
+        if [ -n "${BREZEL_COMPOSER:-}" ]; then
+          "${BREZEL_PHP:-php}" "${BREZEL_COMPOSER}" install --no-interaction --no-dev --optimize-autoloader
+        else
+          composer install --no-interaction --no-dev --optimize-autoloader
+        fi
 
         echo "--- Running application setup (Bakery) ---"
-        php bakery init --force
-        php bakery migrate --force
-        php bakery apply
-        php bakery load --force
-        php bakery queue:restart
-        php bakery make:supervisor
+        "${BREZEL_PHP:-php}" bakery init --force
+        "${BREZEL_PHP:-php}" bakery migrate --force
+        "${BREZEL_PHP:-php}" bakery apply
+        "${BREZEL_PHP:-php}" bakery load --force
+        "${BREZEL_PHP:-php}" bakery queue:restart
+        "${BREZEL_PHP:-php}" bakery make:supervisor
 
         echo "-- Updating Supervisor configuration ---"
         # '|| true' prevents the job from failing if supervisor has no changes to apply

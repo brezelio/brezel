@@ -9,9 +9,14 @@
  */
 if (file_exists('composer.lock')) {
     $exitCode = 0;
+    $php = getenv('BREZEL_PHP') ?: PHP_BINARY;
+    $composer = getenv('BREZEL_COMPOSER');
+    $composerCommand = $composer
+        ? escapeshellarg($php).' '.escapeshellarg($composer)
+        : 'composer';
 
     // Run check-platform-reqs (with color due to --ansi) and capture the exit code
-    passthru('composer check-platform-reqs --ansi', $exitCode);
+    passthru($composerCommand.' check-platform-reqs --ansi', $exitCode);
 
     // If check-platform-reqs fails, exit with the same code to halt execution
     if ($exitCode !== 0) {
