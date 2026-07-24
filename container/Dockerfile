@@ -1,4 +1,4 @@
-FROM dunglas/frankenphp:1-php8.4-bookworm
+FROM dunglas/frankenphp:1-php8.5-bookworm
 
 ENV APP_PATH=/var/www/brezel \
     COMPOSER_ALLOW_SUPERUSER=1
