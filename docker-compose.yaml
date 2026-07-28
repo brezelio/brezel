@@ -179,6 +179,7 @@ services:
     environment:
       HOME: /home/node
       NPM_TOKEN: ${NPM_TOKEN:-}
+      VITE_REPORT_BUILDER_ROUTE_ENABLED: "true"
     depends_on:
       node_deps:
         condition: service_completed_successfully
