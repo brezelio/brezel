@@ -3,6 +3,7 @@
     "resource_menu": "main",
     "resource": {
       "name": "main",
+      "default": true,
       "elements": [
         {
           "name": "users",
@@ -15,6 +16,3 @@
     }
   }
 ]
-
-
-

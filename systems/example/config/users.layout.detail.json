@@ -21,7 +21,8 @@
                                         "fields": [
                                             "name",
                                             "email",
-                                            "password"
+                                            "password",
+					    "roles"
                                         ]
                                     }
                                 }
