@@ -1,0 +1,166 @@
+include:
+  - local: 'gitlab/.ssh.gitlab-ci.yml'
+
+.tailscale deployment:
+  services:
+    - name: tailscale/tailscale:v1.98.10
+      alias: tailscale
+  variables:
+    # Re-declare the UI secret so GitLab makes it available to the service container.
+    TS_AUTHKEY: '${TS_OAUTH_CLIENT_SECRET}?ephemeral=true&preauthorized=true'
+    TS_EXTRA_ARGS: '--advertise-tags=${TS_CI_TAGS}'
+    TS_HOSTNAME: 'gitlab-${CI_PROJECT_ID}-${CI_JOB_ID}'
+    TS_USERSPACE: 'true'
+    TS_SOCKS5_SERVER: ':1055'
+    TS_ACCEPT_DNS: 'true'
+    TS_ENABLE_HEALTH_CHECK: 'true'
+    TS_LOCAL_ADDR_PORT: ':9002'
+  retry: 2
+  before_script:
+    - apk add --no-cache curl netcat-openbsd openssh-client rsync
+    - |
+      if [ -z "${TS_OAUTH_CLIENT_SECRET:-}" ]; then
+        echo "ERROR: TS_OAUTH_CLIENT_SECRET is not configured."
+        exit 1
+      fi
+
+      if ! printf '%s\n' "${TS_CI_TAGS:-}" | grep -Eq '^tag:ci,tag:[a-z0-9-]+-ci$'; then
+        echo "ERROR: TS_CI_TAGS must have the form tag:ci,tag:<slug>-ci."
+        exit 1
+      fi
+
+      if [ -z "${SSH_KNOWN_HOSTS:-}" ]; then
+        echo "ERROR: SSH_KNOWN_HOSTS is not configured."
+        exit 1
+      fi
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - eval $(ssh-agent -s)
+    - |
+      if [ -f "$PRIVATE_KEY" ]; then
+        chmod 600 "$PRIVATE_KEY"
+        ssh-add "$PRIVATE_KEY"
+      else
+        printf '%s\n' "$PRIVATE_KEY" | tr -d '\r' | ssh-add -
+      fi
+    - |
+      if [ -f "$SSH_KNOWN_HOSTS" ]; then
+        cp "$SSH_KNOWN_HOSTS" ~/.ssh/known_hosts
+      else
+        printf '%s\n' "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
+      fi
+      chmod 600 ~/.ssh/known_hosts
+    - |
+      cat > ~/.ssh/config <<'EOF'
+      Host *
+        ProxyCommand nc -X 5 -x tailscale:1055 %h %p
+        BatchMode yes
+        StrictHostKeyChecking yes
+        UserKnownHostsFile ~/.ssh/known_hosts
+        ServerAliveInterval 30
+        ServerAliveCountMax 5
+        ConnectTimeout 10
+      EOF
+      chmod 600 ~/.ssh/config
+    - |
+      echo "Waiting for the ephemeral Tailscale node..."
+      TAILSCALE_OK=""
+      for i in $(seq 1 18); do
+        if curl -fsS http://tailscale:9002/healthz >/dev/null; then
+          TAILSCALE_OK=1
+          break
+        fi
+        echo "Attempt $i: Tailscale is not ready yet."
+        sleep 5
+      done
+
+      if [ -z "$TAILSCALE_OK" ]; then
+        echo "ERROR: Tailscale did not become ready within 90 seconds."
+        exit 1
+      fi
+    - |
+      echo "Testing SSH over Tailscale..."
+      SSH_OK=""
+      for i in $(seq 1 5); do
+        if ssh -p "$DEPLOY_PORT" "$DEPLOY_USER@$DEPLOY_HOST" true; then
+          SSH_OK=1
+          break
+        fi
+        echo "Attempt $i: SSH is not ready yet."
+        sleep 5
+      done
+
+      if [ -z "$SSH_OK" ]; then
+        echo "ERROR: Cannot reach $DEPLOY_HOST:$DEPLOY_PORT over Tailscale."
+        exit 1
+      fi
+
+# The included SSH template provides build jobs and deployment scripts. Disable
+# its direct and legacy VPN jobs when this Tailscale variant is included.
+deploy frontend:
+  rules:
+    - when: never
+
+deploy frontend with vpn:
+  rules:
+    - when: never
+
+deploy backend:
+  rules:
+    - when: never
+
+deploy backend with vpn:
+  rules:
+    - when: never
+
+deploy backend staging:
+  rules:
+    - when: never
+
+deploy backend staging with vpn:
+  rules:
+    - when: never
+
+deploy frontend staging:
+  rules:
+    - when: never
+
+deploy frontend staging with vpn:
+  rules:
+    - when: never
+
+deploy over tailscale:
+  extends: .tailscale deployment
+  image: alpine
+  stage: deploy
+  needs:
+    - job: build frontend
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main" && $CI_COMMIT_REF_PROTECTED == "true"'
+  resource_group: production-tailscale-deployment
+  variables:
+    DEPLOY_HOST: $PROD_HOST
+    DEPLOY_PORT: $PROD_PORT
+    DEPLOY_USER: $PROD_USER
+    DEPLOY_PATH: $PROD_PATH
+  script:
+    - !reference [.deploy backend base, script]
+    - !reference [.deploy frontend base, script]
+
+deploy staging over tailscale:
+  extends: .tailscale deployment
+  image: alpine
+  stage: deploy
+  needs:
+    - job: build frontend staging
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "staging" && $CI_COMMIT_REF_PROTECTED == "true"'
+  resource_group: staging-tailscale-deployment
+  variables:
+    DEPLOY_HOST: $STAGING_HOST
+    DEPLOY_PORT: $STAGING_PORT
+    DEPLOY_USER: $STAGING_USER
+    DEPLOY_PATH: $STAGING_PATH
+  script:
+    - !reference [.deploy backend base, script]
+    - !reference [.deploy frontend base, script]
