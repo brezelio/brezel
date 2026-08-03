@@ -1,5 +1,6 @@
 include:
-# - local: 'gitlab/.ssh.gitlab-ci.yml'       # Uncomment this for SSH deployment on a vServer. SET CI ENV ACCORDINGLY
+# - local: 'gitlab/.tailscale.gitlab-ci.yml' # Preferred SSH deployment over Tailscale. SET CI ENV ACCORDINGLY
+# - local: 'gitlab/.ssh.gitlab-ci.yml'       # Direct SSH or legacy VPN deployment on a vServer. SET CI ENV ACCORDINGLY
 # - local: 'gitlab/.terraform.gitlab-ci.yml' # Uncomment this for a deployment on the cluster via terraform. MAKE SURE TO replace "example" values & SET CI ENV ACCORDINGLY
 
 # Uncomment and set to your system name if using the terraform or docker deployment / build
