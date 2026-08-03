@@ -14,7 +14,7 @@ include:
     TS_SOCKS5_SERVER: ':1055'
     TS_ACCEPT_DNS: 'true'
     TS_ENABLE_HEALTH_CHECK: 'true'
-    TS_LOCAL_ADDR_PORT: ':9002'
+    TS_LOCAL_ADDR_PORT: '0.0.0.0:9002'
   retry: 2
   before_script:
     - apk add --no-cache curl netcat-openbsd openssh-client rsync
