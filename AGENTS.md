@@ -8,19 +8,38 @@ Use this as a practical field guide when there are no good local examples yet.
 ## Core mindset
 - Brezel is declarative first: most behavior is defined by JSON resources, not ad-hoc imperative code.
 - Work usually happens under `systems/<system>/`.
-- A feature is usually cross-resource: module + layouts + translations + roles + menu + optional workflows/seeds/widgets.
-- When changing existing functionality, keep identifiers stable (module ids, field ids, workflow identifiers, button keys).
+- A feature is usually cross-resource: module + layouts + translations + roles + menu + optional workflows/widgets or pre-seeded entities.
+- When changing existing functionality, keep identifiers stable (module ids, field ids, workflow identifiers, button keys, etc.).
+- Always look at available examples for similar features in the same system. I.e. If you need to react to entity creation, look at existing workflows with `event/create` triggers. 
+
+## Core Style guide
+When writing Code (PHP, JS, TS, json):
+- Use camelCase for variables and functions, PascalCase for classes, and UPPER_CASE for constants.
+- Use 2 spaces for indentation, not tabs.
+
+When writing `json`:
+- Prefer to put each key-value-pair / array entry on its own line, even for small objects / arrays. This makes diffs easier to read and review.
+- Sort object keys by "size". I.e. put single-line keys first, then small objects, then larger objects. This makes it easier to find things in a file.
+- Use `"` for all keys and string values
+- Use `true` / `false` / `null` for boolean and null values, not `"true"` / `"false"` / `"null"`. As well as use bare numbers, not strings for numeric values (i.e. field type `number` seeded entities.)
+
+When building Workflows (JSON):
+- Make sure you correctly space elements. Do not "stack" them, try to build a clear overview when "looking" at the workflow via the position attributes. Normal spacing between elements is // TODO x units horizontal x units vertical
+- Keep the workflow tree as flat as possible. Avoid deep nesting of `flow/if` and `flow/each` elements. Use `op/set` to create temporary variables to avoid deep nesting.
+
+When building Widgets (Vue components):
+- Prefer Typescript
+- Prefer `<script setup>` style
 
 ## Agent quickstart (first pass in any Brezel repo)
 1. Identify target system(s) in `systems/`.
-2. Read `systems/<system>/system.json` for loader and bakery behavior.
-3. Index existing resources (`config/*.module.bake.json`, `config/*.layout.*.json`, `workflows/*.workflow.json`, `translations/*.json`, `roles/*.bake.json`, `menus/*.menu.bake.json`).
-4. Build an identifier map:
+2. Index existing and for your task relevant resources (modules: `*.module.bake.json`, layouts: `*.layout.*.json`, workflows: `*.workflow.json`, translations (plan .json, often in an extra `translations` dir: `translations/*.json`, roles (normal `.bake.json`, often in a `roles` dir or with roles in the name): `*role*.bake.json`, menus: `*.menu.bake.json`).
+3. Build an identifier map:
    - modules (`resource_module`)
    - fields per module (`fields[].identifier`)
    - workflows (`identifier` + `events[]`)
    - buttons (`resource.buttons` keys)
-5. For any feature change, trace all affected links before editing:
+4. For any feature change, trace all affected links before editing:
    - module field usage in layouts
    - translation keys
    - role permissions
@@ -44,6 +63,10 @@ systems/<system>/
 - `role.<name>.bake.json` - role seed
 - `<name>.workflow.json` - workflow
 - Layout files are plain JSON (no bakery envelope)
+
+> Those are just conventions though!
+> What matters is the `.bake.json` ending for bakery definitions and then the `resource_*` envelope keys inside there
+> and the `.workflow.json` ending for workflows.
 
 ## Bakery resource syntax
 Most `*.bake.json` files are arrays of resources using a typed key and `resource` payload:
@@ -109,7 +132,9 @@ Useful for index-only virtual modules/widgets:
 }
 ```
 
-### How-to: add project scoping on a module
+### How-to: add project parameter-based scoping on a module
+Useful to define a URL parameter that can be read by widgets or filters (e.g. resource table pre-filters) to "scope" the
+entire system to e.g. a project to pre-filter things in order to just show relevant entities for that selected project.
 
 ```json
 "options": {
@@ -118,11 +143,11 @@ Useful for index-only virtual modules/widgets:
 ```
 
 ### How-to: configure single-record settings module
+Often used to turn the `clients` module into a system wide "system settings" type thing when multiple clients are not needed.
 
 ```json
 "options": {
   "single_entity": true,
-  "param_scopes": ["project"]
 }
 ```
 
@@ -148,6 +173,13 @@ Matching workflow event:
   "module": "documents"
 }
 ```
+
+> Buttons have many more options, eg. show_in, hidden, icon, display etc.
+>
+> Like in most other option-based situation, the button-options can be calculated dynamically by reusing the same key 
+> but nested in a `recipes` object with a recipe expression as a value.
+> E.g. `buttons.foo.recipes.display = '!bar'` to only show the `foo` button when the `bar` field is falsy (like an
+> unchecked `checkbox` field).
 
 ## Fields (syntax + semantics)
 Typical field shape:
@@ -175,13 +207,14 @@ Type guidance:
 - Closed finite values -> `choice` + `options.values`
 - Relation -> `select` / `multiselect` + `options.references`
 - Repeatable nested structure -> `list` + nested `options.fields`
-- Computed values -> `recipe` on field
+- Computed value -> `recipe` on field
 
-Frequently used options:
+Frequently used `options`:
 - Validation/defaults: `rules`, `default`
 - UI behavior: `readonly`, `frontend_disabled`, `hidden_from_frontend`, `show_in`, `show_in_resource_table`
 - Relation/file: `references`, `pre_filters`, `add_options`, `multiple`
 - UX/help/security: `help`, `placeholder`, `hide_value`, `ignore_when_empty`
+- Dynamic options: `recipes` (for example `hidden_from_frontend: "!hasRole('admin')"`)
 
 ### How-to: relation filtered by another selected field
 
@@ -192,7 +225,11 @@ Frequently used options:
   "options": {
     "references": "contacts",
     "pre_filters": [
-      { "column": "customer.id", "operator": "=", "field": "customer.id" }
+      { 
+        "column": "customer.id",
+        "operator": "=",
+        "field": "customer.id"
+      }
     ]
   }
 }
@@ -201,7 +238,11 @@ Frequently used options:
 ### How-to: computed currency totals
 
 ```json
-{ "identifier": "net_sum", "type": "currency", "recipe": "sum(positions[*].total_price)" }
+{ 
+  "identifier": "net_sum", 
+  "type": "currency", 
+  "recipe": "sum(positions[*].total_price)" 
+}
 ```
 
 ### How-to: conditional field visibility/editability
@@ -223,9 +264,21 @@ Frequently used options:
   "type": "list",
   "options": {
     "fields": [
-      { "identifier": "position_text", "type": "text" },
-      { "identifier": "quantity", "type": "number" },
-      { "identifier": "unit_price", "type": "currency", "options": { "currency": "EUR" } }
+      { 
+        "identifier": "position_text",
+        "type": "text"
+      },
+      { 
+        "identifier": "quantity",
+        "type": "number"
+      },
+      { 
+        "identifier": "unit_price",
+        "type": "currency",
+        "options": { 
+          "currency": "EUR" 
+        } 
+      }
     ]
   }
 }
@@ -234,7 +287,7 @@ Frequently used options:
 ## Module references and pre-filters
 References connect modules via `options.references`.
 
-Pre-filter operators: `=`, `!=`, `>`, `<`, `>=`, `<=`, `IN`, `NOT IN`, `LIKE`.
+Pre-filter operators: `=`, `!=`, `>`, `<`, `>=`, `<=`, `IN`, `NOT IN`, `LIKE`, `NOT LIKE`.
 
 Pre-filter sources:
 - `field` (field path)
@@ -245,13 +298,21 @@ How-to examples:
 - Field-to-field filter:
 
 ```json
-{ "column": "customer.id", "operator": "=", "field": "customer.id" }
+{ 
+  "column": "customer.id",
+  "operator": "=", 
+  "field": "customer.id" 
+}
 ```
 
 - Recipe-based filter:
 
 ```json
-{ "column": "project.id", "operator": "=", "recipe": "this.project.id" }
+{ 
+  "column": "project.id", 
+  "operator": "=",
+  "recipe": "this.project.id" 
+}
 ```
 
 - Conditional filter (apply only when expression is true):
@@ -267,6 +328,7 @@ How-to examples:
 
 ## Layouts (primary UI config)
 Layouts are tab -> row -> col -> component trees.
+Col-span is 24-based (like bootstrap grid).
 
 Common component types:
 - `headline`
@@ -280,7 +342,7 @@ Important layout semantics:
 - `field_group.options.fields` can include nested arrays for inline groups.
 - `resource_table` supports module binding, column config, toolbar controls, pre-filters, aggregates, summary widgets.
 - Visibility/behavior can be recipe-driven at tab/component level.
-- `show_in` controls contexts (`module.show`, `module.edit`, etc.).
+- `show_in` controls contexts (commonly used: `module.show`, `module.edit`, `module.create`, `module.index`).
 
 ### How-to: build a simple detail layout
 
@@ -295,8 +357,21 @@ Important layout semantics:
             {
               "span": 24,
               "components": [
-                { "type": "headline", "options": { "identifier": "basic_information" } },
-                { "type": "field_group", "options": { "fields": ["name", "customer"] } }
+                { 
+                  "type": "headline", 
+                  "options": { 
+                    "identifier": "basic_information" 
+                  } 
+                },
+                { 
+                  "type": "field_group", 
+                  "options": { 
+                    "fields": [
+                      "name", 
+                      "customer"
+                    ] 
+                  } 
+                }
               ]
             }
           ]
@@ -312,8 +387,14 @@ Important layout semantics:
 ```json
 "fields": [
   "name",
-  ["street", "city"],
-  ["postal_code", "country"]
+  [
+    "street", 
+    "city"
+  ],
+  [
+    "postal_code", 
+    "country"
+  ]
 ]
 ```
 
@@ -325,7 +406,11 @@ Important layout semantics:
   "options": {
     "module": "contacts",
     "pre_filters": [
-      { "column": "customer.id", "operator": "=", "recipe": "this.id" }
+      { 
+        "column": "customer.id",
+        "operator": "=", 
+        "recipe": "this.id" 
+      }
     ],
     "create_in_modal": true,
     "edit_in_modal": true,
@@ -344,8 +429,8 @@ Important layout semantics:
   "type": "files",
   "options": {
     "module": "files",
+    "directory": "/foo/bar/",
     "recipes": {
-      "directory": "wrs.pathForProject(this, false)",
       "hidden_from_frontend": "!id"
     }
   }
@@ -415,11 +500,20 @@ Use it from JSON:
 ```
 
 ### How-to: add custom recipe package/symbols
+This is usefull for extending recipes with custom, more complex logic.
+This is used as an "escape hatch" out of the workflow element-based way of building logic into php.
+It should only be used to build self-contained logic that follows the "expression concept" of recipes.
+I.e. one-shot methods / functions, no longer state things or deeply integrating into the base Laravel framework via
+ServiceProviders or something else!
+
 - Backend workflow/native recipes:
-  - Register package in `app/Providers/RecipeServiceProvider.php` (for example `wrs` package).
+  - Register package in `app/Providers/RecipeServiceProvider.php` (for example `foo` package).
   - Wire provider in `bootstrap/app.php`.
 - Frontend layout/module recipes:
   - Register symbols/functions in `src/main.js` via `extendRecipeProvider(...)`.
+
+Examples:
+// TODO!
 
 ## Widgets
 Widgets are custom Vue components mounted from layouts.
@@ -444,10 +538,10 @@ Create/register/use flow:
 ```
 
 Framework integration (`@kibro/brezel-spa`):
-- Typical flow: load module/entity data, execute workflow/layout commands, persist via API helpers.
-- Ant Design Vue components are available through `<a-...>` tags.
+- Typical flow: load module/entity data, execute workflow/layout commands, persist via API helpers exposed by that package.
+- Ant Design Vue components are available through `<a-...>` tags and should be the prefered building blocks for custom widgets!
 
-### How-to: use generated Brezel types in widgets (important)
+### How-to: use generated Brezel types in widget typescript (important)
 These types are generated from system config and should be used in widget code.
 
 1. Ensure `systems/<system>/system.json` enables type generation:
@@ -480,6 +574,7 @@ Notes:
 - Generated files usually live under `src/types/` (`modules/`, `translations/`, and `custom-modules.d.ts`).
 - `custom-modules.d.ts` augments `@kibro/brezel-spa` types automatically.
 - Do not hand-edit generated files in `src/types/**`; regenerate from bakery config instead.
+- These generated type definitions can and should be included in the repo.
 
 ## Workflows
 Workflows handle business automation, side effects, imports/exports, and integrations.
@@ -496,7 +591,7 @@ Common node types seen in production Brezel apps:
 - Mutations: `op/set`, `op/addListItem`, `op/push`, `action/save`, `action/delete`
 - Side effects: `action/run`, `action/notify`, `action/log`, `action/redirect`, `action/export`, `action/response`, `cast/progress`, `action/makeDir`
 
-> You can find available workflow elements and their code / definition in `@vendor/brezel/api/app/Workflow/Elements/*`.
+> You can find available workflow elements, their available options and their code (to understand how they work and what they do in `@vendor/brezel/api/app/Workflow/Elements/*`.
 
 ### How-to: webhook workflow triggered by module button
 1. Add module button key (for example `RenderInvoice`).
@@ -516,11 +611,11 @@ Use `event/create` to react to entity creation:
 ```
 
 ### How-to: queue long-running work
-- Set workflow-level `async: true` and a `queue` name.
-- Use `action/run` to fan out per-item processing.
-- Ensure workers consume those queues in dev/prod.
+- Set workflow-level `async: true` and optionally a `queue` name.
+- Use `action/run` to fan out per-item processing by calling another workflow. That can either be sync or async (i.e. spawning another job).
+- In prod custom queue names are automatically spun up via supervisor, locally they need to be started manually (for example `php bakery queue:work --queue=long-running`) as only the default queue (i.e. no custom name) runs automatically on most setups.
 
-### How-to: expose external webhook endpoint
+### How-to: expose external webhook endpoint for widgets or buttons
 - Create `event/webhook` workflow (module can be `null` for global endpoints).
 - Parse request payload (`request:` / `request.field:`).
 - Return explicit responses with `action/response` for integration reliability.
@@ -576,7 +671,11 @@ How-to:
   "resource": {
     "name": "main",
     "elements": [
-      { "name": "projects", "type": "entry", "default": true },
+      { 
+        "name": "projects", 
+        "type": "entry", 
+        "default": true 
+      },
       {
         "name": "settings",
         "type": "submenu",
@@ -590,6 +689,10 @@ How-to:
 
 ## Roles and permissions
 Roles are usually seeded via `role.<name>.bake.json` as role entities in `roles` module.
+
+By default, a user cannot do anything unless a role grants access!
+
+Filters / Policies can be used for more granular control.
 
 Common patterns:
 - Full access role: `"modules": true`
@@ -605,13 +708,16 @@ Field-level permissions example:
     "update": false,
     "delete": false,
     "fields": {
-      "status": { "read": true, "write": false }
+      "status": {
+        "read": true,
+        "write": false
+      }
     }
   }
 }
 ```
 
-Data filter example (user-bound):
+Filter example (user-bound):
 
 ```json
 "filter": [
@@ -627,7 +733,7 @@ Data filter example (user-bound):
 ```
 
 ## Translations
-Translations are usually loaded by a `resource_translations` envelope referencing a JSON file.
+Translations are loaded by a `resource_translations` envelope in a `.bake.json` file referencing a JSON file.
 
 Envelope example:
 
@@ -657,7 +763,7 @@ Common translation keys to maintain:
 Rule of thumb: whenever adding fields/buttons/tabs/headlines, add translation keys in the same change.
 
 ## Other system-level resources
-- `system.json`: loaders and bakery options (for example type generation)
+- `system.json`: loaders and bakery options (for example type generation). Pretty much always the same for each system.
 - `hostnames.bake.json`: hostname resources
 - `topbar.bake.json`: top bar layout resource (`resource_layout`, `type: top_bar`)
 
@@ -691,27 +797,15 @@ Rule of thumb: whenever adding fields/buttons/tabs/headlines, add translation ke
 2. Add `resource_table` to parent detail tab with `pre_filters` on parent id.
 3. Optional: use modal create/edit/show and prefill parent relation with `recipes.fill`.
 
-## Fresh project bootstrap order (minimal)
-When a project is almost empty, this order avoids dependency issues:
-1. `system.json`
-2. `hostnames.bake.json`
-3. core modules needed by others (for example `roles`, `users`, `clients`, `files`)
-4. role/client/user seeds (with proper `depends_on`)
-5. business modules + layouts
-6. menus
-7. translations envelope + locale file
-8. workflows
-9. optional widgets/topbar/custom recipes
-
 ## Validation and dev loop
 Typical commands (project-specific wrappers may exist):
-- `php bakery plan` - inspect upcoming changes
-- `php bakery apply` - apply non-workflow resources
-- `php bakery load` - reload workflows
+- `php bakery plan` - inspect upcoming bakery resource changes
+- `php bakery apply` - apply non-workflow bakery resources
+- `php bakery load` - reload workflows.
 - `bin/u` or `mise run update` - project wrapper for apply + load
 
 If workflows use queues (`async: true`):
-- run workers for required queues (for example `php bakery queue:work --queue=<queue_name>`)
+- run workers for required queues (for example `php bakery queue:work --queue=<queue_name>`). Use the raw `php bakery queue:work` to run the default queue (no custom name). In production, custom queues are usually started automatically via supervisor.
 
 ## Final validation checklist
 - JSON syntax valid and file naming matches purpose.
@@ -719,7 +813,7 @@ If workflows use queues (`async: true`):
 - Module/layout/reference identifiers resolve.
 - New field is reflected in module + layout + translations (+ roles if needed).
 - Button identifiers align with workflow event identifiers.
-- Recipes are valid in their execution context (`this` vs `$vars`).
+- Recipes are valid in their execution context (`this` vs `$vars`). // TODO: Do we have a valudation tool for that?
 - Widgets used in layout are registered in frontend bootstrap with exact matching name.
-- `depends_on` covers all seed dependencies.
-- Changes were applied/loaded with correct bakery command (`apply` vs `load`).
+- `depends_on` covers all needed seed dependencies.
+- Changes were applied/loaded with correct bakery command (`apply` vs `load`) to test locally.
