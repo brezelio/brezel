@@ -5,6 +5,13 @@ This document is intentionally reusable across early-stage and mature systems.
 
 Use this as a practical field guide when there are no good local examples yet.
 
+## Sources and verification order
+- Start with examples in the current system because they reflect the installed Brezel version and local conventions.
+- Consult the official handbook at https://docs.brezel.io/ for concepts, guides, and reference material.
+  - > Note: The handbook is useful but currently incomplete and not consistently organized. Do not assume that every supported feature is documented or that every example matches the installed version.
+- When local examples and the handbook are insufficient or disagree, inspect the installed `vendor/brezel/api` implementation for backend behavior and the installed `@kibro/brezel-spa` package for frontend behavior.
+- Do not infer behavior from similarly named options. Verify workflow element semantics in `vendor/brezel/api/app/Workflow/Elements/*`.
+
 ## Core mindset
 - Brezel is declarative first: most behavior is defined by JSON resources, not ad-hoc imperative code.
 - Work usually happens under `systems/<system>/`.
@@ -35,7 +42,8 @@ When writing `json`:
 - Use `true` / `false` / `null` for boolean and null values, not `"true"` / `"false"` / `"null"`. As well as use bare numbers, not strings for numeric values (i.e. field type `number` seeded entities.)
 
 When building Workflows (JSON):
-- Make sure you correctly space elements. Do not "stack" them, try to build a clear overview when "looking" at the workflow via the position attributes. Normal spacing between elements is // TODO x units horizontal x units vertical
+- Do not stack elements. Arrange `meta.position` values so the workflow remains readable as a process map in the visual editor.
+- Space normal left-to-right steps approximately 320 position units apart horizontally and parallel branches approximately 220 units apart vertically. Treat these as readability defaults inferred from editor-authored workflows, not enforced grid requirements.
 - Keep the workflow tree as flat as possible. Avoid deep nesting of `flow/if` and `flow/each` elements. Use element-level `set` mappings to capture outputs as temporary workflow variables.
 
 When building Widgets (Vue components):
@@ -517,15 +525,103 @@ A custom backend recipe function is the only allowed PHP escape hatch. It must b
 that follows the expression model of recipes. Do not use it to introduce controllers, services, jobs, generic Laravel service
 providers, application state, or other Laravel application architecture.
 
-- Backend workflow/native recipes:
-  - Reuse the project's custom recipe provider when one already exists.
-  - Otherwise create the smallest recipe provider/package needed and register it through the project's established recipe registration path, commonly `app/Providers/RecipeServiceProvider.php` wired in `bootstrap/app.php`.
-  - Expose focused recipe symbols/functions only; do not expose Laravel or framework internals to Brezel resources.
-- Frontend layout/module recipes:
-  - Register symbols/functions in `src/main.js` via `extendRecipeProvider(...)`.
+#### Backend workflow recipes
 
-Examples:
-// TODO!
+1. Ensure the project namespace maps to `app/` in `composer.json`:
+
+```json
+"autoload": {
+  "psr-4": {
+    "Project\\": "app/"
+  }
+}
+```
+
+2. Create a package whose public methods become namespaced recipe functions:
+
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace Project\Recipes;
+
+use App\Recipes\Driver\Native\Interpreter\Main\Library\Packages\Package;
+
+class ProjectRecipes extends Package
+{
+  public function normalizeReference(string $reference): string
+  {
+    return strtoupper(trim($reference));
+  }
+}
+```
+
+3. Reuse an existing recipe provider or create the project's dedicated recipe provider: 
+// TODO: where to put that file?
+
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace Project\Providers;
+
+use App\Recipes\Driver\Native\Interpreter\Main\MainInterpreter;
+use App\Recipes\Driver\Native\NativeRecipesDriver;
+use Illuminate\Support\ServiceProvider;
+use Project\Recipes\ProjectRecipes;
+
+class RecipeServiceProvider extends ServiceProvider
+{
+  public function boot(NativeRecipesDriver $recipes): void
+  {
+    $recipes->setInterpreterFactory(function (MainInterpreter $interpreter): void {
+      $interpreter->registerPackage('project', ProjectRecipes::class);
+    });
+  }
+}
+```
+
+4. Register only that recipe provider through the Brezel bootstrap:
+
+```php
+use Project\Providers\RecipeServiceProvider;
+
+$brezel->addServiceProvider(RecipeServiceProvider::class);
+```
+
+The function is then available in workflow recipes as `project.normalizeReference($reference)`.
+
+#### Frontend layout/module recipes
+
+Backend and frontend recipes use separate interpreters.
+If layouts, module fields, menus, or widgets need the same symbol, implement a frontend equivalent and register it independently:
+
+```ts
+export const projectRecipes = {
+  normalizeReference(reference: string): string {
+    return reference.trim().toUpperCase()
+  },
+}
+```
+
+```ts
+import { extendRecipeProvider } from '@kibro/brezel-spa'
+import { projectRecipes } from './recipes'
+
+extendRecipeProvider((provider) => {
+  provider.addSymbol('project', projectRecipes)
+})
+```
+
+// TODO: Where? main.js?
+
+
+This exposes `project.normalizeReference(reference)` to frontend recipes. Use `provider.addFunction('name', callback)` for an
+un-namespaced function. If the function needs component state such as the current route, use the component argument supplied to
+the provider callback. Keep backend and frontend implementations behaviorally aligned when the same recipe is available in both.
+Add direct tests for non-trivial custom recipe functions.
 
 ## Widgets
 Widgets are custom Vue components mounted from layouts.
@@ -605,9 +701,9 @@ Common node types seen in production Brezel apps:
 
 ### Critical workflow semantics
 - `op/set` does not create workflow variables. It writes object values onto the element's input object.
-- For `op/set`, use the `in` port to specify the object whose values should be changed. Do not interpret or use `copy` as the field-update input.
+- For `op/set`, use the `in` port to specify the object whose values should be changed. `copy` is an optional source object whose fields are copied onto input entities; it does not select the mutation target.
 - Create workflow variables with the top-level `set` mapping on any workflow element. Each key becomes a `$variable` available for elements "downstream", and its value selects an element output, for example `"set": { "entity": "default:" }` creates `$entity` with the value of the output of the `default` port of that workflow element. Important: those are NOT recipe expressions in there! Use `op/recipe` with a `default:` set if you want to write a more complex computed value to a variable.
-- `action/run` with `scoped: true` creates one variable per configured input key in the called workflow. The values do not become properties of `this`, the event prototype, or `$entry`.
+- `action/run` with `scope: true` creates one variable per configured `input` key in the called workflow. The values do not become properties of `this`, the event prototype, or `$entry`.
 - In workflow recipes, use `??` for value fallback. Do not use `||` for either/or values because it evaluates to a boolean in the workflow recipe interpreter.
 
 > You can find available workflow elements, their available options and their code (to understand how they work and what they do in `@vendor/brezel/api/app/Workflow/Elements/*`.
@@ -823,6 +919,13 @@ Typical commands (project-specific wrappers may exist):
 - `php bakery load` - reload workflows.
 - `bin/u` or `mise run update` - project wrapper for apply + load
 
+Recipe validation:
+- There is no dedicated recipe-lint command. The backend parser can check syntax through `App\Recipes\Driver\Native\Lang\Parser::checkSyntax()` or `parseExpression()`.
+- For ad-hoc checks, run `php bakery shell`, instantiate the parser, and check the exact expression, for example `(new \App\Recipes\Driver\Native\Lang\Parser)->checkSyntax('$customer ?? $defaultCustomer')`.
+- Evaluate with representative data through `recipe()` when runtime behavior matters.
+- Syntax validation cannot prove that a workflow `$variable`, a `this` field, or a branch-dependent value exists at runtime. Verify those against the actual element inputs, top-level `set` mappings, and workflow execution paths.
+- `php bakery load` loads workflow JSON but does not comprehensively parse every inline workflow recipe.
+
 If workflows use queues (`async: true`):
 - run workers for required queues (for example `php bakery queue:work --queue=<queue_name>`). Use the raw `php bakery queue:work` to run the default queue (no custom name). In production, custom queues are usually started automatically via supervisor.
 
@@ -832,7 +935,7 @@ If workflows use queues (`async: true`):
 - Module/layout/reference identifiers resolve.
 - New field is reflected in module + layout + translations (+ roles if needed).
 - Button identifiers align with workflow event identifiers.
-- Recipes are valid in their execution context (`this` vs `$vars`). // TODO: Do we have a valudation tool for that?
+- Recipe syntax was checked with the backend parser where practical, and runtime context (`this` vs `$variables`) was verified from workflow inputs, top-level `set` mappings, and execution paths.
 - Widgets used in layout are registered in frontend bootstrap with exact matching name.
 - `depends_on` covers all needed seed dependencies.
 - Changes were applied/loaded with correct bakery command (`apply` vs `load`) to test locally.
