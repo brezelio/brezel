@@ -10,7 +10,18 @@ Use this as a practical field guide when there are no good local examples yet.
 - Work usually happens under `systems/<system>/`.
 - A feature is usually cross-resource: module + layouts + translations + roles + menu + optional workflows/widgets or pre-seeded entities.
 - When changing existing functionality, keep identifiers stable (module ids, field ids, workflow identifiers, button keys, etc.).
-- Always look at available examples for similar features in the same system. I.e. If you need to react to entity creation, look at existing workflows with `event/create` triggers. 
+- Always look at available examples for similar features in the same system. I.e. If you need to react to entity creation, look at existing workflows with `event/create` triggers.
+
+## Hard boundary: no application PHP or Laravel logic
+Brezel systems must not contain raw PHP application logic or custom Laravel integration. Do not create controllers, services,
+commands, jobs, models, middleware, generic service providers, or similar PHP classes inside a Brezel project.
+
+Use this escalation order for complex behavior and integrations:
+1. Implement it with existing Brezel resources, especially workflows and recipes.
+2. If that is insufficient, expose the smallest self-contained PHP operation as a custom backend recipe function through the project's recipe provider. This is the only allowed PHP escape hatch. Keep it stateless and expression-oriented; it must not hook into the underlying Laravel of the Brezel framework!
+3. If a recipe function is still insufficient, stop and ask the developer. The capability may belong in Brezel core rather than being custom build for this brezel-based project.
+
+If no custom recipe provider exists yet, follow the registration process under "How-to: add custom recipe package/symbols" below. Do not invent another PHP integration mechanism.
 
 ## Core Style guide
 When writing Code (PHP, JS, TS, json):
@@ -25,7 +36,7 @@ When writing `json`:
 
 When building Workflows (JSON):
 - Make sure you correctly space elements. Do not "stack" them, try to build a clear overview when "looking" at the workflow via the position attributes. Normal spacing between elements is // TODO x units horizontal x units vertical
-- Keep the workflow tree as flat as possible. Avoid deep nesting of `flow/if` and `flow/each` elements. Use `op/set` to create temporary variables to avoid deep nesting.
+- Keep the workflow tree as flat as possible. Avoid deep nesting of `flow/if` and `flow/each` elements. Use element-level `set` mappings to capture outputs as temporary workflow variables.
 
 When building Widgets (Vue components):
 - Prefer Typescript
@@ -464,6 +475,7 @@ Core model:
 - `$var` = workflow variable in workflows
 - role helpers like `hasRole()`, `isRoot()`
 - utility helpers like `trimFile()`, `file()` during bakery template evaluation
+- In workflow recipes, use `??` for fallback values, for example `$customer ?? $defaultCustomer`. Do not use `||` as a value fallback: in the workflow recipe interpreter that produces a boolean (as it is an "or" expression) rather than returning one of the operands.
 
 Common recipe examples:
 - `this.status == 'approved'`
@@ -500,15 +512,15 @@ Use it from JSON:
 ```
 
 ### How-to: add custom recipe package/symbols
-This is usefull for extending recipes with custom, more complex logic.
-This is used as an "escape hatch" out of the workflow element-based way of building logic into php.
-It should only be used to build self-contained logic that follows the "expression concept" of recipes.
-I.e. one-shot methods / functions, no longer state things or deeply integrating into the base Laravel framework via
-ServiceProviders or something else!
+This is useful for extending recipes with custom, more complex logic when workflows and existing recipe functions are insufficient.
+A custom backend recipe function is the only allowed PHP escape hatch. It must be a small, self-contained, stateless operation
+that follows the expression model of recipes. Do not use it to introduce controllers, services, jobs, generic Laravel service
+providers, application state, or other Laravel application architecture.
 
 - Backend workflow/native recipes:
-  - Register package in `app/Providers/RecipeServiceProvider.php` (for example `foo` package).
-  - Wire provider in `bootstrap/app.php`.
+  - Reuse the project's custom recipe provider when one already exists.
+  - Otherwise create the smallest recipe provider/package needed and register it through the project's established recipe registration path, commonly `app/Providers/RecipeServiceProvider.php` wired in `bootstrap/app.php`.
+  - Expose focused recipe symbols/functions only; do not expose Laravel or framework internals to Brezel resources.
 - Frontend layout/module recipes:
   - Register symbols/functions in `src/main.js` via `extendRecipeProvider(...)`.
 
@@ -590,6 +602,13 @@ Common node types seen in production Brezel apps:
 - Logic/control: `flow/if`, `flow/empty`, `flow/each`, `flow/try`
 - Mutations: `op/set`, `op/addListItem`, `op/push`, `action/save`, `action/delete`
 - Side effects: `action/run`, `action/notify`, `action/log`, `action/redirect`, `action/export`, `action/response`, `cast/progress`, `action/makeDir`
+
+### Critical workflow semantics
+- `op/set` does not create workflow variables. It writes object values onto the element's input object.
+- For `op/set`, use the `in` port to specify the object whose values should be changed. Do not interpret or use `copy` as the field-update input.
+- Create workflow variables with the top-level `set` mapping on any workflow element. Each key becomes a `$variable` available for elements "downstream", and its value selects an element output, for example `"set": { "entity": "default:" }` creates `$entity` with the value of the output of the `default` port of that workflow element. Important: those are NOT recipe expressions in there! Use `op/recipe` with a `default:` set if you want to write a more complex computed value to a variable.
+- `action/run` with `scoped: true` creates one variable per configured input key in the called workflow. The values do not become properties of `this`, the event prototype, or `$entry`.
+- In workflow recipes, use `??` for value fallback. Do not use `||` for either/or values because it evaluates to a boolean in the workflow recipe interpreter.
 
 > You can find available workflow elements, their available options and their code (to understand how they work and what they do in `@vendor/brezel/api/app/Workflow/Elements/*`.
 
