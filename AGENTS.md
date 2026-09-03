@@ -277,6 +277,8 @@ Frequently used `options`:
 
 ### How-to: nested list field
 
+Do not use `options.recipes.hidden_from_frontend` on fields nested inside a `list` field. It breaks the layout. Prefer conditionally disabling nested fields with `options.recipes.frontend_disabled` instead.
+
 ```json
 {
   "identifier": "positions",
