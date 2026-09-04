@@ -730,7 +730,7 @@ Use `event/create` to react to entity creation:
 ### How-to: queue long-running work
 - Set workflow-level `async: true` and optionally a `queue` name.
 - Use `action/run` to fan out per-item processing by calling another workflow. That can either be sync or async (i.e. spawning another job).
-- In prod custom queue names are automatically spun up via supervisor, locally they need to be started manually (for example `php bakery queue:work --queue=long-running`) as only the default queue (i.e. no custom name) runs automatically on most setups.
+- In prod custom queue names are automatically spun up via supervisor, locally they need to be started manually (for example `php bakery work --queue=long-running`) as only the default queue (i.e. no custom name) runs automatically on most setups.
 
 ### How-to: expose external webhook endpoint for widgets or buttons
 - Create `event/webhook` workflow (module can be `null` for global endpoints).
@@ -914,12 +914,33 @@ Rule of thumb: whenever adding fields/buttons/tabs/headlines, add translation ke
 2. Add `resource_table` to parent detail tab with `pre_filters` on parent id.
 3. Optional: use modal create/edit/show and prefill parent relation with `recipes.fill`.
 
+## Brezel packaging and CLI
+Consumer Brezel projects use the project-root `bakery` entrypoint. They are not normal Laravel application roots.
+
+- Run framework operations as `php bakery <command>` from the project root.
+- Do not run `php artisan` and do not invoke `vendor/brezel/api/artisan`. That Artisan entrypoint belongs to development of the installed API package, not to the consuming project.
+- `php bakery` boots the consumer project's `bootstrap/app.php`, including registered recipe providers, and redirects Brezel paths to the consumer's `.env`, `storage/`, and `systems/` directories.
+- Bakery exposes an explicit allowlist of commands, not the full Laravel Artisan command set. Do not assume commands such as `cache:clear`, `config:cache`, `test`, or arbitrary package commands are available through Bakery.
+- The available commands vary by installed `brezel/api` version. Verify them in `vendor/brezel/api/app/Console/Commands/BrezelCLI.php` and inspect command-specific usage with `php bakery help <command>`.
+- The command name must be the first argument after `bakery`; put options after it, for example `php bakery apply --no-interaction`.
+- Use `php bakery shell` for the intentionally exposed interactive Tinker shell, including recipe-parser checks and controlled backend inspection.
+- Use `php bakery work`, not `php bakery queue:work`, to start a worker in current Brezel versions.
+- Use `php bakery schedule` for one scheduler pass. A local runner or production scheduler must invoke it repeatedly, in prod this is usually a 1 minute interval crontab. The schedule is the basis for `event/cron` elements.
+- Project tests, linters, and frontend builds use their project-level Composer, npm, or binary commands; they are not Bakery commands.
+
+Prefer existing project wrappers when present:
+- `bin/a`, `mise run apply`, or shell alias `a`: run `php bakery apply`.
+- `bin/l`, `mise run load`, or shell alias `l`: run `php bakery load`.
+- `bin/u`, `mise run update`, or shell alias `u`: commonly run migration, workflow loading, and Bakery apply in the project's defined order.
+- Inspect wrapper implementation before relying on it. Some wrappers are not fail-fast, so review every command's output rather than trusting only the final exit status.
+
 ## Validation and dev loop
 Typical commands (project-specific wrappers may exist):
-- `php bakery plan` - inspect upcoming bakery resource changes
-- `php bakery apply` - apply non-workflow bakery resources
-- `php bakery load` - reload workflows.
-- `bin/u` or `mise run update` - project wrapper for apply + load
+- `php bakery plan [system]` - inspect upcoming Bakery resource changes.
+- `php bakery apply [system]` - apply non-workflow Bakery resources.
+- `php bakery load [system]` - reload workflows.
+- `php bakery migrate --force` - run central and tenant migrations when required.
+- `bin/u` or `mise run update` - run the project's complete update sequence.
 
 Recipe validation:
 - There is no dedicated recipe-lint command. The backend parser can check syntax through `App\Recipes\Driver\Native\Lang\Parser::checkSyntax()` or `parseExpression()`.
@@ -929,7 +950,7 @@ Recipe validation:
 - `php bakery load` loads workflow JSON but does not comprehensively parse every inline workflow recipe.
 
 If workflows use queues (`async: true`):
-- run workers for required queues (for example `php bakery queue:work --queue=<queue_name>`). Use the raw `php bakery queue:work` to run the default queue (no custom name). In production, custom queues are usually started automatically via supervisor.
+- Run workers for required queues with `php bakery work --queue=<queue_name>`. Use `php bakery work` without `--queue` for the default queue. In production, custom queues are usually started automatically through generated Supervisor configuration.
 
 ## Final validation checklist
 - JSON syntax valid and file naming matches purpose.
