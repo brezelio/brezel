@@ -6,6 +6,10 @@
 [tools]
 node = "22"
 php = "8.4"
+"gitlab:brezel-lsp/brezel-lsp" = { version = "latest", bin = "brezel-lsp" }
+
+[env]
+OPENCODE_EXPERIMENTAL_LSP_TOOL = "1"
 
 # Quick aliases to run common tasks. Note: requires mise 2025.12.11 and up!
 [shell_alias]
