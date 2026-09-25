@@ -228,6 +228,16 @@ Type guidance:
 - Repeatable nested structure -> `list` + nested `options.fields`
 - Computed value -> `recipe` on field
 
+### Field identifier and type safety
+- Field identifiers must be unique across the entire module, including every nesting level. A nested field inside a `list` must not reuse an identifier from a top-level field or another nested field.
+- Treat changing the type of an existing persisted field as a data migration, not a cosmetic configuration edit. Inspect existing data, generated schema, relations, and affected workflows/layouts before changing it.
+- Simple atomic conversions such as `text` to `number` can be acceptable when existing values are compatible. `incrementing` fields require extra care.
+- Do not change an existing `list` field to another type while keeping its identifier. Create a new field with a new identifier and migrate or intentionally retire the old data.
+- Do not change an existing non-list field, including `select` or `multiselect`, into a `list` field under the same identifier. Create a new identifier instead.
+- Changes that introduce or remove structural storage, relations, or pivot tables are high risk. This includes conversions involving `list`, `select`, `multiselect`, `file`, upload-like fields, or other relation-backed types. Prefer a new identifier and an explicit migration path.
+- `select` to `multiselect` is generally supported, but still verify existing data and every consumer of the field.
+- If the compatibility or migration path is unclear, stop and ask the developer rather than changing the type in place.
+
 Frequently used `options`:
 - Validation/defaults: `rules`, `default`
 - UI behavior: `readonly`, `frontend_disabled`, `hidden_from_frontend`, `show_in`, `show_in_resource_table`
@@ -815,6 +825,13 @@ Common patterns:
 - Full access role: `"modules": true`
 - Locked-down role: per-module CRUD + per-field read/write + optional filters
 
+### Keep role permissions aligned with fields
+- When adding, renaming, replacing, or materially changing fields in a system with roles, inspect every role and update field-level read/write permissions as part of the same change.
+- Confirm that the role requesting or using the feature can actually see and, where required, edit the affected fields. A field added for backoffice use is incomplete if the backoffice role cannot access it.
+- Preserve least privilege: do not grant a new field to every role merely to avoid deciding access.
+- If requirements do not clearly define which roles may read or write a new or changed field, stop and ask the developer before assigning permissions.
+- Also review role filters and policies when a field affects ownership, scoping, or record visibility.
+
 Field-level permissions example:
 
 ```json
@@ -887,11 +904,12 @@ Rule of thumb: whenever adding fields/buttons/tabs/headlines, add translation ke
 ## Common playbooks
 
 ### 1) Add a new field to an existing module
-1. Add field in `<module>.module.bake.json`.
-2. Add field to relevant detail/index/summary layouts.
-3. Add translations for new label/help/choices.
-4. Update roles if field visibility/editability is constrained.
-5. Update workflows if business status or side effects depend on that field.
+1. Verify that the identifier is unique across top-level and nested fields in the module.
+2. Add the field in `<module>.module.bake.json`.
+3. Add the field to relevant detail/index/summary layouts.
+4. Add translations for the new label/help/choices.
+5. If the system has roles, inspect and update every applicable role's field permissions. If read/write access is not clearly specified, ask the developer.
+6. Update workflows if business status or side effects depend on that field.
 
 ### 2) Add a new module end-to-end
 1. Create `<name>.module.bake.json` with `identifier`, `title`, `fields`, `layouts`.
@@ -956,7 +974,9 @@ If workflows use queues (`async: true`):
 - JSON syntax valid and file naming matches purpose.
 - Bakery envelope key matches file intent (`resource_module`, `resource_entity`, etc.).
 - Module/layout/reference identifiers resolve.
-- New field is reflected in module + layout + translations (+ roles if needed).
+- Field identifiers are unique across all top-level and nested fields in each module.
+- Existing field type changes were treated as migrations; risky structural conversions use a new identifier and an explicit data transition.
+- New or changed fields are reflected in module + layout + translations, and every applicable role has intentional read/write permissions.
 - Button identifiers align with workflow event identifiers.
 - Recipe syntax was checked with the backend parser where practical, and runtime context (`this` vs `$variables`) was verified from workflow inputs, top-level `set` mappings, and execution paths.
 - Widgets used in layout are registered in frontend bootstrap with exact matching name.
