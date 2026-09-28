@@ -1,41 +1,80 @@
 {
   "buttons": {
+    "UpdateUserStatus": "Update user statuses"
   },
-  "notifications": {
-  },
+  "notifications": {},
   "modules": {
-      "clients": {
-          "title": "Clients",
-          "fields": {
-              "title": "Title",
-              "description": "Description"
-          }
+    "administration": {
+      "title": "Administration"
+    },
+    "clients": {
+      "title": "Clients",
+      "tabs": {
+        "general": "General"
       },
-      "users": {
-          "title": "Users",
-          "fields": {
-              "name": "Name",
-              "email": "Email",
-              "password": "Password"
-          }
+      "headlines": {
+        "basic": "Basic information",
+        "mail": "Mail settings"
+      },
+      "fields": {
+        "title": "Title",
+        "color": "Color",
+        "mail_host": "Mail host",
+        "mail_port": "Mail port",
+        "mail_username": "Mail username",
+        "mail_password": "Mail password",
+        "mail_encryption": "Mail encryption",
+        "mail_from_address": "Sender address",
+        "mail_from_name": "Sender name"
+      },
+      "choice": {
+        "mail_encryption": {
+          "tls": "TLS",
+          "ssl": "SSL",
+          "none": "None"
+        }
       }
+    },
+    "roles": {
+      "title": "Roles",
+      "tabs": {
+        "general": "General"
+      },
+      "fields": {
+        "name": "Name",
+        "slug": "Slug",
+        "modules": "Permissions"
+      }
+    },
+    "users": {
+      "title": "Users",
+      "tabs": {
+        "general": "General"
+      },
+      "headlines": {
+        "basic": "Basic information"
+      },
+      "fields": {
+        "name": "Name",
+        "email": "Email",
+        "password": "Password",
+        "enabled": "Enabled",
+        "status": "Status",
+        "roles": "Roles"
+      },
+      "help": {
+        "email": "This address is used to sign in."
+      },
+      "choice": {
+        "status": {
+          "active": "Active",
+          "inactive": "Inactive"
+        }
+      }
+    }
   },
-  "widgets": {
-  },
-  "pdf": {
-  },
-  "mails":{
-  },
-  "workflows": {
-  },
-  "calendar": {
-    "events": "Events",
-    "employeeBirthdays": "Employee birthday",
-    "employee_absence": "Absence",
-    "employee_sick": "Sick",
-    "employee_vacation": "Vacation",
-    "employee_training": "Training",
-    "employee_overtime_reduction": "Overtime reduction",
-    "holidays": "Holidays"
-  }
+  "widgets": {},
+  "pdf": {},
+  "mails": {},
+  "workflows": {}
 }

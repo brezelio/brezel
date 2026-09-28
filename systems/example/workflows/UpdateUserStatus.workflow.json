@@ -1,0 +1,248 @@
+{
+  "identifier": "UpdateUserStatus",
+  "title": "Update user status",
+  "description": null,
+  "async": false,
+  "queue": null,
+  "debug": false,
+  "entry": "UpdateUserStatus",
+  "elements": [
+    {
+      "name": "UpdateUserStatus",
+      "type": "event/webhook",
+      "options": {
+        "module": "users",
+        "title": null,
+        "async": false,
+        "roles": [
+          "admin",
+          "user_manager"
+        ],
+        "features": null,
+        "public": false,
+        "refresh_prototype": false
+      },
+      "in": {},
+      "set": {},
+      "to": {
+        "default": {
+          "loadUsers": [
+            "default"
+          ]
+        }
+      },
+      "meta": {
+        "position": [
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "name": "loadUsers",
+      "type": "source/entities",
+      "options": {
+        "module": "users",
+        "listItems": null,
+        "filters": [],
+        "with": [],
+        "fields": [
+          "id",
+          "module_id",
+          "enabled",
+          "status"
+        ],
+        "groupBy": [],
+        "orderBy": [],
+        "having": [],
+        "limit": null,
+        "offset": null,
+        "first": false,
+        "scopes": [],
+        "permissions": false,
+        "withTrashed": false,
+        "global": false,
+        "autoDistinct": true,
+        "distinct": false,
+        "hydrateRelations": false,
+        "rollup": false
+      },
+      "in": {},
+      "set": {
+        "users": "default:"
+      },
+      "to": {
+        "default": {
+          "eachUser": [
+            "default"
+          ]
+        }
+      },
+      "meta": {
+        "position": [
+          320,
+          0
+        ]
+      }
+    },
+    {
+      "name": "eachUser",
+      "type": "flow/each",
+      "options": {},
+      "in": {
+        "default": "$users"
+      },
+      "set": {
+        "user": "each:"
+      },
+      "to": {
+        "each": {
+          "ifEnabled": [
+            "default"
+          ]
+        },
+        "next": {
+          "respond": [
+            "default"
+          ]
+        }
+      },
+      "meta": {
+        "position": [
+          640,
+          0
+        ]
+      }
+    },
+    {
+      "name": "ifEnabled",
+      "type": "flow/if",
+      "options": {
+        "condition": "this.enabled"
+      },
+      "in": {
+        "default": "$user"
+      },
+      "set": {},
+      "to": {
+        "default": {
+          "setActive": [
+            "default"
+          ]
+        },
+        "else": {
+          "setInactive": [
+            "default"
+          ]
+        }
+      },
+      "meta": {
+        "position": [
+          960,
+          0
+        ]
+      }
+    },
+    {
+      "name": "setActive",
+      "type": "op/set",
+      "options": {
+        "copy": null,
+        "recipes": {
+          "status": "'active'"
+        },
+        "values": [],
+        "process": false
+      },
+      "in": {
+        "default": "$user"
+      },
+      "set": {},
+      "to": {
+        "default": {
+          "saveUser": [
+            "default"
+          ]
+        }
+      },
+      "meta": {
+        "position": [
+          1280,
+          -110
+        ]
+      }
+    },
+    {
+      "name": "setInactive",
+      "type": "op/set",
+      "options": {
+        "copy": null,
+        "recipes": {
+          "status": "'inactive'"
+        },
+        "values": [],
+        "process": false
+      },
+      "in": {
+        "default": "$user"
+      },
+      "set": {},
+      "to": {
+        "default": {
+          "saveUser": [
+            "default"
+          ]
+        }
+      },
+      "meta": {
+        "position": [
+          1280,
+          110
+        ]
+      }
+    },
+    {
+      "name": "saveUser",
+      "type": "action/save",
+      "options": {
+        "triggerEvents": false,
+        "skip_recipes": false,
+        "continueIfInvalid": false,
+        "logComment": "Status synchronized from enabled state"
+      },
+      "in": {
+        "default": "$user"
+      },
+      "set": {},
+      "to": {},
+      "meta": {
+        "position": [
+          1600,
+          0
+        ]
+      }
+    },
+    {
+      "name": "respond",
+      "type": "action/response",
+      "options": {
+        "status": 200
+      },
+      "in": {
+        "default": {
+          "success": "true"
+        }
+      },
+      "set": {},
+      "to": {},
+      "meta": {
+        "position": [
+          960,
+          330
+        ]
+      }
+    }
+  ],
+  "events": [],
+  "comments": []
+}

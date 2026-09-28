@@ -4,25 +4,61 @@
     "resource": {
       "identifier": "users",
       "type": "users",
-      "icon": "user",
+      "icon": "mdi:account-group",
       "title": "name",
       "layouts": {
         "detail": "config/users.layout.detail"
       },
+      "buttons": {
+        "UpdateUserStatus": {
+          "icon": "mdi:account-sync",
+          "show_in": [
+            "module.index"
+          ],
+          "recipes": {
+            "display": "hasRole('admin') || hasRole('user_manager')"
+          }
+        }
+      },
       "fields": [
         {
           "identifier": "name",
-          "type": "text"
+          "type": "text",
+          "options": {
+            "rules": "required"
+          }
         },
         {
           "identifier": "email",
-          "type": "email"
+          "type": "email",
+          "options": {
+            "help": true,
+            "rules": "required|email"
+          }
         },
         {
           "identifier": "password",
           "type": "password",
           "options": {
             "ignore_when_empty": true
+          }
+        },
+        {
+          "identifier": "enabled",
+          "type": "checkbox",
+          "options": {
+            "default": true
+          }
+        },
+        {
+          "identifier": "status",
+          "type": "choice",
+          "options": {
+            "frontend_disabled": true,
+            "values": [
+              "active",
+              "inactive"
+            ]
           }
         },
         {

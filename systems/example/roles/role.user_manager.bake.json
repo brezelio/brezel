@@ -1,0 +1,45 @@
+[
+  {
+    "resource_entity": "role_user_manager",
+    "depends_on": "resource_module.roles",
+    "policy": "sync",
+    "resource": {
+      "module": "roles",
+      "client": "${resource_client.global}",
+      "fields": {
+        "name": "User Manager",
+        "slug": "user_manager",
+        "modules": {
+          "users": {
+            "read": true,
+            "update": true,
+            "fields": {
+              "name": true,
+              "email": true,
+              "enabled": true,
+              "status": {
+                "read": true,
+                "write": false
+              },
+              "roles": {
+                "read": true,
+                "write": false
+              }
+            }
+          },
+          "roles": {
+            "read": true,
+            "fields": {
+              "name": {
+                "read": true
+              },
+              "slug": {
+                "read": true
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+]

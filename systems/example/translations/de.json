@@ -1,45 +1,78 @@
 {
   "buttons": {
+    "UpdateUserStatus": "Nutzerstatus aktualisieren"
   },
-  "notifications": {
-  },
+  "notifications": {},
   "modules": {
+    "administration": {
+      "title": "Verwaltung"
+    },
     "clients": {
       "title": "Mandanten",
+      "tabs": {
+        "general": "Allgemein"
+      },
+      "headlines": {
+        "basic": "Basisinformationen",
+        "mail": "Mail-Einstellungen"
+      },
       "fields": {
         "title": "Titel",
-        "description": "Beschreibung",
-        "mail_host": "Host",
-        "mail_port": "Port",
-        "mail_username": "Benutzername",
-        "mail_password": "Passwort",
-        "mail_encryption": "Verschlüsselung",
-        "mail_from_address": "Absender Adresse",
-        "mail_from_name": "Absender Name",
-        "mail_footer": "Mail-Footer"
+        "color": "Farbe",
+        "mail_host": "Mail-Host",
+        "mail_port": "Mail-Port",
+        "mail_username": "Mail-Benutzername",
+        "mail_password": "Mail-Passwort",
+        "mail_encryption": "Mail-Verschlüsselung",
+        "mail_from_address": "Absenderadresse",
+        "mail_from_name": "Absendername"
       },
       "choice": {
         "mail_encryption": {
           "tls": "TLS",
           "ssl": "SSL",
-          "none": "Keine (nicht empfohlen)"
+          "none": "Keine"
         }
+      }
+    },
+    "roles": {
+      "title": "Rollen",
+      "tabs": {
+        "general": "Allgemein"
+      },
+      "fields": {
+        "name": "Name",
+        "slug": "Kennung",
+        "modules": "Berechtigungen"
       }
     },
     "users": {
       "title": "Nutzer",
+      "tabs": {
+        "general": "Allgemein"
+      },
+      "headlines": {
+        "basic": "Basisinformationen"
+      },
       "fields": {
         "name": "Name",
         "email": "E-Mail",
         "password": "Passwort",
+        "enabled": "Aktiviert",
+        "status": "Status",
         "roles": "Rollen"
+      },
+      "help": {
+        "email": "Diese Adresse wird für die Anmeldung verwendet."
+      },
+      "choice": {
+        "status": {
+          "active": "Aktiv",
+          "inactive": "Inaktiv"
+        }
       }
     }
   },
-  "widgets": {
-  },
-  "workflows": {
-  },
-  "calendar": {
-  }
+  "widgets": {},
+  "workflows": {}
 }

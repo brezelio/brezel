@@ -1,35 +1,40 @@
 {
-    "tabs": [
+  "tabs": [
+    {
+      "identifier": "general",
+      "icon": "mdi:account",
+      "rows": [
         {
-            "identifier": "",
-            "icon": "",
-            "rows": [
+          "cols": [
+            {
+              "span": 24,
+              "components": [
                 {
-                    "cols": [
-                        {
-                            "span": 24,
-                            "components": [
-                                {
-                                    "type": "headline",
-                                    "options": {
-                                        "identifier": "basic"
-                                    }
-                                },
-                                {
-                                    "type": "field_group",
-                                    "options": {
-                                        "fields": [
-                                            "name",
-                                            "email",
-                                            "password"
-                                        ]
-                                    }
-                                }
-                            ]
-                        }
+                  "type": "headline",
+                  "options": {
+                    "identifier": "basic"
+                  }
+                },
+                {
+                  "type": "field_group",
+                  "options": {
+                    "fields": [
+                      "name",
+                      "email",
+                      "password",
+                      [
+                        "enabled",
+                        "status"
+                      ],
+                      "roles"
                     ]
+                  }
                 }
-            ]
+              ]
+            }
+          ]
         }
-    ]
+      ]
+    }
+  ]
 }

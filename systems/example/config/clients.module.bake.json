@@ -4,7 +4,8 @@
     "resource": {
       "identifier": "clients",
       "type": "clients",
-      "icon": "setting",
+      "icon": "mdi:office-building-cog",
+      "title": "title",
       "layouts": {
         "detail": "config/clients.layout.detail"
       },
@@ -19,7 +20,7 @@
         },
         {
           "identifier": "color",
-          "type": "text"
+          "type": "color"
         },
         {
           "identifier": "mail_host",
@@ -35,19 +36,17 @@
         },
         {
           "identifier": "mail_password",
-          "type": "text",
+          "type": "password",
           "options": {
-            "hide_value": true,
-            "show_in_resource_table": false,
-            "recipes": {
-              "hidden_from_frontend": "mail_auth_mode == 'XOAUTH2'"
-            }
+            "ignore_when_empty": true,
+            "show_in_resource_table": false
           }
         },
         {
           "identifier": "mail_encryption",
           "type": "choice",
           "options": {
+            "default": "tls",
             "values": [
               "tls",
               "ssl",

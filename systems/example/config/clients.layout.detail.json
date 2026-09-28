@@ -1,36 +1,54 @@
 {
-    "tabs": [
+  "tabs": [
+    {
+      "identifier": "general",
+      "icon": "mdi:office-building-cog",
+      "rows": [
         {
-            "identifier": "",
-            "icon": "",
-            "rows": [
+          "cols": [
+            {
+              "span": 24,
+              "components": [
                 {
-                    "cols": [
-                        {
-                            "span": 24,
-                            "components": [
-                                {
-                                    "type": "headline",
-                                    "options": {
-                                        "identifier": "basic"
-                                    }
-                                },
-                                {
-                                    "type": "field_group",
-                                    "options": {
-                                        "fields": [
-                                            "title",
-                                            "description",
-                                            "color",
-                                            "background_color"
-                                        ]
-                                    }
-                                }
-                            ]
-                        }
+                  "type": "headline",
+                  "options": {
+                    "identifier": "basic"
+                  }
+                },
+                {
+                  "type": "field_group",
+                  "options": {
+                    "fields": [
+                      "title",
+                      "color"
                     ]
+                  }
+                },
+                {
+                  "type": "headline",
+                  "options": {
+                    "identifier": "mail"
+                  }
+                },
+                {
+                  "type": "field_group",
+                  "options": {
+                    "fields": [
+                      "mail_host",
+                      "mail_port",
+                      "mail_username",
+                      "mail_password",
+                      "mail_encryption",
+                      "mail_from_address",
+                      "mail_from_name"
+                    ]
+                  }
                 }
-            ]
+              ]
+            }
+          ]
         }
-    ]
+      ]
+    }
+  ]
 }

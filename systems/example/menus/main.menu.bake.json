@@ -9,12 +9,16 @@
           "type": "entry",
           "default": true
         },
-        "roles",
-        "clients"
+        {
+          "name": "administration",
+          "type": "submenu",
+          "icon": "mdi:cog-outline",
+          "elements": [
+            "roles",
+            "clients"
+          ]
+        }
       ]
     }
   }
 ]
-
-
-
