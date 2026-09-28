@@ -131,6 +131,9 @@ Common module keys:
 - `options` (`single_entity`, `param_scopes`, etc.)
 - `buttons` (custom actions, often workflow-triggered)
 
+Every module must define an `icon` alongside `identifier` and `title`.
+Any Iconify icon identifier is available, for example `mdi:check-circle` or `material-symbols-light:description-outline`.
+
 ### How-to: reference detail/index/summary layouts
 Use system-relative paths without `.json`:
 
@@ -791,6 +794,7 @@ How-to:
 - Add a module by identifier string in `elements`.
 - Add nested submenu with object entries.
 - Mark default landing entry with `"default": true`.
+- Translate a parent/submenu entry by treating its `name` as a module identifier in the translation file and adding `modules.<name>.title`, even when no real module with that identifier exists.
 
 ```json
 {
@@ -886,6 +890,7 @@ Envelope example:
 Common translation keys to maintain:
 - `buttons.<ButtonIdentifier>`
 - `modules.<module>.title`
+- `modules.<menu_parent_name>.title` for parent/submenu menu entries, even when they are not actual modules
 - `modules.<module>.fields.<field>`
 - `modules.<module>.choice.<field>.<value>`
 - `modules.<module>.tabs.<tab>`
@@ -912,13 +917,14 @@ Rule of thumb: whenever adding fields/buttons/tabs/headlines, add translation ke
 6. Update workflows if business status or side effects depend on that field.
 
 ### 2) Add a new module end-to-end
-1. Create `<name>.module.bake.json` with `identifier`, `title`, `fields`, `layouts`.
-2. Create `<name>.layout.detail.json` and usually `<name>.layout.index.json`.
-3. Add menu entry in `menus/*.menu.bake.json`.
-4. Add `modules.<name>` translations.
-5. Add/adjust role permissions.
-6. Add seeds (`<name>.entities.bake.json`) if defaults are required.
-7. Add workflows/buttons only if the module needs automation/actions.
+1. Create `<name>.module.bake.json` with `identifier`, `title`, `icon`, `fields`, and `layouts`.
+2. Choose an Iconify identifier for `icon`.
+3. Create `<name>.layout.detail.json` and usually `<name>.layout.index.json`.
+4. Add the menu entry in `menus/*.menu.bake.json`.
+5. Add `modules.<name>` translations. If introducing a parent/submenu entry, also add `modules.<parent_name>.title`.
+6. Add/adjust role permissions.
+7. Add seeds (`<name>.entities.bake.json`) if defaults are required.
+8. Add workflows/buttons only if the module needs automation/actions.
 
 ### 3) Add a button-driven action workflow
 1. Add button key under module `buttons`.
@@ -974,6 +980,8 @@ If workflows use queues (`async: true`):
 - JSON syntax valid and file naming matches purpose.
 - Bakery envelope key matches file intent (`resource_module`, `resource_entity`, etc.).
 - Module/layout/reference identifiers resolve.
+- Every module defines a valid Iconify `icon`.
+- Parent/submenu menu entries have a matching `modules.<name>.title` translation.
 - Field identifiers are unique across all top-level and nested fields in each module.
 - Existing field type changes were treated as migrations; risky structural conversions use a new identifier and an explicit data transition.
 - New or changed fields are reflected in module + layout + translations, and every applicable role has intentional read/write permissions.
