@@ -45,10 +45,19 @@ A recipe provider is the only permitted PHP integration mechanism. It must not h
 - Use 2 spaces for indentation, not tabs.
 - Prefer TypeScript and `<script setup>` for Vue widgets.
 - In JSON, put each key-value pair and array entry on its own line.
+- Sort object keys by size: scalar and short values first, then small objects, then larger nested structures.
 - Use `"` for keys and strings.
 - Use actual booleans, nulls, and numbers, not string equivalents.
 
 ### Resource files
+
+Typical system structure:
+
+```text
+systems/<system>/
+  config/  menus/  roles/  workflows/  recipes/  translations/  views/
+  system.json  hostnames.bake.json  topbar.bake.json
+```
 
 Common naming conventions:
 
@@ -63,7 +72,15 @@ Common naming conventions:
 
 `*.bake.json` files use `resource_*` envelopes. Layout files are plain JSON without a Bakery envelope. Workflows use the `.workflow.json` suffix.
 
-Bakery resources may reference other resources and use templates such as `${file(...)}`, `${trimFile(...)}`, and `${env(...)}`.
+To find supported Bakery resource types, inspect `BakeryResourceFactory::$resources` in `vendor/brezel/api/app/Bakery/Plan/BakeryResourceFactory.php`. Each key maps to the envelope `resource_<key>`.
+
+Bakery references and templates include:
+
+- Another Bakery resource: `${resource_entity.role_admin}`
+- Environment value: `${env('ROOT_PASSWORD', 'secret')}`
+- File content: `${file('views/pdf/invoice.twig')}` or `${trimFile('recipes/example.recipe')}`
+
+Use `file(...)` to extract large inline layouts into separate JSON files. Use `trimFile(...)` for external `.recipe` expressions.
 
 ### Workflow layout
 
@@ -90,6 +107,41 @@ Bakery resources may reference other resources and use templates such as `${file
 - Use `options.single_entity` for modules that represent one settings record.
 - Use `options.param_scopes` for route parameter-based system scoping.
 - A module button key must match the triggering workflow event identifier and module.
+- Module and button options may be recipe-driven through their `recipes` object, for example `buttons.Export.recipes.display`.
+
+### Fields
+
+Supported field types are the keys of `Field::$types` in `vendor/brezel/api/app/Field.php`.
+
+Choose types by data semantics:
+
+- Boolean state: `checkbox`
+- Closed finite values: `choice` with `options.values`
+- Relation: `select` or `multiselect` with `options.references`
+- Repeatable nested data: `list` with `options.fields`
+- Fully computed value: set `recipe` on the field
+
+A field always has `identifier` and `type`; `options` and `recipe` are optional:
+
+```json
+{
+  "identifier": "total",
+  "type": "currency",
+  "recipe": "sum(positions[*].amount)",
+  "options": {
+    "default": 0,
+    "rules": "nullable|numeric",
+    "show_in": [
+      "module.show"
+    ],
+    "recipes": {
+      "frontend_disabled": "this.locked"
+    }
+  }
+}
+```
+
+Frequently used options include `default`, `rules`, `references`, `show_in`, `frontend_disabled`, `hidden_from_frontend`, and `recipes`. `options.rules` is a Laravel validation-rule string.
 
 ### Field safety
 
@@ -124,6 +176,8 @@ Do not use `options.recipes.hidden_from_frontend` on fields nested inside a `lis
 
 Layouts are `tabs -> rows -> cols -> components`; column spans use a 24-column grid.
 
+Inspect `node_modules/@kibro/brezel-spa/src/components/layout-components/index.js` for runtime-supported component `type` values, then inspect the selected `LayoutComponent*.vue` for its options. Treat `src/layout/types.ts` as helpful but not necessarily exhaustive.
+
 - `field_group.options.fields` may contain nested arrays for inline groups.
 - Visibility and behavior may be recipe-driven at tab or component level.
 - `show_in` controls contexts such as `module.show`, `module.edit`, `module.create`, and `module.index`.
@@ -151,7 +205,15 @@ Layouts are `tabs -> rows -> cols -> components`; column spans use a 24-column g
 
 ## Recipes
 
-Recipes are expressions, not scripts.
+Recipes are expressions, not scripts. For example, use `this.status == 'approved'`, not statements or variable declarations. The list wildcard `positions[*].amount` produces an array of that nested value across all list items.
+
+Recipes commonly appear in:
+
+- Field `recipe` and `field.options.recipes`
+- Layout, tab, and component `options.recipes`
+- Module button `recipes`
+- Pre-filter `recipe`
+- Workflow recipe options and `op/recipe`
 
 - `this` is the current entity in module and layout contexts.
 - `$name` refers to a workflow variable.
@@ -167,14 +229,16 @@ Use custom functions only when existing workflows and recipe functions are insuf
 Backend registration:
 
 1. Reuse the project's recipe package/provider when present.
-2. Otherwise add a PSR-4 mapping for `app/` in `composer.json`.
-3. Create a package extending `App\Recipes\Driver\Native\Interpreter\Main\Library\Packages\Package`.
-4. Register it through `NativeRecipesDriver::setInterpreterFactory()` and `MainInterpreter::registerPackage()`.
-5. Register only that provider through `$brezel->addServiceProvider(...)` in `bootstrap/app.php`.
-
-Minimal provider:
+2. Otherwise map a project namespace to `app/` in `composer.json`, for example `"Project\\": "app/"`.
+3. Add the package class under `app/Recipes/`; it must extend `App\Recipes\Driver\Native\Interpreter\Main\Library\Packages\Package`. Its public methods become recipe functions.
+4. Add or reuse `app/Providers/RecipeServiceProvider.php`:
 
 ```php
+use App\Recipes\Driver\Native\Interpreter\Main\MainInterpreter;
+use App\Recipes\Driver\Native\NativeRecipesDriver;
+use Illuminate\Support\ServiceProvider;
+use Project\Recipes\ProjectRecipes;
+
 class RecipeServiceProvider extends ServiceProvider
 {
   public function boot(NativeRecipesDriver $recipes): void
@@ -185,6 +249,8 @@ class RecipeServiceProvider extends ServiceProvider
   }
 }
 ```
+
+5. Register only this provider in `bootstrap/app.php` with `$brezel->addServiceProvider(RecipeServiceProvider::class)`.
 
 Frontend registration is separate. Implement frontend equivalents where needed and register them in the frontend bootstrap, usually `src/main.js` or `src/main.ts`:
 
@@ -212,19 +278,37 @@ Use `provider.addFunction()` for un-namespaced functions. Keep equivalent backen
 - A module button and its webhook event must share the same identifier, and the event must reference the button's module.
 - Use lifecycle events such as `event/create` for entity lifecycle behavior.
 - Long-running workflows should set `async: true` and may use a custom `queue`.
-- Custom queues need matching local workers, for example `php bakery work --queue=long-running`.
+- Production worker configuration is generated for custom queue identifiers used by workflows. Locally, start matching workers manually, for example `php bakery work --queue=long-running`.
 - External webhook workflows should return an explicit `action/response`.
 - Workflow JSON changes require `php bakery load`; `php bakery apply` alone is insufficient.
 
 ## Widgets and generated types
 
-- Register widgets in the frontend bootstrap under the exact component name used by layouts.
+Create the widget component and register it in the frontend bootstrap under the exact name used by the layout:
+
+```ts
+import ProjectSummary from './components/ProjectSummary.vue'
+
+app.component('ProjectSummary', ProjectSummary)
+```
+
+Mount it from a layout:
+
+```json
+{
+  "type": "widget",
+  "options": {
+    "widget": "custom",
+    "component": "ProjectSummary",
+    "dynamic_height": true
+  }
+}
+```
+
 - Prefer TypeScript, `<script setup>`, and existing Ant Design Vue components.
-- Use generated Brezel entity/module types from `src/types/modules`.
-- Enable `bakery.apply.generate-types` in `systems/<system>/system.json` when type generation is not already enabled.
+- Use generated Brezel entity/module types from `src/types/modules` in widget code.
 - Regenerate types with `php bakery apply` or the project update wrapper.
-- Never hand-edit `src/types/**`.
-- Generated type files may be committed.
+- Files in `src/types/**`, including generated `.d.ts` files, are read-only generated output and may be committed.
 
 ## Menus, translations, roles, and seeds
 
@@ -264,7 +348,7 @@ Consumer projects use the project-root `bakery` entrypoint and are not normal La
 - Put the command before its options: `php bakery apply --no-interaction`.
 - Use `php bakery shell` for the exposed Tinker shell and controlled backend inspection.
 - Use `php bakery work`, not `php bakery queue:work`.
-- `php bakery schedule` runs one scheduler pass and must be invoked repeatedly by a local runner or production scheduler.
+- `php bakery schedule` runs one scheduler pass. It is normally invoked once per minute and drives `event/cron` workflows.
 - Project tests, linters, and frontend builds use project-level Composer, npm, or binary commands, not Bakery.
 
 Common commands:
@@ -275,16 +359,27 @@ Common commands:
 - `php bakery migrate --force`: run central and tenant migrations when required.
 - `php bakery work [--queue=<name>]`: run a queue worker.
 - `php bakery shell`: open the interactive shell.
+- `php bakery recipe:validate ...`: validate a raw recipe.
 
 Prefer project wrappers such as `bin/a`, `bin/l`, `bin/u`, or matching Mise tasks when present. Inspect them before use; some are not fail-fast, so review every command's output.
 
 ### Recipe validation
 
-- There is no dedicated recipe-lint command.
-- Check backend syntax in `php bakery shell` with `App\Recipes\Driver\Native\Lang\Parser::checkSyntax()` or `parseExpression()`.
-- Evaluate with representative data through `recipe()` when runtime behavior matters.
-- Syntax validation cannot prove that workflow variables, `this` fields, or branch-dependent values exist at runtime. Verify element inputs, top-level `set` mappings, and execution paths.
-- `php bakery load` does not comprehensively parse every inline workflow recipe.
+Use `php bakery recipe:validate` with exactly one input source: a quoted expression, `--stdin`, or `--file=<path>`. Check `php bakery help recipe:validate` first when working against an older installed Brezel version.
+
+- `--level=syntax`: parse syntax only.
+- `--level=calls`: also validate known functions and methods without definition context.
+- `--level=context --context=<module-or-workflow-json>`: validate against a module or workflow definition. Use `--context-pointer=<RFC-6901-pointer>` when the host recipe is ambiguous.
+- `--format=json`: machine-readable output.
+
+Examples:
+
+```bash
+php bakery recipe:validate --level=calls 'sum(positions[*].amount)'
+php bakery recipe:validate --context=systems/example/config/users.module.bake.json 'this.enabled'
+```
+
+Exit codes are `0` for valid, `1` for an invalid recipe, and `2` for invocation, input, context, or internal failure. A valid result is not a runtime guarantee; still verify workflow inputs, top-level `set` mappings, and branch-dependent variables. `php bakery load` does not comprehensively validate every inline workflow recipe.
 
 ## Before finishing
 
