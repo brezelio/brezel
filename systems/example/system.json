@@ -3,5 +3,13 @@
     {
       "type": "workflow"
     }
-  ]
+  ],
+  "bakery": {
+    "apply": {
+      "generate-types": {
+        "enabled": true,
+        "package": "@kibro/brezel-spa-types"
+      }
+    }
+  }
 }
