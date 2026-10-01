@@ -142,7 +142,7 @@ stages:
     - *ssh_configuration
   script:
     - |
-      ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST /bin/bash << EOL
+      ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST /bin/bash << EOL || { echo "Remote deployment failed!" >&2; exit 1; }
         # This command sends the entire script block to the remote server to be executed in a single session.
         # 'set -e' ensures that the script will exit immediately if any command fails.
         set -e
@@ -195,10 +195,6 @@ stages:
 
         echo "Deployment finished successfully!"
       EOL
-      if [ $? -ne 0 ]; then
-       echo "Remote deployment failed!"
-       exit \$?
-      fi
 
 build frontend:
   extends: .build frontend base
