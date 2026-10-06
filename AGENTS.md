@@ -498,6 +498,25 @@ Common node types seen in production Brezel apps:
 
 > You can find available workflow elements and their code / definition in `@vendor/brezel/api/app/Workflow/Elements/*`.
 
+### `in` and `set` use workflow expressions, never recipes
+- Element-level `in` and `set` mappings interpret simple **workflow expressions**, not recipe expressions. They resolve variables/member paths (such as `$employee.id`) and ports (`default:`, `original:`, `each:`, `index:`).
+- Never put function calls, `.filter(...)`, `.map(...)`, operators, ternaries, or object/array construction into these mappings. A recipe in `in` can become a string instead of a collection, silently skipping a `flow/each` loop.
+- Compute derived values in `op/recipe`, assign its output through `set`, and pass the resulting variable through `in`:
+
+```json
+{
+  "name": "selectKabTrainings",
+  "type": "op/recipe",
+  "options": { "recipe": "$training_types.filter(training => !!training.kab_instruction_id)" },
+  "set": { "kab_training_types": "default:" },
+  "to": { "default": { "assignKabTrainings": ["default"] } }
+}
+```
+
+The following `flow/each` uses `"in": { "default": "$kab_training_types" }`.
+- `options.recipes` and `action/run.options.input` are recipe slots; element-level `in` and `set` are not. `op/set` mutates input fields; it does not assign workflow variables.
+- When testing input/output mappings, use the framework's workflow-expression parser (`WorkflowElement::loadContext()` / `fillContext()`). Do not substitute recipe evaluation: that can make a broken workflow pass a test.
+
 ### How-to: webhook workflow triggered by module button
 1. Add module button key (for example `RenderInvoice`).
 2. Create workflow with matching event identifier in `events[]`.
