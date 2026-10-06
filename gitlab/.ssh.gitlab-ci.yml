@@ -186,8 +186,8 @@ stages:
         "${BREZEL_PHP:-php}" bakery migrate --force
         "${BREZEL_PHP:-php}" bakery apply
         "${BREZEL_PHP:-php}" bakery load --force
-        "${BREZEL_PHP:-php}" bakery queue:restart
         "${BREZEL_PHP:-php}" bakery make:supervisor
+        "${BREZEL_PHP:-php}" bakery queue:restart
 
         echo "-- Updating Supervisor configuration ---"
         # '|| true' prevents the job from failing if supervisor has no changes to apply
