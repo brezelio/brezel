@@ -18,6 +18,12 @@
               "email": "Email",
               "password": "Password"
           }
+      },
+      "dashboard": {
+          "title": "Dashboard"
+      },
+      "cases": {
+          "title": "Decisions"
       }
   },
   "widgets": {

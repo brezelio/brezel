@@ -1,0 +1,17 @@
+[
+    {
+        "resource_module": "dashboard",
+        "resource": {
+            "identifier": "dashboard",
+            "icon": "mdi:view-dashboard-outline",
+            "options": {
+                "capabilities": [
+                    {
+                        "identifier": "Dashboard"
+                    }
+                ]
+            },
+            "fields": []
+        }
+    }
+]
