@@ -15,6 +15,15 @@
           "type": "text"
         },
         {
+          "identifier": "status",
+          "type": "choice",
+          "options": {
+            "values": ["active", "inactive"],
+            "default": "active",
+            "allow_clear": false
+          }
+        },
+        {
           "identifier": "email",
           "type": "email"
         },

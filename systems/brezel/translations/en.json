@@ -17,7 +17,19 @@
           "fields": {
               "name": "Name",
               "email": "Email",
-              "password": "Password"
+              "password": "Password",
+              "status": "Status",
+              "agent_status": "Agent status"
+          },
+          "choice": {
+              "status": {
+                  "active": "Active",
+                  "inactive": "Inactive"
+              },
+              "agent_status": {
+                  "active": "Active",
+                  "inactive": "Inactive"
+              }
           }
       },
       "dashboard": {

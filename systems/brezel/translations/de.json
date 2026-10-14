@@ -33,7 +33,19 @@
         "name": "Name",
         "email": "E-Mail",
         "password": "Passwort",
-        "roles": "Rollen"
+        "roles": "Rollen",
+        "status": "Status",
+        "agent_status": "Agent-Status"
+      },
+      "choice": {
+        "status": {
+          "active": "Aktiv",
+          "inactive": "Inaktiv"
+        },
+        "agent_status": {
+          "active": "Aktiv",
+          "inactive": "Inaktiv"
+        }
       }
     },
     "dashboard": {
