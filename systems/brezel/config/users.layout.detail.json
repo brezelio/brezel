@@ -1,35 +1,39 @@
 {
-    "tabs": [
+  "tabs": [
+    {
+      "identifier": "user",
+      "icon": "mdi:user",
+      "rows": [
         {
-            "identifier": "",
-            "icon": "",
-            "rows": [
+          "cols": [
+            {
+              "components": [
                 {
-                    "cols": [
-                        {
-                            "span": 24,
-                            "components": [
-                                {
-                                    "type": "headline",
-                                    "options": {
-                                        "identifier": "basic"
-                                    }
-                                },
-                                {
-                                    "type": "field_group",
-                                    "options": {
-                                        "fields": [
-                                            "name",
-                                            "email",
-                                            "password"
-                                        ]
-                                    }
-                                }
-                            ]
-                        }
+                  "type": "headline",
+                  "options": {
+                    "identifier": "user",
+                    "icon": "mdi:user"
+                  }
+                },
+                {
+                  "type": "field_group",
+                  "options": {
+                    "fields": [
+                      "name",
+                      "actor_type",
+                      "email",
+                      "password",
+                      "roles"
                     ]
+                  }
                 }
-            ]
-        }
-    ]
+              ]
+            }
+          ]
+        },
+        "${capabilityComposable('agent_instructions')}"
+      ]
+    },
+    "${capabilityComposable('agent_settings_advanced')}"
+  ]
 }
