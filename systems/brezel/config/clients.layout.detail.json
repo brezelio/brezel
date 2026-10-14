@@ -20,6 +20,7 @@
                                     "options": {
                                         "fields": [
                                             "title",
+                                            "language",
                                             "description",
                                             "color",
                                             "background_color"

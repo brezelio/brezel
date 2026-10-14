@@ -8,6 +8,7 @@
       "title": "Mandanten",
       "fields": {
         "title": "Titel",
+        "language": "Sprache",
         "description": "Beschreibung",
         "mail_host": "Host",
         "mail_port": "Port",
