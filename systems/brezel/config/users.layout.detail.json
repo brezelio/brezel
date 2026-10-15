@@ -4,6 +4,7 @@
       "identifier": "user",
       "icon": "mdi:user",
       "rows": [
+        "${capabilityComposable('chat_actions')}",
         {
           "cols": [
             {
