@@ -146,6 +146,7 @@ Frequently used options include `default`, `rules`, `references`, `show_in`, `fr
 ### Field safety
 
 - Field identifiers must be unique across the entire module, including all nested `list` fields.
+- Keep module and field identifiers concise but meaningful, especially for `list` and relation fields. Prefer clear domain terms over cryptic abbreviations. Database identifiers are derived by concatenation, for example `resource_<module>_<list_field>`, and relation fields inside lists extend them further. MySQL/MariaDB rejects identifiers longer than 64 characters.
 - Treat changes to persisted field types as data migrations. Inspect stored data, schema, relations, layouts, workflows, and other consumers first.
 - Never change a `list` field to another type under the same identifier. Add a new field and migrate or retire the old data.
 - Never change a non-`list` field into a `list` under the same identifier.
@@ -266,6 +267,7 @@ Use `provider.addFunction()` for un-namespaced functions. Keep equivalent backen
 
 ### Critical semantics
 
+- Every workflow must define a non-empty top-level `title`; `php bakery load` fails without it.
 - `op/set` mutates its input object; it does not create workflow variables.
 - For `op/set`, `in` selects the mutation target. `copy` is an optional source whose fields are copied onto input entities.
 - Top-level `set` mappings create workflow variables from element outputs. For example, `"set": { "entity": "default:" }` creates `$entity` from the `default` output.
