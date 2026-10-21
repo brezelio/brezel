@@ -161,6 +161,9 @@ deploy staging over tailscale:
     DEPLOY_PORT: $STAGING_PORT
     DEPLOY_USER: $STAGING_USER
     DEPLOY_PATH: $STAGING_PATH
+  before_script:
+    - !reference [.staging_private_key, before_script]
+    - !reference [.tailscale deployment, before_script]
   script:
     - !reference [.deploy backend base, script]
     - !reference [.deploy frontend base, script]

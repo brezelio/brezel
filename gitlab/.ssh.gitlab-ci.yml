@@ -10,6 +10,12 @@ stages:
     - echo -e "Host *\n  StrictHostKeyChecking no\n" > ~/.ssh/config
     - ssh-add <(echo "$PRIVATE_KEY")
 
+# Optional dedicated staging key; falls back to PRIVATE_KEY when unset or empty.
+# Must run before the SSH key is added.
+.staging_private_key:
+  before_script: &staging_private_key
+    - export PRIVATE_KEY="${STAGING_PRIVATE_KEY:-$PRIVATE_KEY}"
+
 # VPN via Gluetun
 .use_vpn_service:
   services:
@@ -266,6 +272,9 @@ deploy backend staging:
     DEPLOY_PORT: $STAGING_PORT
     DEPLOY_USER: $STAGING_USER
     DEPLOY_PATH: $STAGING_PATH
+  before_script:
+    - *staging_private_key
+    - *ssh_configuration
 
 deploy backend staging with vpn:
   extends:
@@ -275,6 +284,7 @@ deploy backend staging with vpn:
     - if: '$CI_COMMIT_BRANCH == "staging" && $USE_VPN == "true"'
   retry: 2 # Retries this job up to 2 times upon failure. VPN's can be flaky, so this is useful.
   before_script:
+    - *staging_private_key
     - *ssh_configuration
     - *vpn_setup
 
@@ -297,6 +307,9 @@ deploy frontend staging:
     DEPLOY_PORT: $STAGING_PORT
     DEPLOY_USER: $STAGING_USER
     DEPLOY_PATH: $STAGING_PATH
+  before_script:
+    - *staging_private_key
+    - *deploy_frontend_base_before_script
 
 deploy frontend staging with vpn:
   extends:
@@ -310,6 +323,7 @@ deploy frontend staging with vpn:
     - job: build frontend          # 1. Download artifacts from the build job
     - job: deploy backend with vpn # 2. Wait for the backend deploy to finish successfully
   before_script:
+    - *staging_private_key
     - *ssh_configuration
     - *deploy_frontend_base_before_script
     - *vpn_setup
