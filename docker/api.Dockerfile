@@ -23,7 +23,9 @@ RUN apk add --no-cache \
   # Needed for supervisor
   supervisor \
   # For nginx
-  nginx
+  nginx \
+  # Full ICU locale data, required for PHP Intl/Twig to format currencies with locales such as de_DE
+  icu-data-full
 
 # System level application dependencies for php extensions
 RUN apk add --no-cache \
@@ -50,7 +52,7 @@ RUN apk add --no-cache --virtual .build-deps \
   linux-headers
 
 # base php extensions
-RUN docker-php-ext-install pdo_mysql mysqli zip exif pcntl bcmath sockets gmp sodium opcache
+RUN docker-php-ext-install pdo_mysql mysqli zip exif pcntl bcmath sockets gmp sodium opcache calendar
 
 # intl
 RUN apk add --no-cache icu-dev \
@@ -121,13 +123,21 @@ RUN composer run cleanup-dependencies --no-interaction
 # Switch back to root user
 USER root
 
+# Increase memory limit by reusing the arg defined above (for both the API and brotcast)
+ARG PHP_MEMORY_LIMIT
+RUN echo "memory_limit = $PHP_MEMORY_LIMIT" >> /usr/local/etc/php/conf.d/docker-php-memlimit.ini;
+
+# Some optional application files are copied with a one-character glob (e.g. `ap[p]`), so missing paths are skipped instead of failing the build.
+
 FROM composer AS brotcast
 
 WORKDIR /app
 
 # Copy files relevant for the brotcast service via reverb
+COPY --chown=www-data:www-data ap[p] app
 COPY --chown=www-data:www-data bakery bakery
 COPY --chown=www-data:www-data bootstrap bootstrap
+COPY --chown=www-data:www-data resource[s] resources
 
 EXPOSE 8086
 
@@ -138,21 +148,20 @@ WORKDIR /app
 
 # Copy the the application files
 COPY --chown=www-data:www-data --chmod=0755 bin bin
+COPY --chown=www-data:www-data ap[p] app
 COPY --chown=www-data:www-data bakery bakery
 COPY --chown=www-data:www-data bootstrap bootstrap
+COPY --chown=www-data:www-data resource[s] resources
 COPY --chown=www-data:www-data systems systems
-COPY --chown=www-data:www-data storage storage
-COPY --chown=www-data:www-data public public
+COPY --chown=www-data:www-data storag[e] storage
+COPY --chown=www-data:www-data publi[c] public
 COPY --chown=www-data:www-data server.php server.php
-COPY --chown=www-data:www-data README.md README.md
+COPY --chown=www-data:www-data README.m[d] README.md
 
 # Remove .env to only use passed values
 RUN rm .env || true
 
 FROM system-files AS final
-# Increase memory limit by reusing the arg defined above
-ARG PHP_MEMORY_LIMIT
-RUN echo "memory_limit = $PHP_MEMORY_LIMIT" >> /usr/local/etc/php/conf.d/docker-php-memlimit.ini;
 
 # Configure php and php-fpm
 RUN echo "pm = dynamic" >> /usr/local/etc/php-fpm.conf && \
