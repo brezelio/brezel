@@ -12,6 +12,26 @@ ARG PHP_BASE_IMAGE=php:${PHP_VERSION}-alpine
 # First, we build a layer with the system dependencies and php extensions.
 FROM $PHP_BASE_IMAGE AS system
 
+# Fail early if the (floating) base image tag resolves to an unpatched PHP release.
+# One minimum patch version per supported minor branch.
+ARG PHP_MIN_VERSIONS="8.4.27 8.5.12"
+RUN php <<'EOF'
+<?php
+$branch = PHP_MAJOR_VERSION . '.' . PHP_MINOR_VERSION;
+foreach (explode(' ', getenv('PHP_MIN_VERSIONS')) as $min) {
+  if (!str_starts_with($min, $branch . '.')) {
+    continue;
+  }
+  if (version_compare(PHP_VERSION, $min, '<')) {
+    fwrite(STDERR, 'PHP ' . PHP_VERSION . " is older than the required $min. Pull a newer base image (docker build --pull)." . PHP_EOL);
+    exit(1);
+  }
+  exit(0);
+}
+fwrite(STDERR, "No minimum patch version configured for PHP $branch in PHP_MIN_VERSIONS." . PHP_EOL);
+exit(1);
+EOF
+
 # Install dependencies
 RUN apk add --no-cache \
   # Just to debug
