@@ -62,43 +62,44 @@ RUN apk add --no-cache \
   # For php extension gmp
   gmp-dev \
   # For php extension sodium
-  libsodium-dev
+  libsodium-dev \
+  # For php extension intl
+  icu-dev \
+  # For php extension gd
+  freetype-dev libjpeg-turbo-dev libpng-dev \
+  # For php extension imagick
+  imagemagick imagemagick-dev
 
-# Build deps that can be removed later
+# Build the php extensions. The build deps are installed and removed within this single layer,
+# otherwise they would stay in the image (~350MB) even after removing them in a later layer.
 RUN apk add --no-cache --virtual .build-deps \
-  # Needed for pecl & imagick
-  $PHPIZE_DEPS \
-  # Required to compile native dependencies like gd or intl
-  build-base \
-  # Needed to build php extensions like sockets or xdebug on alpine
-  linux-headers
-
-# base php extensions
-RUN docker-php-ext-install pdo_mysql mysqli zip exif pcntl bcmath sockets gmp sodium opcache calendar
-
-# intl
-RUN apk add --no-cache icu-dev \
+    # Needed for pecl & imagick
+    $PHPIZE_DEPS \
+    # Required to compile native dependencies like gd or intl
+    build-base \
+    # Needed to build php extensions like sockets or xdebug on alpine
+    linux-headers \
+  # base php extensions, intl and gd
   && docker-php-ext-configure intl \
-  && docker-php-ext-install intl
-
-# gd
-RUN apk add --no-cache freetype-dev libjpeg-turbo-dev libpng-dev \
   && docker-php-ext-configure gd --with-freetype=/usr/include/ --with-jpeg=/usr/include/ \
-  && docker-php-ext-install gd
-
-# imagick
-# Imagick is installed from the archive because regular installation fails
-# See: https://github.com/Imagick/imagick/issues/643#issuecomment-1834361716
-RUN apk add --no-cache imagemagick imagemagick-dev \
+  && docker-php-ext-install pdo_mysql mysqli zip exif pcntl bcmath sockets gmp sodium opcache calendar intl gd \
+  # imagick
+  # Imagick is installed from the archive because regular installation fails
+  # See: https://github.com/Imagick/imagick/issues/643#issuecomment-1834361716
+  && mkdir -p /tmp/imagick \
   && curl -L -o /tmp/imagick.tar.gz https://github.com/Imagick/imagick/archive/tags/3.7.0.tar.gz \
-  && tar --strip-components=1 -xf /tmp/imagick.tar.gz \
+  && tar --strip-components=1 -xf /tmp/imagick.tar.gz -C /tmp/imagick \
+  && cd /tmp/imagick \
   && sed -i 's/php_strtolower/zend_str_tolower/g' imagick.c \
   && phpize \
   && ./configure \
   && make \
   && make install \
   && echo "extension=imagick.so" > /usr/local/etc/php/conf.d/ext-imagick.ini \
-  && rm -rf /tmp/*
+  && cd / \
+  # Cleanup all the deps we only needed for building native php extensions, the sources and the pecl cache
+  && apk del .build-deps \
+  && rm -rf /tmp/* /tmp/pear
 
 # Set ImageMagick PDF policy (https://stackoverflow.com/a/53379341)
 ARG imagemagic_config=/etc/ImageMagick-6/policy.xml
@@ -106,12 +107,6 @@ RUN if [ -f $imagemagic_config ] ; then sed -i 's/<policy domain="coder" rights=
 
 # Install composer
 COPY --chown=www-data:www-data --from=docker.io/composer/composer:latest-bin /composer /usr/bin/composer
-
-# Cleanup all the deps we only needed for building native php extensions
-RUN apk del .build-deps
-
-# Remove pecl cache
-RUN rm -rf /tmp/pear
 
 # Now we build the composer layer
 FROM system AS composer
@@ -137,7 +132,8 @@ RUN --mount=type=secret,id=COMPOSER_TOKEN,env=COMPOSER_TOKEN \
 # Set the composer token and install dependencies without dev deps
 RUN --mount=type=secret,id=COMPOSER_TOKEN,env=COMPOSER_TOKEN \
   composer config gitlab-token.gitlab.kiwis-and-brownies.de $COMPOSER_USER "$COMPOSER_TOKEN" && \
-  composer install --no-interaction --no-scripts --no-dev --optimize-autoloader && \
+  # --no-cache: the download cache would end up in the image (~150MB)
+  composer install --no-interaction --no-scripts --no-dev --optimize-autoloader --no-cache && \
   # composer config writes the token to ./auth.json, which must not end up in the image
   rm -f auth.json
 
@@ -162,7 +158,7 @@ USER www-data
 
 RUN --mount=type=secret,id=COMPOSER_TOKEN,env=COMPOSER_TOKEN \
   composer config gitlab-token.gitlab.kiwis-and-brownies.de $COMPOSER_USER "$COMPOSER_TOKEN" && \
-  composer install --no-interaction --no-scripts --optimize-autoloader && \
+  composer install --no-interaction --no-scripts --optimize-autoloader --no-cache && \
   rm -f auth.json
 
 USER root
