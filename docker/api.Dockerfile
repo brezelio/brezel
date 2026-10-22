@@ -53,8 +53,10 @@ RUN apk add --no-cache \
   curl \
   # To fix a warning about unzip missing and possibly causing corruption
   unzip \
-  # For pdf file merging
+  # For thumbnail generation
   ghostscript \
+  # For pdf file merging
+  qpdf \
   # For zip extension
   libzip-dev \
   # For php extension gmp
