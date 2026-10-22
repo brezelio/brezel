@@ -31,7 +31,7 @@ build docker api:
         - export BRANCH_TAG=$CI_COMMIT_REF_SLUG
         - docker info
         - docker pull $CI_REGISTRY_IMAGE:$BRANCH_TAG || true
-        - docker build -f docker/api.Dockerfile --cache-from $CI_REGISTRY_IMAGE:$BRANCH_TAG --tag $CI_REGISTRY_IMAGE:$BRANCH_TAG --target=final --build-arg SYSTEM=$SYSTEM --build-arg PHP_MEMORY_LIMIT=1G --build-arg COMPOSER_USER=$PACKAGE_TOKEN_USER --secret id=COMPOSER_TOKEN,env=PACKAGE_TOKEN .
+        - docker build -f docker/api.Dockerfile --build-arg BUILDKIT_INLINE_CACHE=1 --cache-from $CI_REGISTRY_IMAGE:$BRANCH_TAG --tag $CI_REGISTRY_IMAGE:$BRANCH_TAG --target=final --build-arg SYSTEM=$SYSTEM --build-arg PHP_MEMORY_LIMIT=1G --build-arg COMPOSER_USER=$PACKAGE_TOKEN_USER --secret id=COMPOSER_TOKEN,env=PACKAGE_TOKEN .
         - docker push $CI_REGISTRY_IMAGE:$BRANCH_TAG
 
 build docker ws:
@@ -52,7 +52,7 @@ build docker ws:
         - export BRANCH_TAG=$CI_COMMIT_REF_SLUG
         - docker info
         - docker pull $CI_REGISTRY_IMAGE:$BRANCH_TAG || true
-        - docker build -f docker/api.Dockerfile --cache-from $CI_REGISTRY_IMAGE:$BRANCH_TAG --tag $CI_REGISTRY_IMAGE:$BRANCH_TAG-brotcast --target=brotcast --build-arg SYSTEM=$SYSTEM --build-arg COMPOSER_USER=$PACKAGE_TOKEN_USER --secret id=COMPOSER_TOKEN,env=PACKAGE_TOKEN .
+        - docker build -f docker/api.Dockerfile --build-arg BUILDKIT_INLINE_CACHE=1 --cache-from $CI_REGISTRY_IMAGE:$BRANCH_TAG --tag $CI_REGISTRY_IMAGE:$BRANCH_TAG-brotcast --target=brotcast --build-arg SYSTEM=$SYSTEM --build-arg COMPOSER_USER=$PACKAGE_TOKEN_USER --secret id=COMPOSER_TOKEN,env=PACKAGE_TOKEN .
         - docker push $CI_REGISTRY_IMAGE:$BRANCH_TAG-brotcast
 
 build docker spa:
@@ -83,7 +83,7 @@ build docker spa:
         - export BRANCH_TAG=$CI_COMMIT_REF_SLUG
         - docker info
         - docker pull $CI_REGISTRY_IMAGE:$BRANCH_TAG-spa || true
-        - docker build -f docker/spa.Dockerfile --cache-from $CI_REGISTRY_IMAGE:$BRANCH_TAG-spa --tag $CI_REGISTRY_IMAGE:$BRANCH_TAG-spa --build-arg SYSTEM=$SYSTEM --build-arg API_URL=$API_URL --build-arg REVIEW_ENVIRONMENT=$REVIEW_ENVIRONMENT --build-arg MERGE_REQUEST_IID=$MERGE_REQUEST_IID --build-arg MERGE_REQUEST_TITLE=$MERGE_REQUEST_TITLE --build-arg MERGE_REQUEST_URL=$MERGE_REQUEST_URL --secret id=NPM_TOKEN,env=CI_JOB_TOKEN .
+        - docker build -f docker/spa.Dockerfile --build-arg BUILDKIT_INLINE_CACHE=1 --cache-from $CI_REGISTRY_IMAGE:$BRANCH_TAG-spa --tag $CI_REGISTRY_IMAGE:$BRANCH_TAG-spa --build-arg SYSTEM=$SYSTEM --build-arg API_URL=$API_URL --build-arg REVIEW_ENVIRONMENT=$REVIEW_ENVIRONMENT --build-arg MERGE_REQUEST_IID=$MERGE_REQUEST_IID --build-arg MERGE_REQUEST_TITLE=$MERGE_REQUEST_TITLE --build-arg MERGE_REQUEST_URL=$MERGE_REQUEST_URL --secret id=NPM_TOKEN,env=CI_JOB_TOKEN .
         - docker push $CI_REGISTRY_IMAGE:$BRANCH_TAG-spa
 
 infra:update:

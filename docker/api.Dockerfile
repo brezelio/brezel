@@ -135,7 +135,9 @@ RUN --mount=type=secret,id=COMPOSER_TOKEN,env=COMPOSER_TOKEN \
 # Set the composer token and install dependencies without dev deps
 RUN --mount=type=secret,id=COMPOSER_TOKEN,env=COMPOSER_TOKEN \
   composer config gitlab-token.gitlab.kiwis-and-brownies.de $COMPOSER_USER "$COMPOSER_TOKEN" && \
-  composer install --no-interaction --no-scripts --no-dev --optimize-autoloader
+  composer install --no-interaction --no-scripts --no-dev --optimize-autoloader && \
+  # composer config writes the token to ./auth.json, which must not end up in the image
+  rm -f auth.json
 
 # Now run composer cleanup script to cleanup dependencies e.g. remove 100MB of Google apis...
 RUN composer run cleanup-dependencies --no-interaction
@@ -148,6 +150,20 @@ ARG PHP_MEMORY_LIMIT
 RUN echo "memory_limit = $PHP_MEMORY_LIMIT" >> /usr/local/etc/php/conf.d/docker-php-memlimit.ini;
 
 # Some optional application files are copied with a one-character glob (e.g. `ap[p]`), so missing paths are skipped instead of failing the build.
+
+# Additionally install the dev dependencies for running tests (see the validate target)
+FROM composer AS composer-validate
+
+ARG COMPOSER_USER
+
+USER www-data
+
+RUN --mount=type=secret,id=COMPOSER_TOKEN,env=COMPOSER_TOKEN \
+  composer config gitlab-token.gitlab.kiwis-and-brownies.de $COMPOSER_USER "$COMPOSER_TOKEN" && \
+  composer install --no-interaction --no-scripts --optimize-autoloader && \
+  rm -f auth.json
+
+USER root
 
 FROM composer AS brotcast
 
@@ -181,6 +197,17 @@ COPY --chown=www-data:www-data README.m[d] README.md
 # Remove .env to only use passed values
 RUN rm .env || true
 
+# Image for running tests, e.g. `docker run --rm <image> vendor/bin/phpunit`
+FROM system-files AS validate
+
+COPY --chown=www-data:www-data --from=composer-validate /app/vendor vendor
+COPY --chown=www-data:www-data test[s] tests
+COPY --chown=www-data:www-data phpunit.xm[l] phpunit.xml
+
+USER www-data
+
+CMD ["vendor/bin/phpunit"]
+
 FROM system-files AS final
 
 # Configure php and php-fpm
@@ -191,6 +218,9 @@ RUN echo "pm = dynamic" >> /usr/local/etc/php-fpm.conf && \
   echo "pm.min_spare_servers = 10" >> /usr/local/etc/php-fpm.conf && \
   echo "pm.max_spare_servers = 50" >> /usr/local/etc/php-fpm.conf && \
   echo "pm.process_idle_timeout = 15s" >> /usr/local/etc/php-fpm.conf && \
+  # Omit URLs from the access log entirely: paths can contain share tokens, not just query strings.
+  # PHP memory is the peak PHP allocation, not worker RSS.
+  echo 'access.format = "fpm_access pid=%p method=%m status=%s duration_ms=%{milliseconds}d peak_php_memory_kib=%{kilobytes}M cpu_pct=%C"' >> /usr/local/etc/php-fpm.conf && \
   echo "opcache.enable_cli = 1" >> /usr/local/etc/php/conf.d/docker-php-perf.ini && \
   echo "opcache.enable = 1" >> /usr/local/etc/php/conf.d/docker-php-perf.ini && \
   echo "opcache.memory_consumption = 192" >> /usr/local/etc/php/conf.d/docker-php-perf.ini && \
@@ -204,9 +234,9 @@ RUN echo "pm = dynamic" >> /usr/local/etc/php-fpm.conf && \
   echo "post_max_size = 25M" >> /usr/local/etc/php/conf.d/docker-php-perf.ini && \
   echo "expose_php = Off" >> /usr/local/etc/php/conf.d/docker-php-security.ini && \
   echo "disable_functions = passthru,shell_exec,system ; we need exec for file merging. passthru is technically also used, but only for the dev server so we can safely disable it" >> /usr/local/etc/php/conf.d/docker-php-security.ini && \
-  echo "; This is needed because we hackily backported hyn to php 8. We should remove this once we migrate tenancy frameworks" >> /usr/local/etc/php/docker-php-hyn-tenancy.ini && \
-  echo "error_reporting = E_ALL & ~E_DEPRECATED & ~E_STRICT" >> /usr/local/etc/php/conf.d/docker-php-hyn-tenancy.ini && \
-  echo "display_errors = Off" >> /usr/local/etc/php/conf.d/docker-php-hyn-tenancy.ini
+  # PHP's production defaults: do not report deprecations and never display errors to clients
+  echo "error_reporting = E_ALL & ~E_DEPRECATED" >> /usr/local/etc/php/conf.d/docker-php-errors.ini && \
+  echo "display_errors = Off" >> /usr/local/etc/php/conf.d/docker-php-errors.ini
 
 # Get nginx configuration
 COPY docker/api.nginx.conf nginx.conf

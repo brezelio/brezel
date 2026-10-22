@@ -4,27 +4,31 @@
 system=$(cat .system)
 echo "Running system '$system'"
 
-echo "Starting cron..."
-crond
+# In a cluster, bootstrapping, the scheduler and queue workers run as separate workloads
+# (e.g. the brezel-instance-argo chart sets BREZEL_WEB_ONLY=1). Then this container only serves HTTP.
+if [ "$BREZEL_WEB_ONLY" != "1" ]; then
+  echo "Starting cron..."
+  crond
 
-# Bakery init for keys and base migrations
-php bakery init --force
+  # Bakery init for keys and base migrations
+  php bakery init --force
 
-# Forced bakery migrations for tenant migrations
-php bakery migrate --force
+  # Forced bakery migrations for tenant migrations
+  php bakery migrate --force
 
-# Create system if it does not exist
-php bakery system create $system
+  # Create system if it does not exist
+  php bakery system create $system
 
-# Apply the plan
-php bakery apply
+  # Apply the plan
+  php bakery apply
 
-# Load the system (aka workflows)
-php bakery load --force
+  # Load the system (aka workflows)
+  php bakery load --force
 
-# Create supervisor config and start it
-php bakery make:supervisor
-supervisord -c /app/supervisord.conf
+  # Create supervisor config and start it
+  php bakery make:supervisor
+  supervisord -c /app/supervisord.conf
+fi
 
 # Make sure the storage directory exists
 mkdir -p storage/app storage/framework storage/logs
