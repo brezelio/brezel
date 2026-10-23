@@ -13,56 +13,77 @@ stages:
     - build
     - deploy
 
-build docker api:
+.docker:
     image: docker:git
-    stage: build
+    services:
+        - docker:dind
     variables:
         DOCKER_HOST: tcp://docker:2376
         DOCKER_TLS_CERTDIR: "/certs"
         DOCKER_TLS_VERIFY: 1
         DOCKER_CERT_PATH: "$DOCKER_TLS_CERTDIR/client"
-    rules:
-        - when: always
-    services:
-        - docker:dind
     before_script:
         - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+
+# Builds the system and composer stages of docker/api.Dockerfile once and passes them to the api and ws image builds.
+# The image is tagged by a hash of everything it depends on (including the current digest of the PHP base image),
+# so it is only rebuilt when something relevant changed or a new PHP patch release is available.
+build docker base:
+    extends: .docker
+    stage: build
+    rules:
+        - when: always
+    artifacts:
+        reports:
+            dotenv: base.env
     script:
+        - PHP_VERSION=$(sed -n 's/^ARG PHP_VERSION=//p' docker/api.Dockerfile)
+        - PHP_IMAGE="php:${PHP_VERSION}-alpine"
+        - PHP_DIGEST=$(docker buildx imagetools inspect "$PHP_IMAGE" | sed -n 's/^Digest:[[:space:]]*//p' | head -n 1)
+        - test -n "$PHP_DIGEST"
+        # Only the part of the Dockerfile up to the base stages is relevant for the base image
+        - BASE_HASH=$({ sed '/^FROM ${BASE_IMAGE} AS base$/q' docker/api.Dockerfile; cat composer.json composer.lock; echo "$PHP_IMAGE@$PHP_DIGEST"; } | sha256sum | cut -c1-16)
+        - BASE_IMAGE="$CI_REGISTRY_IMAGE/base:$BASE_HASH"
+        - |
+            if docker buildx imagetools inspect "$BASE_IMAGE" > /dev/null 2>&1; then
+              echo "Reusing existing base image for $BASE_HASH"
+            else
+              docker build -f docker/api.Dockerfile --target=composer --tag "$BASE_IMAGE" --build-arg PHP_BASE_IMAGE="$PHP_IMAGE@$PHP_DIGEST" --build-arg COMPOSER_USER=$PACKAGE_TOKEN_USER --secret id=COMPOSER_TOKEN,env=PACKAGE_TOKEN .
+              docker push "$BASE_IMAGE"
+            fi
+        - printf 'BASE_IMAGE=%s\n' "$BASE_IMAGE" > base.env
+
+build docker api:
+    extends: .docker
+    stage: build
+    needs:
+        - job: build docker base
+          artifacts: true
+    rules:
+        - when: always
+    script:
+        - test -n "$BASE_IMAGE"
         - export BRANCH_TAG=$CI_COMMIT_REF_SLUG
-        - docker info
-        - docker pull $CI_REGISTRY_IMAGE:$BRANCH_TAG || true
-        - docker build -f docker/api.Dockerfile --build-arg BUILDKIT_INLINE_CACHE=1 --cache-from $CI_REGISTRY_IMAGE:$BRANCH_TAG --tag $CI_REGISTRY_IMAGE:$BRANCH_TAG --target=final --build-arg SYSTEM=$SYSTEM --build-arg PHP_MEMORY_LIMIT=1G --build-arg COMPOSER_USER=$PACKAGE_TOKEN_USER --secret id=COMPOSER_TOKEN,env=PACKAGE_TOKEN .
+        - docker build -f docker/api.Dockerfile --tag $CI_REGISTRY_IMAGE:$BRANCH_TAG --target=final --build-arg SYSTEM=$SYSTEM --build-arg BASE_IMAGE=$BASE_IMAGE .
         - docker push $CI_REGISTRY_IMAGE:$BRANCH_TAG
 
 build docker ws:
-    image: docker:git
+    extends: .docker
     stage: build
-    variables:
-        DOCKER_HOST: tcp://docker:2376
-        DOCKER_TLS_CERTDIR: "/certs"
-        DOCKER_TLS_VERIFY: 1
-        DOCKER_CERT_PATH: "$DOCKER_TLS_CERTDIR/client"
+    needs:
+        - job: build docker base
+          artifacts: true
     rules:
         - when: always
-    services:
-        - docker:dind
-    before_script:
-        - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     script:
+        - test -n "$BASE_IMAGE"
         - export BRANCH_TAG=$CI_COMMIT_REF_SLUG
-        - docker info
-        - docker pull $CI_REGISTRY_IMAGE:$BRANCH_TAG || true
-        - docker build -f docker/api.Dockerfile --build-arg BUILDKIT_INLINE_CACHE=1 --cache-from $CI_REGISTRY_IMAGE:$BRANCH_TAG --tag $CI_REGISTRY_IMAGE:$BRANCH_TAG-brotcast --target=brotcast --build-arg SYSTEM=$SYSTEM --build-arg COMPOSER_USER=$PACKAGE_TOKEN_USER --secret id=COMPOSER_TOKEN,env=PACKAGE_TOKEN .
+        - docker build -f docker/api.Dockerfile --tag $CI_REGISTRY_IMAGE:$BRANCH_TAG-brotcast --target=brotcast --build-arg SYSTEM=$SYSTEM --build-arg BASE_IMAGE=$BASE_IMAGE .
         - docker push $CI_REGISTRY_IMAGE:$BRANCH_TAG-brotcast
 
 build docker spa:
-    image: docker:git
+    extends: .docker
     stage: build
-    variables:
-        DOCKER_HOST: tcp://docker:2376
-        DOCKER_TLS_CERTDIR: "/certs"
-        DOCKER_TLS_VERIFY: 1
-        DOCKER_CERT_PATH: "$DOCKER_TLS_CERTDIR/client"
     rules:
         # For merge requests, include information about the review environment and merge request in the build
         -   if: $CI_PIPELINE_SOURCE == 'merge_request_event'
@@ -73,17 +94,13 @@ build docker spa:
                 MERGE_REQUEST_URL: $CI_MERGE_REQUEST_PROJECT_URL/-/merge_requests/$CI_MERGE_REQUEST_IID
         # Always execute the job
         -   when: always
-    services:
-        - docker:dind
-    before_script:
-        - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     script:
         # If TF_VAR_host is set, use it as the API URL. Else, use the review API url.
         - if [ -n "$TF_VAR_host" ]; then export API_URL="https://api.$TF_VAR_host"; else export API_URL="https://api.$CI_COMMIT_REF_SLUG.$SYSTEM.$TF_VAR_base_domain"; fi
         - export BRANCH_TAG=$CI_COMMIT_REF_SLUG
         - docker info
         - docker pull $CI_REGISTRY_IMAGE:$BRANCH_TAG-spa || true
-        - docker build -f docker/spa.Dockerfile --build-arg BUILDKIT_INLINE_CACHE=1 --cache-from $CI_REGISTRY_IMAGE:$BRANCH_TAG-spa --tag $CI_REGISTRY_IMAGE:$BRANCH_TAG-spa --build-arg SYSTEM=$SYSTEM --build-arg API_URL=$API_URL --build-arg REVIEW_ENVIRONMENT=$REVIEW_ENVIRONMENT --build-arg MERGE_REQUEST_IID=$MERGE_REQUEST_IID --build-arg MERGE_REQUEST_TITLE=$MERGE_REQUEST_TITLE --build-arg MERGE_REQUEST_URL=$MERGE_REQUEST_URL --secret id=NPM_TOKEN,env=CI_JOB_TOKEN .
+        - docker build -f docker/spa.Dockerfile --cache-from $CI_REGISTRY_IMAGE:$BRANCH_TAG-spa --tag $CI_REGISTRY_IMAGE:$BRANCH_TAG-spa --build-arg SYSTEM=$SYSTEM --build-arg API_URL=$API_URL --build-arg REVIEW_ENVIRONMENT=$REVIEW_ENVIRONMENT --build-arg MERGE_REQUEST_IID=$MERGE_REQUEST_IID --build-arg MERGE_REQUEST_TITLE=$MERGE_REQUEST_TITLE --build-arg MERGE_REQUEST_URL=$MERGE_REQUEST_URL --secret id=NPM_TOKEN,env=CI_JOB_TOKEN .
         - docker push $CI_REGISTRY_IMAGE:$BRANCH_TAG-spa
 
 infra:update:

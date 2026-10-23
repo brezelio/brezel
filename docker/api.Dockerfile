@@ -8,6 +8,9 @@ ARG COMPOSER_USER
 # Technical Args
 ARG PHP_VERSION=8.4-fpm
 ARG PHP_BASE_IMAGE=php:${PHP_VERSION}-alpine
+# Prebuilt images of the composer / composer-validate stages, see the "base" stages below
+ARG BASE_IMAGE=composer
+ARG BASE_VALIDATE_IMAGE=composer-validate
 
 # First, we build a layer with the system dependencies and php extensions.
 FROM $PHP_BASE_IMAGE AS system
@@ -147,8 +150,6 @@ USER root
 ARG PHP_MEMORY_LIMIT
 RUN echo "memory_limit = $PHP_MEMORY_LIMIT" >> /usr/local/etc/php/conf.d/docker-php-memlimit.ini;
 
-# Some optional application files are copied with a one-character glob (e.g. `ap[p]`), so missing paths are skipped instead of failing the build.
-
 # Additionally install the dev dependencies for running tests (see the validate target)
 FROM composer AS composer-validate
 
@@ -163,7 +164,14 @@ RUN --mount=type=secret,id=COMPOSER_TOKEN,env=COMPOSER_TOKEN \
 
 USER root
 
-FROM composer AS brotcast
+# The application images below build on these base stages. By default they are the stages above,
+# but CI can pass prebuilt images of them (BASE_IMAGE / BASE_VALIDATE_IMAGE) to skip building them.
+FROM ${BASE_IMAGE} AS base
+FROM ${BASE_VALIDATE_IMAGE} AS base-validate
+
+# Some optional application files are copied with a one-character glob (e.g. `ap[p]`), so missing paths are skipped instead of failing the build.
+
+FROM base AS brotcast
 
 WORKDIR /app
 
@@ -177,7 +185,7 @@ EXPOSE 8086
 
 CMD ["php", "bakery", "brotcast:start"]
 
-FROM composer AS system-files
+FROM base AS system-files
 WORKDIR /app
 
 # Copy the the application files
@@ -198,7 +206,7 @@ RUN rm .env || true
 # Image for running tests, e.g. `docker run --rm <image> vendor/bin/phpunit`
 FROM system-files AS validate
 
-COPY --chown=www-data:www-data --from=composer-validate /app/vendor vendor
+COPY --chown=www-data:www-data --from=base-validate /app/vendor vendor
 COPY --chown=www-data:www-data test[s] tests
 COPY --chown=www-data:www-data phpunit.xm[l] phpunit.xml
 
