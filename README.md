@@ -75,7 +75,8 @@ To get started, make sure to set the following variables:
 ##### General settings
 
 ```dotenv
-APP_URL="http://mybrezel.test"
+APP_URL="http://localhost:8081"
+FRONTEND_URL="http://localhost:8080"
 ```
 
 ##### SPA settings
@@ -85,7 +86,7 @@ Note: variables that are prefixed with `VITE_` are baked into client JS scripts.
 **Do not** put sensitive values here.
 
 ```dotenv
-APP_URL="http://mybrezel.test"
+APP_URL="http://localhost:8081"
 APP_SYSTEM=example
 ```
 
