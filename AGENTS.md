@@ -82,6 +82,8 @@ Bakery references and templates include:
 
 Use `file(...)` to extract large inline layouts into separate JSON files. Use `trimFile(...)` for external `.recipe` expressions.
 
+These templates work only in Bakery resources (`*.bake.json`). Workflows loaded through the workflow loader do not resolve them; keep workflow recipes inline.
+
 ### Workflow layout
 
 - Do not stack workflow elements.
@@ -218,7 +220,7 @@ Recipes commonly appear in:
 
 - `this` is the current entity in module and layout contexts.
 - `$name` refers to a workflow variable.
-- Keep expressions short. Use `${trimFile('recipes/name.recipe')}` for longer reusable expressions.
+- Keep expressions short. In Bakery resources, use `${trimFile('recipes/name.recipe')}` for longer reusable expressions.
 - Backend and frontend recipes use separate interpreters and may expose different functions.
 - Available backend functions can be checked in `vendor/brezel/api/app/Recipes/Driver/Native/Interpreter/Main/MainInterpreter.php`.
 - In workflow recipes, use `??` for value fallback. Do not use `||`; it returns a boolean.
@@ -272,6 +274,7 @@ Use `provider.addFunction()` for un-namespaced functions. Keep equivalent backen
 - For `op/set`, `in` selects the mutation target. `copy` is an optional source whose fields are copied onto input entities.
 - Top-level `set` mappings create workflow variables from element outputs. For example, `"set": { "entity": "default:" }` creates `$entity` from the `default` output.
 - Top-level `set` values are port selectors, not recipe expressions. Use `op/recipe` first when a computed value is required.
+- Element `in` port overrides accept only workflow expressions such as `$foo` or `$foo.bar`, not recipes such as `$foo ?? []`. Compute such values with `op/recipe` first and pass the resulting variable.
 - `action/run` with `scope: true` creates one variable per configured `input` key in the called workflow. Inputs do not become properties of `this`, the event prototype, or `$entry`.
 - Do not infer element behavior from option names; inspect `vendor/brezel/api/app/Workflow/Elements/*`.
 
@@ -308,7 +311,7 @@ Mount it from a layout:
 ```
 
 - Prefer TypeScript, `<script setup>`, and existing Ant Design Vue components.
-- Use generated Brezel entity/module types from `src/types/modules` in widget code.
+- Use generated Brezel entity/module types from `src/types/modules` in widget code. They are generated from the Bakery module definitions and may be stale; the module `*.bake.json` definition is the source of truth for which fields exist.
 - Regenerate types with `php bakery apply` or the project update wrapper.
 - Files in `src/types/**`, including generated `.d.ts` files, are read-only generated output and may be committed.
 
@@ -348,7 +351,7 @@ Consumer projects use the project-root `bakery` entrypoint and are not normal La
 - Bakery exposes an allowlisted command set, not all Artisan commands.
 - Available commands depend on the installed `brezel/api` version. Check `vendor/brezel/api/app/Console/Commands/BrezelCLI.php` or run `php bakery help <command>`.
 - Put the command before its options: `php bakery apply --no-interaction`.
-- Use `php bakery shell` for the exposed Tinker shell and controlled backend inspection.
+- Use `php bakery shell` for debugging and backend inspection instead of Tinker or ad-hoc scripts. Select the tenant first with `App\System\System::byIdentifier('<system>')->setAsCurrent();`.
 - Use `php bakery work`, not `php bakery queue:work`.
 - `php bakery schedule` runs one scheduler pass. It is normally invoked once per minute and drives `event/cron` workflows.
 - Project tests, linters, and frontend builds use project-level Composer, npm, or binary commands, not Bakery.
