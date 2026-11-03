@@ -42,4 +42,6 @@ dist-lib
 storage/framework/*
 storage/app/tenancy/tenants/*
 
-supervisord.conf
+./supervisord.conf
+.brezel-state/
+/BREZEL_CLI_HANDOFF.md

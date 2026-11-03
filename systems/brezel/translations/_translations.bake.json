@@ -1,7 +1,6 @@
 [
     {
         "resource_translations": "de",
-        "import": true,
         "resource": {
             "identifier": "de",
             "code": "de_DE",
@@ -12,7 +11,6 @@
     },
     {
         "resource_translations": "en",
-        "import": true,
         "resource": {
             "identifier": "en",
             "code": "en_US",
@@ -22,5 +20,5 @@
             "data": "${file('translations/en.json')}"
         }
     }
-    
+
 ]

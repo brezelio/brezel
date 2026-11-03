@@ -1,0 +1,250 @@
+x-brezel-php-service: &brezel-php-service
+  build:
+    context: .
+    dockerfile: ./container/Dockerfile
+  working_dir: /var/www/brezel
+  env_file:
+    - .env
+  environment:
+    APP_ENV: ${APP_ENV:-local}
+    APP_DEBUG: ${APP_DEBUG:-true}
+    APP_URL: ${APP_URL:-http://localhost:2041}
+    TENANCY_HOST: ${TENANCY_HOST:-mariadb}
+    TENANCY_PORT: ${TENANCY_PORT:-2042}
+    BREZEL_JOBS_SUPERVISOR_USER: ${BREZEL_JOBS_SUPERVISOR_USER:-brezel}
+    BREZEL_JOBS_SUPERVISOR_COMMAND: ${BREZEL_JOBS_SUPERVISOR_COMMAND:-php bakery work --tries=1 --sleep=1}
+    BREZEL_BROTCAST_SERVER_HOST: ${BREZEL_BROTCAST_SERVER_HOST:-0.0.0.0}
+    BREZEL_BROTCAST_SERVER_PORT: ${BREZEL_BROTCAST_SERVER_PORT:-8086}
+    HOME: /home/brezel
+    XDG_CONFIG_HOME: /home/brezel/.config
+    XDG_DATA_HOME: /home/brezel/.local/share
+  volumes:
+    - .:/var/www/brezel
+    - brezel_vendor:/var/www/brezel/vendor
+  restart: unless-stopped
+
+services:
+  deps:
+    <<: *brezel-php-service
+    user: "0:0"
+    environment:
+      COMPOSER_AUTH: '{"gitlab-token":{"gitlab.kiwis-and-brownies.de":"${COMPOSER_TOKEN:-}"}}'
+      COMPOSER_PROCESS_TIMEOUT: ${COMPOSER_PROCESS_TIMEOUT:-600}
+    command:
+      - sh
+      - -lc
+      - |
+        mkdir -p vendor
+        current_json_checksum="$(cksum composer.json | cut -d' ' -f1)"
+        current_lock_checksum="missing"
+        if [ -f composer.lock ]; then
+          current_lock_checksum="$(cksum composer.lock | cut -d' ' -f1)"
+        fi
+        state_dir="vendor/.brezel-state"
+        json_checksum_file="$$state_dir/composer-json.cksum"
+        lock_checksum_file="$$state_dir/composer-lock.cksum"
+        previous_json_checksum="missing"
+        previous_lock_checksum="missing"
+
+        if [ -f "$$json_checksum_file" ]; then
+          previous_json_checksum="$(cat "$$json_checksum_file")"
+        fi
+
+        if [ -f "$$lock_checksum_file" ]; then
+          previous_lock_checksum="$(cat "$$lock_checksum_file")"
+        fi
+
+        if [ -f vendor/autoload.php ] && [ -f "$$json_checksum_file" ] && [ -f "$$lock_checksum_file" ] \
+          && [ "$(cat "$$json_checksum_file")" = "$$current_json_checksum" ] \
+          && [ "$(cat "$$lock_checksum_file")" = "$$current_lock_checksum" ]; then
+          echo "Composer dependencies are already in sync."
+          exit 0
+        fi
+
+        composer_command="install"
+        if [ "$$current_json_checksum" != "$$previous_json_checksum" ] && [ "$$current_lock_checksum" = "$$previous_lock_checksum" ]; then
+          composer_command="update"
+        elif ! composer validate --no-check-publish --check-lock >/dev/null 2>&1; then
+          composer_command="update"
+        fi
+
+        echo "Running composer $$composer_command..."
+
+        if bash -c "composer $${composer_command} --no-interaction 2> >(grep --line-buffered -viE 'deprecation|abandoned' >&2)"; then
+          chown -R brezel:brezel vendor
+          mkdir -p "$$state_dir"
+          current_lock_checksum="missing"
+          if [ -f composer.lock ]; then
+            current_lock_checksum="$(cksum composer.lock | cut -d' ' -f1)"
+          fi
+          printf '%s\n' "$$current_json_checksum" > "$$json_checksum_file"
+          printf '%s\n' "$$current_lock_checksum" > "$$lock_checksum_file"
+          exit 0
+        fi
+
+        echo >&2
+        echo 'Automatic Composer bootstrap failed. Check composer.json / composer.lock and retry the setup.' >&2
+        exit 1
+    restart: "no"
+
+  node_deps:
+    image: node:22-bookworm
+    user: "0:0"
+    working_dir: /var/www/brezel
+    environment:
+      HOME: /home/node
+      NPM_TOKEN: ${NPM_TOKEN:-}
+    command:
+      - sh
+      - -lc
+      - |
+        mkdir -p node_modules
+        if [ -n "$$NPM_TOKEN" ]; then
+          mkdir -p "$$HOME"
+
+          npm config set @kibro:registry https://gitlab.kiwis-and-brownies.de/api/v4/packages/npm/
+          echo "//gitlab.kiwis-and-brownies.de/api/v4/packages/npm/:_authToken=${NPM_TOKEN}" >> "$$HOME/.npmrc"
+          echo "//gitlab.kiwis-and-brownies.de/api/v4/projects/15/packages/npm/:_authToken=${NPM_TOKEN}" >> "$$HOME/.npmrc"
+          echo "//gitlab.kiwis-and-brownies.de/api/v4/projects/18/packages/npm/:_authToken=${NPM_TOKEN}" >> "$$HOME/.npmrc"
+          echo "//gitlab.kiwis-and-brownies.de/api/v4/projects/19/packages/npm/:_authToken=${NPM_TOKEN}" >> "$$HOME/.npmrc"
+          echo "//gitlab.kiwis-and-brownies.de/api/v4/projects/44/packages/npm/:_authToken=${NPM_TOKEN}" >> "$$HOME/.npmrc"
+          echo "//gitlab.kiwis-and-brownies.de/api/v4/projects/58/packages/npm/:_authToken=${NPM_TOKEN}" >> "$$HOME/.npmrc"
+        fi
+        if [ -L node_modules/@kibro/brezel-spa ] && [ ! -f /linked/spa/package.json ]; then
+          rm node_modules/@kibro/brezel-spa
+        fi
+        bash -c "npm install --no-audit --no-fund 2> >(grep --line-buffered -viE 'npm warn|deprecated' >&2)"
+        if [ -f /linked/spa/package.json ]; then
+          mkdir -p node_modules/@kibro
+          rm -rf node_modules/@kibro/brezel-spa
+          ln -s /linked/spa node_modules/@kibro/brezel-spa
+          rm -rf node_modules/.vite
+        fi
+        chown -R node:node node_modules
+    volumes:
+      - .:/var/www/brezel
+      - brezel_node_modules:/var/www/brezel/node_modules
+    restart: "no"
+
+  app:
+    <<: *brezel-php-service
+    command: frankenphp run --config /etc/frankenphp/Caddyfile
+    depends_on:
+      deps:
+        condition: service_completed_successfully
+      mariadb:
+        condition: service_healthy
+    volumes:
+      - .:/var/www/brezel
+      - brezel_vendor:/var/www/brezel/vendor
+      - brezel_node_modules:/var/www/brezel/node_modules
+      - caddy_data:/data
+      - caddy_config:/config
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - "php -r \"exit(@fsockopen('127.0.0.1', 8081) ? 0 : 1);\""
+      interval: 5s
+      timeout: 3s
+      retries: 20
+      start_period: 10s
+
+  workers:
+    <<: *brezel-php-service
+    command:
+      - sh
+      - -lc
+      - mkdir -p storage/logs && php bakery make:supervisor && exec supervisord -c /etc/supervisord.conf -n
+    depends_on:
+      deps:
+        condition: service_completed_successfully
+      mariadb:
+        condition: service_healthy
+
+  scheduler:
+    <<: *brezel-php-service
+    command:
+      - php
+      - bin/cron_runner.php
+    depends_on:
+      deps:
+        condition: service_completed_successfully
+      mariadb:
+        condition: service_healthy
+
+  vite:
+    image: node:22-bookworm
+    user: "1000:1000"
+    working_dir: /var/www/brezel
+    environment:
+      HOME: /home/node
+      NPM_TOKEN: ${NPM_TOKEN:-}
+    depends_on:
+      node_deps:
+        condition: service_completed_successfully
+    command:
+      - sh
+      - -lc
+      - |
+        if [ -n "$$NPM_TOKEN" ]; then
+          mkdir -p "$$HOME"
+
+          npm config set @kibro:registry https://gitlab.kiwis-and-brownies.de/api/v4/packages/npm/
+          echo "//gitlab.kiwis-and-brownies.de/api/v4/packages/npm/:_authToken=${NPM_TOKEN}" >> "$$HOME/.npmrc"
+          echo "//gitlab.kiwis-and-brownies.de/api/v4/projects/15/packages/npm/:_authToken=${NPM_TOKEN}" >> "$$HOME/.npmrc"
+          echo "//gitlab.kiwis-and-brownies.de/api/v4/projects/18/packages/npm/:_authToken=${NPM_TOKEN}" >> "$$HOME/.npmrc"
+          echo "//gitlab.kiwis-and-brownies.de/api/v4/projects/19/packages/npm/:_authToken=${NPM_TOKEN}" >> "$$HOME/.npmrc"
+          echo "//gitlab.kiwis-and-brownies.de/api/v4/projects/44/packages/npm/:_authToken=${NPM_TOKEN}" >> "$$HOME/.npmrc"
+          echo "//gitlab.kiwis-and-brownies.de/api/v4/projects/58/packages/npm/:_authToken=${NPM_TOKEN}" >> "$$HOME/.npmrc"
+        fi
+        npm run serve -- --host 0.0.0.0 --port 2040
+    volumes:
+      - .:/var/www/brezel
+      - brezel_node_modules:/var/www/brezel/node_modules
+    restart: unless-stopped
+
+  phpmyadmin:
+    image: phpmyadmin:5-apache
+    profiles:
+      - db-explore
+    environment:
+      PMA_HOST: mariadb
+      PMA_PORT: 2042
+      PMA_USER: ${TENANCY_USERNAME:-brezel}
+      PMA_PASSWORD: ${TENANCY_PASSWORD:-secret}
+      PMA_BLOWFISH_SECRET: brezel-local-phpmyadmin-secret
+    depends_on:
+      mariadb:
+        condition: service_healthy
+    volumes:
+      - ./container/phpmyadmin.config.user.inc.php:/etc/phpmyadmin/config.user.inc.php:ro
+    restart: unless-stopped
+
+  mariadb:
+    build:
+      context: .
+      dockerfile: ./container/mariadb.Dockerfile
+    environment:
+      MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD:-root}
+      MARIADB_DATABASE: ${TENANCY_DATABASE:-brezel_meta}
+      MARIADB_USER: ${TENANCY_USERNAME:-brezel}
+      MARIADB_PASSWORD: ${TENANCY_PASSWORD:-secret}
+    volumes:
+      - mariadb_data:/var/lib/mysql
+      - ./container/init-db-user-grants.sh:/docker-entrypoint-initdb.d/init-db-user-grants.sh:ro
+    restart: unless-stopped
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - mariadb-admin ping -h 127.0.0.1 -P 2042 -uroot -p$$MARIADB_ROOT_PASSWORD --silent
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+
+volumes:
+  brezel_node_modules:
+  brezel_vendor:
+  caddy_config:
+  caddy_data:
+  mariadb_data:

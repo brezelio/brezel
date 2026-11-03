@@ -1,0 +1,7 @@
+#!/bin/bash
+set -e
+
+mariadb -uroot -p"${MARIADB_ROOT_PASSWORD}" <<-EOSQL
+GRANT ALL ON *.* TO '${MARIADB_USER}'@'%' WITH GRANT OPTION;
+FLUSH PRIVILEGES;
+EOSQL

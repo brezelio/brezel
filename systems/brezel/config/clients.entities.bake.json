@@ -8,7 +8,7 @@
         "title": "My Brezel"
       },
       "hostnames": [
-        "${resource_hostname.brezel.hostname}"
+        "${resource_hostname.system_identifier.hostname}"
       ]
     }
   }

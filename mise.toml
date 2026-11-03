@@ -4,23 +4,25 @@
 
 # Required system tools
 [tools]
-node = "22"
-php = "8.5"
+bun = "latest"
+"aqua:bensadeh/tailspin" = "latest"
+zellij = "latest"
 
 # Quick aliases to run common tasks. Note: requires mise 2025.12.11 and up!
 [shell_alias]
 u = "mise run update"
 a = "mise run apply"
 l = "mise run load"
+brezel = "./bin/brezel" # Run a php command such as `php bakery apply` in the containers with `brezel bakery apply`
 
 # Tasks
 [tasks.composer-install]
 description = "Install composer dependencies"
-run = "composer install"
+run = "bin/compose run --rm deps"
 
 [tasks.npm-install]
 description = "Install npm dependencies"
-run = "npm install"
+run = "bin/compose run --rm node_deps"
 
 [tasks.install]
 description = "Install all dependencies"
@@ -31,24 +33,40 @@ depends = [
 
 [tasks.composer-update]
 description = "Do a composer update"
-run = "composer update"
+run = "bin/compose run --rm deps composer update"
 
 [tasks.init]
 description = "Initialize the project"
-run = "php bakery init"
+run = "bin/brezel bakery init"
 
 [tasks.apply]
 description = "Do a bakery apply"
-run = "bin/a"
+run = "bin/brezel apply"
 
 [tasks.load]
 description = "Reload Workflows"
-run = "bin/l"
+run = "bin/brezel load"
 
 [tasks.update]
 description = "Update the systems (Spec, Worklows, etc)"
-run = "bin/u"
+run = "bin/brezel update"
+
+[tasks.setup]
+description = "Set up Brezel"
+run = "bin/brezel setup"
 
 [tasks.serve]
-description = "A Zellij-based helper to serve the application locally with all servers in the foreground. Everything will stop when you close this process!"
-run = "bin/serve.sh"
+description = "Start Brezel"
+run = "bin/brezel serve"
+
+[tasks.serve-interactive]
+description = "Start the Zellij based control pane for detailed interaction with the stack"
+run = "bin/brezel serve interactive"
+
+[tasks.attach]
+description = "Get a shell in a running Brezel environment in your container"
+run = "bin/brezel attach"
+
+[tasks.teardown]
+description = "Stop the Docker stack and remove its volumes"
+run = "bin/brezel teardown"
