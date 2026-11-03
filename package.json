@@ -11,7 +11,7 @@
   },
   "type": "module",
   "dependencies": {
-    "@kibro/brezel-spa": "5.27.8",
+    "@kibro/brezel-spa": "5.34.0-feat-ai.6",
     "lodash-es": "*",
     "moment": "*",
     "tinycolor2": "*",
