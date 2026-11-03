@@ -21,9 +21,6 @@
     "pre-install-cmd": [
       "@php bin/check-platform.php"
     ],
-    "pre-update-cmd": [
-      "@php bin/check-platform.php"
-    ],
     "post-autoload-dump": [
       "@cleanup-dependencies"
     ],
