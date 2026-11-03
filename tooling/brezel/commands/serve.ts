@@ -11,6 +11,7 @@ import { sendLinuxNotification } from "../lib/notifications"
 import { buildCommandOutput, normalizeOutputLines } from "../lib/output"
 import { ensureRuntimeState, readRuntimeState } from "../lib/runtime"
 import { readStackStatus, readStackStatusAsync, type StackStatus } from "../lib/stack-status"
+import { startWorkerReloadWatcher } from "../lib/worker-reload"
 import { ansi, brezelLogo, centerLine, createLogoShimmerController, createScreenRenderer, type CommandOutput, hotkey, hyperlink, isPrintableInput, padVisible, paint, paintReset, renderInlineBox, renderInlineBoxLines, renderLogoLine, statusLine, stripAnsi } from "../lib/ui"
 import { startExploreDb } from "./explore-db"
 import { runLogsCommand } from "./logs"
@@ -70,12 +71,14 @@ export async function runServeCommand(args: string[]): Promise<number> {
 
   let cleanedUp = false
   let inForegroundAction = false
+  const stopWorkerReloadWatcher = startWorkerReloadWatcher()
 
   const cleanup = () => {
     if (cleanedUp) {
       return
     }
 
+    stopWorkerReloadWatcher()
     clearTerminalAfterDashboard()
     console.log("")
     console.log("Cleaning up and shutting down Brezel stack...")
