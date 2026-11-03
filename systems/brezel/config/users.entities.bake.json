@@ -1,6 +1,7 @@
 [
   {
     "resource_user": "root",
+    "policy": "detach",
     "resource": {
       "module": "users",
       "client": "${resource_client.global}",
@@ -14,6 +15,7 @@
   },
   {
     "resource_user": "admin",
+    "policy": "detach",
     "resource": {
       "module": "users",
       "client": "${resource_client.global}",
