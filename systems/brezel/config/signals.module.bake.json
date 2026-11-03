@@ -1,0 +1,22 @@
+[
+  {
+    "resource_module": "signals",
+    "depends_on": "resource_module.signal_sources",
+    "resource": {
+      "identifier": "signals",
+      "title": "signal_identifier",
+      "icon": "mdi:radar",
+      "options": {
+        "capabilities": [
+          {
+            "identifier": "Signals",
+            "options": {
+              "case_module": "cases"
+            }
+          }
+        ]
+      },
+      "fields": []
+    }
+  }
+]

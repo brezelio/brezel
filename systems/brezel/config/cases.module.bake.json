@@ -1,0 +1,31 @@
+[
+    {
+        "resource_module": "cases",
+        "resource": {
+            "identifier": "cases",
+            "title": "title",
+            "icon": "mdi:source-branch-check",
+            "options": {
+                "capabilities": [
+                    {
+                        "identifier": "Cases",
+                        "options": {
+                            "include_optional_fields": true,
+                            "signal_module": "signals"
+                        }
+                    },
+                    {
+                        "identifier": "CaseAgentTriggers",
+                        "options": {
+                            "owner_module": "users"
+                        }
+                    },
+                    {
+                        "identifier": "CaseSignalResponses"
+                    }
+                ]
+            },
+            "fields": []
+        }
+    }
+]

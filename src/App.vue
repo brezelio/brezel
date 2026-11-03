@@ -10,6 +10,13 @@
         >
       </div>
     </template>
+    <template #spinner>
+      <img
+        src="/assets/logo.svg"
+        alt="Loading..."
+        class="logo-spinner"
+      >
+    </template>
     <template #loginLogo>
       <img
         src="/assets/logo.svg"
@@ -32,6 +39,10 @@ export default {
 </script>
 
 <style lang="scss">
+:root {
+  --theme-primary-color: rgb(236, 134, 33);
+}
+
 .main-logo {
   padding: 8px;
 }

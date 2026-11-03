@@ -1,0 +1,33 @@
+[{
+    "resource_module": "departments",
+    "resource_layout": "departments",
+    "resource": {
+        "identifier": "departments",
+        "title": "name",
+        "icon": "apartment",
+        "importable": true,
+        "options": {
+            "capabilities": [
+                {
+                    "identifier": "OrganizationUnits",
+                    "options": {
+                        "leaders_field": "manager"
+                    }
+                }
+            ]
+        },
+        "fields": [
+            {
+                "identifier": "name",
+                "type": "text"
+            },
+            {
+                "identifier": "manager",
+                "type": "multiselect",
+                "options": {
+                    "references": "users"
+                }
+            }
+        ]
+    }
+}]

@@ -1,8 +1,8 @@
 [
   {
-    "resource_hostname": "example",
+    "resource_hostname": "brezel",
     "resource": {
-      "hostname": "example"
+      "hostname": "brezel"
     }
   }
 ]

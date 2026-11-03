@@ -1,0 +1,18 @@
+[
+    {
+        "resource_module": "organization_assignments",
+        "resource": {
+            "identifier": "organization_assignments",
+            "title": "member_module.\" #\".member_entity_id",
+            "icon": "mdi:account-hierarchy-outline",
+            "options": {
+                "capabilities": [
+                    {
+                        "identifier": "OrganizationAssignments"
+                    }
+                ]
+            },
+            "fields": []
+        }
+    }
+]

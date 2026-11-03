@@ -1,0 +1,24 @@
+[
+    {
+        "resource_module": "signal_sources",
+        "resource": {
+            "identifier": "signal_sources",
+            "title": "name",
+            "icon": "mdi:access-point",
+            "options": {
+                "capabilities": [
+                    {
+                        "identifier": "SignalSources",
+                        "options": {
+                            "agent_owner_module": "users",
+                            "approver_module": "users",
+                            "approver_user_field": "id"
+                        }
+                    }
+                ]
+            },
+            "fields": [
+            ]
+        }
+    }
+]

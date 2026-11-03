@@ -6,9 +6,9 @@
       "client": "${resource_client.global}",
       "root": true,
       "fields": {
-        "email": "dev@example.com",
+        "email": "root@brezel.io",
         "password": "${env('ROOT_PASSWORD', 'secret')}",
-        "name": "Example Root Account"
+        "name": "Root Account"
       }
     }
   },
@@ -18,9 +18,9 @@
       "module": "users",
       "client": "${resource_client.global}",
       "fields": {
-        "email": "admin@example.com",
+        "email": "admin@brezel.io",
         "password": "${env('ADMIN_PASSWORD', 'secret')}",
-        "name": "Example Admin Account",
+        "name": "Admin Account",
         "roles": [
           "${resource_entity.role_admin}"
         ]

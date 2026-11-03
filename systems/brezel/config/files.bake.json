@@ -1,0 +1,12 @@
+[
+  {
+    "resource_module": "files",
+    "resource": {
+      "type": "files",
+      "identifier": "files",
+      "title": "name",
+      "icon": "file",
+      "fields": []
+    }
+  }
+]

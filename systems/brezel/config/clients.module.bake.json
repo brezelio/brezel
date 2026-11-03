@@ -3,6 +3,7 @@
     "resource_module": "clients",
     "resource": {
       "identifier": "clients",
+      "title": "title",
       "type": "clients",
       "icon": "setting",
       "layouts": {

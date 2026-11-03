@@ -1,0 +1,51 @@
+[
+  {
+    "resource_entity": "role_employee",
+    "depends_on": "resource_module.roles",
+    "policy": "sync",
+    "resource": {
+      "module": "roles",
+      "client": "${resource_client.global}",
+      "fields": {
+        "name": "Employee",
+        "slug": "employee",
+        "modules": {
+          "secrets": {
+            "filter": [
+              [
+                {
+                  "field": "created_by_id",
+                  "operator": "=",
+                  "recipe": "user().id"
+                }
+              ],
+              [
+                {
+                  "field": "human_grantees.id",
+                  "operator": "=",
+                  "recipe": "user().id"
+                }
+              ],
+              [
+                {
+                  "field": "agent_grantees.id",
+                  "operator": "=",
+                  "recipe": "user().id"
+                }
+              ]
+            ],
+            "read": true,
+            "fields": true
+          },
+          "files": {
+            "create": true,
+            "read": true,
+            "fields": true,
+            "update": true,
+            "delete": true
+          }
+        }
+      }
+    }
+  }
+]

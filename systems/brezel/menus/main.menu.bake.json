@@ -9,6 +9,8 @@
           "type": "entry",
           "default": true
         },
+        "cases",
+        "signals",
         "users",
         "roles",
         "clients"

@@ -6,6 +6,30 @@
       "type": "users",
       "icon": "user",
       "title": "name",
+      "options": {
+        "capabilities": [
+          {
+            "identifier": "OrganizationMembers",
+            "options": {
+              "unit_module": "departments",
+              "active_values": ["active"],
+              "field_mapping": {
+                "name_field": "first_name",
+                "unit_field": "department",
+                "active_field": "status",
+                "type_field": "actor_type"
+              }
+            }
+          },
+          {
+            "identifier": "AgentProxyOwner",
+            "options": {
+              "auto_provision": true,
+              "background_enabled": true
+            }
+          }
+        ]
+      },
       "layouts": {
         "detail": "config/users.layout.detail"
       },
@@ -13,6 +37,10 @@
         {
           "identifier": "name",
           "type": "text"
+        },
+        {
+          "identifier": "actor_type",
+          "type": "choice"
         },
         {
           "identifier": "status",
