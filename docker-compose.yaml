@@ -15,6 +15,10 @@ x-brezel-php-service: &brezel-php-service
     BREZEL_JOBS_SUPERVISOR_COMMAND: ${BREZEL_JOBS_SUPERVISOR_COMMAND:-php bakery work --tries=1 --sleep=1}
     BREZEL_BROTCAST_SERVER_HOST: ${BREZEL_BROTCAST_SERVER_HOST:-0.0.0.0}
     BREZEL_BROTCAST_SERVER_PORT: ${BREZEL_BROTCAST_SERVER_PORT:-8086}
+    # The browser-facing BREZEL_BROTCAST_HOST (ws.<system>.localhost) resolves to the container itself,
+    # so the backend publishes events to the workers container directly.
+    BREZEL_BROTCAST_PUBLISH_HOST: ${BREZEL_BROTCAST_PUBLISH_HOST:-workers}
+    BREZEL_BROTCAST_PUBLISH_PORT: ${BREZEL_BROTCAST_PUBLISH_PORT:-8086}
     HOME: /home/brezel
     XDG_CONFIG_HOME: /home/brezel/.config
     XDG_DATA_HOME: /home/brezel/.local/share
@@ -155,6 +159,9 @@ services:
       - sh
       - -lc
       - mkdir -p storage/logs && php bakery make:supervisor && exec supervisord -c /etc/supervisord.conf -n
+    # The FrankenPHP base image checks Caddy's admin port, which only the app container serves.
+    healthcheck:
+      disable: true
     depends_on:
       deps:
         condition: service_completed_successfully
@@ -166,6 +173,8 @@ services:
     command:
       - php
       - bin/cron_runner.php
+    healthcheck:
+      disable: true
     depends_on:
       deps:
         condition: service_completed_successfully
