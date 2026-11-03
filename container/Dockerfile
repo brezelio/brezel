@@ -7,7 +7,7 @@ WORKDIR ${APP_PATH}
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends git openssh-client unzip supervisor mariadb-client less vim htop ncdu \
-    && install-php-extensions bcmath exif gd gmp intl mysqli opcache pcntl pdo_mysql sockets zip imagick ssh2 \
+    && install-php-extensions bcmath exif ffi gd gmp intl mysqli opcache pcntl pdo_mysql sockets zip imagick ssh2 \
     && rm -rf /var/lib/apt/lists/*
 
 COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer
