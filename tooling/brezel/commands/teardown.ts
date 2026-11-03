@@ -1,4 +1,4 @@
-import { existsSync, rmSync } from "node:fs"
+import { existsSync, readdirSync, rmSync } from "node:fs"
 import { join } from "node:path"
 import { createInterface } from "node:readline"
 import { runComposeCommand } from "../lib/compose"
@@ -47,10 +47,19 @@ async function confirmTeardown(): Promise<boolean> {
   })
 }
 
+// Links are a developer choice, not stack data; `brezel unlink` removes them.
+const preservedStateFiles = ["links.json", "compose.links.yaml"]
+
 function cleanupLocalBrezelState(): void {
   const stateDir = join(getProjectDir(), ".brezel-state")
 
-  if (existsSync(stateDir)) {
-    rmSync(stateDir, { recursive: true, force: true })
+  if (!existsSync(stateDir)) {
+    return
+  }
+
+  for (const entry of readdirSync(stateDir)) {
+    if (!preservedStateFiles.includes(entry)) {
+      rmSync(join(stateDir, entry), { recursive: true, force: true })
+    }
   }
 }
