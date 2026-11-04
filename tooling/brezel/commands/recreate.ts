@@ -1,7 +1,9 @@
 import { runTimedBakerySequence } from "../lib/bakery-actions"
-import { runBakeryArgsCaptured } from "../lib/bakery"
+import { runComposeCommand, runComposeCommandCaptured } from "../lib/compose"
 import { askYesNo } from "../lib/questions"
 import { getSingleSystemIdentifier } from "../lib/system-config"
+
+const backgroundServices = ["workers", "scheduler"]
 
 export async function runRecreateCommand(args: string[]): Promise<number> {
   const force = args.includes("--force")
@@ -24,27 +26,28 @@ export async function runRecreateCommand(args: string[]): Promise<number> {
     return 1
   }
 
-  const list = runBakeryArgsCaptured(["system", "list", "--ignored"])
-  if (list.exitCode !== 0) {
-    console.error(list.stderr.trim() || list.stdout.trim())
-    console.error("Could not list existing systems. If the database was torn down, run `brezel setup` instead.")
-    return list.exitCode
+  // Workers and the scheduler would hit the database while it is being wiped.
+  const runningServices = runComposeCommandCaptured(["ps", "--status", "running", "--services", ...backgroundServices])
+    .stdout.split("\n").map((line) => line.trim()).filter(Boolean)
+  if (runningServices.length > 0) {
+    console.log(`Stopping ${runningServices.join(", ")}...`)
+    runComposeCommand(["stop", ...runningServices])
   }
 
-  // `bakery system delete` crashes on a missing system, so skip it to allow re-running after a failed recreate.
-  const exists = new RegExp(`^\\|\\s*${identifier}\\s*\\|`, "m").test(list.stdout)
-  const deleteSteps = exists
-    ? [{ label: `bakery system delete ${identifier}...`, args: ["system", "delete", identifier] }]
-    : []
-
-  return runTimedBakerySequence("brezel recreate", [
-    ...deleteSteps,
+  const exitCode = runTimedBakerySequence("brezel recreate", [
+    { label: `bakery system delete ${identifier}...`, args: ["system", "delete", identifier, "--force"] },
     { label: `bakery system create ${identifier}...`, args: ["system", "create", identifier] },
     { label: "bakery migrations...", args: ["migrate", "--force"] },
     { label: "bakery load...", args: ["load"] },
     // Mirrors `brezel setup`, which applies twice on a fresh system.
     { label: "bakery apply (step 1)...", args: ["apply"] },
     { label: "bakery apply (step 2)...", args: ["apply"] },
-    { label: "bakery queue:restart...", args: ["queue:restart"] },
   ])
+
+  if (runningServices.length > 0) {
+    console.log(`Starting ${runningServices.join(", ")} again...`)
+    runComposeCommand(["up", "-d", ...runningServices])
+  }
+
+  return exitCode
 }

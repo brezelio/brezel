@@ -62,7 +62,7 @@ export const commandMetadata: CommandMetadata[] = [
   {
     name: "recreate",
     usage: "brezel recreate [--force]",
-    description: "Delete and recreate the system for a clean slate, then run migrate, load, and apply",
+    description: "Delete the system including its data and recreate it, then run migrate, load, and apply",
     serveDashboard: { allowed: true },
   },
   {
