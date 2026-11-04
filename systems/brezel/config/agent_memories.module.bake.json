@@ -1,0 +1,22 @@
+[
+    {
+        "resource_module": "agent_memories",
+        "resource": {
+            "identifier": "agent_memories",
+            "title": "title",
+            "icon": "mdi:brain",
+            "options": {
+                "capabilities": [
+                    {
+                        "identifier": "AgentMemories",
+                        "options": {
+                            "pinned_context_limit": 12,
+                            "pinned_context_characters": 8000
+                        }
+                    }
+                ]
+            },
+            "fields": []
+        }
+    }
+]

@@ -1,0 +1,23 @@
+[
+    {
+        "resource_module": "case_work_items",
+        "depends_on": "resource_module.cases",
+        "resource": {
+            "identifier": "case_work_items",
+            "title": "description",
+            "icon": "mdi:format-list-checks",
+            "options": {
+                "capabilities": [
+                    {
+                        "identifier": "CaseWorkItems",
+                        "options": {
+                            "case_module": "cases",
+                            "include_optional_fields": true
+                        }
+                    }
+                ]
+            },
+            "fields": []
+        }
+    }
+]
