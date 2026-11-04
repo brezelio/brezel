@@ -28,6 +28,8 @@ export async function runTeardownCommand(args: string[]): Promise<number> {
 
   if (exitCode === 0) {
     cleanupLocalBrezelState()
+    console.log("")
+    console.log("Run `brezel setup` to set up Brezel again.")
   }
 
   return exitCode

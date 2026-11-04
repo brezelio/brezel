@@ -1,7 +1,7 @@
 import { spawnSync } from "node:child_process"
 import { join } from "node:path"
 import { emitKeypressEvents } from "node:readline"
-import { runComposeCommand as runCompose } from "../lib/compose"
+import { runComposeCommand as runCompose, runComposeCommandCaptured } from "../lib/compose"
 import { runBakeryArgsStreamingCaptured } from "../lib/bakery"
 import { getCommandMetadata } from "../lib/command-metadata"
 import { getProjectEnvValue } from "../lib/env"
@@ -63,6 +63,13 @@ export async function runServeCommand(args: string[]): Promise<number> {
         return buildExitCode
       }
     }
+
+    const databaseExitCode = ensureDatabaseInitialized()
+    if (databaseExitCode !== 0) {
+      runCompose(["down", "--remove-orphans"])
+      return databaseExitCode
+    }
+
     const upExitCode = runCompose(["up", "-d", "--remove-orphans"])
     if (upExitCode !== 0) {
       return upExitCode
@@ -133,6 +140,39 @@ export async function runServeCommand(args: string[]): Promise<number> {
 
   cleanup()
   return sessionExitCode
+}
+
+// Only `brezel setup` initializes the database (e.g. after `brezel teardown`). Without it,
+// workers and scheduler crash on the missing schema and restart forever.
+function ensureDatabaseInitialized(): number {
+  console.log("Checking the Brezel database")
+  const upExitCode = runCompose(["up", "-d", "--wait", "mariadb"])
+  if (upExitCode !== 0) {
+    return upExitCode
+  }
+
+  const result = runComposeCommandCaptured([
+    "exec", "-T", "mariadb", "mariadb",
+    `--user=${getProjectEnvValue("TENANCY_USERNAME") || "brezel"}`,
+    `--password=${getProjectEnvValue("TENANCY_PASSWORD") || "secret"}`,
+    `--database=${getProjectEnvValue("TENANCY_DATABASE") || "brezel_meta"}`,
+    "-N", "-e", "SELECT 1 FROM systems WHERE deleted_at IS NULL LIMIT 1",
+  ])
+
+  if (result.exitCode === 0 && result.stdout.trim() === "1") {
+    return 0
+  }
+
+  if (result.exitCode !== 0 && !result.stderr.includes("ERROR 1146")) {
+    console.error(result.stderr.trim())
+    console.error("Could not check whether the Brezel database is initialized.")
+    return 1
+  }
+
+  console.error("")
+  console.error("The Brezel database is not initialized (e.g. after `brezel teardown`).")
+  console.error("Run `brezel setup` first; it initializes the database and starts Brezel afterwards.")
+  return 1
 }
 
 function renderServeEndpointLine(spaUrl: string): string {
