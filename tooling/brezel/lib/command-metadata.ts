@@ -49,8 +49,8 @@ export const commandMetadata: CommandMetadata[] = [
   },
   {
     name: "link",
-    usage: "brezel link",
-    description: "Link a local brezel/api or brezel/spa checkout into this project",
+    usage: "brezel link [api|spa]",
+    description: "Show link status or link a local brezel/api or brezel/spa checkout into this project",
     serveDashboard: { allowed: true },
   },
   {
