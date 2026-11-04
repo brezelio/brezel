@@ -60,6 +60,12 @@ export const commandMetadata: CommandMetadata[] = [
     serveDashboard: { allowed: true },
   },
   {
+    name: "recreate",
+    usage: "brezel recreate [--force]",
+    description: "Delete and recreate the system for a clean slate, then run migrate, load, and apply",
+    serveDashboard: { allowed: true },
+  },
+  {
     name: "restart",
     usage: "brezel restart",
     description: "Restart the local Docker stack",

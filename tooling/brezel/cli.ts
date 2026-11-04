@@ -6,6 +6,7 @@ import { runExploreDbCommand } from "./commands/explore-db"
 import { runLinkCommand } from "./commands/link"
 import { runLoadCommand } from "./commands/load"
 import { runLogsCommand } from "./commands/logs"
+import { runRecreateCommand } from "./commands/recreate"
 import { runRestartCommand } from "./commands/restart"
 import { runShellCommand } from "./commands/shell"
 import { runServeCommand } from "./commands/serve"
@@ -35,6 +36,7 @@ const commandHandlers: Record<string, CommandHandler> = {
   link: runLinkCommand,
   load: runLoadCommand,
   logs: runLogsCommand,
+  recreate: runRecreateCommand,
   restart: runRestartCommand,
   shell: runShellCommand,
   update: runUpdateCommand,

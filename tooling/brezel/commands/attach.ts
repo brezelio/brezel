@@ -1,3 +1,4 @@
+import { ensureAppRunning } from "../lib/bakery"
 import { runComposeCommandInteractive } from "../lib/compose"
 import { assertInteractiveTerminal, assertNoArgs } from "../lib/validation"
 
@@ -8,6 +9,11 @@ export async function runAttachCommand(args: string[]): Promise<number> {
 
   if (!assertInteractiveTerminal("brezel attach")) {
     return 1
+  }
+
+  const exitCode = ensureAppRunning()
+  if (exitCode !== 0) {
+    return exitCode
   }
 
   return await runComposeCommandInteractive([
