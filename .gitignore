@@ -43,6 +43,7 @@ dist-lib
 
 storage/framework/*
 storage/app/tenancy/tenants/*
+storage/app/private/*
 
 /supervisord.conf
 .brezel-state/
