@@ -17,6 +17,7 @@
       "title": "Users",
       "fields": {
         "name": "Name",
+        "avatar": "Profile picture",
         "email": "Email",
         "password": "Password",
         "status": "Status",

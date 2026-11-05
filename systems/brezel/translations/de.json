@@ -32,6 +32,7 @@
       "title": "Nutzer",
       "fields": {
         "name": "Name",
+        "avatar": "Profilbild",
         "email": "E-Mail",
         "password": "Passwort",
         "roles": "Rollen",

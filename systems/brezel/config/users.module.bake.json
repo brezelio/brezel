@@ -39,6 +39,13 @@
           "type": "text"
         },
         {
+          "identifier": "avatar",
+          "type": "file",
+          "options": {
+            "references": "files"
+          }
+        },
+        {
           "identifier": "actor_type",
           "type": "choice",
           "options": {

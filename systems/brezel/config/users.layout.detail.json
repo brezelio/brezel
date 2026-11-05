@@ -21,6 +21,7 @@
                   "options": {
                     "fields": [
                       "name",
+                      "avatar",
                       "actor_type",
                       "email",
                       "password",
