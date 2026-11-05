@@ -39,8 +39,9 @@ export default {
 </script>
 
 <style lang="scss">
+// Like the runtime template: a system's own styles, loaded later, can set another accent.
 :root {
-  --theme-primary-color: rgb(236, 134, 33);
+  --primary-color: rgb(236, 134, 33);
 }
 
 .main-logo {
