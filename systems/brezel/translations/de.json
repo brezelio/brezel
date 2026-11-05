@@ -1,9 +1,10 @@
 {
-  "buttons": {
-  },
-  "notifications": {
-  },
+  "buttons": {},
+  "notifications": {},
   "modules": {
+    "organization_assignments": {
+      "title": "Organisation"
+    },
     "clients": {
       "title": "Mandanten",
       "fields": {
@@ -35,7 +36,8 @@
         "password": "Passwort",
         "roles": "Rollen",
         "status": "Status",
-        "agent_status": "Agent-Status"
+        "agent_status": "Agent-Status",
+        "actor_type": "Typ"
       },
       "choice": {
         "status": {
@@ -45,6 +47,10 @@
         "agent_status": {
           "active": "Aktiv",
           "inactive": "Inaktiv"
+        },
+        "actor_type": {
+          "human": "Mensch",
+          "ai": "KI"
         }
       }
     },
@@ -53,12 +59,48 @@
     },
     "cases": {
       "title": "Entscheidungen"
+    },
+    "agent_schedules": {
+      "title": "Agenten-Zeitpläne",
+      "fields": {
+        "name": "Name",
+        "agent_owner": "Agent",
+        "enabled": "Aktiv",
+        "objective": "Auftrag",
+        "schedule_preset": "Häufigkeit",
+        "cron_expression": "Eigene Zeit (Cron)",
+        "timezone": "Zeitzone",
+        "next_run_at": "Nächster Lauf",
+        "last_dispatched_at": "Zuletzt gestartet",
+        "last_skipped_at": "Zuletzt übersprungen",
+        "last_run_id": "Letzter Lauf",
+        "last_error": "Letzter Fehler"
+      },
+      "choice": {
+        "schedule_preset": {
+          "hourly": "Stündlich (zur vollen Stunde)",
+          "daily": "Täglich um 09:00",
+          "weekdays": "Werktags um 09:00",
+          "weekly": "Wöchentlich montags um 09:00",
+          "monthly": "Monatlich am 1. um 09:00",
+          "custom": "Eigene Zeit (Cron)"
+        }
+      },
+      "help": {
+        "agent_owner": "Ihr eigener Nutzer startet Ihren persönlichen Agenten. Für einen KI-Agenten wählen Sie dessen Nutzer mit Typ „KI“.",
+        "objective": "Vollständiger Auftrag, den der Agent bei jedem Lauf erhält. Das Ergebnis erscheint im Chat der Person, die den Zeitplan angelegt hat.",
+        "schedule_preset": "Für eine andere Uhrzeit „Eigene Zeit (Cron)“ wählen.",
+        "cron_expression": "Nur bei „Eigene Zeit“: Minute Stunde Tag Monat Wochentag. Beispiele: „30 7 * * *“ = täglich 07:30, „0 8 * * 1-5“ = werktags 08:00, „0 17 * * 5“ = freitags 17:00.",
+        "timezone": "IANA-Zeitzone, z. B. Europe/Berlin."
+      },
+      "headlines": {
+        "task": "Auftrag",
+        "timing": "Zeitpunkt",
+        "status": "Status"
+      }
     }
   },
-  "widgets": {
-  },
-  "workflows": {
-  },
-  "calendar": {
-  }
+  "widgets": {},
+  "workflows": {},
+  "calendar": {}
 }

@@ -1,0 +1,118 @@
+[
+  {
+    "resource_module": "agent_schedules",
+    "resource": {
+      "identifier": "agent_schedules",
+      "title": "name",
+      "icon": "mdi:calendar-clock",
+      "options": {
+        "capabilities": [
+          {
+            "identifier": "AgentSchedules",
+            "options": {
+              "owner_module": "users"
+            }
+          }
+        ]
+      },
+      "layouts": {
+        "detail": "config/agent_schedules.layout.detail"
+      },
+      "fields": [
+        {
+          "identifier": "name",
+          "type": "text",
+          "options": {
+            "rules": "required"
+          }
+        },
+        {
+          "identifier": "agent_owner",
+          "type": "select",
+          "options": {
+            "references": "users",
+            "rules": "required",
+            "help": true
+          }
+        },
+        {
+          "identifier": "enabled",
+          "type": "checkbox",
+          "options": {
+            "default": true
+          }
+        },
+        {
+          "identifier": "objective",
+          "type": "textarea",
+          "options": {
+            "rules": "required",
+            "auto_size": true,
+            "help": true
+          }
+        },
+        {
+          "identifier": "schedule_preset",
+          "type": "choice",
+          "options": {
+            "values": ["hourly", "daily", "weekdays", "weekly", "monthly", "custom"],
+            "default": "daily",
+            "allow_clear": false,
+            "help": true
+          }
+        },
+        {
+          "identifier": "cron_expression",
+          "type": "text",
+          "options": {
+            "help": true
+          }
+        },
+        {
+          "identifier": "timezone",
+          "type": "text",
+          "options": {
+            "default": "Europe/Berlin",
+            "help": true
+          }
+        },
+        {
+          "identifier": "next_run_at",
+          "type": "datetime",
+          "options": {
+            "readonly": true
+          }
+        },
+        {
+          "identifier": "last_dispatched_at",
+          "type": "datetime",
+          "options": {
+            "readonly": true
+          }
+        },
+        {
+          "identifier": "last_skipped_at",
+          "type": "datetime",
+          "options": {
+            "readonly": true
+          }
+        },
+        {
+          "identifier": "last_run_id",
+          "type": "text",
+          "options": {
+            "readonly": true
+          }
+        },
+        {
+          "identifier": "last_error",
+          "type": "textarea",
+          "options": {
+            "readonly": true,
+            "auto_size": true
+          }
+        }
+      ]
+    }
+  }
+]

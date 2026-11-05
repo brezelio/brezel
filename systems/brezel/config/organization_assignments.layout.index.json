@@ -1,0 +1,28 @@
+{
+  "tabs": [
+    {
+      "rows": [
+        {
+          "cols": [
+            {
+              "span": 24,
+              "options": {
+                "transparent": true,
+                "borderless": true
+              },
+              "components": [
+                {
+                  "type": "widget",
+                  "options": {
+                    "widget": "organization_structure",
+                    "dynamic_height": true
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

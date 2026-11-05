@@ -1,0 +1,61 @@
+{
+  "tabs": [
+    {
+      "identifier": "schedule",
+      "icon": "mdi:calendar-clock",
+      "rows": [
+        {
+          "cols": [
+            {
+              "components": [
+                {
+                  "type": "headline",
+                  "options": {
+                    "identifier": "task",
+                    "icon": "mdi:robot-outline"
+                  }
+                },
+                {
+                  "type": "field_group",
+                  "options": {
+                    "fields": ["name", "agent_owner", "enabled", "objective"]
+                  }
+                }
+              ]
+            },
+            {
+              "components": [
+                {
+                  "type": "headline",
+                  "options": {
+                    "identifier": "timing",
+                    "icon": "mdi:clock-outline"
+                  }
+                },
+                {
+                  "type": "field_group",
+                  "options": {
+                    "fields": ["schedule_preset", "cron_expression", "timezone"]
+                  }
+                },
+                {
+                  "type": "headline",
+                  "options": {
+                    "identifier": "status",
+                    "icon": "mdi:history"
+                  }
+                },
+                {
+                  "type": "field_group",
+                  "options": {
+                    "fields": ["next_run_at", "last_dispatched_at", "last_skipped_at", "last_run_id", "last_error"]
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

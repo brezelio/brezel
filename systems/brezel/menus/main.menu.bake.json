@@ -12,6 +12,8 @@
         "cases",
         "signals",
         "users",
+        "organization_assignments",
+        "agent_schedules",
         "roles",
         "clients"
       ]

@@ -14,7 +14,7 @@
               "unit_module": "departments",
               "active_values": ["active"],
               "field_mapping": {
-                "name_field": "first_name",
+                "name_field": "name",
                 "unit_field": "department",
                 "active_field": "status",
                 "type_field": "actor_type"
@@ -40,7 +40,13 @@
         },
         {
           "identifier": "actor_type",
-          "type": "choice"
+          "type": "choice",
+          "options": {
+            "values": ["human", "ai"],
+            "default": "human",
+            "mode": "buttons",
+            "allow_clear": false
+          }
         },
         {
           "identifier": "status",

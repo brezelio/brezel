@@ -4,8 +4,12 @@
         "resource": {
             "identifier": "organization_assignments",
             "title": "member_module.\" #\".member_entity_id",
-            "icon": "mdi:account-hierarchy-outline",
+            "icon": "mdi:sitemap-outline",
+            "layouts": {
+                "index": "config/organization_assignments.layout.index"
+            },
             "options": {
+                "global": true,
                 "capabilities": [
                     {
                         "identifier": "OrganizationAssignments"
