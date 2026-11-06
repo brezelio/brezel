@@ -12,6 +12,7 @@
             "identifier": "OrganizationMembers",
             "options": {
               "unit_module": "departments",
+              "profession_module": "professions",
               "active_values": ["active"],
               "field_mapping": {
                 "name_field": "name",
@@ -25,7 +26,8 @@
             "identifier": "AgentProxyOwner",
             "options": {
               "auto_provision": true,
-              "background_enabled": true
+              "background_enabled": true,
+              "skill_module": "skills"
             }
           }
         ]

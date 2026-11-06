@@ -1,0 +1,21 @@
+[
+  {
+    "resource_entity": "skill_write_spec",
+    "depends_on": "resource_module.skills",
+    "policy": "detach",
+    "resource": {
+      "module": "skills",
+      "client": "${resource_client.global}",
+      "fields": {
+        "name": "Spezifikation schreiben",
+        "key": "write-spec",
+        "description": "Macht aus einer Idee oder einem Problem eine strukturierte Spezifikation mit Zielen, Nicht-Zielen, User Stories, Anforderungen, Akzeptanzkriterien und Erfolgskennzahlen. Für die Planung neuer Funktionen oder Prozessänderungen.",
+        "instructions": "${file('skills/write-spec/SKILL.md')}",
+        "files": [],
+        "source": "https://github.com/anthropics/knowledge-work-plugins/tree/d900840716eb262e1feb17c6f4406c9ce0e06bcf/product-management/skills/write-spec",
+        "license": "Apache-2.0",
+        "active": true
+      }
+    }
+  }
+]

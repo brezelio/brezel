@@ -1,0 +1,22 @@
+[
+    {
+        "resource_module": "professions",
+        "depends_on": "resource_module.skills",
+        "resource": {
+            "identifier": "professions",
+            "title": "name",
+            "icon": "mdi:briefcase-outline",
+            "options": {
+                "capabilities": [
+                    {
+                        "identifier": "Professions",
+                        "options": {
+                            "skill_module": "skills"
+                        }
+                    }
+                ]
+            },
+            "fields": []
+        }
+    }
+]

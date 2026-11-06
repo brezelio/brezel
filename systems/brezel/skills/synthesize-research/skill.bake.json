@@ -1,0 +1,21 @@
+[
+  {
+    "resource_entity": "skill_synthesize_research",
+    "depends_on": "resource_module.skills",
+    "policy": "detach",
+    "resource": {
+      "module": "skills",
+      "client": "${resource_client.global}",
+      "fields": {
+        "name": "Nutzerforschung auswerten",
+        "key": "synthesize-research",
+        "description": "Verdichtet Interviews, Umfragen und Kundenfeedback zu priorisierten Erkenntnissen, Personas und konkreten Empfehlungen. Für die Auswertung gesammelter Rückmeldungen und Forschungsnotizen.",
+        "instructions": "${file('skills/synthesize-research/SKILL.md')}",
+        "files": [],
+        "source": "https://github.com/anthropics/knowledge-work-plugins/tree/d900840716eb262e1feb17c6f4406c9ce0e06bcf/product-management/skills/synthesize-research",
+        "license": "Apache-2.0",
+        "active": true
+      }
+    }
+  }
+]

@@ -1,0 +1,21 @@
+[
+  {
+    "resource_entity": "skill_content_creation",
+    "depends_on": "resource_module.skills",
+    "policy": "detach",
+    "resource": {
+      "module": "skills",
+      "client": "${resource_client.global}",
+      "fields": {
+        "name": "Content-Erstellung",
+        "key": "content-creation",
+        "description": "Entwirft Marketinginhalte für verschiedene Kanäle wie Blogartikel, Social-Media-Beiträge, Newsletter, Landingpages, Pressemitteilungen und Referenzberichte. Für kanalgerechte Texte mit Überschriften, SEO und Handlungsaufforderungen.",
+        "instructions": "${file('skills/content-creation/SKILL.md')}",
+        "files": [],
+        "source": "https://github.com/anthropics/knowledge-work-plugins/tree/d900840716eb262e1feb17c6f4406c9ce0e06bcf/marketing/skills/content-creation",
+        "license": "Apache-2.0",
+        "active": true
+      }
+    }
+  }
+]

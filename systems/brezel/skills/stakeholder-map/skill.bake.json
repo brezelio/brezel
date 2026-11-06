@@ -1,0 +1,21 @@
+[
+  {
+    "resource_entity": "skill_stakeholder_map",
+    "depends_on": "resource_module.skills",
+    "policy": "detach",
+    "resource": {
+      "module": "skills",
+      "client": "${resource_client.global}",
+      "fields": {
+        "name": "Stakeholder-Analyse",
+        "key": "stakeholder-map",
+        "description": "Erstellt eine Stakeholder-Landkarte nach Einfluss und Interesse und leitet daraus einen Kommunikationsplan ab. Für Projekte, Einführungen und Veränderungen, bei denen Beteiligte gezielt eingebunden werden müssen.",
+        "instructions": "${file('skills/stakeholder-map/SKILL.md')}",
+        "files": [],
+        "source": "https://github.com/phuryn/pm-skills/tree/2a12295a7717569baa7be181b4cfebe3ca38a6bb/pm-execution/skills/stakeholder-map",
+        "license": "MIT",
+        "active": true
+      }
+    }
+  }
+]

@@ -13,6 +13,8 @@
         "signals",
         "users",
         "organization_assignments",
+        "professions",
+        "skills",
         "agent_schedules",
         "roles",
         "clients"

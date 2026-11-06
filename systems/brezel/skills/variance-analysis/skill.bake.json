@@ -1,0 +1,21 @@
+[
+  {
+    "resource_entity": "skill_variance_analysis",
+    "depends_on": "resource_module.skills",
+    "policy": "detach",
+    "resource": {
+      "module": "skills",
+      "client": "${resource_client.global}",
+      "fields": {
+        "name": "Abweichungsanalyse",
+        "key": "variance-analysis",
+        "description": "Zerlegt Plan-Ist- und Periodenabweichungen in ihre Treiber, erstellt Brückenrechnungen und verständliche Erläuterungen für die Geschäftsführung.",
+        "instructions": "${file('skills/variance-analysis/SKILL.md')}",
+        "files": [],
+        "source": "https://github.com/anthropics/knowledge-work-plugins/tree/d900840716eb262e1feb17c6f4406c9ce0e06bcf/finance/skills/variance-analysis",
+        "license": "Apache-2.0",
+        "active": true
+      }
+    }
+  }
+]

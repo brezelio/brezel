@@ -1,0 +1,18 @@
+[
+    {
+        "resource_module": "skills",
+        "resource": {
+            "identifier": "skills",
+            "title": "name",
+            "icon": "mdi:school-outline",
+            "options": {
+                "capabilities": [
+                    {
+                        "identifier": "AgentSkills"
+                    }
+                ]
+            },
+            "fields": []
+        }
+    }
+]

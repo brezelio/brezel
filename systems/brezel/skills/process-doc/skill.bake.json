@@ -1,0 +1,21 @@
+[
+  {
+    "resource_entity": "skill_process_doc",
+    "depends_on": "resource_module.skills",
+    "policy": "detach",
+    "resource": {
+      "module": "skills",
+      "client": "${resource_client.global}",
+      "fields": {
+        "name": "Prozessdokumentation",
+        "key": "process-doc",
+        "description": "Dokumentiert Geschäftsprozesse als Arbeitsanweisung mit Ablauf, RACI-Matrix und Sonderfällen. Für Prozesse, die bisher nur in Köpfen existieren, Übergaben und Audits.",
+        "instructions": "${file('skills/process-doc/SKILL.md')}",
+        "files": [],
+        "source": "https://github.com/anthropics/knowledge-work-plugins/tree/d900840716eb262e1feb17c6f4406c9ce0e06bcf/operations/skills/process-doc",
+        "license": "Apache-2.0",
+        "active": true
+      }
+    }
+  }
+]

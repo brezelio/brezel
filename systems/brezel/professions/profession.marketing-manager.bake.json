@@ -1,0 +1,22 @@
+[
+  {
+    "resource_entity": "profession_marketing_manager",
+    "depends_on": "resource_module.professions",
+    "policy": "detach",
+    "resource": {
+      "module": "professions",
+      "client": "${resource_client.global}",
+      "fields": {
+        "name": "Marketingmanager/in",
+        "key": "marketing-manager",
+        "description": "Plant Marketingstrategie und Kampagnen und entwickelt überzeugende Werbetexte.",
+        "skills": [
+          "${resource_entity.skill_marketing_plan}",
+          "${resource_entity.skill_campaign_plan}",
+          "${resource_entity.skill_copywriting}"
+        ],
+        "active": true
+      }
+    }
+  }
+]

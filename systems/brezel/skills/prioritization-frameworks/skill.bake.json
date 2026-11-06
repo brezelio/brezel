@@ -1,0 +1,21 @@
+[
+  {
+    "resource_entity": "skill_prioritization_frameworks",
+    "depends_on": "resource_module.skills",
+    "policy": "detach",
+    "resource": {
+      "module": "skills",
+      "client": "${resource_client.global}",
+      "fields": {
+        "name": "Priorisierungsmethoden",
+        "key": "prioritization-frameworks",
+        "description": "Leitfaden zu neun Priorisierungsmethoden wie RICE, ICE, Kano, MoSCoW und Opportunity Score mit Formeln, Einsatzempfehlungen und Vorlagen. Für die Auswahl einer Methode und das Bewerten von Ideen, Anfragen oder Vorhaben.",
+        "instructions": "${file('skills/prioritization-frameworks/SKILL.md')}",
+        "files": [],
+        "source": "https://github.com/phuryn/pm-skills/tree/2a12295a7717569baa7be181b4cfebe3ca38a6bb/pm-execution/skills/prioritization-frameworks",
+        "license": "MIT",
+        "active": true
+      }
+    }
+  }
+]

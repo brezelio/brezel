@@ -1,0 +1,22 @@
+[
+  {
+    "resource_entity": "profession_content_manager",
+    "depends_on": "resource_module.professions",
+    "policy": "detach",
+    "resource": {
+      "module": "professions",
+      "client": "${resource_client.global}",
+      "fields": {
+        "name": "Content- und Social-Media-Manager/in",
+        "key": "content-manager",
+        "description": "Plant und erstellt Inhalte für Website, Newsletter und soziale Netzwerke.",
+        "skills": [
+          "${resource_entity.skill_content_strategy}",
+          "${resource_entity.skill_content_creation}",
+          "${resource_entity.skill_social_media}"
+        ],
+        "active": true
+      }
+    }
+  }
+]

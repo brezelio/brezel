@@ -1,0 +1,21 @@
+[
+  {
+    "resource_entity": "skill_financial_statements",
+    "depends_on": "resource_module.skills",
+    "policy": "detach",
+    "resource": {
+      "module": "skills",
+      "client": "${resource_client.global}",
+      "fields": {
+        "name": "Finanzberichte",
+        "key": "financial-statements",
+        "description": "Erstellt Gewinn- und Verlustrechnung, Bilanz und Kapitalflussrechnung mit Vorperioden- und Planvergleich und markiert wesentliche Abweichungen. Für Monats- und Quartalsberichte und das Management-Reporting.",
+        "instructions": "${file('skills/financial-statements/SKILL.md')}",
+        "files": [],
+        "source": "https://github.com/anthropics/knowledge-work-plugins/tree/d900840716eb262e1feb17c6f4406c9ce0e06bcf/finance/skills/financial-statements",
+        "license": "Apache-2.0",
+        "active": true
+      }
+    }
+  }
+]

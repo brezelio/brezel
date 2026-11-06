@@ -1,0 +1,21 @@
+[
+  {
+    "resource_entity": "skill_status_report",
+    "depends_on": "resource_module.skills",
+    "policy": "detach",
+    "resource": {
+      "module": "skills",
+      "client": "${resource_client.global}",
+      "fields": {
+        "name": "Statusbericht",
+        "key": "status-report",
+        "description": "Erstellt Statusberichte mit Kennzahlen, Ampelstatus, Risiken und offenen Entscheidungen. Für wöchentliche, monatliche oder quartalsweise Berichte an Geschäftsführung und Beteiligte.",
+        "instructions": "${file('skills/status-report/SKILL.md')}",
+        "files": [],
+        "source": "https://github.com/anthropics/knowledge-work-plugins/tree/d900840716eb262e1feb17c6f4406c9ce0e06bcf/operations/skills/status-report",
+        "license": "Apache-2.0",
+        "active": true
+      }
+    }
+  }
+]

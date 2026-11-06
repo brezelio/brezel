@@ -1,0 +1,22 @@
+[
+  {
+    "resource_entity": "profession_customer_service",
+    "depends_on": "resource_module.professions",
+    "policy": "detach",
+    "resource": {
+      "module": "professions",
+      "client": "${resource_client.global}",
+      "fields": {
+        "name": "Kundenservice-Mitarbeiter/in",
+        "key": "customer-service",
+        "description": "Beantwortet Kundenanfragen, priorisiert Tickets und pflegt Hilfeartikel.",
+        "skills": [
+          "${resource_entity.skill_ticket_triage}",
+          "${resource_entity.skill_draft_response}",
+          "${resource_entity.skill_kb_article}"
+        ],
+        "active": true
+      }
+    }
+  }
+]

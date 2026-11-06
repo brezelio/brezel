@@ -1,0 +1,22 @@
+[
+  {
+    "resource_entity": "profession_accountant",
+    "depends_on": "resource_module.professions",
+    "policy": "detach",
+    "resource": {
+      "module": "professions",
+      "client": "${resource_client.global}",
+      "fields": {
+        "name": "Buchhalter/in",
+        "key": "accountant",
+        "description": "Erfasst und prüft Buchungen, stimmt Konten ab und bereitet Monatsabschlüsse vor.",
+        "skills": [
+          "${resource_entity.skill_reconciliation}",
+          "${resource_entity.skill_close_management}",
+          "${resource_entity.skill_journal_entry}"
+        ],
+        "active": true
+      }
+    }
+  }
+]

@@ -1,0 +1,21 @@
+[
+  {
+    "resource_entity": "skill_swot_analysis",
+    "depends_on": "resource_module.skills",
+    "policy": "detach",
+    "resource": {
+      "module": "skills",
+      "client": "${resource_client.global}",
+      "fields": {
+        "name": "SWOT-Analyse",
+        "key": "swot-analysis",
+        "description": "Führt eine detaillierte SWOT-Analyse (Stärken, Schwächen, Chancen, Risiken) mit strategischen Ableitungen und konkreten Empfehlungen durch. Für strategische Standortbestimmungen, Wettbewerbsanalysen und die Bewertung von Unternehmen, Produkten oder Geschäftsbereichen.",
+        "instructions": "${file('skills/swot-analysis/SKILL.md')}",
+        "files": [],
+        "source": "https://github.com/phuryn/pm-skills/tree/2a12295a7717569baa7be181b4cfebe3ca38a6bb/pm-product-strategy/skills/swot-analysis",
+        "license": "MIT",
+        "active": true
+      }
+    }
+  }
+]

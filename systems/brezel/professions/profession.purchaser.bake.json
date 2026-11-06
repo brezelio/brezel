@@ -1,0 +1,22 @@
+[
+  {
+    "resource_entity": "profession_purchaser",
+    "depends_on": "resource_module.professions",
+    "policy": "detach",
+    "resource": {
+      "module": "professions",
+      "client": "${resource_client.global}",
+      "fields": {
+        "name": "Einkäufer/in",
+        "key": "purchaser",
+        "description": "Wählt Lieferanten aus, bewertet Angebote und Risiken und optimiert Beschaffungsprozesse.",
+        "skills": [
+          "${resource_entity.skill_vendor_review}",
+          "${resource_entity.skill_risk_assessment}",
+          "${resource_entity.skill_process_optimization}"
+        ],
+        "active": true
+      }
+    }
+  }
+]

@@ -1,0 +1,26 @@
+[
+  {
+    "resource_entity": "skill_internal_comms",
+    "depends_on": "resource_module.skills",
+    "policy": "detach",
+    "resource": {
+      "module": "skills",
+      "client": "${resource_client.global}",
+      "fields": {
+        "name": "Interne Kommunikation",
+        "key": "internal-comms",
+        "description": "Leitfaden für interne Kommunikation in bewährten Formaten: Statusberichte, 3P-Updates (Fortschritt, Pläne, Probleme), Mitarbeiter-Newsletter, FAQs, Projekt- und Vorfallberichte.",
+        "instructions": "${file('skills/internal-comms/SKILL.md')}",
+        "files": [
+          { "path": "references/3p-updates.md", "content": "${file('skills/internal-comms/references/3p-updates.md')}" },
+          { "path": "references/company-newsletter.md", "content": "${file('skills/internal-comms/references/company-newsletter.md')}" },
+          { "path": "references/faq-answers.md", "content": "${file('skills/internal-comms/references/faq-answers.md')}" },
+          { "path": "references/general-comms.md", "content": "${file('skills/internal-comms/references/general-comms.md')}" }
+        ],
+        "source": "https://github.com/anthropics/skills/tree/ca45fc496a3436251f191354091d557da31c15b5/skills/internal-comms",
+        "license": "Apache-2.0",
+        "active": true
+      }
+    }
+  }
+]

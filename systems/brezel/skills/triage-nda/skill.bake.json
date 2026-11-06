@@ -1,0 +1,21 @@
+[
+  {
+    "resource_entity": "skill_triage_nda",
+    "depends_on": "resource_module.skills",
+    "policy": "detach",
+    "resource": {
+      "module": "skills",
+      "client": "${resource_client.global}",
+      "fields": {
+        "name": "NDA-Vorprüfung",
+        "key": "triage-nda",
+        "description": "Sichtet eingehende Geheimhaltungsvereinbarungen schnell und stuft sie als unkritisch, prüfungsbedürftig oder kritisch ein, inklusive versteckter Wettbewerbs- oder Abwerbeverbote. Ersetzt keine Rechtsberatung.",
+        "instructions": "${file('skills/triage-nda/SKILL.md')}",
+        "files": [],
+        "source": "https://github.com/anthropics/knowledge-work-plugins/tree/d900840716eb262e1feb17c6f4406c9ce0e06bcf/legal/skills/triage-nda",
+        "license": "Apache-2.0",
+        "active": true
+      }
+    }
+  }
+]

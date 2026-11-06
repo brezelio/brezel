@@ -1,0 +1,22 @@
+[
+  {
+    "resource_entity": "profession_hr_specialist",
+    "depends_on": "resource_module.professions",
+    "policy": "detach",
+    "resource": {
+      "module": "professions",
+      "client": "${resource_client.global}",
+      "fields": {
+        "name": "Personalreferent/in",
+        "key": "hr-specialist",
+        "description": "Begleitet Bewerbungsverfahren, Einarbeitung und Mitarbeitergespräche.",
+        "skills": [
+          "${resource_entity.skill_interview_prep}",
+          "${resource_entity.skill_employee_onboarding}",
+          "${resource_entity.skill_performance_review}"
+        ],
+        "active": true
+      }
+    }
+  }
+]

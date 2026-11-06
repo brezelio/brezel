@@ -1,0 +1,21 @@
+[
+  {
+    "resource_entity": "skill_ticket_triage",
+    "depends_on": "resource_module.skills",
+    "policy": "detach",
+    "resource": {
+      "module": "skills",
+      "client": "${resource_client.global}",
+      "fields": {
+        "name": "Ticket-Triage",
+        "key": "ticket-triage",
+        "description": "Kategorisiert und priorisiert eingehende Support-Anfragen (P1 bis P4), prüft auf Duplikate und bekannte Probleme und empfiehlt das zuständige Team samt Erstantwort.",
+        "instructions": "${file('skills/ticket-triage/SKILL.md')}",
+        "files": [],
+        "source": "https://github.com/anthropics/knowledge-work-plugins/tree/d900840716eb262e1feb17c6f4406c9ce0e06bcf/customer-support/skills/ticket-triage",
+        "license": "Apache-2.0",
+        "active": true
+      }
+    }
+  }
+]

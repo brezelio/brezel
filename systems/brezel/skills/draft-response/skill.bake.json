@@ -1,0 +1,21 @@
+[
+  {
+    "resource_entity": "skill_draft_response",
+    "depends_on": "resource_module.skills",
+    "policy": "detach",
+    "resource": {
+      "module": "skills",
+      "client": "${resource_client.global}",
+      "fields": {
+        "name": "Kundenantwort entwerfen",
+        "key": "draft-response",
+        "description": "Entwirft professionelle Antworten an Kunden, abgestimmt auf Situation, Beziehung und Kanal, etwa bei Produktfragen, Eskalationen, Störungen, Absagen oder Abrechnungsfragen.",
+        "instructions": "${file('skills/draft-response/SKILL.md')}",
+        "files": [],
+        "source": "https://github.com/anthropics/knowledge-work-plugins/tree/d900840716eb262e1feb17c6f4406c9ce0e06bcf/customer-support/skills/draft-response",
+        "license": "Apache-2.0",
+        "active": true
+      }
+    }
+  }
+]

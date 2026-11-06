@@ -1,0 +1,22 @@
+[
+  {
+    "resource_entity": "profession_it_administrator",
+    "depends_on": "resource_module.professions",
+    "policy": "detach",
+    "resource": {
+      "module": "professions",
+      "client": "${resource_client.global}",
+      "fields": {
+        "name": "IT-Administrator/in",
+        "key": "it-administrator",
+        "description": "Betreibt die IT, behebt Störungen, steuert Änderungen und dokumentiert Betriebsabläufe.",
+        "skills": [
+          "${resource_entity.skill_incident_response}",
+          "${resource_entity.skill_change_request}",
+          "${resource_entity.skill_runbook}"
+        ],
+        "active": true
+      }
+    }
+  }
+]

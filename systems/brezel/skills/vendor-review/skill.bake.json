@@ -1,0 +1,21 @@
+[
+  {
+    "resource_entity": "skill_vendor_review",
+    "depends_on": "resource_module.skills",
+    "policy": "detach",
+    "resource": {
+      "module": "skills",
+      "client": "${resource_client.global}",
+      "fields": {
+        "name": "Lieferantenbewertung",
+        "key": "vendor-review",
+        "description": "Bewertet Lieferanten und Dienstleister mit Gesamtkostenbetrachtung, Risikobewertung und Empfehlung. Für neue Angebote, Vertragsverlängerungen und Anbietervergleiche.",
+        "instructions": "${file('skills/vendor-review/SKILL.md')}",
+        "files": [],
+        "source": "https://github.com/anthropics/knowledge-work-plugins/tree/d900840716eb262e1feb17c6f4406c9ce0e06bcf/operations/skills/vendor-review",
+        "license": "Apache-2.0",
+        "active": true
+      }
+    }
+  }
+]

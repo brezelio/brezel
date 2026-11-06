@@ -1,0 +1,21 @@
+[
+  {
+    "resource_entity": "skill_kb_article",
+    "depends_on": "resource_module.skills",
+    "policy": "detach",
+    "resource": {
+      "module": "skills",
+      "client": "${resource_client.global}",
+      "fields": {
+        "name": "Wissensartikel",
+        "key": "kb-article",
+        "description": "Erstellt aus gelösten Anfragen oder häufigen Fragen auffindbare Artikel für die Wissensdatenbank, etwa Anleitungen, Fehlerbehebungen, FAQs oder bekannte Probleme.",
+        "instructions": "${file('skills/kb-article/SKILL.md')}",
+        "files": [],
+        "source": "https://github.com/anthropics/knowledge-work-plugins/tree/d900840716eb262e1feb17c6f4406c9ce0e06bcf/customer-support/skills/kb-article",
+        "license": "Apache-2.0",
+        "active": true
+      }
+    }
+  }
+]

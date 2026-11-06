@@ -1,0 +1,21 @@
+[
+  {
+    "resource_entity": "profession_controller",
+    "depends_on": "resource_module.professions",
+    "policy": "detach",
+    "resource": {
+      "module": "professions",
+      "client": "${resource_client.global}",
+      "fields": {
+        "name": "Controller/in",
+        "key": "controller",
+        "description": "Plant und überwacht Budgets, analysiert Abweichungen und erstellt Finanzberichte für die Unternehmenssteuerung.",
+        "skills": [
+          "${resource_entity.skill_variance_analysis}",
+          "${resource_entity.skill_financial_statements}"
+        ],
+        "active": true
+      }
+    }
+  }
+]

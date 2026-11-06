@@ -1,0 +1,22 @@
+[
+  {
+    "resource_entity": "profession_data_analyst",
+    "depends_on": "resource_module.professions",
+    "policy": "detach",
+    "resource": {
+      "module": "professions",
+      "client": "${resource_client.global}",
+      "fields": {
+        "name": "Datenanalyst/in",
+        "key": "data-analyst",
+        "description": "Wertet Daten aus, prüft Analysen auf Plausibilität und bereitet Erkenntnisse verständlich auf.",
+        "skills": [
+          "${resource_entity.skill_data_analysis}",
+          "${resource_entity.skill_statistical_analysis}",
+          "${resource_entity.skill_validate_data}"
+        ],
+        "active": true
+      }
+    }
+  }
+]

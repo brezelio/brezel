@@ -1,0 +1,30 @@
+[
+  {
+    "resource_entity": "skill_social_media",
+    "depends_on": "resource_module.skills",
+    "policy": "detach",
+    "resource": {
+      "module": "skills",
+      "client": "${resource_client.global}",
+      "fields": {
+        "name": "Social Media",
+        "key": "social-media",
+        "description": "Erstellt und plant Social-Media-Inhalte für LinkedIn, Instagram, Facebook, X, TikTok und Kurzvideos – Hooks, Beiträge, Karussells, Videoskripte, Redaktionskalender, Wiederverwertung und Social Listening.",
+        "instructions": "${file('skills/social-media/SKILL.md')}",
+        "files": [
+          { "path": "references/carousel-frameworks.md", "content": "${file('skills/social-media/references/carousel-frameworks.md')}" },
+          { "path": "references/listening.md", "content": "${file('skills/social-media/references/listening.md')}" },
+          { "path": "references/platform-limits.md", "content": "${file('skills/social-media/references/platform-limits.md')}" },
+          { "path": "references/platforms.md", "content": "${file('skills/social-media/references/platforms.md')}" },
+          { "path": "references/post-templates.md", "content": "${file('skills/social-media/references/post-templates.md')}" },
+          { "path": "references/reverse-engineering.md", "content": "${file('skills/social-media/references/reverse-engineering.md')}" },
+          { "path": "references/short-form-video.md", "content": "${file('skills/social-media/references/short-form-video.md')}" },
+          { "path": "references/x-algorithm.md", "content": "${file('skills/social-media/references/x-algorithm.md')}" }
+        ],
+        "source": "https://github.com/coreyhaines31/marketingskills/tree/88c79f6528a9347420e57ceb1fff9a60de651768/skills/social",
+        "license": "MIT",
+        "active": true
+      }
+    }
+  }
+]

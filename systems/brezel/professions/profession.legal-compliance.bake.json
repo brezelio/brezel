@@ -1,0 +1,22 @@
+[
+  {
+    "resource_entity": "profession_legal_compliance",
+    "depends_on": "resource_module.professions",
+    "policy": "detach",
+    "resource": {
+      "module": "professions",
+      "client": "${resource_client.global}",
+      "fields": {
+        "name": "Jurist/in / Compliance",
+        "key": "legal-compliance",
+        "description": "Prüft Verträge und Vertraulichkeitsvereinbarungen und achtet auf die Einhaltung von Datenschutz und Vorschriften.",
+        "skills": [
+          "${resource_entity.skill_review_contract}",
+          "${resource_entity.skill_triage_nda}",
+          "${resource_entity.skill_compliance_check}"
+        ],
+        "active": true
+      }
+    }
+  }
+]

@@ -1,0 +1,22 @@
+[
+  {
+    "resource_entity": "profession_product_manager",
+    "depends_on": "resource_module.professions",
+    "policy": "detach",
+    "resource": {
+      "module": "professions",
+      "client": "${resource_client.global}",
+      "fields": {
+        "name": "Produktmanager/in",
+        "key": "product-manager",
+        "description": "Entwickelt Produkte weiter, schreibt Anforderungen, wertet Nutzerforschung aus und priorisiert.",
+        "skills": [
+          "${resource_entity.skill_write_spec}",
+          "${resource_entity.skill_synthesize_research}",
+          "${resource_entity.skill_prioritization_frameworks}"
+        ],
+        "active": true
+      }
+    }
+  }
+]

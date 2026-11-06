@@ -83,6 +83,12 @@
         "timing": "Timing",
         "status": "Status"
       }
+    },
+    "professions": {
+      "title": "Professions"
+    },
+    "skills": {
+      "title": "Skills"
     }
   },
   "widgets": {},

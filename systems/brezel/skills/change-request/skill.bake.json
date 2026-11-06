@@ -1,0 +1,21 @@
+[
+  {
+    "resource_entity": "skill_change_request",
+    "depends_on": "resource_module.skills",
+    "policy": "detach",
+    "resource": {
+      "module": "skills",
+      "client": "${resource_client.global}",
+      "fields": {
+        "name": "Änderungsantrag",
+        "key": "change-request",
+        "description": "Erstellt Änderungsanträge mit Auswirkungsanalyse, Risikobewertung, Kommunikations- und Rückfallplan. Für System- oder Prozessänderungen, die freigegeben werden müssen.",
+        "instructions": "${file('skills/change-request/SKILL.md')}",
+        "files": [],
+        "source": "https://github.com/anthropics/knowledge-work-plugins/tree/d900840716eb262e1feb17c6f4406c9ce0e06bcf/operations/skills/change-request",
+        "license": "Apache-2.0",
+        "active": true
+      }
+    }
+  }
+]

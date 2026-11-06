@@ -1,0 +1,22 @@
+[
+  {
+    "resource_entity": "profession_office_management",
+    "depends_on": "resource_module.professions",
+    "policy": "detach",
+    "resource": {
+      "module": "professions",
+      "client": "${resource_client.global}",
+      "fields": {
+        "name": "Assistenz / Office-Management",
+        "key": "office-management",
+        "description": "Organisiert Termine, Besprechungen und Aufgaben, hält Protokolle fest und kümmert sich um die interne Kommunikation.",
+        "skills": [
+          "${resource_entity.skill_internal_comms}",
+          "${resource_entity.skill_summarize_meeting}",
+          "${resource_entity.skill_task_management}"
+        ],
+        "active": true
+      }
+    }
+  }
+]

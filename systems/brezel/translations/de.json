@@ -99,6 +99,12 @@
         "timing": "Zeitpunkt",
         "status": "Status"
       }
+    },
+    "professions": {
+      "title": "Berufe"
+    },
+    "skills": {
+      "title": "Skills"
     }
   },
   "widgets": {},

@@ -1,0 +1,21 @@
+[
+  {
+    "resource_entity": "skill_task_management",
+    "depends_on": "resource_module.skills",
+    "policy": "detach",
+    "resource": {
+      "module": "skills",
+      "client": "${resource_client.global}",
+      "fields": {
+        "name": "Aufgabenverwaltung",
+        "key": "task-management",
+        "description": "Verwaltet Aufgaben und Zusagen als Fälle und Arbeitsschritte in Brezel und hält dauerhafte Fakten im Agentengedächtnis fest. Für Fragen nach offenen Aufgaben, neue oder erledigte Aufgaben und Wiedervorlagen.",
+        "instructions": "${file('skills/task-management/SKILL.md')}",
+        "files": [],
+        "source": "https://github.com/anthropics/knowledge-work-plugins/tree/d900840716eb262e1feb17c6f4406c9ce0e06bcf/productivity/skills/task-management",
+        "license": "Apache-2.0",
+        "active": true
+      }
+    }
+  }
+]

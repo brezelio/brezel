@@ -1,0 +1,21 @@
+[
+  {
+    "resource_entity": "skill_risk_assessment",
+    "depends_on": "resource_module.skills",
+    "policy": "detach",
+    "resource": {
+      "module": "skills",
+      "client": "${resource_client.global}",
+      "fields": {
+        "name": "Risikobewertung",
+        "key": "risk-assessment",
+        "description": "Identifiziert und bewertet operative Risiken nach Eintrittswahrscheinlichkeit und Auswirkung und erstellt ein priorisiertes Risikoregister mit Maßnahmen. Für Projekte, Lieferanten, Prozesse und Entscheidungen.",
+        "instructions": "${file('skills/risk-assessment/SKILL.md')}",
+        "files": [],
+        "source": "https://github.com/anthropics/knowledge-work-plugins/tree/d900840716eb262e1feb17c6f4406c9ce0e06bcf/operations/skills/risk-assessment",
+        "license": "Apache-2.0",
+        "active": true
+      }
+    }
+  }
+]

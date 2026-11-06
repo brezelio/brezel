@@ -23,6 +23,7 @@
                       "name",
                       "avatar",
                       "actor_type",
+                      "profession",
                       "email",
                       "password",
                       "roles"

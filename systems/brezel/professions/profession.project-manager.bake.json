@@ -1,0 +1,22 @@
+[
+  {
+    "resource_entity": "profession_project_manager",
+    "depends_on": "resource_module.professions",
+    "policy": "detach",
+    "resource": {
+      "module": "professions",
+      "client": "${resource_client.global}",
+      "fields": {
+        "name": "Projektmanager/in",
+        "key": "project-manager",
+        "description": "Plant und steuert Projekte, berichtet den Stand, bewertet Risiken und bindet Beteiligte ein.",
+        "skills": [
+          "${resource_entity.skill_status_report}",
+          "${resource_entity.skill_risk_assessment}",
+          "${resource_entity.skill_stakeholder_map}"
+        ],
+        "active": true
+      }
+    }
+  }
+]

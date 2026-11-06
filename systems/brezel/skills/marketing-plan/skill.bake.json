@@ -1,0 +1,27 @@
+[
+  {
+    "resource_entity": "skill_marketing_plan",
+    "depends_on": "resource_module.skills",
+    "policy": "detach",
+    "resource": {
+      "module": "skills",
+      "client": "${resource_client.global}",
+      "fields": {
+        "name": "Marketingplan",
+        "key": "marketing-plan",
+        "description": "Erstellt einen umfassenden, umsetzbaren Marketingplan (12 Monate mit 90-Tage-Prioritäten) nach dem AARRR-Modell, zugeschnitten auf Budget, Team und Phase des Unternehmens. Für Marketing-, Wachstums- und Go-to-Market-Pläne sowie Marktgrößenschätzungen (TAM/SAM/SOM).",
+        "instructions": "${file('skills/marketing-plan/SKILL.md')}",
+        "files": [
+          { "path": "references/aarrr-framework.md", "content": "${file('skills/marketing-plan/references/aarrr-framework.md')}" },
+          { "path": "references/budget-planning.md", "content": "${file('skills/marketing-plan/references/budget-planning.md')}" },
+          { "path": "references/current-state-rubric.md", "content": "${file('skills/marketing-plan/references/current-state-rubric.md')}" },
+          { "path": "references/market-sizing.md", "content": "${file('skills/marketing-plan/references/market-sizing.md')}" },
+          { "path": "references/plan-template.md", "content": "${file('skills/marketing-plan/references/plan-template.md')}" }
+        ],
+        "source": "https://github.com/coreyhaines31/marketingskills/tree/88c79f6528a9347420e57ceb1fff9a60de651768/skills/marketing-plan",
+        "license": "MIT",
+        "active": true
+      }
+    }
+  }
+]

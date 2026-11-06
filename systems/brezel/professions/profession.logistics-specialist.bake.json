@@ -1,0 +1,22 @@
+[
+  {
+    "resource_entity": "profession_logistics_specialist",
+    "depends_on": "resource_module.professions",
+    "policy": "detach",
+    "resource": {
+      "module": "professions",
+      "client": "${resource_client.global}",
+      "fields": {
+        "name": "Logistiker/in",
+        "key": "logistics-specialist",
+        "description": "Plant Kapazitäten und Abläufe in Lager, Versand und Disposition und dokumentiert Prozesse.",
+        "skills": [
+          "${resource_entity.skill_capacity_plan}",
+          "${resource_entity.skill_process_doc}",
+          "${resource_entity.skill_process_optimization}"
+        ],
+        "active": true
+      }
+    }
+  }
+]

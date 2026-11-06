@@ -1,0 +1,25 @@
+[
+  {
+    "resource_entity": "skill_copywriting",
+    "depends_on": "resource_module.skills",
+    "policy": "detach",
+    "resource": {
+      "module": "skills",
+      "client": "${resource_client.global}",
+      "fields": {
+        "name": "Copywriting",
+        "key": "copywriting",
+        "description": "Schreibt, überarbeitet und verbessert Marketingtexte für Webseiten, Landingpages, Überschriften, Call-to-Actions und Wertversprechen. Vermeidet typische KI-Floskeln und formuliert nur belegbare Aussagen.",
+        "instructions": "${file('skills/copywriting/SKILL.md')}",
+        "files": [
+          { "path": "references/ai-tells.md", "content": "${file('skills/copywriting/references/ai-tells.md')}" },
+          { "path": "references/copy-frameworks.md", "content": "${file('skills/copywriting/references/copy-frameworks.md')}" },
+          { "path": "references/natural-transitions.md", "content": "${file('skills/copywriting/references/natural-transitions.md')}" }
+        ],
+        "source": "https://github.com/coreyhaines31/marketingskills/tree/88c79f6528a9347420e57ceb1fff9a60de651768/skills/copywriting",
+        "license": "MIT",
+        "active": true
+      }
+    }
+  }
+]

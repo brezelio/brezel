@@ -1,0 +1,23 @@
+[
+  {
+    "resource_entity": "skill_content_strategy",
+    "depends_on": "resource_module.skills",
+    "policy": "detach",
+    "resource": {
+      "module": "skills",
+      "client": "${resource_client.global}",
+      "fields": {
+        "name": "Content-Strategie",
+        "key": "content-strategy",
+        "description": "Plant eine Content-Strategie: Themen, Content-Säulen und Cluster, Priorisierung von Ideen, Redaktionsplan und Verbreitung der Inhalte. Für die Frage, welche Inhalte erstellt werden sollen.",
+        "instructions": "${file('skills/content-strategy/SKILL.md')}",
+        "files": [
+          { "path": "references/content-distribution.md", "content": "${file('skills/content-strategy/references/content-distribution.md')}" }
+        ],
+        "source": "https://github.com/coreyhaines31/marketingskills/tree/88c79f6528a9347420e57ceb1fff9a60de651768/skills/content-strategy",
+        "license": "MIT",
+        "active": true
+      }
+    }
+  }
+]

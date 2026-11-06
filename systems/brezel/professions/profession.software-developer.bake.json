@@ -1,0 +1,22 @@
+[
+  {
+    "resource_entity": "profession_software_developer",
+    "depends_on": "resource_module.professions",
+    "policy": "detach",
+    "resource": {
+      "module": "professions",
+      "client": "${resource_client.global}",
+      "fields": {
+        "name": "Softwareentwickler/in",
+        "key": "software-developer",
+        "description": "Entwickelt und prüft Software, sucht Fehler und sichert die Qualität durch Tests.",
+        "skills": [
+          "${resource_entity.skill_code_review}",
+          "${resource_entity.skill_debugging}",
+          "${resource_entity.skill_testing_strategy}"
+        ],
+        "active": true
+      }
+    }
+  }
+]

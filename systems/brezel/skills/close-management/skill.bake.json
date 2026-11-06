@@ -1,0 +1,21 @@
+[
+  {
+    "resource_entity": "skill_close_management",
+    "depends_on": "resource_module.skills",
+    "policy": "detach",
+    "resource": {
+      "module": "skills",
+      "client": "${resource_client.global}",
+      "fields": {
+        "name": "Monatsabschluss",
+        "key": "close-management",
+        "description": "Plant und steuert den Monatsabschluss mit Aufgabenfolge, Abhängigkeiten und Statusverfolgung. Für Abschlusskalender, Fortschrittskontrolle und das Erkennen von Blockaden.",
+        "instructions": "${file('skills/close-management/SKILL.md')}",
+        "files": [],
+        "source": "https://github.com/anthropics/knowledge-work-plugins/tree/d900840716eb262e1feb17c6f4406c9ce0e06bcf/finance/skills/close-management",
+        "license": "Apache-2.0",
+        "active": true
+      }
+    }
+  }
+]
