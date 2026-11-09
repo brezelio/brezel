@@ -11,11 +11,33 @@
         },
         "cases",
         "signals",
-        "users",
-        "organization_assignments",
-        "professions",
-        "skills",
-        "agent_schedules",
+        {
+          "name": "team",
+          "type": "submenu",
+          "icon": "mdi:account-group-outline",
+          "elements": [
+            "organization_assignments",
+            "users"
+          ]
+        },
+        {
+          "name": "ai_agents",
+          "type": "submenu",
+          "icon": "mdi:robot-outline",
+          "elements": [
+            "professions",
+            "skills",
+            "agent_schedules"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "resource_menu": "administration",
+    "resource": {
+      "name": "administration",
+      "elements": [
         "roles",
         "clients"
       ]

@@ -5,6 +5,12 @@
     "organization_assignments": {
       "title": "Organization"
     },
+    "team": {
+      "title": "Team"
+    },
+    "ai_agents": {
+      "title": "AI agents"
+    },
     "clients": {
       "title": "System settings",
       "fields": {
