@@ -6,11 +6,26 @@
       "title": "Organization"
     },
     "clients": {
-      "title": "Clients",
+      "title": "System settings",
       "fields": {
         "title": "Title",
         "language": "Language",
-        "description": "Description"
+        "description": "Description",
+        "mail_host": "Host",
+        "mail_port": "Port",
+        "mail_username": "Username",
+        "mail_password": "Password",
+        "mail_encryption": "Encryption",
+        "mail_from_address": "Sender address",
+        "mail_from_name": "Sender name",
+        "mail_footer": "Mail footer"
+      },
+      "choice": {
+        "mail_encryption": {
+          "tls": "TLS",
+          "ssl": "SSL",
+          "none": "None (not recommended)"
+        }
       }
     },
     "users": {
