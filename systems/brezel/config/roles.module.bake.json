@@ -8,7 +8,8 @@
       "title": "name",
       "icon": "safety",
       "layouts": {
-        "detail": "config/roles.layout.detail"
+        "detail": "config/roles.layout.detail",
+        "index": "config/roles.layout.index"
       },
       "fields": [
         {

@@ -1,0 +1,28 @@
+{
+  "tabs": [
+    {
+      "rows": [
+        {
+          "cols": [
+            {
+              "span": 24,
+              "components": [
+                {
+                  "type": "resource_table",
+                  "options": {
+                    "module": "roles",
+                    "hide_client_column": true,
+                    "columns": [
+                      "name",
+                      "slug"
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
