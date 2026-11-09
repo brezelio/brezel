@@ -5,7 +5,7 @@
       "type": "files",
       "identifier": "files",
       "title": "name",
-      "icon": "file",
+      "icon": "mdi:folder-outline",
       "fields": []
     }
   }
