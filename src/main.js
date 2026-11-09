@@ -3,7 +3,12 @@ import App from './App.vue'
 
 import { Brezel } from '@kibro/brezel-spa'
 
-const brezel = new Brezel(import.meta.env.VITE_APP_API_URL, import.meta.env.VITE_APP_SYSTEM)
+const brezel = new Brezel(
+  import.meta.env.VITE_APP_API_URL,
+  import.meta.env.VITE_APP_SYSTEM,
+  // As in Brezel Cloud: clients mean nothing to users, so records do not name them.
+  {showClients: false},
+)
 const app = brezel.bootstrap(App)
 
 window.app = app
