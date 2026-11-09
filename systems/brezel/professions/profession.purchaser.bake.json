@@ -15,6 +15,11 @@
           "${resource_entity.skill_risk_assessment}",
           "${resource_entity.skill_process_optimization}"
         ],
+        "toolkits": [
+          "entities",
+          "files",
+          "web"
+        ],
         "active": true
       }
     }

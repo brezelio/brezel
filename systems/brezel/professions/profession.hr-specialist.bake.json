@@ -15,6 +15,11 @@
           "${resource_entity.skill_employee_onboarding}",
           "${resource_entity.skill_performance_review}"
         ],
+        "toolkits": [
+          "entities",
+          "files",
+          "company_os_work"
+        ],
         "active": true
       }
     }

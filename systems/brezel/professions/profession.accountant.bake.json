@@ -15,6 +15,11 @@
           "${resource_entity.skill_close_management}",
           "${resource_entity.skill_journal_entry}"
         ],
+        "toolkits": [
+          "entities",
+          "files",
+          "company_os_work"
+        ],
         "active": true
       }
     }

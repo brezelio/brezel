@@ -15,6 +15,12 @@
           "${resource_entity.skill_risk_assessment}",
           "${resource_entity.skill_stakeholder_map}"
         ],
+        "toolkits": [
+          "entities",
+          "files",
+          "company_os_work",
+          "subagents"
+        ],
         "active": true
       }
     }

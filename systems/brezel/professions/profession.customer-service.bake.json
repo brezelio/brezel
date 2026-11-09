@@ -15,6 +15,12 @@
           "${resource_entity.skill_draft_response}",
           "${resource_entity.skill_kb_article}"
         ],
+        "toolkits": [
+          "entities",
+          "files",
+          "signals",
+          "company_os_work"
+        ],
         "active": true
       }
     }

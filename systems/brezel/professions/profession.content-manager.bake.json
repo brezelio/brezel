@@ -15,6 +15,12 @@
           "${resource_entity.skill_content_creation}",
           "${resource_entity.skill_social_media}"
         ],
+        "toolkits": [
+          "entities",
+          "files",
+          "web",
+          "images"
+        ],
         "active": true
       }
     }

@@ -15,6 +15,12 @@
           "${resource_entity.skill_process_optimization}",
           "${resource_entity.skill_internal_comms}"
         ],
+        "toolkits": [
+          "entities",
+          "files",
+          "company_os_work",
+          "subagents"
+        ],
         "active": true
       }
     }

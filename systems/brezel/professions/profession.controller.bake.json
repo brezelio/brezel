@@ -14,6 +14,13 @@
           "${resource_entity.skill_variance_analysis}",
           "${resource_entity.skill_financial_statements}"
         ],
+        "toolkits": [
+          "entities",
+          "files",
+          "company_os_work",
+          "shell"
+        ],
+        "execution_profile": "isolated",
         "active": true
       }
     }

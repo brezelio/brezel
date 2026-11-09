@@ -15,6 +15,12 @@
           "${resource_entity.skill_campaign_plan}",
           "${resource_entity.skill_copywriting}"
         ],
+        "toolkits": [
+          "entities",
+          "files",
+          "web",
+          "images"
+        ],
         "active": true
       }
     }

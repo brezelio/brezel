@@ -6,7 +6,7 @@
       "title": "Organisation"
     },
     "clients": {
-      "title": "Mandanten",
+      "title": "Systemeinstellungen",
       "fields": {
         "title": "Titel",
         "language": "Sprache",

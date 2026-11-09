@@ -15,6 +15,12 @@
           "${resource_entity.skill_summarize_meeting}",
           "${resource_entity.skill_task_management}"
         ],
+        "toolkits": [
+          "entities",
+          "files",
+          "company_os_work",
+          "workflows"
+        ],
         "active": true
       }
     }

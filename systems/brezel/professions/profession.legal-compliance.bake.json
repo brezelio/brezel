@@ -15,6 +15,11 @@
           "${resource_entity.skill_triage_nda}",
           "${resource_entity.skill_compliance_check}"
         ],
+        "toolkits": [
+          "entities",
+          "files",
+          "web"
+        ],
         "active": true
       }
     }

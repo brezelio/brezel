@@ -15,6 +15,16 @@
           "${resource_entity.skill_change_request}",
           "${resource_entity.skill_runbook}"
         ],
+        "toolkits": [
+          "entities",
+          "files",
+          "docs",
+          "web",
+          "shell",
+          "secrets",
+          "ssh"
+        ],
+        "execution_profile": "networked",
         "active": true
       }
     }

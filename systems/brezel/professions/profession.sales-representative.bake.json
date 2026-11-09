@@ -15,6 +15,11 @@
           "${resource_entity.skill_draft_outreach}",
           "${resource_entity.skill_call_summary}"
         ],
+        "toolkits": [
+          "entities",
+          "web",
+          "company_os_work"
+        ],
         "active": true
       }
     }

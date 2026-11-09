@@ -64,7 +64,11 @@
           "identifier": "mail_from_name",
           "type": "text"
         }
-      ]
+      ],
+      "options": {
+        "global_login": "sameSite",
+        "single_entity": true
+      }
     }
   }
 ]

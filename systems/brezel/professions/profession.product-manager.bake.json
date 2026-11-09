@@ -15,6 +15,12 @@
           "${resource_entity.skill_synthesize_research}",
           "${resource_entity.skill_prioritization_frameworks}"
         ],
+        "toolkits": [
+          "entities",
+          "files",
+          "web",
+          "company_os_work"
+        ],
         "active": true
       }
     }

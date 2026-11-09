@@ -15,6 +15,12 @@
           "${resource_entity.skill_process_doc}",
           "${resource_entity.skill_process_optimization}"
         ],
+        "toolkits": [
+          "entities",
+          "files",
+          "company_os_work",
+          "workflows"
+        ],
         "active": true
       }
     }
