@@ -1,8 +1,13 @@
 {
   "tabs": [
     {
-      "identifier": "user",
-      "icon": "mdi:user",
+      "identifier": "profile",
+      "icon": "mdi:account-outline",
+      "options": {
+        "recipes": {
+          "hidden_from_frontend": "actor_type == 'ai'"
+        }
+      },
       "rows": [
         "${capabilityComposable('chat_actions')}",
         {
@@ -12,8 +17,19 @@
                 {
                   "type": "headline",
                   "options": {
-                    "identifier": "user",
-                    "icon": "mdi:user"
+                    "identifier": "profile",
+                    "icon": "mdi:account-outline"
+                  }
+                },
+                {
+                  "type": "field_group",
+                  "options": {
+                    "show_in": [
+                      "module.create"
+                    ],
+                    "fields": [
+                      "actor_type"
+                    ]
                   }
                 },
                 {
@@ -22,8 +38,6 @@
                     "fields": [
                       "name",
                       "avatar",
-                      "actor_type",
-                      "profession",
                       "email",
                       "password",
                       "roles"
@@ -33,10 +47,116 @@
               ]
             }
           ]
-        },
-        "${capabilityComposable('agent_instructions')}"
+        }
       ]
     },
-    "${capabilityComposable('agent_settings_advanced')}"
+    {
+      "identifier": "agent",
+      "icon": "mdi:robot-outline",
+      "options": {
+        "recipes": {
+          "hidden_from_frontend": "actor_type != 'ai'"
+        }
+      },
+      "rows": [
+        "${capabilityComposable('chat_actions')}",
+        {
+          "cols": [
+            {
+              "components": [
+                {
+                  "type": "headline",
+                  "options": {
+                    "identifier": "agent",
+                    "icon": "mdi:robot-outline"
+                  }
+                },
+                {
+                  "type": "field_group",
+                  "options": {
+                    "show_in": [
+                      "module.create"
+                    ],
+                    "fields": [
+                      "actor_type"
+                    ]
+                  }
+                },
+                {
+                  "type": "field_group",
+                  "options": {
+                    "fields": [
+                      "name",
+                      "avatar",
+                      "profession"
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "${capabilityComposable('agent_role')}"
+      ]
+    },
+    {
+      "identifier": "assistant",
+      "icon": "mdi:robot-happy-outline",
+      "options": {
+        "recipes": {
+          "hidden_from_frontend": "actor_type == 'ai' || !id || id != user().id"
+        }
+      },
+      "rows": [
+        "${capabilityComposable('assistant')}"
+      ]
+    },
+    {
+      "identifier": "assistant_advanced",
+      "icon": "mdi:tune-variant",
+      "options": {
+        "recipes": {
+          "hidden_from_frontend": "actor_type == 'ai' || !id || id != user().id"
+        }
+      },
+      "rows": [
+        "${capabilityComposable('agent_technical')}"
+      ]
+    },
+    {
+      "identifier": "rights_and_tech",
+      "icon": "mdi:shield-account-outline",
+      "options": {
+        "recipes": {
+          "hidden_from_frontend": "actor_type != 'ai'"
+        }
+      },
+      "rows": [
+        {
+          "cols": [
+            {
+              "components": [
+                {
+                  "type": "headline",
+                  "options": {
+                    "identifier": "rights",
+                    "icon": "mdi:account-key-outline"
+                  }
+                },
+                {
+                  "type": "field_group",
+                  "options": {
+                    "fields": [
+                      "roles"
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "${capabilityComposable('agent_technical')}"
+      ]
+    }
   ]
 }

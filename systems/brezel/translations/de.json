@@ -59,6 +59,18 @@
           "human": "Mensch",
           "ai": "KI"
         }
+      },
+      "tabs": {
+        "profile": "Profil",
+        "agent": "Agent",
+        "assistant": "Assistent",
+        "assistant_advanced": "Erweitert",
+        "rights_and_tech": "Rechte & Technik"
+      },
+      "headlines": {
+        "profile": "Profil",
+        "agent": "Agent",
+        "rights": "Rechte"
       }
     },
     "dashboard": {
