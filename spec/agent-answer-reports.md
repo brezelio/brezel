@@ -8,7 +8,7 @@ Nutzer sollen eine problematische Agent-Antwort direkt melden können. Brezel-Ad
 verfügbarem Diagnosekontext in der Cloud Console, um Fehlverhalten zu verstehen und Verbesserungen abzuleiten –
 auch mithilfe anderer Agenten. Dafür müssen sie sich nicht in die Kundeninstanz einloggen.
 
-**KISS: normale Brezel-Module, Workflows, Rollen, Layouts und Widgets verwenden.** Keine eigene Ticket-Plattform,
+**KISS: native Chatfunktion im Framework; Console mit Brezel-Modulen, Workflows, Rollen, Layouts und Widgets.** Keine eigene Ticket-Plattform,
 kein Live-Supportzugang und kein umfangreiches Freigabemanagement.
 
 ## Festgelegter Umfang
@@ -82,14 +82,13 @@ Die 20 Nachrichten begrenzen nur den dargestellten Chat-Ausschnitt. Historische 
 Zusammenfassungen, Erinnerungen oder weitere vom Agenten gelesene Daten enthalten. Genau deshalb nennt der Hinweis
 ausdrücklich den **zugehörigen Diagnosekontext**, nicht nur „diese Antwort“.
 
-### Workflowrechte und Nachladen
+### Backendrechte und Nachladen
 
-Workflows laufen häufig mit mehr Rechten als die auslösende Person. Technisch kann der Meldeworkflow daher interne
-Run-Daten und zugehörige Diagnosebelege laden, die nicht über die normale Chat-API zugänglich sind. Diese Fähigkeit
-gezielt verwenden, statt künstlich alles auf den normalen Frontend-Datenausschnitt zu beschränken.
+Das native Backend kann interne Run-Daten und zugehörige Diagnosebelege laden, die nicht über die normale Chat-API
+zugänglich sind. Dafür ist kein erhöhter Workflow-Kontext oder Instanzworkflow mehr erforderlich.
 
 - Zugriff auf Session und Zielnachricht für den Melder prüfen. Eine erratene Nachrichten-ID ist keine Berechtigung.
-- **Erhöhte Workflowrechte sind nicht automatisch eine Freigabe für beliebige fremde Daten.** Nur Belege aus dem
+- **Backendrechte sind nicht automatisch eine Freigabe für beliebige fremde Daten.** Nur Belege aus dem
   gemeldeten Run und dessen tatsächlichem Kontext sammeln, die für die Supportfreigabe zulässig sind.
 - Private Chats anderer Personen und sachfremde Datensätze nicht nachladen. Nicht sicher freigebbare Teile auslassen;
   dafür keinen universellen historischen Rechte-/Provenienzdienst als Voraussetzung für das MVP bauen.
@@ -112,18 +111,22 @@ gezielt verwenden, statt künstlich alles auf den normalen Frontend-Datenausschn
 
 ### Instanz
 
-1. SPA-Aktion an `ChatMessageItem` ruft nach Bestätigung einen authentifizierten Meldeworkflow auf.
-2. Workflow prüft Melder/Zielnachricht und sammelt den zugehörigen Kontext.
-3. Vorhandene sichere Backendmechanismen bereinigen und strukturieren das Diagnosepaket.
-4. `api/http` sendet das Paket an den Console-Eingang; `action/response` gibt Quittung oder Fehler an die UI zurück.
+1. SPA-Aktion an `ChatMessageItem` ruft nach Bestätigung den nativen Endpunkt
+   `POST /chat/sessions/<session>/messages/<message>/report` auf.
+2. `brezel/api` prüft Melder/Zielnachricht und sammelt den Kontext mit `AgentDiagnosticSnapshot`.
+3. `AgentDiagnosticSanitizer` bereinigt das Paket; `AgentReportSender` sendet an den festen HTTPS-Empfänger.
+4. Nur eine erfolgreiche Empfangsquittung mit passender Report-ID wird als Erfolg an die UI zurückgegeben.
 
-**Kein Instanz-Meldungs-Modul.** Workflow-Logs sind erlaubt. Zugangsdaten dürfen trotzdem nicht in Logs landen;
+**Kein Instanz-Meldungs-Modul und kein Instanz-Meldeworkflow.** Normale technische Logs sind erlaubt. Zugangsdaten dürfen trotzdem nicht in Logs landen;
 Paketinhalte nicht unnötig mehrfach loggen. Keine eigene Entwurfsverwaltung, signierte Vorschau-Revisionen oder
 lokale Report-Outbox für den ersten Umfang nötig.
 
-Die Erhebung interner Run-/Provider-Daten gehört nicht in riesige kopierte Recipe-Ausdrücke. Vorhandene Core-
-Mechanismen nutzen; falls nötig eine kleine wiederverwendbare native Operation ergänzen. Keine Consumer-
-Controller/Services/Jobs als Umgehung der Brezel-Architektur. Stateful Core-Erweiterungen vor Implementierung abstimmen.
+Frameworkkonfiguration: `AGENT_REPORT_URL`, optional `AGENT_REPORT_AUTH_HEADER` (Standard `Authorization`) und
+`AGENT_REPORT_AUTH_VALUE` (vollständiger Headerwert). Prozessdefaults können systembezogen über
+`BREZEL_SYSTEM_<identifier>_AGENT_REPORT_*` überschrieben werden. Ohne Ziel ist Reporting deaktiviert.
+SPA erhält nur `reportable`, keine Adresse oder Credentials. Andere Projekte konfigurieren ihren eigenen Empfänger.
+Der frühere Recipe-/Workflow-Sendeweg wird entfernt, nicht parallel weiterbetrieben.
+Generisches Protokoll und Konfiguration: `../api/docs/agent-answer-reporting.md`.
 
 ### Transport und Console-Eingang
 
@@ -153,21 +156,35 @@ Vorgeschlagener Ablauf:
    Einladung für diesen technischen Benutzer auslösen. Login-/Resetwege und die tatsächlich nötigen Key-/Rollenrechte prüfen.
 3. Der Key wird über die authentifizierte Console→Operator-Verbindung übergeben. Der Operator legt ihn im
    Kubernetes-Runtime-Secret der jeweiligen Instanz ab und stellt ihn nur dem Backend bereit, z. B. als
-   `BREZEL_REPORT_API_KEY`; dazu eine feste Zielkonfiguration. Kein Repository-, Frontend- oder Kundenmodul-Feld.
-4. Der Instanzworkflow nutzt `X-API-Key` für den Console-Eingang. Die Console ermittelt die Herkunft über die
+   systembezogene `AGENT_REPORT_AUTH_VALUE`, `AGENT_REPORT_AUTH_HEADER=X-API-Key` und `AGENT_REPORT_URL`.
+   Kein Repository-, Frontend- oder Kundenmodul-Feld.
+4. Der native Sender nutzt `X-API-Key` für den Console-Eingang. Die Console ermittelt die Herkunft über die
    feste Zuordnung des technischen Benutzers zur Instanz, nicht aus dem gesendeten Paket.
 
-Der Operator verwaltet bereits Runtime-Secrets und deren Bereitstellung als ENV. **Die Übernahme eines Reporter-Keys
-und die Reporter-Provisionierung sind noch nicht implementiert.** Dafür den vorhandenen Provisionierungspfad gezielt
-erweitern; der Operator braucht weder direkten Zugriff auf die Console-Datenbank noch einen Console-Root-Key.
+Der Operator verwaltet Runtime-Secrets und deren Bereitstellung als ENV. Er übernimmt die Reporter-Konfiguration
+über Provisionierung oder Backfill-Endpunkt; er braucht keinen direkten Zugriff auf die Console-Datenbank oder Console-Root-Key.
 Bei wiederholter Provisionierung keinen neuen Benutzer/Key erzeugen. Zustellfehler wiederholen, ohne den Key in
 Responses/Logs offenzulegen; bestehende Instanzen nachrüsten. Rotation/Sperrung und Widerruf bei endgültiger
 Instanzlöschung im selben Lifecycle berücksichtigen.
 
-**Produktgrenze:** `brezel/api` liefert generische Diagnose-/Workflow-Fähigkeiten und eine konfigurierbare Chataktion.
-Cloud-Zieladresse, Reporterrolle, Console-Workflow und Provisionierung gehören in Console, Operator und Cloud-
-Runtime-Template. In anderen Brezel-Projekten bleibt die Aktion deaktiviert oder nutzt deren eigenen konfigurierten
+**Produktgrenze:** `brezel/api` liefert die vollständige generische Chat-Meldefunktion einschließlich Versand.
+Cloud-Zieladresse, Reporterrolle, Empfangsworkflow und Provisionierung gehören ausschließlich in Console und Operator.
+Das Runtime-Template benötigt keine Reporting-Ressourcen. In anderen Brezel-Projekten bleibt die Aktion deaktiviert oder nutzt deren eigenen konfigurierten
 Meldeweg. Keine hart codierten Cloud-Adressen oder versteckte universelle Supportidentität im Framework.
+
+### Automatisches Nachrüsten bestehender Instanzen
+
+- `SyncInstanceReporting` prüft jede Minute im globalen Console-Client bestehende nicht mehr im Entwurf befindliche
+  Instanzen. Fehlender Reporter/Key oder eine andere bzw. noch nicht übergebene Zieladresse löst die Einrichtung aus.
+- Jede Instanz wird als unabhängiger Workflowjob bearbeitet; ein Fehler blockiert die übrigen nicht.
+- `ConfigureInstanceReporting` sperrt den kurzen Konfigurationszweig, lädt den Zustand neu und verwendet den
+  vorhandenen Reporter/Key. Überlappende Cronläufe prüfen unter der Sperre erneut, ob noch Arbeit nötig ist.
+- Erst nach explizitem `accepted: true` des Operators wird `reporting_url` als übergebener Stand gespeichert.
+  Bei Fehlern bleibt die Instanz pending und wird im nächsten Schedulerlauf wieder versucht.
+- `accepted` heißt dauerhaft an den Operator übergeben, nicht schon in laufenden Pods aktiv. Der Operator übernimmt
+  das Übergabe-Secret über seinen eigenen wiederholbaren Abgleich und rollt die Pods per vorhandenem Secret-Hash.
+- Der Admin-Button bleibt als erzwungene Wiederholung bestehen. Keine Plan-/Trialänderung, kein manueller Schritt
+  pro Instanz erforderlich. Voraussetzung: einmalig korrekte Empfangsadresse, Scheduler und Worker der Console.
 
 **Sichtbarkeit:** Nicht im normalen Kunden-UI verfügbar heißt nicht vor einem technisch privilegierten
 Instanzbetreiber geheim. Root-/Shell-Agenten, veränderbare Workflows oder Backendzugriff können ENV-Credentials
@@ -232,7 +249,8 @@ Im aktuellen Code geprüft:
   teilweise prozesslokal bzw. aus Gesprächsnachrichten rekonstruierbar, nicht für jeden alten Lauf vollständig.
 - `../api/app/AI/Agent/{AgentBudgetRecorder.php,Neuron/ProviderRequestSnapshotStore.php}`: gespeicherte Provider-
   Anfragen, soweit vorhanden. Bestehende Bereinigung ist Grundlage, kein Beweis vollständiger Geheimnisentfernung.
-- `../api/app/Workflow/Elements/{Event/WorkflowEventWebhook,Api/WorkflowApiHttp}.php`: Workflow-Einstieg und HTTP-Versand.
+- `../api/app/AI/Agent/Diagnostics/{AgentDiagnosticSnapshot,AgentReportSender}.php`: native Kontextsammlung und Versand.
+- `../api/app/Workflow/Elements/{Event/WorkflowEventWebhook,Api/WorkflowApiHttp}.php`: Console-Eingang und Operator-Konfiguration.
 - `../api/app/Auth/Guards/ApiKey/`: vorhandene API-Key-Authentisierung mit Benutzerbindung/Scopes.
 - `../console/systems/console/`: deklarative Module, Rollen, Layouts und Workflows.
 
@@ -241,15 +259,16 @@ Im aktuellen Code geprüft:
 - [x] Bereinigtes Diagnosepaket mit synthetischen Run-/Provider-/Toolbelegen erzeugen und testen.
 - [x] Engen Senderzugang zur Console mit Brezel-Rolle und auf den Eingangswebhook beschränktem API-Key ergänzen.
 - [x] Console-Modul und Eingangsworkflow samt serverseitigen Rechten und Duplikatschutz anlegen.
-- [x] Instanz-Meldeworkflow und generische Recipe-Operation zur Kontextsammlung ergänzen.
+- [x] Vollständige native Kontextsammlung und Versand im API-Paket; Instanzworkflow/Recipe-Schnittstelle entfernt.
 - [x] Warndreieck, Popconfirm, Kommentar und Versandquittung in der SPA ergänzen.
 - [x] Console-Detailansicht und explizite werkzeuglose KI-Analyse ergänzen; Analyse mit Mock geprüft.
-- [x] Benötigte Instanzressourcen in Runtime-Template und lokalem System synchron halten.
+- [x] Reporting-Ressourcen aus Runtime-Template und lokalem System entfernt; keine Installation pro System nötig.
+- [x] Automatischen Console-Abgleich für bestehende Instanzen mit Wiederholung und übersprungenen Erfolgsfällen ergänzen.
 - [ ] Einen echten Pilotreport zwischen laufender Instanz und Console nach Release prüfen.
 
 ### Implementierter Zuschnitt
 
-- Core: `agentDiagnostics.snapshot(messageId, reportId, comment)` mit Session-/Privatsichtbarkeitsprüfung,
+- Core: `AgentDiagnosticSnapshot` hinter dem nativen Chat-Endpunkt mit Session-/Privatsichtbarkeitsprüfung,
   historischen Providerbelegen, Run-Events, Ergebnis-/Modellansicht, Kind-Runs und benannten Lücken.
 - Neue Gesprächsnachrichten bekommen eine Run-Referenz. Alte nicht zuordenbare Nachrichten werden nicht durch
   einen pauschalen Export der gesamten Agentunterhaltung ersetzt.
@@ -263,14 +282,14 @@ Im aktuellen Code geprüft:
   Gemeinsamer lockfähiger Cache der Console-Worker erforderlich, kein Array-Cache im Deployment.
 - Operator nimmt Keys über den privilegierten Provisionierungspfad oder den engen Backfill-Endpunkt entgegen,
   überträgt sie aus einem Übergabe-Secret ins instanzbezogene Runtime-Secret und entfernt das Übergabe-Secret.
-- Console-Adminaktion zum Nachrüsten bestehender Instanzen ohne Plan-/Trialänderung; Reporter-Keys werden bei
+- Automatisches Nachrüsten bestehender Instanzen plus Console-Adminaktion ohne Plan-/Trialänderung; Reporter-Keys werden bei
   Console-Instanzlöschung deaktiviert. Keine Kundenansicht für Reporter-Key oder Reportverwaltung.
-- Kleine Core-Ergänzungen bleiben generisch: Diagnose-Recipe, optionale Webhook-Keybeschränkung,
+- Kleine Core-Ergänzungen bleiben generisch: Chat-Reporting-API und Sender, optionale Webhook-Keybeschränkung,
   `action/revokeApiKeys` und `flow/lock`. Cloud-Adressen/-Rollen/-Workflows liegen in Produktressourcen.
 
 ### Verifikation und verbleibende Grenzen
 
-- Snapshot-/Privatsichtbarkeits-/Secret-Tests, echte API-Routen für beschränkte Keys, Senderworkflow mit HTTP-Fake,
+- Snapshot-/Privatsichtbarkeits-/Secret-Tests, echte API-Routen für beschränkte Keys, native Report-Route mit HTTP-Fake,
   Reporter-Wiederverwendung/Backfill/Sperrung und Analyseworkflow mit Modell-Mock werden lokal geprüft.
 - Browserprüfung des echten Ant-Popconfirms bei 320/390/1280 px mit simulierter Zustellung: kein horizontaler
   Überlauf, kein Versand vor Bestätigung oder bei Abbrechen, genau ein Versand nach Bestätigung.
@@ -280,10 +299,14 @@ Im aktuellen Code geprüft:
   werden ausgelassen. Bereinigung erkennt Struktur und bekannte Muster, nicht jeden beliebigen Geheimniswert im Freitext.
 - Die einfache KI-Analyse ist ein expliziter `ai/chatBot`-Aufruf ohne Tools; keine vollwertige autonome Agentpipeline.
   Sie kann auf Provider-/Kontextgrenzen scheitern und wird nicht automatisch beim Reporteingang ausgeführt.
-- Abschließender lokaler Prüfstand: 462 Backendtests ohne Fehlschläge (zwei Deprecations, 43 PHPUnit-Hinweise),
-  271 SPA-Unit- und 287 Komponententests grün, Console-Suite 33 Fälle/65 Prüfungen grün, Operator `go test ./...`
+- Lokaler Prüfstand nach nativem Umbau: 469 Backendtests ohne Fehlschläge (zwei Deprecations, 43 PHPUnit-Hinweise),
+  271 SPA-Unit- und 287 Komponententests grün, Console-Suite 34 Fälle/67 Prüfungen grün, Operator `go test ./...`
   grün, PHPStan für betroffene Backendpfade ohne Fehler. Console-Produktionsbuild erfolgreich mit bestehenden
-  Drittanbieter-/CSS-Warnungen. Lokalen Instanzworkflow mit `bin/brezel bakery load brezel` geladen.
+  Drittanbieter-/CSS-Warnungen in der ersten Implementierung; UI-Änderung im Umbau betrifft nur die native Route und
+  das `reportable`-Flag. Der lokale Workflow-Loader lädt keine Reporting-Datei mehr.
+- Automatischer Abgleich mit echtem Workflowparser getestet: eigene Identität je Instanz, keine wiederholte
+  Übergabe erfolgreicher Fälle, erneutes Lesen unter der Sperre bei bereits wartenden Jobs, Wiederholung bei
+  negativer Operatorquittung und Netzwerkfehler. Jeder Instanzjob ist unabhängig; der Scheduler benötigt keinen Nutzer.
 - Test-Datenbank und erzeugte Runtime-Test-/Baseline-Systeme entfernt, Browser-Preview gestoppt und entfernt.
 
 ## Wesentliche Tests
@@ -310,7 +333,7 @@ Compliance-/Widerrufssystem als Vorbedingung für den ersten Testumfang.
 
 ## Konfidenz
 
-- **Hoch:** Brezel-Modul ausschließlich in der Console, Workflow-basierter Meldeweg und vorhandene Run-/Tool-Belege
+- **Hoch:** Brezel-Modul ausschließlich in der Console, nativer generischer Sendeweg und vorhandene Run-/Tool-Belege
   passen zum Ziel und zur bestehenden Architektur.
 - **Mittel:** Vollständigkeit historischer Daten, Rechteumfang des Eingangs und optimale Paketablage müssen am
   konkreten Implementierungspfad geprüft werden. Mit synthetischem Ende-zu-Ende-Test und Secret-/Rechtenegativtests absichern.
