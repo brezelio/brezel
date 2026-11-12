@@ -1,0 +1,1617 @@
+{
+  "format": "brezel-history-ab/1",
+  "date": "2026-11-12",
+  "api_commit": "9c864288f",
+  "requested_model": "brezel-mid",
+  "reported_upstream_model": "gpt-6.1-terra",
+  "total_requests": 59,
+  "gateway_cost_usd": 0.11519979999999999,
+  "local_estimated_cost_invalid": true,
+  "results": [
+    {
+      "scenario": "chat-follow-up-first-one",
+      "repetition": 1,
+      "mode": "compact",
+      "status": "ok",
+      "score": 0.8889,
+      "checks": [
+        {
+          "type": "answer_contains",
+          "label": "turn 1 names the customer-related areas",
+          "status": "passed",
+          "weight": 1,
+          "detail": "found"
+        },
+        {
+          "type": "follow_up_first",
+          "label": "turn 2 describes the area named first",
+          "status": "passed",
+          "weight": 4,
+          "detail": "first named: customers; details matched: {\"customers\":5,\"customer_contracts\":0,\"support_tickets\":0}"
+        },
+        {
+          "type": "no_repeated_calls",
+          "label": "reads nothing twice across both turns",
+          "status": "failed",
+          "weight": 1,
+          "detail": "1 repeated: describe_module"
+        },
+        {
+          "type": "tool_not_called",
+          "label": "changes nothing",
+          "status": "passed",
+          "weight": 1,
+          "detail": "not called"
+        },
+        {
+          "type": "max_rounds",
+          "label": "max_rounds {\"turn\":2,\"max\":4}",
+          "status": "passed",
+          "weight": 1,
+          "detail": "2 round(s), at most 4"
+        },
+        {
+          "type": "no_tool_errors",
+          "label": "no_tool_errors",
+          "status": "passed",
+          "weight": 1,
+          "detail": "no tool errors"
+        }
+      ],
+      "turns": [
+        {
+          "turn": 1,
+          "status": "completed",
+          "answer": "Im System gibt es drei Bereiche mit Kundenbezug:\n\n- **Kunden:** Firmenname, Kundennummer, Ort, Ansprechperson und Telefonnummer.\n- **Kundenverträge:** Vertragsnummer, Kunde, Beginn, monatliche Gebühr und Kündigungsfrist.\n- **Support-Tickets:** Betreff, Kunde, Priorität und Ticketstatus.\n\nDie Kundenangabe in Verträgen und Tickets ist jeweils ein **Textfeld**, keine technische Verknüpfung zum Kundendatensatz. Ob und wie viele Datensätze in den Bereichen hinterlegt sind, habe ich noch nicht geprüft.",
+          "rounds": 4,
+          "input_tokens": 14240,
+          "cached_input_tokens": 5376,
+          "output_tokens": 331,
+          "tools": {
+            "explore_modules": 2,
+            "describe_module": 5
+          },
+          "gateway_cost_usd": 0.0107878
+        },
+        {
+          "turn": 2,
+          "status": "completed",
+          "answer": "Im Bereich **Kunden** können fünf Angaben erfasst werden:\n\n- Firmenname\n- Kundennummer\n- Ort\n- Ansprechperson\n- Telefonnummer\n\nAlle fünf sind Textfelder und laut Modulkonfiguration keine Pflichtfelder.",
+          "rounds": 2,
+          "input_tokens": 6663,
+          "cached_input_tokens": 5248,
+          "output_tokens": 90,
+          "tools": {
+            "describe_module": 1
+          },
+          "gateway_cost_usd": 0.0021274
+        }
+      ],
+      "duration_s": 24,
+      "gateway_cost_usd": 0.0129152,
+      "cleanup_error": null,
+      "requests": [
+        {
+          "duration_s": 3.586,
+          "gateway": {
+            "cost_usd": 0.002863,
+            "model": "gpt-6.1-terra",
+            "upstream_provider": "openai",
+            "model_group": "brezel-mid",
+            "call_id": "d05461a6-a40c-4069-ab0e-c01c0e787274"
+          },
+          "input_tokens": 2643,
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "output_tokens": 44,
+          "input_items": 1
+        },
+        {
+          "duration_s": 2.414,
+          "gateway": {
+            "cost_usd": 0.0007459999999999999,
+            "model": "gpt-6.1-terra",
+            "upstream_provider": "openai",
+            "model_group": "brezel-mid",
+            "call_id": "92c27202-f922-4dd9-85ff-fd5df3deb677"
+          },
+          "input_tokens": 2983,
+          "cached_tokens": 2560,
+          "cache_write_tokens": 0,
+          "output_tokens": 39,
+          "input_items": 3
+        },
+        {
+          "duration_s": 4.143,
+          "gateway": {
+            "cost_usd": 0.0010877999999999999,
+            "model": "gpt-6.1-terra",
+            "upstream_provider": "openai",
+            "model_group": "brezel-mid",
+            "call_id": "48902f4e-d2aa-40af-a296-727a606b051b"
+          },
+          "input_tokens": 3143,
+          "cached_tokens": 2816,
+          "cache_write_tokens": 0,
+          "output_tokens": 124,
+          "input_items": 5
+        },
+        {
+          "duration_s": 3.969,
+          "gateway": {
+            "cost_usd": 0.006091,
+            "model": "gpt-6.1-terra",
+            "upstream_provider": "openai",
+            "model_group": "brezel-mid",
+            "call_id": "33d3db81-58d8-4cf7-97aa-7df12c4eb842"
+          },
+          "input_tokens": 5471,
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "output_tokens": 124,
+          "input_items": 15
+        },
+        {
+          "duration_s": 3.691,
+          "gateway": {
+            "cost_usd": 0.0010782,
+            "model": "gpt-6.1-terra",
+            "upstream_provider": "openai",
+            "model_group": "brezel-mid",
+            "call_id": "2ee6bf5e-f2db-4043-9b25-77c599c3f6de"
+          },
+          "input_tokens": 3072,
+          "cached_tokens": 2304,
+          "cache_write_tokens": 0,
+          "output_tokens": 39,
+          "input_items": 3
+        },
+        {
+          "duration_s": 2.734,
+          "gateway": {
+            "cost_usd": 0.0010492000000000001,
+            "model": "gpt-6.1-terra",
+            "upstream_provider": "openai",
+            "model_group": "brezel-mid",
+            "call_id": "be69ce0c-07d8-4bad-bda8-6f84b2c4ada3"
+          },
+          "input_tokens": 3591,
+          "cached_tokens": 2944,
+          "cache_write_tokens": 0,
+          "output_tokens": 51,
+          "input_items": 5
+        }
+      ]
+    },
+    {
+      "scenario": "chat-follow-up-first-one",
+      "repetition": 1,
+      "mode": "preserve",
+      "status": "ok",
+      "score": 1,
+      "checks": [
+        {
+          "type": "answer_contains",
+          "label": "turn 1 names the customer-related areas",
+          "status": "passed",
+          "weight": 1,
+          "detail": "found"
+        },
+        {
+          "type": "follow_up_first",
+          "label": "turn 2 describes the area named first",
+          "status": "passed",
+          "weight": 4,
+          "detail": "first named: customers; details matched: {\"customers\":5,\"customer_contracts\":0,\"support_tickets\":0}"
+        },
+        {
+          "type": "no_repeated_calls",
+          "label": "reads nothing twice across both turns",
+          "status": "passed",
+          "weight": 1,
+          "detail": "no repeated calls"
+        },
+        {
+          "type": "tool_not_called",
+          "label": "changes nothing",
+          "status": "passed",
+          "weight": 1,
+          "detail": "not called"
+        },
+        {
+          "type": "max_rounds",
+          "label": "max_rounds {\"turn\":2,\"max\":4}",
+          "status": "passed",
+          "weight": 1,
+          "detail": "1 round(s), at most 4"
+        },
+        {
+          "type": "no_tool_errors",
+          "label": "no_tool_errors",
+          "status": "passed",
+          "weight": 1,
+          "detail": "no tool errors"
+        }
+      ],
+      "turns": [
+        {
+          "turn": 1,
+          "status": "completed",
+          "answer": "Im System gibt es drei Bereiche mit Kundenbezug:\n\n- **Kunden:** Firmenname, Kundennummer, Ort, Ansprechperson und Telefonnummer.\n- **Kundenverträge:** Vertragsnummer, Kunde, Startdatum, monatliche Gebühr und Kündigungsfrist.\n- **Support-Tickets:** Betreff, Kunde, Priorität und Ticketstatus.\n\nDabei sind die Kundenangaben in Verträgen und Tickets als **Textfelder** angelegt, nicht als direkte Verknüpfung zum Kundendatensatz. Das ist ein Überblick über die vorhandenen Datenfelder; welche konkreten Datensätze befüllt sind, habe ich noch nicht geprüft.",
+          "rounds": 4,
+          "input_tokens": 14264,
+          "cached_input_tokens": 8448,
+          "output_tokens": 352,
+          "tools": {
+            "explore_modules": 2,
+            "describe_module": 5
+          },
+          "gateway_cost_usd": 0.0079984
+        },
+        {
+          "turn": 2,
+          "status": "completed",
+          "answer": "Beim ersten Bereich, **Kunden**, können folgende Angaben erfasst werden:\n\n- Firmenname\n- Kundennummer\n- Ort\n- Ansprechperson\n- Telefonnummer\n\nKeines dieser Felder ist als Pflichtfeld eingerichtet.",
+          "rounds": 1,
+          "input_tokens": 6077,
+          "cached_input_tokens": 5504,
+          "output_tokens": 50,
+          "tools": [],
+          "gateway_cost_usd": 0.0010982
+        }
+      ],
+      "duration_s": 21,
+      "gateway_cost_usd": 0.0090966,
+      "cleanup_error": null,
+      "requests": [
+        {
+          "duration_s": 2.845,
+          "gateway": {
+            "cost_usd": 0.0028669999999999998,
+            "model": "gpt-6.1-terra",
+            "upstream_provider": "openai",
+            "model_group": "brezel-mid",
+            "call_id": "164a8372-0b5a-44a4-8b78-5d4872d89373"
+          },
+          "input_tokens": 2642,
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "output_tokens": 45,
+          "input_items": 1
+        },
+        {
+          "duration_s": 3.376,
+          "gateway": {
+            "cost_usd": 0.0007999999999999999,
+            "model": "gpt-6.1-terra",
+            "upstream_provider": "openai",
+            "model_group": "brezel-mid",
+            "call_id": "ba7a7377-c9e5-463d-a0eb-74b110af47e0"
+          },
+          "input_tokens": 2982,
+          "cached_tokens": 2560,
+          "cache_write_tokens": 0,
+          "output_tokens": 50,
+          "input_items": 3
+        },
+        {
+          "duration_s": 4.45,
+          "gateway": {
+            "cost_usd": 0.0010808,
+            "model": "gpt-6.1-terra",
+            "upstream_provider": "openai",
+            "model_group": "brezel-mid",
+            "call_id": "707d146a-8bdb-4d20-b37d-a2e0de6c40f7"
+          },
+          "input_tokens": 3156,
+          "cached_tokens": 2816,
+          "cache_write_tokens": 0,
+          "output_tokens": 120,
+          "input_items": 6
+        },
+        {
+          "duration_s": 4.204,
+          "gateway": {
+            "cost_usd": 0.0032506,
+            "model": "gpt-6.1-terra",
+            "upstream_provider": "openai",
+            "model_group": "brezel-mid",
+            "call_id": "e06c2e64-2fb1-4140-b518-95eeb1080af1"
+          },
+          "input_tokens": 5484,
+          "cached_tokens": 3072,
+          "cache_write_tokens": 0,
+          "output_tokens": 137,
+          "input_items": 16
+        },
+        {
+          "duration_s": 4.318,
+          "gateway": {
+            "cost_usd": 0.0010982,
+            "model": "gpt-6.1-terra",
+            "upstream_provider": "openai",
+            "model_group": "brezel-mid",
+            "call_id": "a7de539b-7936-4bd4-8c2b-12a302174f1e"
+          },
+          "input_tokens": 6077,
+          "cached_tokens": 5504,
+          "cache_write_tokens": 0,
+          "output_tokens": 50,
+          "input_items": 18
+        }
+      ]
+    },
+    {
+      "scenario": "chat-follow-up-first-one",
+      "repetition": 2,
+      "mode": "preserve",
+      "status": "ok",
+      "score": 0.5556,
+      "checks": [
+        {
+          "type": "answer_contains",
+          "label": "turn 1 names the customer-related areas",
+          "status": "passed",
+          "weight": 1,
+          "detail": "found"
+        },
+        {
+          "type": "follow_up_first",
+          "label": "turn 2 describes the area named first",
+          "status": "failed",
+          "weight": 4,
+          "detail": "first named: customers; details matched: {\"customers\":4,\"customer_contracts\":4,\"support_tickets\":0}"
+        },
+        {
+          "type": "no_repeated_calls",
+          "label": "reads nothing twice across both turns",
+          "status": "passed",
+          "weight": 1,
+          "detail": "no repeated calls"
+        },
+        {
+          "type": "tool_not_called",
+          "label": "changes nothing",
+          "status": "passed",
+          "weight": 1,
+          "detail": "not called"
+        },
+        {
+          "type": "max_rounds",
+          "label": "max_rounds {\"turn\":2,\"max\":4}",
+          "status": "passed",
+          "weight": 1,
+          "detail": "1 round(s), at most 4"
+        },
+        {
+          "type": "no_tool_errors",
+          "label": "no_tool_errors",
+          "status": "passed",
+          "weight": 1,
+          "detail": "no tool errors"
+        }
+      ],
+      "turns": [
+        {
+          "turn": 1,
+          "status": "completed",
+          "answer": "Im System sind **drei Kunden** sowie ein Kundenvertrag und ein Support-Ticket erfasst:\n\n| Kunde | Kundennummer | Ort | Kontaktperson | Telefon |\n|---|---|---|---|---|\n| Müller Haustechnik GmbH | 10023 | Köln | Petra Müller | 0221 4471230 |\n| Schneider Bau KG | 10031 | Bonn | Jens Schneider | 0228 918822 |\n| Becker Elektro | 10044 | Leverkusen | Aylin Becker | 0214 30551 |\n\n**Weitere Kundendaten**\n\n- **Müller Haustechnik GmbH:** Vertrag WV-2024-07, Beginn 01.03.2024, monatliche Gebühr 89, Kündigungsfrist drei Monate. Eine Währung ist nicht angegeben.\n- **Schneider Bau KG:** Offenes Support-Ticket „Heizung im Lager fällt aus“ mit hoher Priorität.\n- **Becker Elektro:** In den sichtbaren Vertrags- und Ticketdaten ist kein zugehöriger Eintrag vorhanden.\n\nDie Kundennamen in Verträgen und Tickets sind als Text hinterlegt, nicht als technische Verknüpfung zum Kundendatensatz.",
+          "rounds": 5,
+          "input_tokens": 20512,
+          "cached_input_tokens": 3072,
+          "output_tokens": 571,
+          "tools": {
+            "explore_modules": 2,
+            "describe_module": 5,
+            "search_entities": 3
+          },
+          "gateway_cost_usd": 0.0204486
+        },
+        {
+          "turn": 2,
+          "status": "completed",
+          "answer": "Beim ersten Kunden, **Müller Haustechnik GmbH**, sind folgende Daten erfasst:\n\n- **Kundennummer:** 10023\n- **Ort:** Köln\n- **Kontaktperson:** Petra Müller\n- **Telefon:** 0221 4471230\n\nAußerdem ist ein Vertrag auf den Kundennamen erfasst:\n\n- **Vertragsnummer:** WV-2024-07\n- **Beginn:** 1. März 2024\n- **Monatliche Gebühr:** 89; eine Währung ist nicht angegeben\n- **Kündigungsfrist:** drei Monate\n\nEin Support-Ticket für diesen Kunden ist in den sichtbaren Daten nicht vorhanden. Der Kundenname im Vertrag ist als Text und nicht als technische Verknüpfung hinterlegt.",
+          "rounds": 1,
+          "input_tokens": 6942,
+          "cached_input_tokens": 5376,
+          "output_tokens": 164,
+          "tools": [],
+          "gateway_cost_usd": 0.0026548
+        }
+      ],
+      "duration_s": 26,
+      "gateway_cost_usd": 0.0231034,
+      "cleanup_error": null,
+      "requests": [
+        {
+          "duration_s": 2.155,
+          "gateway": {
+            "cost_usd": 0.002852,
+            "model": "gpt-6.1-terra",
+            "upstream_provider": "openai",
+            "model_group": "brezel-mid",
+            "call_id": "81f4d7ee-ea6f-42ce-9be9-d160c03016f4"
+          },
+          "input_tokens": 2647,
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "output_tokens": 41,
+          "input_items": 1
+        },
+        {
+          "duration_s": 2.61,
+          "gateway": {
+            "cost_usd": 0.003231,
+            "model": "gpt-6.1-terra",
+            "upstream_provider": "openai",
+            "model_group": "brezel-mid",
+            "call_id": "3fce02e7-6554-474c-af16-e94295ab073e"
+          },
+          "input_tokens": 2986,
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "output_tokens": 49,
+          "input_items": 3
+        },
+        {
+          "duration_s": 3.632,
+          "gateway": {
+            "cost_usd": 0.0037619999999999997,
+            "model": "gpt-6.1-terra",
+            "upstream_provider": "openai",
+            "model_group": "brezel-mid",
+            "call_id": "d87419f6-1bf9-4a7d-898d-ad4bd3aa2ab5"
+          },
+          "input_tokens": 3157,
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "output_tokens": 121,
+          "input_items": 6
+        },
+        {
+          "duration_s": 3.58,
+          "gateway": {
+            "cost_usd": 0.0031165999999999998,
+            "model": "gpt-6.1-terra",
+            "upstream_provider": "openai",
+            "model_group": "brezel-mid",
+            "call_id": "e37cd1ae-a27f-46bd-b2cb-56e3d2876c88"
+          },
+          "input_tokens": 5490,
+          "cached_tokens": 3072,
+          "cache_write_tokens": 0,
+          "output_tokens": 109,
+          "input_items": 16
+        },
+        {
+          "duration_s": 6.344,
+          "gateway": {
+            "cost_usd": 0.007487,
+            "model": "gpt-6.1-terra",
+            "upstream_provider": "openai",
+            "model_group": "brezel-mid",
+            "call_id": "2813cf7f-1748-48f1-ac88-84c8b5111574"
+          },
+          "input_tokens": 6232,
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "output_tokens": 251,
+          "input_items": 22
+        },
+        {
+          "duration_s": 4.876,
+          "gateway": {
+            "cost_usd": 0.0026548,
+            "model": "gpt-6.1-terra",
+            "upstream_provider": "openai",
+            "model_group": "brezel-mid",
+            "call_id": "6911ab3a-6b56-49c9-8ae2-636d28d77aa5"
+          },
+          "input_tokens": 6942,
+          "cached_tokens": 5376,
+          "cache_write_tokens": 0,
+          "output_tokens": 164,
+          "input_items": 24
+        }
+      ]
+    },
+    {
+      "scenario": "chat-follow-up-first-one",
+      "repetition": 2,
+      "mode": "compact",
+      "status": "ok",
+      "score": 0.8889,
+      "checks": [
+        {
+          "type": "answer_contains",
+          "label": "turn 1 names the customer-related areas",
+          "status": "passed",
+          "weight": 1,
+          "detail": "found"
+        },
+        {
+          "type": "follow_up_first",
+          "label": "turn 2 describes the area named first",
+          "status": "passed",
+          "weight": 4,
+          "detail": "first named: customers; details matched: {\"customers\":5,\"customer_contracts\":0,\"support_tickets\":0}"
+        },
+        {
+          "type": "no_repeated_calls",
+          "label": "reads nothing twice across both turns",
+          "status": "failed",
+          "weight": 1,
+          "detail": "1 repeated: describe_module"
+        },
+        {
+          "type": "tool_not_called",
+          "label": "changes nothing",
+          "status": "passed",
+          "weight": 1,
+          "detail": "not called"
+        },
+        {
+          "type": "max_rounds",
+          "label": "max_rounds {\"turn\":2,\"max\":4}",
+          "status": "passed",
+          "weight": 1,
+          "detail": "2 round(s), at most 4"
+        },
+        {
+          "type": "no_tool_errors",
+          "label": "no_tool_errors",
+          "status": "passed",
+          "weight": 1,
+          "detail": "no tool errors"
+        }
+      ],
+      "turns": [
+        {
+          "turn": 1,
+          "status": "completed",
+          "answer": "Im System gibt es drei unmittelbar kundenbezogene Bereiche:\n\n- **Kunden:** Firmenname, Kundennummer, Stadt, Kontaktperson und Telefonnummer.\n- **Kundenverträge:** Vertragsnummer, Kunde, Beginn, monatliche Gebühr und Kündigungsfrist.\n- **Support-Tickets:** Betreff, Kunde, Priorität und Ticketstatus.\n\nBei Verträgen und Tickets ist der Kunde jeweils als **Textfeld** hinterlegt, nicht als technische Verknüpfung zum Kundendatensatz. Die Übersicht beschreibt die verfügbaren Felder; sie sagt noch nicht, welche davon tatsächlich befüllt sind.",
+          "rounds": 3,
+          "input_tokens": 10524,
+          "cached_input_tokens": 7424,
+          "output_tokens": 297,
+          "tools": {
+            "explore_modules": 1,
+            "describe_module": 5
+          },
+          "gateway_cost_usd": 0.0049562
+        },
+        {
+          "turn": 2,
+          "status": "completed",
+          "answer": "Beim Bereich **Kunden** können diese fünf Angaben erfasst werden:\n\n- Firmenname\n- Kundennummer\n- Stadt\n- Kontaktperson\n- Telefonnummer\n\nAlle fünf Felder sind Textfelder und laut Moduldefinition **keine Pflichtfelder**.",
+          "rounds": 2,
+          "input_tokens": 6656,
+          "cached_input_tokens": 5248,
+          "output_tokens": 94,
+          "tools": {
+            "describe_module": 1
+          },
+          "gateway_cost_usd": 0.0021404
+        }
+      ],
+      "duration_s": 19,
+      "gateway_cost_usd": 0.0070966,
+      "cleanup_error": null,
+      "requests": [
+        {
+          "duration_s": 2.316,
+          "gateway": {
+            "cost_usd": 0.0006391999999999999,
+            "model": "gpt-6.1-terra",
+            "upstream_provider": "openai",
+            "model_group": "brezel-mid",
+            "call_id": "b27bc005-6f87-48b5-b437-a3f0dd3aec0f"
+          },
+          "input_tokens": 2638,
+          "cached_tokens": 2304,
+          "cache_write_tokens": 0,
+          "output_tokens": 38,
+          "input_items": 1
+        },
+        {
+          "duration_s": 4.005,
+          "gateway": {
+            "cost_usd": 0.0011476000000000001,
+            "model": "gpt-6.1-terra",
+            "upstream_provider": "openai",
+            "model_group": "brezel-mid",
+            "call_id": "4c7f2961-7a85-442b-8902-79057da7743b"
+          },
+          "input_tokens": 2798,
+          "cached_tokens": 2432,
+          "cache_write_tokens": 0,
+          "output_tokens": 132,
+          "input_items": 3
+        },
+        {
+          "duration_s": 3.732,
+          "gateway": {
+            "cost_usd": 0.0031693999999999997,
+            "model": "gpt-6.1-terra",
+            "upstream_provider": "openai",
+            "model_group": "brezel-mid",
+            "call_id": "f7af4693-6080-4489-9ef3-e91b187d2310"
+          },
+          "input_tokens": 5088,
+          "cached_tokens": 2688,
+          "cache_write_tokens": 0,
+          "output_tokens": 127,
+          "input_items": 14
+        },
+        {
+          "duration_s": 2.965,
+          "gateway": {
+            "cost_usd": 0.0010752,
+            "model": "gpt-6.1-terra",
+            "upstream_provider": "openai",
+            "model_group": "brezel-mid",
+            "call_id": "8193b052-08d9-499e-8e36-9a9c799f59d9"
+          },
+          "input_tokens": 3069,
+          "cached_tokens": 2304,
+          "cache_write_tokens": 0,
+          "output_tokens": 39,
+          "input_items": 3
+        },
+        {
+          "duration_s": 3.107,
+          "gateway": {
+            "cost_usd": 0.0010652,
+            "model": "gpt-6.1-terra",
+            "upstream_provider": "openai",
+            "model_group": "brezel-mid",
+            "call_id": "cb1c1408-da0c-427a-b6a9-276f589367eb"
+          },
+          "input_tokens": 3587,
+          "cached_tokens": 2944,
+          "cache_write_tokens": 0,
+          "output_tokens": 55,
+          "input_items": 5
+        }
+      ]
+    },
+    {
+      "scenario": "bulk-update-follow-up",
+      "repetition": 1,
+      "mode": "compact",
+      "status": "ok",
+      "score": 1,
+      "checks": [
+        {
+          "type": "entity_count",
+          "label": "entity_count {\"module\":\"tasks\",\"where\":{\"project\":\"Umzug Werkstatt\",\"assignee\":\"Büro\",\"status\":\"offen\"},\"equals\":5}",
+          "status": "passed",
+          "weight": 4,
+          "detail": "5 record(s) in tasks"
+        },
+        {
+          "type": "entity_count",
+          "label": "entity_count {\"module\":\"tasks\",\"where\":{\"project\":\"Umzug Werkstatt\",\"assignee\":\"Werkstatt\",\"status\":\"erledigt\"},\"equals\":5}",
+          "status": "passed",
+          "weight": 4,
+          "detail": "5 record(s) in tasks"
+        },
+        {
+          "type": "entity_count",
+          "label": "entity_count {\"module\":\"tasks\",\"where\":{\"project\":\"Handwerksmesse\",\"status\":[\"offen\",\"in Arbeit\"]},\"equals\":2}",
+          "status": "passed",
+          "weight": 2,
+          "detail": "2 record(s) in tasks"
+        },
+        {
+          "type": "entity_count",
+          "label": "entity_count {\"module\":\"tasks\",\"equals\":12}",
+          "status": "passed",
+          "weight": 1,
+          "detail": "12 record(s) in tasks"
+        },
+        {
+          "type": "no_tool_errors",
+          "label": "no_tool_errors",
+          "status": "passed",
+          "weight": 1,
+          "detail": "no tool errors"
+        },
+        {
+          "type": "run_completed",
+          "label": "run_completed",
+          "status": "passed",
+          "weight": 1,
+          "detail": "completed"
+        },
+        {
+          "type": "max_rounds",
+          "label": "max_rounds {\"max\":12}",
+          "status": "passed",
+          "weight": 1,
+          "detail": "6 round(s), at most 12"
+        }
+      ],
+      "turns": [
+        {
+          "turn": 1,
+          "status": "completed",
+          "answer": "Erledigt: Ich habe alle 10 Aufgaben zum Projekt „Umzug Werkstatt“ als erledigt markiert.",
+          "rounds": 6,
+          "input_tokens": 20602,
+          "cached_input_tokens": 16512,
+          "output_tokens": 407,
+          "tools": {
+            "explore_modules": 2,
+            "describe_module": 1,
+            "search_entities": 1,
+            "update_entities": 1
+          },
+          "gateway_cost_usd": 0.0069506
+        },
+        {
+          "turn": 2,
+          "status": "completed",
+          "answer": "Die fünf dem Büro zugewiesenen Aufgaben zum Umzug sind wieder **offen**. Die anderen fünf bleiben erledigt.",
+          "rounds": 3,
+          "input_tokens": 12158,
+          "cached_input_tokens": 7552,
+          "output_tokens": 248,
+          "tools": {
+            "describe_module": 1,
+            "search_entities": 1,
+            "update_entities": 1
+          },
+          "gateway_cost_usd": 0.0062236
+        }
+      ],
+      "duration_s": 31,
+      "gateway_cost_usd": 0.0131742,
+      "cleanup_error": null,
+      "requests": [
+        {
+          "duration_s": 3.197,
+          "gateway": {
+            "cost_usd": 0.0006801999999999999,
+            "model": "gpt-6.1-terra",
+            "upstream_provider": "openai",
+            "model_group": "brezel-mid",
+            "call_id": "964f7403-223b-4cf5-9809-dd11c6f837aa"
+          },
+          "input_tokens": 2644,
+          "cached_tokens": 2304,
+          "cache_write_tokens": 0,
+          "output_tokens": 45,
+          "input_items": 1
+        },
+        {
+          "duration_s": 2.891,
+          "gateway": {
+            "cost_usd": 0.0005,
+            "model": "gpt-6.1-terra",
+            "upstream_provider": "openai",
+            "model_group": "brezel-mid",
+            "call_id": "fa7cf582-5468-4974-893c-6ed0f0853722"
+          },
+          "input_tokens": 2737,
+          "cached_tokens": 2560,
+          "cache_write_tokens": 0,
+          "output_tokens": 39,
+          "input_items": 3
+        },
+        {
+          "duration_s": 2.628,
+          "gateway": {
+            "cost_usd": 0.0008652,
+            "model": "gpt-6.1-terra",
+            "upstream_provider": "openai",
+            "model_group": "brezel-mid",
+            "call_id": "3f83476e-682c-4b6a-8f91-169ca9cad150"
+          },
+          "input_tokens": 2859,
+          "cached_tokens": 2304,
+          "cache_write_tokens": 0,
+          "output_tokens": 39,
+          "input_items": 5
+        },
+        {
+          "duration_s": 2.547,
+          "gateway": {
+            "cost_usd": 0.001228,
+            "model": "gpt-6.1-terra",
+            "upstream_provider": "openai",
+            "model_group": "brezel-mid",
+            "call_id": "3f5c7422-8b00-4325-bdea-10f4e70e8fc6"
+          },
+          "input_tokens": 3410,
+          "cached_tokens": 2560,
+          "cache_write_tokens": 0,
+          "output_tokens": 50,
+          "input_items": 7
+        },
+        {
+          "duration_s": 5.222,
+          "gateway": {
+            "cost_usd": 0.0027474,
+            "model": "gpt-6.1-terra",
+            "upstream_provider": "openai",
+            "model_group": "brezel-mid",
+            "call_id": "e11ef931-2dac-41cc-a36a-bc7400e0a7b6"
+          },
+          "input_tokens": 4271,
+          "cached_tokens": 2688,
+          "cache_write_tokens": 0,
+          "output_tokens": 206,
+          "input_items": 9
+        },
+        {
+          "duration_s": 2.278,
+          "gateway": {
+            "cost_usd": 0.0009298,
+            "model": "gpt-6.1-terra",
+            "upstream_provider": "openai",
+            "model_group": "brezel-mid",
+            "call_id": "f494711e-685a-4fb0-a44c-11740ca60b80"
+          },
+          "input_tokens": 4681,
+          "cached_tokens": 4096,
+          "cache_write_tokens": 0,
+          "output_tokens": 28,
+          "input_items": 11
+        },
+        {
+          "duration_s": 3.167,
+          "gateway": {
+            "cost_usd": 0.0013532,
+            "model": "gpt-6.1-terra",
+            "upstream_provider": "openai",
+            "model_group": "brezel-mid",
+            "call_id": "5145e49b-7bb8-4185-9b93-615266cc9a99"
+          },
+          "input_tokens": 3087,
+          "cached_tokens": 2304,
+          "cache_write_tokens": 0,
+          "output_tokens": 91,
+          "input_items": 3
+        },
+        {
+          "duration_s": 3.605,
+          "gateway": {
+            "cost_usd": 0.0022702,
+            "model": "gpt-6.1-terra",
+            "upstream_provider": "openai",
+            "model_group": "brezel-mid",
+            "call_id": "c28f496d-2f03-4bdc-a4a7-4aed6aa8bfd6"
+          },
+          "input_tokens": 4432,
+          "cached_tokens": 2944,
+          "cache_write_tokens": 0,
+          "output_tokens": 127,
+          "input_items": 7
+        },
+        {
+          "duration_s": 2.659,
+          "gateway": {
+            "cost_usd": 0.0026002,
+            "model": "gpt-6.1-terra",
+            "upstream_provider": "openai",
+            "model_group": "brezel-mid",
+            "call_id": "afce310b-c520-47a0-ba36-d83d7fa5ec02"
+          },
+          "input_tokens": 4639,
+          "cached_tokens": 2304,
+          "cache_write_tokens": 0,
+          "output_tokens": 30,
+          "input_items": 9
+        }
+      ]
+    },
+    {
+      "scenario": "bulk-update-follow-up",
+      "repetition": 1,
+      "mode": "preserve",
+      "status": "ok",
+      "score": 1,
+      "checks": [
+        {
+          "type": "entity_count",
+          "label": "entity_count {\"module\":\"tasks\",\"where\":{\"project\":\"Umzug Werkstatt\",\"assignee\":\"Büro\",\"status\":\"offen\"},\"equals\":5}",
+          "status": "passed",
+          "weight": 4,
+          "detail": "5 record(s) in tasks"
+        },
+        {
+          "type": "entity_count",
+          "label": "entity_count {\"module\":\"tasks\",\"where\":{\"project\":\"Umzug Werkstatt\",\"assignee\":\"Werkstatt\",\"status\":\"erledigt\"},\"equals\":5}",
+          "status": "passed",
+          "weight": 4,
+          "detail": "5 record(s) in tasks"
+        },
+        {
+          "type": "entity_count",
+          "label": "entity_count {\"module\":\"tasks\",\"where\":{\"project\":\"Handwerksmesse\",\"status\":[\"offen\",\"in Arbeit\"]},\"equals\":2}",
+          "status": "passed",
+          "weight": 2,
+          "detail": "2 record(s) in tasks"
+        },
+        {
+          "type": "entity_count",
+          "label": "entity_count {\"module\":\"tasks\",\"equals\":12}",
+          "status": "passed",
+          "weight": 1,
+          "detail": "12 record(s) in tasks"
+        },
+        {
+          "type": "no_tool_errors",
+          "label": "no_tool_errors",
+          "status": "passed",
+          "weight": 1,
+          "detail": "no tool errors"
+        },
+        {
+          "type": "run_completed",
+          "label": "run_completed",
+          "status": "passed",
+          "weight": 1,
+          "detail": "completed"
+        },
+        {
+          "type": "max_rounds",
+          "label": "max_rounds {\"max\":12}",
+          "status": "passed",
+          "weight": 1,
+          "detail": "7 round(s), at most 12"
+        }
+      ],
+      "turns": [
+        {
+          "turn": 1,
+          "status": "completed",
+          "answer": "Alle zehn Aufgaben zum Projekt „Umzug Werkstatt“ sind als **erledigt** markiert.",
+          "rounds": 7,
+          "input_tokens": 23792,
+          "cached_input_tokens": 14848,
+          "output_tokens": 452,
+          "tools": {
+            "explore_modules": 2,
+            "tool_search": 1,
+            "describe_module": 1,
+            "search_entities": 1,
+            "update_entities": 1
+          },
+          "gateway_cost_usd": 0.0119464
+        },
+        {
+          "turn": 2,
+          "status": "completed",
+          "answer": "Die fünf Umzugsaufgaben des Büros sind wieder auf **offen** gesetzt. Die anderen Aufgaben bleiben erledigt.",
+          "rounds": 3,
+          "input_tokens": 17408,
+          "cached_input_tokens": 13184,
+          "output_tokens": 245,
+          "tools": {
+            "search_entities": 1,
+            "update_entities": 1
+          },
+          "gateway_cost_usd": 0.0061082
+        }
+      ],
+      "duration_s": 36,
+      "gateway_cost_usd": 0.0180546,
+      "cleanup_error": null,
+      "requests": [
+        {
+          "duration_s": 2.739,
+          "gateway": {
+            "cost_usd": 0.002868,
+            "model": "gpt-6.1-terra",
+            "upstream_provider": "openai",
+            "model_group": "brezel-mid",
+            "call_id": "d1ab55fb-fbce-4083-9a0f-c7df75964234"
+          },
+          "input_tokens": 2648,
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "output_tokens": 44,
+          "input_items": 1
+        },
+        {
+          "duration_s": 2.3,
+          "gateway": {
+            "cost_usd": 0.002961,
+            "model": "gpt-6.1-terra",
+            "upstream_provider": "openai",
+            "model_group": "brezel-mid",
+            "call_id": "b77a1d4e-cbdb-4bff-a23a-fc7b52076285"
+          },
+          "input_tokens": 2741,
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "output_tokens": 44,
+          "input_items": 3
+        },
+        {
+          "duration_s": 2.566,
+          "gateway": {
+            "cost_usd": 0.000554,
+            "model": "gpt-6.1-terra",
+            "upstream_provider": "openai",
+            "model_group": "brezel-mid",
+            "call_id": "55742400-6c68-416a-881f-61f34857922a"
+          },
+          "input_tokens": 2791,
+          "cached_tokens": 2560,
+          "cache_write_tokens": 0,
+          "output_tokens": 39,
+          "input_items": 5
+        },
+        {
+          "duration_s": 2.357,
+          "gateway": {
+            "cost_usd": 0.0006124,
+            "model": "gpt-6.1-terra",
+            "upstream_provider": "openai",
+            "model_group": "brezel-mid",
+            "call_id": "2eb3a45d-8750-4410-96e9-be63cd6b4aab"
+          },
+          "input_tokens": 2956,
+          "cached_tokens": 2688,
+          "cache_write_tokens": 0,
+          "output_tokens": 42,
+          "input_items": 7
+        },
+        {
+          "duration_s": 3.984,
+          "gateway": {
+            "cost_usd": 0.0010928,
+            "model": "gpt-6.1-terra",
+            "upstream_provider": "openai",
+            "model_group": "brezel-mid",
+            "call_id": "2b19b309-7d4f-4a31-a5f7-2795ed43b5a7"
+          },
+          "input_tokens": 3508,
+          "cached_tokens": 2816,
+          "cache_write_tokens": 0,
+          "output_tokens": 52,
+          "input_items": 9
+        },
+        {
+          "duration_s": 5.3,
+          "gateway": {
+            "cost_usd": 0.002967,
+            "model": "gpt-6.1-terra",
+            "upstream_provider": "openai",
+            "model_group": "brezel-mid",
+            "call_id": "92584883-d2f5-40c5-b275-b9c397d63cbe"
+          },
+          "input_tokens": 4369,
+          "cached_tokens": 2560,
+          "cache_write_tokens": 0,
+          "output_tokens": 206,
+          "input_items": 11
+        },
+        {
+          "duration_s": 2.649,
+          "gateway": {
+            "cost_usd": 0.0008911999999999999,
+            "model": "gpt-6.1-terra",
+            "upstream_provider": "openai",
+            "model_group": "brezel-mid",
+            "call_id": "af9279eb-8816-4e3d-8367-1cfb9cb317e6"
+          },
+          "input_tokens": 4779,
+          "cached_tokens": 4224,
+          "cache_write_tokens": 0,
+          "output_tokens": 25,
+          "input_items": 13
+        },
+        {
+          "duration_s": 3.871,
+          "gateway": {
+            "cost_usd": 0.0014474000000000002,
+            "model": "gpt-6.1-terra",
+            "upstream_provider": "openai",
+            "model_group": "brezel-mid",
+            "call_id": "dad31642-5e62-46ee-8cef-8914c75df9e5"
+          },
+          "input_tokens": 5375,
+          "cached_tokens": 4608,
+          "cache_write_tokens": 0,
+          "output_tokens": 90,
+          "input_items": 15
+        },
+        {
+          "duration_s": 4.623,
+          "gateway": {
+            "cost_usd": 0.0015524,
+            "model": "gpt-6.1-terra",
+            "upstream_provider": "openai",
+            "model_group": "brezel-mid",
+            "call_id": "7a099daf-7037-4e59-9df9-bb9aacd1d89e"
+          },
+          "input_tokens": 5913,
+          "cached_tokens": 5248,
+          "cache_write_tokens": 0,
+          "output_tokens": 125,
+          "input_items": 17
+        },
+        {
+          "duration_s": 2.567,
+          "gateway": {
+            "cost_usd": 0.0031084,
+            "model": "gpt-6.1-terra",
+            "upstream_provider": "openai",
+            "model_group": "brezel-mid",
+            "call_id": "b95fb6e2-4963-4405-98bf-085748c1315b"
+          },
+          "input_tokens": 6120,
+          "cached_tokens": 3328,
+          "cache_write_tokens": 0,
+          "output_tokens": 30,
+          "input_items": 19
+        }
+      ]
+    },
+    {
+      "scenario": "bulk-update-follow-up",
+      "repetition": 2,
+      "mode": "preserve",
+      "status": "ok",
+      "score": 1,
+      "checks": [
+        {
+          "type": "entity_count",
+          "label": "entity_count {\"module\":\"tasks\",\"where\":{\"project\":\"Umzug Werkstatt\",\"assignee\":\"Büro\",\"status\":\"offen\"},\"equals\":5}",
+          "status": "passed",
+          "weight": 4,
+          "detail": "5 record(s) in tasks"
+        },
+        {
+          "type": "entity_count",
+          "label": "entity_count {\"module\":\"tasks\",\"where\":{\"project\":\"Umzug Werkstatt\",\"assignee\":\"Werkstatt\",\"status\":\"erledigt\"},\"equals\":5}",
+          "status": "passed",
+          "weight": 4,
+          "detail": "5 record(s) in tasks"
+        },
+        {
+          "type": "entity_count",
+          "label": "entity_count {\"module\":\"tasks\",\"where\":{\"project\":\"Handwerksmesse\",\"status\":[\"offen\",\"in Arbeit\"]},\"equals\":2}",
+          "status": "passed",
+          "weight": 2,
+          "detail": "2 record(s) in tasks"
+        },
+        {
+          "type": "entity_count",
+          "label": "entity_count {\"module\":\"tasks\",\"equals\":12}",
+          "status": "passed",
+          "weight": 1,
+          "detail": "12 record(s) in tasks"
+        },
+        {
+          "type": "no_tool_errors",
+          "label": "no_tool_errors",
+          "status": "passed",
+          "weight": 1,
+          "detail": "no tool errors"
+        },
+        {
+          "type": "run_completed",
+          "label": "run_completed",
+          "status": "passed",
+          "weight": 1,
+          "detail": "completed"
+        },
+        {
+          "type": "max_rounds",
+          "label": "max_rounds {\"max\":12}",
+          "status": "passed",
+          "weight": 1,
+          "detail": "6 round(s), at most 12"
+        }
+      ],
+      "turns": [
+        {
+          "turn": 1,
+          "status": "completed",
+          "answer": "Erledigt: Ich habe alle 10 Aufgaben zum Projekt „Umzug Werkstatt“ abgehakt.",
+          "rounds": 6,
+          "input_tokens": 21873,
+          "cached_input_tokens": 13312,
+          "output_tokens": 401,
+          "tools": {
+            "explore_modules": 2,
+            "describe_module": 1,
+            "search_entities": 1,
+            "update_entities": 1
+          },
+          "gateway_cost_usd": 0.0112316
+        },
+        {
+          "turn": 2,
+          "status": "completed",
+          "answer": "Die fünf Büro-Aufgaben zum Umzug sind wieder auf **offen** gesetzt. Die anderen Aufgaben bleiben erledigt.",
+          "rounds": 3,
+          "input_tokens": 17840,
+          "cached_input_tokens": 10240,
+          "output_tokens": 245,
+          "tools": {
+            "search_entities": 1,
+            "update_entities": 1
+          },
+          "gateway_cost_usd": 0.009337
+        }
+      ],
+      "duration_s": 32,
+      "gateway_cost_usd": 0.0205686,
+      "cleanup_error": null,
+      "requests": [
+        {
+          "duration_s": 2.534,
+          "gateway": {
+            "cost_usd": 0.00287,
+            "model": "gpt-6.1-terra",
+            "upstream_provider": "openai",
+            "model_group": "brezel-mid",
+            "call_id": "140c1d34-59d9-4486-b46b-e648631feeae"
+          },
+          "input_tokens": 2650,
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "output_tokens": 44,
+          "input_items": 1
+        },
+        {
+          "duration_s": 2.232,
+          "gateway": {
+            "cost_usd": 0.000748,
+            "model": "gpt-6.1-terra",
+            "upstream_provider": "openai",
+            "model_group": "brezel-mid",
+            "call_id": "3fd38a06-c6b7-4652-8527-373bbdb7333e"
+          },
+          "input_tokens": 2990,
+          "cached_tokens": 2560,
+          "cache_write_tokens": 0,
+          "output_tokens": 38,
+          "input_items": 3
+        },
+        {
+          "duration_s": 2.53,
+          "gateway": {
+            "cost_usd": 0.0033069999999999996,
+            "model": "gpt-6.1-terra",
+            "upstream_provider": "openai",
+            "model_group": "brezel-mid",
+            "call_id": "21c1176a-4104-41e8-bd4c-cf28e36ef14a"
+          },
+          "input_tokens": 3112,
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "output_tokens": 39,
+          "input_items": 5
+        },
+        {
+          "duration_s": 2.474,
+          "gateway": {
+            "cost_usd": 0.0012278,
+            "model": "gpt-6.1-terra",
+            "upstream_provider": "openai",
+            "model_group": "brezel-mid",
+            "call_id": "b15e7046-8ba1-4373-a629-28d5547ef791"
+          },
+          "input_tokens": 3663,
+          "cached_tokens": 2816,
+          "cache_write_tokens": 0,
+          "output_tokens": 48,
+          "input_items": 7
+        },
+        {
+          "duration_s": 5.325,
+          "gateway": {
+            "cost_usd": 0.0021492,
+            "model": "gpt-6.1-terra",
+            "upstream_provider": "openai",
+            "model_group": "brezel-mid",
+            "call_id": "2e021b73-be06-421c-b0d5-98a4d1cadf9a"
+          },
+          "input_tokens": 4524,
+          "cached_tokens": 3584,
+          "cache_write_tokens": 0,
+          "output_tokens": 206,
+          "input_items": 9
+        },
+        {
+          "duration_s": 2.555,
+          "gateway": {
+            "cost_usd": 0.0009295999999999999,
+            "model": "gpt-6.1-terra",
+            "upstream_provider": "openai",
+            "model_group": "brezel-mid",
+            "call_id": "d9c04c6b-4edc-4f1f-893f-d1c0264f8d0b"
+          },
+          "input_tokens": 4934,
+          "cached_tokens": 4352,
+          "cache_write_tokens": 0,
+          "output_tokens": 26,
+          "input_items": 11
+        },
+        {
+          "duration_s": 4.41,
+          "gateway": {
+            "cost_usd": 0.0013582,
+            "model": "gpt-6.1-terra",
+            "upstream_provider": "openai",
+            "model_group": "brezel-mid",
+            "call_id": "514db5d2-dc59-4902-8c80-621e8fad04ea"
+          },
+          "input_tokens": 5519,
+          "cached_tokens": 4864,
+          "cache_write_tokens": 0,
+          "output_tokens": 92,
+          "input_items": 13
+        },
+        {
+          "duration_s": 4.024,
+          "gateway": {
+            "cost_usd": 0.0015748,
+            "model": "gpt-6.1-terra",
+            "upstream_provider": "openai",
+            "model_group": "brezel-mid",
+            "call_id": "67531b4f-601e-448e-b7f4-846e457bd0ed"
+          },
+          "input_tokens": 6057,
+          "cached_tokens": 5376,
+          "cache_write_tokens": 0,
+          "output_tokens": 125,
+          "input_items": 15
+        },
+        {
+          "duration_s": 2.482,
+          "gateway": {
+            "cost_usd": 0.006404,
+            "model": "gpt-6.1-terra",
+            "upstream_provider": "openai",
+            "model_group": "brezel-mid",
+            "call_id": "c1533bda-68c9-4eb9-8cc0-631c18b9cccd"
+          },
+          "input_tokens": 6264,
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "output_tokens": 28,
+          "input_items": 17
+        }
+      ]
+    },
+    {
+      "scenario": "bulk-update-follow-up",
+      "repetition": 2,
+      "mode": "compact",
+      "status": "ok",
+      "score": 1,
+      "checks": [
+        {
+          "type": "entity_count",
+          "label": "entity_count {\"module\":\"tasks\",\"where\":{\"project\":\"Umzug Werkstatt\",\"assignee\":\"Büro\",\"status\":\"offen\"},\"equals\":5}",
+          "status": "passed",
+          "weight": 4,
+          "detail": "5 record(s) in tasks"
+        },
+        {
+          "type": "entity_count",
+          "label": "entity_count {\"module\":\"tasks\",\"where\":{\"project\":\"Umzug Werkstatt\",\"assignee\":\"Werkstatt\",\"status\":\"erledigt\"},\"equals\":5}",
+          "status": "passed",
+          "weight": 4,
+          "detail": "5 record(s) in tasks"
+        },
+        {
+          "type": "entity_count",
+          "label": "entity_count {\"module\":\"tasks\",\"where\":{\"project\":\"Handwerksmesse\",\"status\":[\"offen\",\"in Arbeit\"]},\"equals\":2}",
+          "status": "passed",
+          "weight": 2,
+          "detail": "2 record(s) in tasks"
+        },
+        {
+          "type": "entity_count",
+          "label": "entity_count {\"module\":\"tasks\",\"equals\":12}",
+          "status": "passed",
+          "weight": 1,
+          "detail": "12 record(s) in tasks"
+        },
+        {
+          "type": "no_tool_errors",
+          "label": "no_tool_errors",
+          "status": "passed",
+          "weight": 1,
+          "detail": "no tool errors"
+        },
+        {
+          "type": "run_completed",
+          "label": "run_completed",
+          "status": "passed",
+          "weight": 1,
+          "detail": "completed"
+        },
+        {
+          "type": "max_rounds",
+          "label": "max_rounds {\"max\":12}",
+          "status": "passed",
+          "weight": 1,
+          "detail": "6 round(s), at most 12"
+        }
+      ],
+      "turns": [
+        {
+          "turn": 1,
+          "status": "completed",
+          "answer": "Erledigt: Alle 10 Aufgaben zum Projekt **„Umzug Werkstatt“** sind als erledigt markiert.",
+          "rounds": 6,
+          "input_tokens": 21819,
+          "cached_input_tokens": 17920,
+          "output_tokens": 405,
+          "tools": {
+            "explore_modules": 2,
+            "describe_module": 1,
+            "search_entities": 1,
+            "update_entities": 1
+          },
+          "gateway_cost_usd": 0.00682
+        },
+        {
+          "turn": 2,
+          "status": "completed",
+          "answer": "Die fünf dem Büro zugewiesenen Aufgaben für den Umzug sind wieder **offen**. Die anderen fünf bleiben **erledigt**.",
+          "rounds": 3,
+          "input_tokens": 12134,
+          "cached_input_tokens": 9472,
+          "output_tokens": 247,
+          "tools": {
+            "describe_module": 1,
+            "search_entities": 1,
+            "update_entities": 1
+          },
+          "gateway_cost_usd": 0.0043706
+        }
+      ],
+      "duration_s": 34,
+      "gateway_cost_usd": 0.011190599999999998,
+      "cleanup_error": null,
+      "requests": [
+        {
+          "duration_s": 3.312,
+          "gateway": {
+            "cost_usd": 0.0006722,
+            "model": "gpt-6.1-terra",
+            "upstream_provider": "openai",
+            "model_group": "brezel-mid",
+            "call_id": "874904dc-47d3-42db-99fc-78df9c74637f"
+          },
+          "input_tokens": 2641,
+          "cached_tokens": 2304,
+          "cache_write_tokens": 0,
+          "output_tokens": 44,
+          "input_items": 1
+        },
+        {
+          "duration_s": 2.832,
+          "gateway": {
+            "cost_usd": 0.0009622,
+            "model": "gpt-6.1-terra",
+            "upstream_provider": "openai",
+            "model_group": "brezel-mid",
+            "call_id": "20a71f99-9d8b-4e71-95f6-34945c21500f"
+          },
+          "input_tokens": 2981,
+          "cached_tokens": 2304,
+          "cache_write_tokens": 0,
+          "output_tokens": 34,
+          "input_items": 3
+        },
+        {
+          "duration_s": 4.862,
+          "gateway": {
+            "cost_usd": 0.000881,
+            "model": "gpt-6.1-terra",
+            "upstream_provider": "openai",
+            "model_group": "brezel-mid",
+            "call_id": "4d15e337-80f4-4bce-864b-f99b2520f894"
+          },
+          "input_tokens": 3103,
+          "cached_tokens": 2560,
+          "cache_write_tokens": 0,
+          "output_tokens": 42,
+          "input_items": 5
+        },
+        {
+          "duration_s": 2.715,
+          "gateway": {
+            "cost_usd": 0.0011072,
+            "model": "gpt-6.1-terra",
+            "upstream_provider": "openai",
+            "model_group": "brezel-mid",
+            "call_id": "2036cea1-78e7-47ce-934e-559f4881ecff"
+          },
+          "input_tokens": 3654,
+          "cached_tokens": 2944,
+          "cache_write_tokens": 0,
+          "output_tokens": 50,
+          "input_items": 7
+        },
+        {
+          "duration_s": 5.289,
+          "gateway": {
+            "cost_usd": 0.0022618000000000004,
+            "model": "gpt-6.1-terra",
+            "upstream_provider": "openai",
+            "model_group": "brezel-mid",
+            "call_id": "a4197737-823c-4fc2-be90-54def133e5dc"
+          },
+          "input_tokens": 4515,
+          "cached_tokens": 3456,
+          "cache_write_tokens": 0,
+          "output_tokens": 206,
+          "input_items": 9
+        },
+        {
+          "duration_s": 2.22,
+          "gateway": {
+            "cost_usd": 0.0009356,
+            "model": "gpt-6.1-terra",
+            "upstream_provider": "openai",
+            "model_group": "brezel-mid",
+            "call_id": "89748f58-0f2b-47c5-bd61-fbebd86754a9"
+          },
+          "input_tokens": 4925,
+          "cached_tokens": 4352,
+          "cache_write_tokens": 0,
+          "output_tokens": 29,
+          "input_items": 11
+        },
+        {
+          "duration_s": 3.125,
+          "gateway": {
+            "cost_usd": 0.0013252,
+            "model": "gpt-6.1-terra",
+            "upstream_provider": "openai",
+            "model_group": "brezel-mid",
+            "call_id": "57224805-dbf2-4d73-a98b-e503abb54262"
+          },
+          "input_tokens": 3079,
+          "cached_tokens": 2304,
+          "cache_write_tokens": 0,
+          "output_tokens": 87,
+          "input_items": 3
+        },
+        {
+          "duration_s": 3.812,
+          "gateway": {
+            "cost_usd": 0.0022572,
+            "model": "gpt-6.1-terra",
+            "upstream_provider": "openai",
+            "model_group": "brezel-mid",
+            "call_id": "ef721dbc-fe52-47f7-bef7-6998aadd34d7"
+          },
+          "input_tokens": 4424,
+          "cached_tokens": 2944,
+          "cache_write_tokens": 0,
+          "output_tokens": 126,
+          "input_items": 7
+        },
+        {
+          "duration_s": 2.996,
+          "gateway": {
+            "cost_usd": 0.0007882,
+            "model": "gpt-6.1-terra",
+            "upstream_provider": "openai",
+            "model_group": "brezel-mid",
+            "call_id": "2d4de7f5-f5f5-4b39-8684-a1f9703130f2"
+          },
+          "input_tokens": 4631,
+          "cached_tokens": 4224,
+          "cache_write_tokens": 0,
+          "output_tokens": 34,
+          "input_items": 9
+        }
+      ]
+    }
+  ]
+}

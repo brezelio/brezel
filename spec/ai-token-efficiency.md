@@ -63,7 +63,7 @@ unbekannte Modelle/Gateways. Keine kostenpflichtigen Modellversuche oder Produkt
 - [x] Relevante API-Tests, PHPStan und geänderte Prompt-Snapshots für den ersten Implementierungsabschnitt prüfen.
       Keine SPA-Codeänderungen in diesem Abschnitt.
 - [ ] Änderungen, offene Grenzen und Messresultate hier dokumentieren und lokal committen.
-- [ ] Optional nach Freigabe: kostenpflichtige A/B-Evals und echte Cache-/Kostenmessung; kein Teil der Mock-Tests.
+- [x] Nach Freigabe kleiner kostenpflichtiger A/B-Test durchgeführt; kein Teil der Mock-Tests. Siehe Ergebnisbericht.
 
 ## Verifikation
 
@@ -100,3 +100,44 @@ unbekannte Modelle/Gateways. Keine kostenpflichtigen Modellversuche oder Produkt
   Werkzeugpaar. Erhaltung aller parallelen/unterbrochenen Provider-Artefakte separat untersuchen.
 - Kostenberechnung für Cache-Schreibvorgänge erst umstellen, wenn Preise/Token-Semantik des konkreten Providers oder
   Gateways feststehen. Bisher nur Rohwerte zusätzlich erfasst.
+
+## Automatischer A/B-Versuch (2026-11-12)
+
+Vom Nutzer für echte Modellaufrufe freigegeben. Abgeschlossen; Bericht und bereinigte Messdaten unter
+`spec/ai-token-efficiency-eval-2026-11-12.{md,json}`.
+
+- Vorhandenen `AgentEvalRunner`/`AgentEvalRuntimeEnvironment` verwenden. Je Unterhaltung ein frisches Wegwerf-System
+  auf einer eigens gestarteten MariaDB mit temporärem Dateisystem; keine Kundendaten und keine Änderung am Standardmodus.
+- Modell: lokal konfiguriertes `brezel-mid` über das vorhandene Gateway. Tatsächlich gemeldetes Upstream-Modell und
+  Gateway-Kosten je HTTP-Antwort aufzeichnen. Die bestehende Eval-Kostenschätzung für diesen Alias ergibt 0 und darf
+  nicht als tatsächlicher Preis ausgegeben werden.
+- Szenario 1: vorhandenes `chat-follow-up-first-one`, zwei aufeinanderfolgende Nachrichten mit Bezug auf das erste
+  Ergebnis. Bestehende deterministische Checks auf Inhalt, fehlende Änderungen und wiederholte Leseaufrufe.
+- Szenario 2: Seed aus `bulk-update-tasks`; zuerst zehn Umzugsaufgaben abschließen, danach nur fünf Büro-Aufgaben
+  wieder öffnen. Prüfen: fünf offen, fünf erledigt, zwei fremde Aufgaben unverändert, Gesamtzahl zwölf, keine
+  Tool-Fehler und abgeschlossene Läufe.
+- Beide Szenarien nur mit Werkzeugen für lokale Datensätze; keine Shell, Websuche, Authoring, Bildgenerierung oder
+  Delegation. Testet den Verlauf zwischen Runs, nicht die Leistung eines Coding-Agenten mit sehr langen Werkzeugläufen.
+- Je zwei Wiederholungen pro Modus: Reihenfolge `compact → preserve`, anschließend `preserve → compact`.
+  Insgesamt acht Unterhaltungen / sechzehn Nutzernachrichten. Unterschiedliche System-/Run-IDs sind wie im Betrieb
+  unvermeidbar; kein Anspruch auf einen erzwungen kalten oder warmen Provider-Cache.
+- Maximal zwölf Provider-Anfragen pro Unterhaltung und 96 insgesamt, 2500 Ausgabe-Tokens pro Anfrage. Ab 3 USD
+  gateway-gemeldeten Gesamtkosten startet keine weitere Anfrage; eine bereits laufende Anfrage kann die Grenze
+  überschreiten. Fehlende Gateway-Kosten getrennt kenntlich machen, nicht als kostenlos werten.
+- Infrastrukturfehler oder fehlgeschlagene Bereinigung stoppen weitere Testunterhaltungen. Ergebnisse nach jeder
+  Unterhaltung sichern, einschließlich Checks, Traces, Tokens, tatsächlicher Gateway-Kosten und HTTP-Latenzen.
+- Laufharness und Rohdaten liegen während des Versuchs unter `/tmp/opencode/history-ab*`; nach Abschluss die
+  bereinigte Zusammenfassung im Repository dokumentieren. Keine Zugangsdaten in Berichte übernehmen.
+
+### Ergebnis
+
+- Acht Unterhaltungen, 59 echte Provider-Aufrufe, 0,1151998 USD vom Gateway gemeldet, Modell `gpt-6.1-terra`.
+  Alle acht Systeme bereinigt, separate Datenbank entfernt. Keine Produktion oder Defaults verändert.
+- Gesamt Compact 0,0443766 USD, Preserve 0,0708232 USD. Die ersten Turns streuen bereits ohne History-Replay;
+  diese Differenz nicht als kausale 59,6-%-Verteuerung durch Preserve verkaufen.
+- Direkte lesende Folgefragen: Preserve spart je einen Modellaufruf, keine erneute Modulbeschreibung. Folge-Turns
+  zusammen 12,1 % günstiger. Bei Datenkorrekturen spart es Modullesen, nicht Modellrunden, und ist 45,8 % teurer.
+- Alle vier Datenkorrekturen korrekt. Ein Preserve-Inhaltscheck der lesenden Folgefrage scheitert an der mehrdeutigen
+  Erstfrage (Kunde vs. Kundenbereich); Antwortprüfung im Bericht dokumentiert, Originalscore bleibt unverändert.
+- Konsequenz: Compact bleibt Standard, keine automatische Situationswahl. Für belastbarere Schlüsse wären mehr
+  Wiederholungen und ein gepaarter Vergleich ab identischem ersten Turn nötig. Keine weiteren bezahlten Läufe gestartet.
