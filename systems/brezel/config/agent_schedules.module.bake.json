@@ -77,6 +77,15 @@
           }
         },
         {
+          "identifier": "remember_runs",
+          "type": "number",
+          "options": {
+            "default": 0,
+            "rules": "nullable|integer|min:0|max:10",
+            "help": true
+          }
+        },
+        {
           "identifier": "next_run_at",
           "type": "datetime",
           "options": {

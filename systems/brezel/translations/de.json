@@ -89,6 +89,7 @@
         "schedule_preset": "Häufigkeit",
         "cron_expression": "Eigene Zeit (Cron)",
         "timezone": "Zeitzone",
+        "remember_runs": "Frühere Ergebnisse berücksichtigen",
         "next_run_at": "Nächster Lauf",
         "last_dispatched_at": "Zuletzt gestartet",
         "last_skipped_at": "Zuletzt übersprungen",
@@ -110,7 +111,8 @@
         "objective": "Vollständiger Auftrag, den der Agent bei jedem Lauf erhält. Das Ergebnis erscheint im Chat der Person, die den Zeitplan angelegt hat.",
         "schedule_preset": "Für eine andere Uhrzeit „Eigene Zeit (Cron)“ wählen.",
         "cron_expression": "Nur bei „Eigene Zeit“: Minute Stunde Tag Monat Wochentag. Beispiele: „30 7 * * *“ = täglich 07:30, „0 8 * * 1-5“ = werktags 08:00, „0 17 * * 5“ = freitags 17:00.",
-        "timezone": "IANA-Zeitzone, z. B. Europe/Berlin."
+        "timezone": "IANA-Zeitzone, z. B. Europe/Berlin.",
+        "remember_runs": "Wie viele Ergebnisse der letzten Läufe der Agent bei jedem Lauf sieht. 0: Jeder Lauf beginnt neu, z. B. für Wetter oder Erinnerungen. 3 bis 10: für Aufgaben, die nichts doppelt melden oder Veränderungen erkennen sollen, z. B. Nachrichten-Zusammenfassungen. Höchstens 10."
       },
       "headlines": {
         "task": "Auftrag",

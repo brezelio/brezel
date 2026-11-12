@@ -88,6 +88,7 @@
         "schedule_preset": "Frequency",
         "cron_expression": "Custom time (cron)",
         "timezone": "Time zone",
+        "remember_runs": "Consider earlier results",
         "next_run_at": "Next run",
         "last_dispatched_at": "Last started",
         "last_skipped_at": "Last skipped",
@@ -109,7 +110,8 @@
         "objective": "Complete instruction the agent receives on every run. The result appears in the chat of the person who created the schedule.",
         "schedule_preset": "For any other time choose \"Custom time (cron)\".",
         "cron_expression": "Only for \"Custom time\": minute hour day month weekday. Examples: \"30 7 * * *\" = daily 07:30, \"0 8 * * 1-5\" = weekdays 08:00, \"0 17 * * 5\" = Fridays 17:00.",
-        "timezone": "IANA time zone, e.g. Europe/Berlin."
+        "timezone": "IANA time zone, e.g. Europe/Berlin.",
+        "remember_runs": "How many results of its last runs the agent sees on each run. 0: every run starts fresh, e.g. for weather or reminders. 3 to 10: for tasks that should not report anything twice or should notice changes, e.g. news digests. At most 10."
       },
       "headlines": {
         "task": "Instruction",
