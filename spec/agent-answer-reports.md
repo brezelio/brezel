@@ -172,19 +172,23 @@ Cloud-Zieladresse, Reporterrolle, Empfangsworkflow und Provisionierung gehören 
 Das Runtime-Template benötigt keine Reporting-Ressourcen. In anderen Brezel-Projekten bleibt die Aktion deaktiviert oder nutzt deren eigenen konfigurierten
 Meldeweg. Keine hart codierten Cloud-Adressen oder versteckte universelle Supportidentität im Framework.
 
-### Automatisches Nachrüsten bestehender Instanzen
+### Einmaliges Nachrüsten bestehender Instanzen
 
-- `SyncInstanceReporting` prüft jede Minute im globalen Console-Client bestehende nicht mehr im Entwurf befindliche
-  Instanzen. Fehlender Reporter/Key oder eine andere bzw. noch nicht übergebene Zieladresse löst die Einrichtung aus.
+- Ein Admin startet **„Meldeweg für bestehende Instanzen einrichten“** einmal in der Instanzübersicht.
+  `BackfillInstanceReporting` prüft die vorhandenen nicht mehr im Entwurf befindlichen Instanzen.
+  Fehlender Reporter/Key oder eine andere bzw. noch nicht übergebene Zieladresse löst die Einrichtung aus.
+- **Kein reporting-spezifischer Cronjob und kein dauerhafter Scan.** Neue Instanzen werden durch ihre normale
+  Provisionierung automatisch eingerichtet.
 - Jede Instanz wird als unabhängiger Workflowjob bearbeitet; ein Fehler blockiert die übrigen nicht.
 - `ConfigureInstanceReporting` sperrt den kurzen Konfigurationszweig, lädt den Zustand neu und verwendet den
-  vorhandenen Reporter/Key. Überlappende Cronläufe prüfen unter der Sperre erneut, ob noch Arbeit nötig ist.
+  vorhandenen Reporter/Key. Doppelte Klicks prüfen unter der Sperre erneut, ob noch Arbeit nötig ist.
 - Erst nach explizitem `accepted: true` des Operators wird `reporting_url` als übergebener Stand gespeichert.
-  Bei Fehlern bleibt die Instanz pending und wird im nächsten Schedulerlauf wieder versucht.
+  Bei Fehlern bleibt die Instanz pending und wird bei erneutem Klick wieder versucht.
 - `accepted` heißt dauerhaft an den Operator übergeben, nicht schon in laufenden Pods aktiv. Der Operator übernimmt
   das Übergabe-Secret über seinen eigenen wiederholbaren Abgleich und rollt die Pods per vorhandenem Secret-Hash.
-- Der Admin-Button bleibt als erzwungene Wiederholung bestehen. Keine Plan-/Trialänderung, kein manueller Schritt
-  pro Instanz erforderlich. Voraussetzung: einmalig korrekte Empfangsadresse, Scheduler und Worker der Console.
+- Der Einzelinstanz-Admin-Button bleibt als erzwungene Wiederholung bestehen. Keine Plan-/Trialänderung, kein manueller
+  Schritt pro Instanz erforderlich. Voraussetzung: einmalig korrekte Empfangsadresse und Worker der Console.
+- Release-/Aktivierungsreihenfolge: `../console/README.md`, Abschnitt „Reporting rollout checklist“.
 
 **Sichtbarkeit:** Nicht im normalen Kunden-UI verfügbar heißt nicht vor einem technisch privilegierten
 Instanzbetreiber geheim. Root-/Shell-Agenten, veränderbare Workflows oder Backendzugriff können ENV-Credentials
@@ -263,7 +267,7 @@ Im aktuellen Code geprüft:
 - [x] Warndreieck, Popconfirm, Kommentar und Versandquittung in der SPA ergänzen.
 - [x] Console-Detailansicht und explizite werkzeuglose KI-Analyse ergänzen; Analyse mit Mock geprüft.
 - [x] Reporting-Ressourcen aus Runtime-Template und lokalem System entfernt; keine Installation pro System nötig.
-- [x] Automatischen Console-Abgleich für bestehende Instanzen mit Wiederholung und übersprungenen Erfolgsfällen ergänzen.
+- [x] Einmalig gestarteten Console-Sammellauf mit Wiederholung per Klick und übersprungenen Erfolgsfällen ergänzen.
 - [ ] Einen echten Pilotreport zwischen laufender Instanz und Console nach Release prüfen.
 
 ### Implementierter Zuschnitt
@@ -282,7 +286,7 @@ Im aktuellen Code geprüft:
   Gemeinsamer lockfähiger Cache der Console-Worker erforderlich, kein Array-Cache im Deployment.
 - Operator nimmt Keys über den privilegierten Provisionierungspfad oder den engen Backfill-Endpunkt entgegen,
   überträgt sie aus einem Übergabe-Secret ins instanzbezogene Runtime-Secret und entfernt das Übergabe-Secret.
-- Automatisches Nachrüsten bestehender Instanzen plus Console-Adminaktion ohne Plan-/Trialänderung; Reporter-Keys werden bei
+- Admin-Sammelaktion zum Nachrüsten bestehender Instanzen ohne Plan-/Trialänderung; Reporter-Keys werden bei
   Console-Instanzlöschung deaktiviert. Keine Kundenansicht für Reporter-Key oder Reportverwaltung.
 - Kleine Core-Ergänzungen bleiben generisch: Chat-Reporting-API und Sender, optionale Webhook-Keybeschränkung,
   `action/revokeApiKeys` und `flow/lock`. Cloud-Adressen/-Rollen/-Workflows liegen in Produktressourcen.
@@ -304,10 +308,13 @@ Im aktuellen Code geprüft:
   grün, PHPStan für betroffene Backendpfade ohne Fehler. Console-Produktionsbuild erfolgreich mit bestehenden
   Drittanbieter-/CSS-Warnungen in der ersten Implementierung; UI-Änderung im Umbau betrifft nur die native Route und
   das `reportable`-Flag. Der lokale Workflow-Loader lädt keine Reporting-Datei mehr.
-- Automatischer Abgleich mit echtem Workflowparser getestet: eigene Identität je Instanz, keine wiederholte
+- Nachrüstaktion mit echtem Workflowparser getestet: eigene Identität je Instanz, keine wiederholte
   Übergabe erfolgreicher Fälle, erneutes Lesen unter der Sperre bei bereits wartenden Jobs, Wiederholung bei
-  negativer Operatorquittung und Netzwerkfehler. Jeder Instanzjob ist unabhängig; der Scheduler benötigt keinen Nutzer.
+  negativer Operatorquittung und Netzwerkfehler. Jeder Instanzjob ist unabhängig; der Sammellauf erfordert einen Admin.
 - Test-Datenbank und erzeugte Runtime-Test-/Baseline-Systeme entfernt, Browser-Preview gestoppt und entfernt.
+- Änderung vom 13.11.: periodischen Reporting-Abgleich durch einmalige Admin-Sammelaktion ersetzt. JSON und
+  Ressourcenbezüge geprüft; Regressionstest um Adminschutz und Abwesenheit eines Cron-Events erweitert.
+  Diese Änderung noch nicht erneut mit PHP/Workflow-Suite ausgeführt, da der lokale Docker-Stack gestoppt ist.
 
 ## Wesentliche Tests
 
