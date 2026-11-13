@@ -304,7 +304,7 @@ Im aktuellen Code geprüft:
 - Die einfache KI-Analyse ist ein expliziter `ai/chatBot`-Aufruf ohne Tools; keine vollwertige autonome Agentpipeline.
   Sie kann auf Provider-/Kontextgrenzen scheitern und wird nicht automatisch beim Reporteingang ausgeführt.
 - Lokaler Prüfstand nach nativem Umbau: 469 Backendtests ohne Fehlschläge (zwei Deprecations, 43 PHPUnit-Hinweise),
-  271 SPA-Unit- und 287 Komponententests grün, Console-Suite 34 Fälle/67 Prüfungen grün, Operator `go test ./...`
+  271 SPA-Unit- und 287 Komponententests grün, Console-Suite nach Admin-Sammelaktion 35 Fälle/70 Prüfungen grün, Operator `go test ./...`
   grün, PHPStan für betroffene Backendpfade ohne Fehler. Console-Produktionsbuild erfolgreich mit bestehenden
   Drittanbieter-/CSS-Warnungen in der ersten Implementierung; UI-Änderung im Umbau betrifft nur die native Route und
   das `reportable`-Flag. Der lokale Workflow-Loader lädt keine Reporting-Datei mehr.
@@ -314,7 +314,14 @@ Im aktuellen Code geprüft:
 - Test-Datenbank und erzeugte Runtime-Test-/Baseline-Systeme entfernt, Browser-Preview gestoppt und entfernt.
 - Änderung vom 13.11.: periodischen Reporting-Abgleich durch einmalige Admin-Sammelaktion ersetzt. JSON und
   Ressourcenbezüge geprüft; Regressionstest um Adminschutz und Abwesenheit eines Cron-Events erweitert.
-  Diese Änderung noch nicht erneut mit PHP/Workflow-Suite ausgeführt, da der lokale Docker-Stack gestoppt ist.
+  Am 13.11. nach Remote-Abgleich erneut geprüft: 469 Backendtests / 3.076 Assertions ohne Fehlschläge,
+  Nachrüst-Regressionstest / 20 Assertions und gezieltes PHPStan grün; vollständige Console-Suite 35 Fälle / 70 Prüfungen grün.
+- Empfangsadresse am 13.11. im bestehenden Kubernetes-Secret `bc-console/console-env` hinterlegt:
+  `BREZEL_SYSTEM_console_BREZEL_REPORT_INGEST_URL=https://console-api.brezel.cloud/console/webhook/receiveAgentReport`.
+  API-Basis aus Live-ConfigMap und SPA-Konfiguration verifiziert; Systempfad aus Backendrouting und Live-Systemroute.
+  Ohne Auth liefert der Webhookpfad 401 (kein Nachweis für bereits installierten Empfangsworkflow).
+  Secret-Wert nach Patch geprüft; keine anderen Secretfelder verändert. Kein manueller Neustart oder Release gestartet;
+  ENV wird von neu gestarteten Console-Prozessen übernommen. Pilotreport und veröffentlichte Reporting-Version stehen aus.
 
 ## Wesentliche Tests
 
