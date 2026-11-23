@@ -38,17 +38,7 @@
             "fields": true
           },
           "users": {
-            "read": {
-              "filter": [
-                [
-                  {
-                    "field": "id",
-                    "operator": "=",
-                    "recipe": "user().id"
-                  }
-                ]
-              ]
-            },
+            "read": true,
             "update": {
               "filter": [
                 [
