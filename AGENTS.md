@@ -106,7 +106,10 @@ These templates work only in Bakery resources (`*.bake.json`). Workflows loaded 
 }
 ```
 
-- Module `title` is a Brezel expression, not a recipe: `.` concatenates, quoted strings are literals, and `->` accesses relations. Never use a bare relation field; use its display name, for example `"number.\" – \".customer->brezel_name"`.
+- Module `title` is a Brezel expression, not a recipe: `.` concatenates, quoted strings are literals, and `->` accesses relations, for example `"number.\" – \".customer->brezel_name"`.
+  - Avoid `choice` fields in titles; their raw values are not translated.
+  - Avoid relation fields in titles. If unavoidable, use `relation->brezel_name`, never the bare relation field. It can still be empty when the referenced entity's title fields are not loaded in that context.
+  - Prefer a dedicated `text` field computed via the field's `recipe` and use that field as the module `title`.
 - Use `options.single_entity` for modules that represent one settings record.
 - Use `options.param_scopes` for route parameter-based system scoping.
 - A module button key must match the triggering workflow event identifier and module.
