@@ -61,7 +61,8 @@
           "identifier": "availability",
           "type": "choice",
           "options": {
-            "values": ["available", "busy", "unavailable"]
+            "values": ["available", "busy", "unavailable"],
+            "allow_clear": true
           }
         },
         {
