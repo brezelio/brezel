@@ -106,6 +106,7 @@ These templates work only in Bakery resources (`*.bake.json`). Workflows loaded 
 }
 ```
 
+- Module `title` is a Brezel expression, not a recipe: `.` concatenates, quoted strings are literals, and `->` accesses relations. Never use a bare relation field; use its display name, for example `"number.\" – \".customer->brezel_name"`.
 - Use `options.single_entity` for modules that represent one settings record.
 - Use `options.param_scopes` for route parameter-based system scoping.
 - A module button key must match the triggering workflow event identifier and module.
@@ -221,6 +222,7 @@ Recipes commonly appear in:
 - `this` is the current entity in module and layout contexts.
 - `$name` refers to a workflow variable.
 - Keep expressions short. In Bakery resources, use `${trimFile('recipes/name.recipe')}` for longer reusable expressions.
+- Avoid large or nested lambdas such as `items.map(x => x.children.filter(y => ...))`; the backend ANTLR parser is extremely slow on them. Use workflow elements or a custom recipe function instead.
 - Backend and frontend recipes use separate interpreters and may expose different functions.
 - Available backend functions can be checked in `vendor/brezel/api/app/Recipes/Driver/Native/Interpreter/Main/MainInterpreter.php`.
 - In workflow recipes, use `??` for value fallback. Do not use `||`; it returns a boolean.
