@@ -44,7 +44,8 @@
         "roles": "Rollen",
         "status": "Status",
         "agent_status": "Agent-Status",
-        "actor_type": "Typ"
+        "actor_type": "Typ",
+        "availability": "Verfügbarkeit"
       },
       "choice": {
         "status": {
@@ -58,6 +59,11 @@
         "actor_type": {
           "human": "Mensch",
           "ai": "KI"
+        },
+        "availability": {
+          "available": "Verfügbar",
+          "busy": "Beschäftigt",
+          "unavailable": "Nicht verfügbar"
         }
       },
       "tabs": {

@@ -58,6 +58,13 @@
           }
         },
         {
+          "identifier": "availability",
+          "type": "choice",
+          "options": {
+            "values": ["available", "busy", "unavailable"]
+          }
+        },
+        {
           "identifier": "status",
           "type": "choice",
           "options": {

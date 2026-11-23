@@ -43,7 +43,8 @@
         "password": "Password",
         "status": "Status",
         "agent_status": "Agent status",
-        "actor_type": "Type"
+        "actor_type": "Type",
+        "availability": "Availability"
       },
       "choice": {
         "status": {
@@ -57,6 +58,11 @@
         "actor_type": {
           "human": "Human",
           "ai": "AI"
+        },
+        "availability": {
+          "available": "Available",
+          "busy": "Busy",
+          "unavailable": "Not available"
         }
       },
       "tabs": {

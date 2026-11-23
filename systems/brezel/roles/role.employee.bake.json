@@ -37,6 +37,45 @@
             "read": true,
             "fields": true
           },
+          "users": {
+            "read": {
+              "filter": [
+                [
+                  {
+                    "field": "id",
+                    "operator": "=",
+                    "recipe": "user().id"
+                  }
+                ]
+              ]
+            },
+            "update": {
+              "filter": [
+                [
+                  {
+                    "field": "id",
+                    "operator": "=",
+                    "recipe": "user().id"
+                  }
+                ]
+              ]
+            },
+            "fields": {
+              "availability": true,
+              "name": {
+                "read": true,
+                "write": false
+              },
+              "avatar": {
+                "read": true,
+                "write": false
+              },
+              "email": {
+                "read": true,
+                "write": false
+              }
+            }
+          },
           "files": {
             "create": true,
             "read": true,

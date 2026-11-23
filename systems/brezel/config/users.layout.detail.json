@@ -38,6 +38,7 @@
                     "fields": [
                       "name",
                       "avatar",
+                      "availability",
                       "email",
                       "password",
                       "roles"
