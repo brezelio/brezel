@@ -7,7 +7,7 @@
   "prefer-stable": true,
   "license": "proprietary",
   "require": {
-    "brezel/api": "dev-4.0.0-feat-ai.23",
+    "brezel/api": "dev-4.0.0-feat-ai.104",
     "nunomaduro/collision": "*",
     "spatie/laravel-ignition": "*"
   },
