@@ -10,6 +10,7 @@
         "name": "Buchungssätze",
         "key": "journal-entry",
         "description": "Bereitet Buchungssätze mit Soll, Haben und Belegnachweis zur Prüfung vor, etwa für Abgrenzungen, Abschreibungen, Lohnabgrenzungen oder Umsatzrealisierung zum Periodenende.",
+        "category": "finance",
         "instructions": "${file('skills/journal-entry/SKILL.md')}",
         "files": [],
         "source": "https://github.com/anthropics/knowledge-work-plugins/tree/d900840716eb262e1feb17c6f4406c9ce0e06bcf/finance/skills/journal-entry",

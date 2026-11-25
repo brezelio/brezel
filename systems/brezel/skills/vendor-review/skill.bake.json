@@ -10,6 +10,7 @@
         "name": "Lieferantenbewertung",
         "key": "vendor-review",
         "description": "Bewertet Lieferanten und Dienstleister mit Gesamtkostenbetrachtung, Risikobewertung und Empfehlung. Für neue Angebote, Vertragsverlängerungen und Anbietervergleiche.",
+        "category": "legal",
         "instructions": "${file('skills/vendor-review/SKILL.md')}",
         "files": [],
         "source": "https://github.com/anthropics/knowledge-work-plugins/tree/d900840716eb262e1feb17c6f4406c9ce0e06bcf/operations/skills/vendor-review",

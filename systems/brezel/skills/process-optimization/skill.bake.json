@@ -10,6 +10,7 @@
         "name": "Prozessoptimierung",
         "key": "process-optimization",
         "description": "Analysiert bestehende Geschäftsprozesse, findet Wartezeiten, Nacharbeit und manuelle Schritte und schlägt Verbesserungen mit Umsetzungsplan vor. Für langsame oder umständliche Abläufe.",
+        "category": "general",
         "instructions": "${file('skills/process-optimization/SKILL.md')}",
         "files": [],
         "source": "https://github.com/anthropics/knowledge-work-plugins/tree/d900840716eb262e1feb17c6f4406c9ce0e06bcf/operations/skills/process-optimization",

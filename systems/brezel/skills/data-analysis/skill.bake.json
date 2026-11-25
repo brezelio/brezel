@@ -10,6 +10,7 @@
         "name": "Datenanalyse",
         "key": "data-analysis",
         "description": "Beantwortet Datenfragen von der schnellen Kennzahl bis zum formalen Bericht auf Basis der Datensätze im System oder bereitgestellter Exporte. Für Kennzahlen, Trendursachen, Segmentvergleiche und Auswertungen für Entscheider.",
+        "category": "data",
         "instructions": "${file('skills/data-analysis/SKILL.md')}",
         "files": [],
         "source": "https://github.com/anthropics/knowledge-work-plugins/tree/d900840716eb262e1feb17c6f4406c9ce0e06bcf/data/skills/analyze",

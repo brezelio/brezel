@@ -10,6 +10,7 @@
         "name": "Fehlersuche",
         "key": "debugging",
         "description": "Strukturierte Fehlersuche: Problem reproduzieren, eingrenzen, Ursache finden und eine Lösung mit Regressionstest vorschlagen. Für Fehlermeldungen, Stacktraces und unerwartetes Verhalten ohne offensichtliche Ursache.",
+        "category": "software",
         "instructions": "${file('skills/debugging/SKILL.md')}",
         "files": [],
         "source": "https://github.com/anthropics/knowledge-work-plugins/tree/d900840716eb262e1feb17c6f4406c9ce0e06bcf/engineering/skills/debug",

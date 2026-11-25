@@ -10,6 +10,7 @@
         "name": "Interne Kommunikation",
         "key": "internal-comms",
         "description": "Leitfaden für interne Kommunikation in bewährten Formaten: Statusberichte, 3P-Updates (Fortschritt, Pläne, Probleme), Mitarbeiter-Newsletter, FAQs, Projekt- und Vorfallberichte.",
+        "category": "general",
         "instructions": "${file('skills/internal-comms/SKILL.md')}",
         "files": [
           { "path": "references/3p-updates.md", "content": "${file('skills/internal-comms/references/3p-updates.md')}" },

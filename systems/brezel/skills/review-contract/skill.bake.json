@@ -10,6 +10,7 @@
         "name": "Vertragsprüfung",
         "key": "review-contract",
         "description": "Prüft Verträge Klausel für Klausel gegen die Verhandlungsposition des Unternehmens, markiert Abweichungen, schlägt Änderungen mit Rückfallpositionen vor und bewertet die geschäftlichen Auswirkungen. Ersetzt keine Rechtsberatung.",
+        "category": "legal",
         "instructions": "${file('skills/review-contract/SKILL.md')}",
         "files": [],
         "source": "https://github.com/anthropics/knowledge-work-plugins/tree/d900840716eb262e1feb17c6f4406c9ce0e06bcf/legal/skills/review-contract",

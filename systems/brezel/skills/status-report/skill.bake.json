@@ -10,6 +10,7 @@
         "name": "Statusbericht",
         "key": "status-report",
         "description": "Erstellt Statusberichte mit Kennzahlen, Ampelstatus, Risiken und offenen Entscheidungen. Für wöchentliche, monatliche oder quartalsweise Berichte an Geschäftsführung und Beteiligte.",
+        "category": "general",
         "instructions": "${file('skills/status-report/SKILL.md')}",
         "files": [],
         "source": "https://github.com/anthropics/knowledge-work-plugins/tree/d900840716eb262e1feb17c6f4406c9ce0e06bcf/operations/skills/status-report",

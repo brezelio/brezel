@@ -10,6 +10,7 @@
         "name": "Ticket-Triage",
         "key": "ticket-triage",
         "description": "Kategorisiert und priorisiert eingehende Support-Anfragen (P1 bis P4), prüft auf Duplikate und bekannte Probleme und empfiehlt das zuständige Team samt Erstantwort.",
+        "category": "sales",
         "instructions": "${file('skills/ticket-triage/SKILL.md')}",
         "files": [],
         "source": "https://github.com/anthropics/knowledge-work-plugins/tree/d900840716eb262e1feb17c6f4406c9ce0e06bcf/customer-support/skills/ticket-triage",

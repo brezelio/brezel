@@ -10,6 +10,7 @@
         "name": "Änderungsantrag",
         "key": "change-request",
         "description": "Erstellt Änderungsanträge mit Auswirkungsanalyse, Risikobewertung, Kommunikations- und Rückfallplan. Für System- oder Prozessänderungen, die freigegeben werden müssen.",
+        "category": "general",
         "instructions": "${file('skills/change-request/SKILL.md')}",
         "files": [],
         "source": "https://github.com/anthropics/knowledge-work-plugins/tree/d900840716eb262e1feb17c6f4406c9ce0e06bcf/operations/skills/change-request",

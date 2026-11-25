@@ -10,6 +10,7 @@
         "name": "Störungsmanagement",
         "key": "incident-response",
         "description": "Führt strukturiert durch Störungen und Ausfälle: Schweregrad einstufen, Statusmeldungen verfassen, Maßnahmen dokumentieren und ein schuldfreies Postmortem schreiben. Für akute Vorfälle, Statusupdates und die Nachbereitung.",
+        "category": "software",
         "instructions": "${file('skills/incident-response/SKILL.md')}",
         "files": [],
         "source": "https://github.com/anthropics/knowledge-work-plugins/tree/d900840716eb262e1feb17c6f4406c9ce0e06bcf/engineering/skills/incident-response",

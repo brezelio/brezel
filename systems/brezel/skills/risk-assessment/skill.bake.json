@@ -10,6 +10,7 @@
         "name": "Risikobewertung",
         "key": "risk-assessment",
         "description": "Identifiziert und bewertet operative Risiken nach Eintrittswahrscheinlichkeit und Auswirkung und erstellt ein priorisiertes Risikoregister mit Maßnahmen. Für Projekte, Lieferanten, Prozesse und Entscheidungen.",
+        "category": "general",
         "instructions": "${file('skills/risk-assessment/SKILL.md')}",
         "files": [],
         "source": "https://github.com/anthropics/knowledge-work-plugins/tree/d900840716eb262e1feb17c6f4406c9ce0e06bcf/operations/skills/risk-assessment",

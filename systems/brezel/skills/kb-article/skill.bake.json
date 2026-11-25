@@ -10,6 +10,7 @@
         "name": "Wissensartikel",
         "key": "kb-article",
         "description": "Erstellt aus gelösten Anfragen oder häufigen Fragen auffindbare Artikel für die Wissensdatenbank, etwa Anleitungen, Fehlerbehebungen, FAQs oder bekannte Probleme.",
+        "category": "general",
         "instructions": "${file('skills/kb-article/SKILL.md')}",
         "files": [],
         "source": "https://github.com/anthropics/knowledge-work-plugins/tree/d900840716eb262e1feb17c6f4406c9ce0e06bcf/customer-support/skills/kb-article",

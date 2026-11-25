@@ -10,6 +10,7 @@
         "name": "Kampagnenplanung",
         "key": "campaign-plan",
         "description": "Erstellt ein vollständiges Kampagnenbriefing mit Zielen, Zielgruppe, Botschaften, Kanalstrategie, Redaktionsplan und Erfolgskennzahlen. Für Produkteinführungen, Leadgenerierung und Bekanntheitskampagnen.",
+        "category": "marketing",
         "instructions": "${file('skills/campaign-plan/SKILL.md')}",
         "files": [],
         "source": "https://github.com/anthropics/knowledge-work-plugins/tree/d900840716eb262e1feb17c6f4406c9ce0e06bcf/marketing/skills/campaign-plan",

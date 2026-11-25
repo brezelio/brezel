@@ -10,6 +10,7 @@
         "name": "Social Media",
         "key": "social-media",
         "description": "Erstellt und plant Social-Media-Inhalte für LinkedIn, Instagram, Facebook, X, TikTok und Kurzvideos – Hooks, Beiträge, Karussells, Videoskripte, Redaktionskalender, Wiederverwertung und Social Listening.",
+        "category": "marketing",
         "instructions": "${file('skills/social-media/SKILL.md')}",
         "files": [
           { "path": "references/carousel-frameworks.md", "content": "${file('skills/social-media/references/carousel-frameworks.md')}" },

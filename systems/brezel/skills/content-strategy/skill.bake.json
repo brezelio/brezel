@@ -10,6 +10,7 @@
         "name": "Content-Strategie",
         "key": "content-strategy",
         "description": "Plant eine Content-Strategie: Themen, Content-Säulen und Cluster, Priorisierung von Ideen, Redaktionsplan und Verbreitung der Inhalte. Für die Frage, welche Inhalte erstellt werden sollen.",
+        "category": "marketing",
         "instructions": "${file('skills/content-strategy/SKILL.md')}",
         "files": [
           { "path": "references/content-distribution.md", "content": "${file('skills/content-strategy/references/content-distribution.md')}" }

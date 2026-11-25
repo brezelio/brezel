@@ -10,6 +10,7 @@
         "name": "Betriebshandbuch",
         "key": "runbook",
         "description": "Erstellt oder aktualisiert Schritt-für-Schritt-Anleitungen für wiederkehrende Betriebsaufgaben mit Fehlerbehebung, Rückfallschritten und Eskalationswegen.",
+        "category": "software",
         "instructions": "${file('skills/runbook/SKILL.md')}",
         "files": [],
         "source": "https://github.com/anthropics/knowledge-work-plugins/tree/d900840716eb262e1feb17c6f4406c9ce0e06bcf/operations/skills/runbook",

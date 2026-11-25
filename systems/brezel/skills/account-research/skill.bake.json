@@ -10,6 +10,7 @@
         "name": "Unternehmensrecherche",
         "key": "account-research",
         "description": "Recherchiert ein Zielunternehmen und optional eine Ansprechperson, bewertet die Passung zum Idealkundenprofil und prüft vorhandene Datensätze, bevor Kontakt aufgenommen wird.",
+        "category": "sales",
         "instructions": "${file('skills/account-research/SKILL.md')}",
         "files": [],
         "source": "https://github.com/anthropics/knowledge-work-plugins/tree/d900840716eb262e1feb17c6f4406c9ce0e06bcf/sales/skills/account-research",

@@ -10,6 +10,7 @@
         "name": "Statistische Analyse",
         "key": "statistical-analysis",
         "description": "Wendet statistische Methoden an: Kennwerte und Verteilungen, Trends und einfache Prognosen, Ausreißererkennung und Signifikanztests, inklusive typischer Fehlschlüsse. Für die Auswertung und Interpretation von Zahlen mit statistischem Anspruch.",
+        "category": "data",
         "instructions": "${file('skills/statistical-analysis/SKILL.md')}",
         "files": [],
         "source": "https://github.com/anthropics/knowledge-work-plugins/tree/d900840716eb262e1feb17c6f4406c9ce0e06bcf/data/skills/statistical-analysis",

@@ -10,6 +10,7 @@
         "name": "Compliance-Prüfung",
         "key": "compliance-check",
         "description": "Prüft geplante Vorhaben, Funktionen oder Kampagnen auf einschlägige Vorschriften, nötige Freigaben und Risiken, mit Schwerpunkt DSGVO, sowie Auftragsverarbeitungsverträge und Betroffenenanfragen. Ersetzt keine Rechtsberatung.",
+        "category": "legal",
         "instructions": "${file('skills/compliance-check/SKILL.md')}",
         "files": [],
         "source": "https://github.com/anthropics/knowledge-work-plugins/tree/d900840716eb262e1feb17c6f4406c9ce0e06bcf/legal/skills/compliance-check",

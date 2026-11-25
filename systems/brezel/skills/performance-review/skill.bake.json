@@ -10,6 +10,7 @@
         "name": "Leistungsbeurteilung",
         "key": "performance-review",
         "description": "Strukturiert Mitarbeitergespräche mit Vorlagen für Selbsteinschätzung, Beurteilung durch die Führungskraft und Kalibrierung. Für Beurteilungsrunden und konkretes, verhaltensbezogenes Feedback.",
+        "category": "people",
         "instructions": "${file('skills/performance-review/SKILL.md')}",
         "files": [],
         "source": "https://github.com/anthropics/knowledge-work-plugins/tree/d900840716eb262e1feb17c6f4406c9ce0e06bcf/human-resources/skills/performance-review",

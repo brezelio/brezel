@@ -10,6 +10,7 @@
         "name": "Abweichungsanalyse",
         "key": "variance-analysis",
         "description": "Zerlegt Plan-Ist- und Periodenabweichungen in ihre Treiber, erstellt Brückenrechnungen und verständliche Erläuterungen für die Geschäftsführung.",
+        "category": "finance",
         "instructions": "${file('skills/variance-analysis/SKILL.md')}",
         "files": [],
         "source": "https://github.com/anthropics/knowledge-work-plugins/tree/d900840716eb262e1feb17c6f4406c9ce0e06bcf/finance/skills/variance-analysis",

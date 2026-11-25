@@ -10,6 +10,7 @@
         "name": "Copywriting",
         "key": "copywriting",
         "description": "Schreibt, überarbeitet und verbessert Marketingtexte für Webseiten, Landingpages, Überschriften, Call-to-Actions und Wertversprechen. Vermeidet typische KI-Floskeln und formuliert nur belegbare Aussagen.",
+        "category": "marketing",
         "instructions": "${file('skills/copywriting/SKILL.md')}",
         "files": [
           { "path": "references/ai-tells.md", "content": "${file('skills/copywriting/references/ai-tells.md')}" },

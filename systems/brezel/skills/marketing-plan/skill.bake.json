@@ -10,6 +10,7 @@
         "name": "Marketingplan",
         "key": "marketing-plan",
         "description": "Erstellt einen umfassenden, umsetzbaren Marketingplan (12 Monate mit 90-Tage-Prioritäten) nach dem AARRR-Modell, zugeschnitten auf Budget, Team und Phase des Unternehmens. Für Marketing-, Wachstums- und Go-to-Market-Pläne sowie Marktgrößenschätzungen (TAM/SAM/SOM).",
+        "category": "marketing",
         "instructions": "${file('skills/marketing-plan/SKILL.md')}",
         "files": [
           { "path": "references/aarrr-framework.md", "content": "${file('skills/marketing-plan/references/aarrr-framework.md')}" },

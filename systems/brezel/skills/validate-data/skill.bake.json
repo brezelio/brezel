@@ -10,6 +10,7 @@
         "name": "Analyseprüfung",
         "key": "validate-data",
         "description": "Prüft eine Analyse vor der Weitergabe auf Methodik, Rechenfehler, Verzerrungen und tragfähige Schlussfolgerungen und gibt eine Freigabeeinschätzung. Für Auswertungen vor Präsentationen oder Entscheidungen.",
+        "category": "data",
         "instructions": "${file('skills/validate-data/SKILL.md')}",
         "files": [],
         "source": "https://github.com/anthropics/knowledge-work-plugins/tree/d900840716eb262e1feb17c6f4406c9ce0e06bcf/data/skills/validate-data",

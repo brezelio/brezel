@@ -10,6 +10,7 @@
         "name": "Kontaktaufnahme entwerfen",
         "key": "draft-outreach",
         "description": "Entwirft personalisierte Akquise-E-Mails oder mehrstufige Sequenzen zur Prüfung und weist auf rechtliche Grenzen bei Kaltakquise in Deutschland hin (UWG § 7, DSGVO).",
+        "category": "sales",
         "instructions": "${file('skills/draft-outreach/SKILL.md')}",
         "files": [],
         "source": "https://github.com/anthropics/knowledge-work-plugins/tree/d900840716eb262e1feb17c6f4406c9ce0e06bcf/sales/skills/draft-outreach",

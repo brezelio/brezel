@@ -10,6 +10,7 @@
         "name": "Interviewvorbereitung",
         "key": "interview-prep",
         "description": "Erstellt strukturierte Interviewleitfäden mit kompetenzbasierten Fragen, Bewertungsbögen und Vorlage für die Nachbesprechung. Für die Vorbereitung von Bewerbungsgesprächen zu einer Stelle.",
+        "category": "people",
         "instructions": "${file('skills/interview-prep/SKILL.md')}",
         "files": [],
         "source": "https://github.com/anthropics/knowledge-work-plugins/tree/d900840716eb262e1feb17c6f4406c9ce0e06bcf/human-resources/skills/interview-prep",
