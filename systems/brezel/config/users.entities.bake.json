@@ -19,6 +19,7 @@
     "resource": {
       "module": "users",
       "client": "${resource_client.global}",
+      "root": true,
       "fields": {
         "email": "admin@brezel.io",
         "password": "${env('ADMIN_PASSWORD', 'secret')}",
