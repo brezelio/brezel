@@ -11,6 +11,8 @@ import { runServeCommand } from "./serve"
 
 type SetupOutput = CommandOutput
 
+const defaultAiUrl = "https://api.openai.com/v1"
+
 type PromptState = {
   title: string
   message?: string
@@ -39,6 +41,7 @@ export async function runSetupCommand(args: string[]): Promise<number> {
   }
 
   const ui = createSetupUi()
+  let failed = true
 
   try {
     ui.start()
@@ -59,6 +62,7 @@ export async function runSetupCommand(args: string[]): Promise<number> {
 
     await ensureToken(ui, envPath, "COMPOSER_TOKEN", "Composer token")
     await ensureToken(ui, envPath, "NPM_TOKEN", "npm token")
+    await ensureAiCredentials(ui, envPath)
 
     writeEnvValue(envPath, "APP_SYSTEM", currentSystemIdentifier)
     await ensureRuntimeState(currentSystemIdentifier)
@@ -145,8 +149,13 @@ export async function runSetupCommand(args: string[]): Promise<number> {
       success: true,
     })
     await sleep(600)
+    failed = false
   } finally {
     ui.stop()
+    // Stopping the UI clears the screen, so repeat the failed step's output on the plain terminal.
+    if (failed) {
+      printSetupFailure(ui)
+    }
   }
 
   return await runServeCommand(["--skip-stack-start"])
@@ -221,7 +230,7 @@ function createSetupUi(): SetupUi & {
   return ui
 }
 
-async function ensureToken(ui: ReturnType<typeof createSetupUi>, envPath: string, key: string, label: string): Promise<void> {
+async function ensureToken(ui: ReturnType<typeof createSetupUi>, envPath: string, key: string, label: string, message = `Enter the ${label.toLowerCase()} used by this Brezel instance.`): Promise<void> {
   const existingValue = readEnvValue(envPath, key)
 
   if (existingValue) {
@@ -233,12 +242,37 @@ async function ensureToken(ui: ReturnType<typeof createSetupUi>, envPath: string
 
   const value = await askPrompt(ui, {
     title: label,
-    message: `Enter the ${label.toLowerCase()} used by this Brezel instance.`,
+    message,
     hint: "Press Enter to confirm.",
     placeholder: label,
     secret: true,
   })
   writeEnvValue(envPath, key, value)
+}
+
+async function ensureAiCredentials(ui: ReturnType<typeof createSetupUi>, envPath: string): Promise<void> {
+  await ensureUrl(ui, envPath, "OPENAI_URL", "AI endpoint", "OpenAI-compatible API endpoint used for Brezel AI.")
+  await ensureToken(ui, envPath, "OPENAI_API_KEY", "AI API key", "Enter the API key for the AI endpoint.")
+
+  if (await askYesNo(ui, "Use the same endpoint and API key for audio transcription?", true)) {
+    writeEnvValue(envPath, "AI_TRANSCRIPTION_URL", readEnvValue(envPath, "OPENAI_URL") ?? defaultAiUrl)
+    writeEnvValue(envPath, "AI_TRANSCRIPTION_KEY", readEnvValue(envPath, "OPENAI_API_KEY") ?? "")
+    return
+  }
+
+  await ensureUrl(ui, envPath, "AI_TRANSCRIPTION_URL", "Transcription endpoint", "OpenAI-compatible API endpoint used for audio transcription.")
+  await ensureToken(ui, envPath, "AI_TRANSCRIPTION_KEY", "Transcription API key", "Enter the API key for the transcription endpoint.")
+}
+
+async function ensureUrl(ui: ReturnType<typeof createSetupUi>, envPath: string, key: string, title: string, message: string): Promise<void> {
+  const value = await askPrompt(ui, {
+    title,
+    message,
+    hint: `Press Enter to confirm. Leave empty for ${defaultAiUrl}.`,
+    placeholder: defaultAiUrl,
+    value: readEnvValue(envPath, key) ?? defaultAiUrl,
+  })
+  writeEnvValue(envPath, key, value.trim() || defaultAiUrl)
 }
 
 async function runSetupStep(ui: ReturnType<typeof createSetupUi>, title: string, composeArgs: string[]): Promise<number> {
@@ -437,6 +471,19 @@ function appendSetupRecoveryHint(ui: ReturnType<typeof createSetupUi>, lines: st
   })
 }
 
+function printSetupFailure(ui: SetupUi): void {
+  const lines = [
+    "",
+    `${paint(ansi.bold, ansi.red)}brezel setup failed during: ${ui.step}${paintReset()}`,
+  ]
+
+  if (ui.output) {
+    lines.push("", `${paint(ansi.bold)}${ui.output.title}${paintReset()}`, ...ui.output.lines)
+  }
+
+  lines.push("", "Fix the problem above and rerun `brezel setup`.", "")
+  process.stderr.write(`${lines.join("\n")}\n`)
+}
 
 async function askYesNo(ui: ReturnType<typeof createSetupUi>, question: string, defaultValue: boolean): Promise<boolean> {
   const defaultLabel = defaultValue ? "Y/n" : "y/N"
