@@ -1,0 +1,25 @@
+[
+  {
+    "resource_entity": "skill_brezel_api_client",
+    "depends_on": "resource_module.skills",
+    "policy": "detach",
+    "resource": {
+      "module": "skills",
+      "client": "${resource_client.global}",
+      "fields": {
+        "name": "Externe Brezel-Instanz (API)",
+        "key": "brezel-api-client",
+        "description": "Liest und ändert Daten in einer anderen, externen Brezel-Instanz über deren REST-API mit API-Key: Module, Datensätze, Filter, Relationen, Listen, Dateien und Workflow-Webhooks. Nur für fremde Instanzen, nie für das eigene System.",
+        "category": "brezel",
+        "instructions": "${file('skills/brezel-api-client/SKILL.md')}",
+        "files": [
+          { "path": "references/api.md", "content": "${file('skills/brezel-api-client/references/api.md')}" },
+          { "path": "scripts/brezel_call.py", "content": "${file('skills/brezel-api-client/scripts/brezel_call.py')}" },
+          { "path": "scripts/json_peek.py", "content": "${file('skills/brezel-api-client/scripts/json_peek.py')}" }
+        ],
+        "source": "https://gitlab.kiwis-and-brownies.de/kibro/openclaw-skills/-/tree/66164ba/skills/brezel-api-client",
+        "active": true
+      }
+    }
+  }
+]
