@@ -86,6 +86,14 @@
           }
         },
         {
+          "identifier": "quiet_replies",
+          "type": "checkbox",
+          "options": {
+            "default": true,
+            "help": true
+          }
+        },
+        {
           "identifier": "next_run_at",
           "type": "datetime",
           "options": {

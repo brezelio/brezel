@@ -46,7 +46,8 @@
                       "agent_owner",
                       "enabled",
                       "objective",
-                      "remember_runs"
+                      "remember_runs",
+                      "quiet_replies"
                     ],
                     "show_in": [
                       "module.edit",

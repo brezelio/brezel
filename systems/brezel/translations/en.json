@@ -95,6 +95,7 @@
         "cron_expression": "Custom time (cron)",
         "timezone": "Time zone",
         "remember_runs": "Consider earlier results",
+        "quiet_replies": "Quiet when nothing's new",
         "next_run_at": "Next run",
         "last_dispatched_at": "Last started",
         "last_skipped_at": "Last skipped",
@@ -117,7 +118,8 @@
         "schedule_preset": "For any other time choose \"Custom time (cron)\".",
         "cron_expression": "Only for \"Custom time\": minute hour day month weekday. Examples: \"30 7 * * *\" = daily 07:30, \"0 8 * * 1-5\" = weekdays 08:00, \"0 17 * * 5\" = Fridays 17:00.",
         "timezone": "IANA time zone, e.g. Europe/Berlin.",
-        "remember_runs": "How many results of its last runs the agent sees on each run. 0: every run starts fresh, e.g. for weather or reminders. 3 to 10: for tasks that should not report anything twice or should notice changes, e.g. news digests. At most 10."
+        "remember_runs": "How many results of its last runs the agent sees on each run. 0: every run starts fresh, e.g. for weather or reminders. 3 to 10: for tasks that should not report anything twice or should notice changes, e.g. news digests. At most 10.",
+        "quiet_replies": "When a run has nothing new or relevant, the agent writes its result to the chat without notifying you. Off: every run notifies you."
       },
       "headlines": {
         "task": "Instruction",

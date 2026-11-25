@@ -96,6 +96,7 @@
         "cron_expression": "Eigene Zeit (Cron)",
         "timezone": "Zeitzone",
         "remember_runs": "Frühere Ergebnisse berücksichtigen",
+        "quiet_replies": "Still bei Nullnummern",
         "next_run_at": "Nächster Lauf",
         "last_dispatched_at": "Zuletzt gestartet",
         "last_skipped_at": "Zuletzt übersprungen",
@@ -118,7 +119,8 @@
         "schedule_preset": "Für eine andere Uhrzeit „Eigene Zeit (Cron)“ wählen.",
         "cron_expression": "Nur bei „Eigene Zeit“: Minute Stunde Tag Monat Wochentag. Beispiele: „30 7 * * *“ = täglich 07:30, „0 8 * * 1-5“ = werktags 08:00, „0 17 * * 5“ = freitags 17:00.",
         "timezone": "IANA-Zeitzone, z. B. Europe/Berlin.",
-        "remember_runs": "Wie viele Ergebnisse der letzten Läufe der Agent bei jedem Lauf sieht. 0: Jeder Lauf beginnt neu, z. B. für Wetter oder Erinnerungen. 3 bis 10: für Aufgaben, die nichts doppelt melden oder Veränderungen erkennen sollen, z. B. Nachrichten-Zusammenfassungen. Höchstens 10."
+        "remember_runs": "Wie viele Ergebnisse der letzten Läufe der Agent bei jedem Lauf sieht. 0: Jeder Lauf beginnt neu, z. B. für Wetter oder Erinnerungen. 3 bis 10: für Aufgaben, die nichts doppelt melden oder Veränderungen erkennen sollen, z. B. Nachrichten-Zusammenfassungen. Höchstens 10.",
+        "quiet_replies": "Hat ein Lauf nichts Neues oder Relevantes, schreibt der Agent sein Ergebnis in den Chat, ohne dass Sie benachrichtigt werden. Ausgeschaltet: Jeder Lauf benachrichtigt Sie."
       },
       "headlines": {
         "task": "Auftrag",
