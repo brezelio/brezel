@@ -5,5 +5,6 @@ if (-not (Get-Command bun -ErrorAction SilentlyContinue)) {
     exit 1
 }
 
-& bun run (Join-Path $scriptDir 'brezel.ts') @args
+# Bun would load .env into process.env, and those startup values would override .env edits made during the run in Docker Compose.
+& bun --no-env-file run (Join-Path $scriptDir 'brezel.ts') @args
 exit $LASTEXITCODE
