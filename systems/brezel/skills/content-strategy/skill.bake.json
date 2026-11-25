@@ -17,7 +17,16 @@
         ],
         "source": "https://github.com/coreyhaines31/marketingskills/tree/88c79f6528a9347420e57ceb1fff9a60de651768/skills/content-strategy",
         "license": "MIT",
-        "active": true
+        "active": true,
+        "import_check": {
+          "verdict": "ok",
+          "summary": "Die Skill-Dateien geben Anleitungen zur Content-Strategie, Themenrecherche, Priorisierung und Verbreitung. Es fallen keine Anweisungen auf, die Daten oder Geheimnisse unbefugt weitergeben oder riskante Aktionen auslösen.",
+          "findings": [],
+          "checked_at": "2026-11-25T14:29:47+00:00",
+          "checked_by": "Kiwis & Brownies",
+          "approved_by": "Kiwis & Brownies",
+          "approved_at": "2026-11-25T14:29:47+00:00"
+        }
       }
     }
   }

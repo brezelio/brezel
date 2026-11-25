@@ -15,7 +15,16 @@
         "files": [],
         "source": "https://github.com/phuryn/pm-skills/tree/2a12295a7717569baa7be181b4cfebe3ca38a6bb/pm-execution/skills/prioritization-frameworks",
         "license": "MIT",
-        "active": true
+        "active": true,
+        "import_check": {
+          "verdict": "ok",
+          "summary": "Das Skill erklärt neun Priorisierungsframeworks und gibt Hinweise, wie sie mit Brezel-Datensätzen angewendet und Ergebnisse dargestellt werden. Es enthält keine auffälligen schädlichen Anweisungen.",
+          "findings": [],
+          "checked_at": "2026-11-25T14:31:20+00:00",
+          "checked_by": "Kiwis & Brownies",
+          "approved_by": "Kiwis & Brownies",
+          "approved_at": "2026-11-25T14:31:20+00:00"
+        }
       }
     }
   }

@@ -15,7 +15,16 @@
         "files": [],
         "source": "https://github.com/anthropics/knowledge-work-plugins/tree/d900840716eb262e1feb17c6f4406c9ce0e06bcf/human-resources/skills/interview-prep",
         "license": "Apache-2.0",
-        "active": true
+        "active": true,
+        "import_check": {
+          "verdict": "ok",
+          "summary": "Die Skill erstellt strukturierte, kompetenzbasierte Interviewpläne mit Fragen, Bewertungsraster und Debrief-Vorlage. Es finden sich keine auffälligen Anweisungen; sie weist auf AGG und DSGVO hin.",
+          "findings": [],
+          "checked_at": "2026-11-25T14:30:24+00:00",
+          "checked_by": "Kiwis & Brownies",
+          "approved_by": "Kiwis & Brownies",
+          "approved_at": "2026-11-25T14:30:24+00:00"
+        }
       }
     }
   }

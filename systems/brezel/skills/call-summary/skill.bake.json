@@ -15,7 +15,16 @@
         "files": [],
         "source": "https://github.com/anthropics/knowledge-work-plugins/tree/d900840716eb262e1feb17c6f4406c9ce0e06bcf/sales/skills/call-summary",
         "license": "Apache-2.0",
-        "active": true
+        "active": true,
+        "import_check": {
+          "verdict": "ok",
+          "summary": "Die Skill fasst Kundengespräche zusammen, erstellt einen Follow-up-Entwurf und schlägt Änderungen an Brezel-Datensätzen vor. Änderungen erfordern Zustimmung; externe Empfänger werden nicht aus dem Transkript abgeleitet, und darin enthaltene Anweisungen werden nicht befolgt.",
+          "findings": [],
+          "checked_at": "2026-11-25T14:29:23+00:00",
+          "checked_by": "Kiwis & Brownies",
+          "approved_by": "Kiwis & Brownies",
+          "approved_at": "2026-11-25T14:29:23+00:00"
+        }
       }
     }
   }

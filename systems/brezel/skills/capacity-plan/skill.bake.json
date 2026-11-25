@@ -15,7 +15,16 @@
         "files": [],
         "source": "https://github.com/anthropics/knowledge-work-plugins/tree/d900840716eb262e1feb17c6f4406c9ce0e06bcf/operations/skills/capacity-plan",
         "license": "Apache-2.0",
-        "active": true
+        "active": true,
+        "import_check": {
+          "verdict": "ok",
+          "summary": "Die Skill analysiert Team-Auslastung und unterstützt bei Kapazitätsplanung und Szenarien für Personal, Prioritäten und Zeitpläne. Es sind keine auffälligen schädlichen oder unangemessenen Anweisungen enthalten.",
+          "findings": [],
+          "checked_at": "2026-11-25T14:29:28+00:00",
+          "checked_by": "Kiwis & Brownies",
+          "approved_by": "Kiwis & Brownies",
+          "approved_at": "2026-11-25T14:29:28+00:00"
+        }
       }
     }
   }

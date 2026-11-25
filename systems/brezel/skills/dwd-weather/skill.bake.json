@@ -1,0 +1,31 @@
+[
+  {
+    "resource_entity": "skill_dwd_weather",
+    "depends_on": "resource_module.skills",
+    "policy": "detach",
+    "resource": {
+      "module": "skills",
+      "client": "${resource_client.global}",
+      "fields": {
+        "name": "Wetter (DWD)",
+        "key": "dwd-weather",
+        "description": "Ruft stündliche Wettervorhersagen und amtliche Unwetterwarnungen des Deutschen Wetterdienstes für Orte, mehrere Orte oder Strecken in bestimmten Zeitfenstern ab, z. B. für Fahrten, Termine im Freien oder Einsätze.",
+        "category": "general",
+        "instructions": "${file('skills/dwd-weather/SKILL.md')}",
+        "files": [
+          { "path": "scripts/fetch_weather.py", "content": "${file('skills/dwd-weather/scripts/fetch_weather.py')}" }
+        ],
+        "active": true,
+        "import_check": {
+          "verdict": "ok",
+          "summary": "Der Skill ruft Wetterdaten und DWD-Warnungen für angegebene Orte oder Routen ab und gibt sie als JSON aus. Es fällt nichts Sicherheitsrelevantes auf; Ortsnamen werden zur Geocodierung an OpenStreetMap Nominatim gesendet.",
+          "findings": [],
+          "checked_at": "2026-11-25T14:30:08+00:00",
+          "checked_by": "Kiwis & Brownies",
+          "approved_by": "Kiwis & Brownies",
+          "approved_at": "2026-11-25T14:30:08+00:00"
+        }
+      }
+    }
+  }
+]

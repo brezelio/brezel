@@ -15,7 +15,16 @@
         "files": [],
         "source": "https://github.com/anthropics/knowledge-work-plugins/tree/d900840716eb262e1feb17c6f4406c9ce0e06bcf/legal/skills/triage-nda",
         "license": "Apache-2.0",
-        "active": true
+        "active": true,
+        "import_check": {
+          "verdict": "ok",
+          "summary": "Die Skill-Anleitung unterstützt die Vorprüfung eingehender NDAs und ordnet sie für die weitere Prüfung als GREEN, YELLOW oder RED ein. Sie weist auf die nötige juristische Prüfung hin und enthält keine auffälligen schädlichen Anweisungen.",
+          "findings": [],
+          "checked_at": "2026-11-25T14:32:13+00:00",
+          "checked_by": "Kiwis & Brownies",
+          "approved_by": "Kiwis & Brownies",
+          "approved_at": "2026-11-25T14:32:13+00:00"
+        }
       }
     }
   }

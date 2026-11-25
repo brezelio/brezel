@@ -15,7 +15,16 @@
         "files": [],
         "source": "https://github.com/anthropics/knowledge-work-plugins/tree/d900840716eb262e1feb17c6f4406c9ce0e06bcf/operations/skills/status-report",
         "license": "Apache-2.0",
-        "active": true
+        "active": true,
+        "import_check": {
+          "verdict": "ok",
+          "summary": "Die Fähigkeit erstellt Statusberichte mit Kennzahlen, Risiken, Entscheidungen und nächsten Schritten aus den angegebenen Informationen und Brezel-Datensätzen. Es fallen keine problematischen Anweisungen auf.",
+          "findings": [],
+          "checked_at": "2026-11-25T14:31:53+00:00",
+          "checked_by": "Kiwis & Brownies",
+          "approved_by": "Kiwis & Brownies",
+          "approved_at": "2026-11-25T14:31:53+00:00"
+        }
       }
     }
   }

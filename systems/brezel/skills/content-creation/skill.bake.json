@@ -15,7 +15,16 @@
         "files": [],
         "source": "https://github.com/anthropics/knowledge-work-plugins/tree/d900840716eb262e1feb17c6f4406c9ce0e06bcf/marketing/skills/content-creation",
         "license": "Apache-2.0",
-        "active": true
+        "active": true,
+        "import_check": {
+          "verdict": "ok",
+          "summary": "Die Skill-Datei bietet Leitlinien für Marketinginhalte über verschiedene Kanäle und berücksichtigt dabei Faktenprüfung und rechtliche Grundlagen. Es fällt nichts Sicherheitsrelevantes auf; vor dem Veröffentlichen oder Versenden soll die Person zustimmen.",
+          "findings": [],
+          "checked_at": "2026-11-25T14:29:45+00:00",
+          "checked_by": "Kiwis & Brownies",
+          "approved_by": "Kiwis & Brownies",
+          "approved_at": "2026-11-25T14:29:45+00:00"
+        }
       }
     }
   }

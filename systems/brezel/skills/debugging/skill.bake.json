@@ -15,7 +15,16 @@
         "files": [],
         "source": "https://github.com/anthropics/knowledge-work-plugins/tree/d900840716eb262e1feb17c6f4406c9ce0e06bcf/engineering/skills/debug",
         "license": "Apache-2.0",
-        "active": true
+        "active": true,
+        "import_check": {
+          "verdict": "ok",
+          "summary": "Die Skill-Anleitung beschreibt ein strukturiertes Vorgehen zur Fehlerdiagnose und schlägt vor, vor dem Erstellen eines Work Items nachzufragen. Es fallen keine bedenklichen Anweisungen auf.",
+          "findings": [],
+          "checked_at": "2026-11-25T14:29:57+00:00",
+          "checked_by": "Kiwis & Brownies",
+          "approved_by": "Kiwis & Brownies",
+          "approved_at": "2026-11-25T14:29:57+00:00"
+        }
       }
     }
   }

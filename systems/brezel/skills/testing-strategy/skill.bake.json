@@ -15,7 +15,16 @@
         "files": [],
         "source": "https://github.com/anthropics/knowledge-work-plugins/tree/d900840716eb262e1feb17c6f4406c9ce0e06bcf/engineering/skills/testing-strategy",
         "license": "Apache-2.0",
-        "active": true
+        "active": true,
+        "import_check": {
+          "verdict": "ok",
+          "summary": "Die Skill entwirft Teststrategien und Testpläne für verschiedene Komponenten und verlangt vor dem Anlegen von Arbeitsaufträgen eine Rückfrage. Es fällt nichts Sicherheitsrelevantes auf.",
+          "findings": [],
+          "checked_at": "2026-11-25T14:32:07+00:00",
+          "checked_by": "Kiwis & Brownies",
+          "approved_by": "Kiwis & Brownies",
+          "approved_at": "2026-11-25T14:32:07+00:00"
+        }
       }
     }
   }

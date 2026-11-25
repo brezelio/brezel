@@ -15,7 +15,16 @@
         "files": [],
         "source": "https://github.com/anthropics/knowledge-work-plugins/tree/d900840716eb262e1feb17c6f4406c9ce0e06bcf/customer-support/skills/kb-article",
         "license": "Apache-2.0",
-        "active": true
+        "active": true,
+        "import_check": {
+          "verdict": "ok",
+          "summary": "Die Skill-Anleitung beschreibt, wie aus gelösten Supportfällen kundenfreundliche Entwürfe für Wissensdatenbank-Artikel erstellt werden. Sie verlangt, personenbezogene Daten zu entfernen und Artikel nur auf Wunsch zu speichern oder zu veröffentlichen; nichts Gefährliches fällt auf.",
+          "findings": [],
+          "checked_at": "2026-11-25T14:30:30+00:00",
+          "checked_by": "Kiwis & Brownies",
+          "approved_by": "Kiwis & Brownies",
+          "approved_at": "2026-11-25T14:30:30+00:00"
+        }
       }
     }
   }

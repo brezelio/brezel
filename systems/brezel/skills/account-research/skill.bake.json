@@ -15,7 +15,16 @@
         "files": [],
         "source": "https://github.com/anthropics/knowledge-work-plugins/tree/d900840716eb262e1feb17c6f4406c9ce0e06bcf/sales/skills/account-research",
         "license": "Apache-2.0",
-        "active": true
+        "active": true,
+        "import_check": {
+          "verdict": "ok",
+          "summary": "Die Skill erstellt einen quellenbasierten Firmen- und optionalen Kontaktrecherchebrief und gleicht ihn mit bestehenden Brezel-Datensätzen ab. Sie enthält sinnvolle Datenschutz- und Freigabegrenzen; nichts Auffälliges gefunden.",
+          "findings": [],
+          "checked_at": "2026-11-25T14:29:16+00:00",
+          "checked_by": "Kiwis & Brownies",
+          "approved_by": "Kiwis & Brownies",
+          "approved_at": "2026-11-25T14:29:16+00:00"
+        }
       }
     }
   }

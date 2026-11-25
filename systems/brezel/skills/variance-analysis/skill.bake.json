@@ -15,7 +15,16 @@
         "files": [],
         "source": "https://github.com/anthropics/knowledge-work-plugins/tree/d900840716eb262e1feb17c6f4406c9ce0e06bcf/finance/skills/variance-analysis",
         "license": "Apache-2.0",
-        "active": true
+        "active": true,
+        "import_check": {
+          "verdict": "ok",
+          "summary": "Die Skill bietet Methoden zur finanziellen Abweichungsanalyse, einschließlich Treiberzerlegung, Kommentierung und Überleitungen. Sie verweist auf Unternehmensdaten oder vom Nutzer bereitgestellte Dateien und enthält keine auffälligen Anweisungen.",
+          "findings": [],
+          "checked_at": "2026-11-25T14:32:19+00:00",
+          "checked_by": "Kiwis & Brownies",
+          "approved_by": "Kiwis & Brownies",
+          "approved_at": "2026-11-25T14:32:19+00:00"
+        }
       }
     }
   }

@@ -15,7 +15,16 @@
         "files": [],
         "source": "https://github.com/anthropics/knowledge-work-plugins/tree/d900840716eb262e1feb17c6f4406c9ce0e06bcf/finance/skills/financial-statements",
         "license": "Apache-2.0",
-        "active": true
+        "active": true,
+        "import_check": {
+          "verdict": "ok",
+          "summary": "Die Skill-Datei unterstützt die Erstellung von Finanzberichten und Abweichungsanalysen anhand von Unternehmensdaten oder bereitgestellten Dateien. Sie enthält keine auffälligen Anweisungen zu Datenabfluss, Geheimnissen oder unbefugten Aktionen.",
+          "findings": [],
+          "checked_at": "2026-11-25T14:30:15+00:00",
+          "checked_by": "Kiwis & Brownies",
+          "approved_by": "Kiwis & Brownies",
+          "approved_at": "2026-11-25T14:30:15+00:00"
+        }
       }
     }
   }

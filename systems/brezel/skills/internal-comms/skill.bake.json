@@ -20,7 +20,16 @@
         ],
         "source": "https://github.com/anthropics/skills/tree/ca45fc496a3436251f191354091d557da31c15b5/skills/internal-comms",
         "license": "Apache-2.0",
-        "active": true
+        "active": true,
+        "import_check": {
+          "verdict": "ok",
+          "summary": "Die Skill-Anweisungen helfen beim Verfassen interner Updates, Newsletter, FAQs und anderer Unternehmenskommunikation anhand verfügbarer Brezel-Daten und bereitgestellter Materialien. Es gibt keine auffälligen schädlichen oder sicherheitswidrigen Anweisungen.",
+          "findings": [],
+          "checked_at": "2026-11-25T14:30:21+00:00",
+          "checked_by": "Kiwis & Brownies",
+          "approved_by": "Kiwis & Brownies",
+          "approved_at": "2026-11-25T14:30:21+00:00"
+        }
       }
     }
   }

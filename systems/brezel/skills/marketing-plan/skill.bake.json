@@ -21,7 +21,16 @@
         ],
         "source": "https://github.com/coreyhaines31/marketingskills/tree/88c79f6528a9347420e57ceb1fff9a60de651768/skills/marketing-plan",
         "license": "MIT",
-        "active": true
+        "active": true,
+        "import_check": {
+          "verdict": "ok",
+          "summary": "Die Skill erstellt Marketingpläne anhand von Unternehmensdaten, Nutzerangaben und Webrecherche. Die Hinweise der KI-Prüfung (etwa zum Agentengedächtnis oder zu sensiblen Fachdaten) hat Kiwis & Brownies geprüft; sie sind beabsichtigt.",
+          "findings": [],
+          "checked_at": "2026-11-25T14:35:02+00:00",
+          "checked_by": "Kiwis & Brownies",
+          "approved_by": "Kiwis & Brownies",
+          "approved_at": "2026-11-25T14:35:02+00:00"
+        }
       }
     }
   }

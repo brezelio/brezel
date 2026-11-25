@@ -15,7 +15,16 @@
         "files": [],
         "source": "https://github.com/anthropics/knowledge-work-plugins/tree/d900840716eb262e1feb17c6f4406c9ce0e06bcf/legal/skills/review-contract",
         "license": "Apache-2.0",
-        "active": true
+        "active": true,
+        "import_check": {
+          "verdict": "ok",
+          "summary": "Die Fähigkeit unterstützt die Prüfung von Verträgen anhand eines Unternehmens-Playbooks, mit Klauselanalysen, Risikoeinstufungen und Redline-Vorschlägen. Sie enthält keine auffälligen Anweisungen zu Datenabfluss, Umgehung von Schutzmaßnahmen oder unautorisierten Änderungen.",
+          "findings": [],
+          "checked_at": "2026-11-25T14:31:35+00:00",
+          "checked_by": "Kiwis & Brownies",
+          "approved_by": "Kiwis & Brownies",
+          "approved_at": "2026-11-25T14:31:35+00:00"
+        }
       }
     }
   }

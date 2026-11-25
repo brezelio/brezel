@@ -15,7 +15,16 @@
         "files": [],
         "source": "https://github.com/anthropics/knowledge-work-plugins/tree/d900840716eb262e1feb17c6f4406c9ce0e06bcf/customer-support/skills/draft-response",
         "license": "Apache-2.0",
-        "active": true
+        "active": true,
+        "import_check": {
+          "verdict": "ok",
+          "summary": "Die Fähigkeit erstellt professionelle Kundenantworten anhand verfügbarer Brezel-Daten und liefert Entwürfe zur Prüfung. Sie fordert dazu auf, fehlende Fakten nicht zu erfinden und Nachrichten nur auf ausdrücklichen Wunsch zu versenden; nichts Auffälliges gefunden.",
+          "findings": [],
+          "checked_at": "2026-11-25T14:30:04+00:00",
+          "checked_by": "Kiwis & Brownies",
+          "approved_by": "Kiwis & Brownies",
+          "approved_at": "2026-11-25T14:30:04+00:00"
+        }
       }
     }
   }

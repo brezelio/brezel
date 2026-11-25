@@ -15,7 +15,16 @@
         "files": [],
         "source": "https://github.com/anthropics/knowledge-work-plugins/tree/d900840716eb262e1feb17c6f4406c9ce0e06bcf/operations/skills/change-request",
         "license": "Apache-2.0",
-        "active": true
+        "active": true,
+        "import_check": {
+          "verdict": "ok",
+          "summary": "Die Fähigkeit erstellt strukturierte Änderungsanträge mit Auswirkungs-, Risiko-, Kommunikations- und Rücknahmeplanung. Es gibt keine auffälligen Anweisungen; Stakeholder-Nachrichten sollen ausdrücklich erst nach Freigabe versendet werden.",
+          "findings": [],
+          "checked_at": "2026-11-25T14:29:31+00:00",
+          "checked_by": "Kiwis & Brownies",
+          "approved_by": "Kiwis & Brownies",
+          "approved_at": "2026-11-25T14:29:31+00:00"
+        }
       }
     }
   }

@@ -18,7 +18,16 @@
           { "path": "scripts/json_peek.py", "content": "${file('skills/brezel-api-client/scripts/json_peek.py')}" }
         ],
         "source": "https://gitlab.kiwis-and-brownies.de/kibro/openclaw-skills/-/tree/66164ba/skills/brezel-api-client",
-        "active": true
+        "active": true,
+        "import_check": {
+          "verdict": "ok",
+          "summary": "Der Skill ermöglicht den Zugriff auf externe Brezel-Instanzen, einschließlich Lesen, Ändern, Löschen, Webhooks und Datei-Uploads. Die Hinweise der KI-Prüfung (etwa zum Agentengedächtnis oder zu sensiblen Fachdaten) hat Kiwis & Brownies geprüft; sie sind beabsichtigt.",
+          "findings": [],
+          "checked_at": "2026-11-25T14:29:20+00:00",
+          "checked_by": "Kiwis & Brownies",
+          "approved_by": "Kiwis & Brownies",
+          "approved_at": "2026-11-25T14:29:20+00:00"
+        }
       }
     }
   }

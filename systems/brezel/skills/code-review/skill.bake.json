@@ -15,7 +15,16 @@
         "files": [],
         "source": "https://github.com/anthropics/knowledge-work-plugins/tree/d900840716eb262e1feb17c6f4406c9ce0e06bcf/engineering/skills/code-review",
         "license": "Apache-2.0",
-        "active": true
+        "active": true,
+        "import_check": {
+          "verdict": "ok",
+          "summary": "Die Skill unterstützt strukturierte Code-Reviews zu Sicherheit, Leistung, Korrektheit und Wartbarkeit. Sie fordert bei fehlendem Kontext nach und verlangt Zustimmung, bevor Folgeaufgaben angelegt werden; nichts Auffälliges gefunden.",
+          "findings": [],
+          "checked_at": "2026-11-25T14:29:37+00:00",
+          "checked_by": "Kiwis & Brownies",
+          "approved_by": "Kiwis & Brownies",
+          "approved_at": "2026-11-25T14:29:37+00:00"
+        }
       }
     }
   }

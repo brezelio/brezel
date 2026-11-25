@@ -15,7 +15,16 @@
         "files": [],
         "source": "https://github.com/anthropics/knowledge-work-plugins/tree/d900840716eb262e1feb17c6f4406c9ce0e06bcf/sales/skills/draft-outreach",
         "license": "Apache-2.0",
-        "active": true
+        "active": true,
+        "import_check": {
+          "verdict": "ok",
+          "summary": "Die Skill erstellt personalisierte Outreach-E-Mail-Entwürfe und enthält sinnvolle Quellen-, Opt-out- und Compliance-Prüfungen. Die Hinweise der KI-Prüfung (etwa zum Agentengedächtnis oder zu sensiblen Fachdaten) hat Kiwis & Brownies geprüft; sie sind beabsichtigt.",
+          "findings": [],
+          "checked_at": "2026-11-25T14:30:01+00:00",
+          "checked_by": "Kiwis & Brownies",
+          "approved_by": "Kiwis & Brownies",
+          "approved_at": "2026-11-25T14:30:01+00:00"
+        }
       }
     }
   }

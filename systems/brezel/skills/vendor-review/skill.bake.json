@@ -15,7 +15,16 @@
         "files": [],
         "source": "https://github.com/anthropics/knowledge-work-plugins/tree/d900840716eb262e1feb17c6f4406c9ce0e06bcf/operations/skills/vendor-review",
         "license": "Apache-2.0",
-        "active": true
+        "active": true,
+        "import_check": {
+          "verdict": "ok",
+          "summary": "Die Fähigkeit unterstützt strukturierte Anbieterbewertungen mit Kosten-, Risiko- und Leistungsvergleich sowie einer Empfehlung. Es sind keine auffälligen schädlichen Anweisungen erkennbar.",
+          "findings": [],
+          "checked_at": "2026-11-25T14:32:21+00:00",
+          "checked_by": "Kiwis & Brownies",
+          "approved_by": "Kiwis & Brownies",
+          "approved_at": "2026-11-25T14:32:21+00:00"
+        }
       }
     }
   }

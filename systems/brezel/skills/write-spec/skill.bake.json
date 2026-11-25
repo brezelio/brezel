@@ -15,7 +15,16 @@
         "files": [],
         "source": "https://github.com/anthropics/knowledge-work-plugins/tree/d900840716eb262e1feb17c6f4406c9ce0e06bcf/product-management/skills/write-spec",
         "license": "Apache-2.0",
-        "active": true
+        "active": true,
+        "import_check": {
+          "verdict": "ok",
+          "summary": "Die Skill erstellt strukturierte Produktspezifikationen aus Nutzerideen und kann dafür passende Brezel-Fälle, Arbeitsaufgaben, Datensätze und Dateien heranziehen. Auffällige riskante Anweisungen sind nicht enthalten; das Anlegen von Fällen oder Arbeitsaufgaben soll erst nach Zustimmung erfolgen.",
+          "findings": [],
+          "checked_at": "2026-11-25T14:32:25+00:00",
+          "checked_by": "Kiwis & Brownies",
+          "approved_by": "Kiwis & Brownies",
+          "approved_at": "2026-11-25T14:32:25+00:00"
+        }
       }
     }
   }

@@ -15,7 +15,16 @@
         "files": [],
         "source": "https://github.com/anthropics/knowledge-work-plugins/tree/d900840716eb262e1feb17c6f4406c9ce0e06bcf/operations/skills/risk-assessment",
         "license": "Apache-2.0",
-        "active": true
+        "active": true,
+        "import_check": {
+          "verdict": "ok",
+          "summary": "Die Skill unterstützt bei der Bewertung und Priorisierung betrieblicher Risiken anhand bereitgestellter Informationen und relevanter Brezel-Datensätze. Es fallen keine problematischen Anweisungen auf.",
+          "findings": [],
+          "checked_at": "2026-11-25T14:31:37+00:00",
+          "checked_by": "Kiwis & Brownies",
+          "approved_by": "Kiwis & Brownies",
+          "approved_at": "2026-11-25T14:31:37+00:00"
+        }
       }
     }
   }

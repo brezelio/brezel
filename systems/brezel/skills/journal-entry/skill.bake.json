@@ -15,7 +15,16 @@
         "files": [],
         "source": "https://github.com/anthropics/knowledge-work-plugins/tree/d900840716eb262e1feb17c6f4406c9ce0e06bcf/finance/skills/journal-entry",
         "license": "Apache-2.0",
-        "active": true
+        "active": true,
+        "import_check": {
+          "verdict": "ok",
+          "summary": "Die Skill bereitet Buchungssätze mit Berechnungen und Prüfhinweisen nach DACH-Grundsätzen vor. Sie weist auf fachliche Prüfung hin und untersagt das eigenständige Buchen ohne ausdrücklichen Auftrag; nichts Gefährliches fällt auf.",
+          "findings": [],
+          "checked_at": "2026-11-25T14:30:27+00:00",
+          "checked_by": "Kiwis & Brownies",
+          "approved_by": "Kiwis & Brownies",
+          "approved_at": "2026-11-25T14:30:27+00:00"
+        }
       }
     }
   }

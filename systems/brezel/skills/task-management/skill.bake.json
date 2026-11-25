@@ -15,7 +15,16 @@
         "files": [],
         "source": "https://github.com/anthropics/knowledge-work-plugins/tree/d900840716eb262e1feb17c6f4406c9ce0e06bcf/productivity/skills/task-management",
         "license": "Apache-2.0",
-        "active": true
+        "active": true,
+        "import_check": {
+          "verdict": "ok",
+          "summary": "Die Skill organisiert Aufgaben als Brezel-Fälle und Arbeitspunkte und kann dauerhafte Fakten im Agentengedächtnis speichern. Aufgaben aus Gesprächen oder Zusammenfassungen sollen erst nach Bestätigung erfasst werden; sonst fällt nichts auf.",
+          "findings": [],
+          "checked_at": "2026-11-25T14:32:05+00:00",
+          "checked_by": "Kiwis & Brownies",
+          "approved_by": "Kiwis & Brownies",
+          "approved_at": "2026-11-25T14:32:05+00:00"
+        }
       }
     }
   }

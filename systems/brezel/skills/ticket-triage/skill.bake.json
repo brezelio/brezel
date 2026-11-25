@@ -15,7 +15,16 @@
         "files": [],
         "source": "https://github.com/anthropics/knowledge-work-plugins/tree/d900840716eb262e1feb17c6f4406c9ce0e06bcf/customer-support/skills/ticket-triage",
         "license": "Apache-2.0",
-        "active": true
+        "active": true,
+        "import_check": {
+          "verdict": "ok",
+          "summary": "Die Skill-Anleitung unterstützt beim Kategorisieren, Priorisieren und Weiterleiten von Support-Tickets und begrenzt Änderungen an Datensätzen auf ausdrückliche Aufforderung oder dafür vorgesehene Workflows. Es fällt keine schädliche oder verborgene Anweisung auf.",
+          "findings": [],
+          "checked_at": "2026-11-25T14:32:10+00:00",
+          "checked_by": "Kiwis & Brownies",
+          "approved_by": "Kiwis & Brownies",
+          "approved_at": "2026-11-25T14:32:10+00:00"
+        }
       }
     }
   }

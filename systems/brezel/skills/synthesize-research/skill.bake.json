@@ -15,7 +15,16 @@
         "files": [],
         "source": "https://github.com/anthropics/knowledge-work-plugins/tree/d900840716eb262e1feb17c6f4406c9ce0e06bcf/product-management/skills/synthesize-research",
         "license": "Apache-2.0",
-        "active": true
+        "active": true,
+        "import_check": {
+          "verdict": "ok",
+          "summary": "Die Skill-Anleitung unterstützt dabei, Nutzer- und Kundenforschung strukturiert auszuwerten und daraus priorisierte Erkenntnisse und Empfehlungen abzuleiten. Sie mahnt zu einem sorgfältigen Umgang mit personenbezogenen Daten und verlangt Zustimmung, bevor neue Arbeitselemente erstellt werden; sonst fällt nichts Auffälliges auf.",
+          "findings": [],
+          "checked_at": "2026-11-25T14:32:02+00:00",
+          "checked_by": "Kiwis & Brownies",
+          "approved_by": "Kiwis & Brownies",
+          "approved_at": "2026-11-25T14:32:02+00:00"
+        }
       }
     }
   }
