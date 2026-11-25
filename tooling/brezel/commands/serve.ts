@@ -12,7 +12,7 @@ import { buildCommandOutput, normalizeOutputLines } from "../lib/output"
 import { ensureRuntimeState, readRuntimeState } from "../lib/runtime"
 import { readStackStatus, readStackStatusAsync, type StackStatus } from "../lib/stack-status"
 import { startWorkerReloadWatcher } from "../lib/worker-reload"
-import { ansi, brezelLogo, centerLine, createLogoShimmerController, createScreenRenderer, type CommandOutput, hotkey, hyperlink, isPrintableInput, padVisible, paint, paintReset, renderInlineBox, renderInlineBoxLines, renderLogoLine, statusLine, stripAnsi } from "../lib/ui"
+import { ansi, brezelLogo, centerLine, createLogoShimmerController, createScreenRenderer, type CommandOutput, hotkey, hyperlink, isPrintableInput, padVisible, paint, paintReset, renderInlineBox, renderInlineBoxLines, renderLogoLine, statusLine, stripAnsi, wrapOutputLines } from "../lib/ui"
 import { startExploreDb } from "./explore-db"
 import { runLogsCommand } from "./logs"
 import { restartStack } from "./restart"
@@ -214,6 +214,7 @@ async function runServeControlLoop(appSystem: string, spaUrl: string, context: S
   emitKeypressEvents(process.stdin)
 
   let busy = false
+  let capturedActionRunning = false
   let cleanedUpInput = false
   let usingAlternateScreen = false
   let showHelp = false
@@ -414,8 +415,18 @@ async function runServeControlLoop(appSystem: string, spaUrl: string, context: S
     }
   }
 
+  // Captured commands render into the dashboard, so raw mode stays on. Otherwise the terminal echoes
+  // keys and mouse-wheel scrolling (e.g. `^[[A`) over the dashboard while the command runs.
   const runCapturedAction = async (action: () => Promise<LastActionOutput>) => {
-    await runAction(async () => {
+    busy = true
+    capturedActionRunning = true
+    suspendDashboardRefresh = true
+    context.setForegroundAction(true)
+    if (process.platform === "win32") {
+      disableRawMode()
+    }
+
+    try {
       liveActionOutput = {
         title: "Running command",
         lines: ["Starting..."],
@@ -434,13 +445,25 @@ async function runServeControlLoop(appSystem: string, spaUrl: string, context: S
           `The command finished successfully.`,
         )
       }
-
-      return lastActionOutput.success ? 0 : 1
-    }, [0, 1])
+    } finally {
+      context.setForegroundAction(false)
+      suspendDashboardRefresh = false
+      capturedActionRunning = false
+      busy = false
+      if (!cleanedUpInput) {
+        restoreRawMode()
+        render()
+      }
+    }
   }
 
   const onKeypress = async (_str: string, key: { ctrl?: boolean, name?: string }) => {
     if (busy) {
+      // Raw mode suppresses the terminal's SIGINT, so forward Ctrl+C to cancel the running command
+      // like before. The serve signal handler ignores it during foreground actions.
+      if (capturedActionRunning && key.ctrl && key.name === "c") {
+        process.kill(0, "SIGINT")
+      }
       return
     }
 
@@ -652,12 +675,13 @@ function renderServeLogoLines(shimmerFrame: number): string[] {
 }
 
 function renderScrollableCommandOutputBlock(output: CommandOutput, scrollOffset: number): string[] {
-  const totalLines = output.lines.length
+  const lines = wrapOutputLines(output.lines)
+  const totalLines = lines.length
   const maxScrollOffset = Math.max(0, totalLines - outputVisibleLineCount)
   const clampedOffset = Math.min(Math.max(scrollOffset, 0), maxScrollOffset)
   const end = totalLines - clampedOffset
   const start = Math.max(0, end - outputVisibleLineCount)
-  const visibleLines = output.lines.slice(start, end)
+  const visibleLines = lines.slice(start, end)
   while (visibleLines.length < outputVisibleLineCount) {
     visibleLines.push(visibleLines.length === 0 ? "No output yet." : "")
   }
@@ -693,7 +717,7 @@ function scrollOutput(currentOffset: number, output: CommandOutput | null, delta
     return 0
   }
 
-  const maxOffset = Math.max(0, output.lines.length - outputVisibleLineCount)
+  const maxOffset = Math.max(0, wrapOutputLines(output.lines).length - outputVisibleLineCount)
   return Math.min(Math.max(currentOffset + delta, 0), maxOffset)
 }
 

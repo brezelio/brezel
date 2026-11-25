@@ -134,11 +134,18 @@ export function renderInlineBoxLines(lines: string[]): string[] {
   ]
 }
 
+// Wrap before slicing so that a fixed number of output lines also means a fixed box height.
+export function wrapOutputLines(lines: string[]): string[] {
+  const maxContentWidth = getMaxBoxContentWidth()
+  return lines.flatMap((line) => wrapVisibleLine(line, maxContentWidth))
+}
+
 export function renderCommandOutputBlock(output: CommandOutput, labels: { live: string, complete: string }): string[] {
   const maxLines = 12
-  const visibleLines = output.lines.length > maxLines
-    ? [`... showing last ${maxLines} lines of ${output.lines.length}`, ...output.lines.slice(-maxLines)]
-    : output.lines
+  const lines = wrapOutputLines(output.lines)
+  const visibleLines = lines.length > maxLines
+    ? [`... showing last ${maxLines} lines of ${lines.length}`, ...lines.slice(-maxLines)]
+    : lines
 
   const statusColor = output.success ? ansi.green : ansi.yellow
   const prefix = output.live ? labels.live : labels.complete
@@ -215,6 +222,11 @@ export function createScreenRenderer(): ScreenRenderer {
   let initialized = false
   let pendingUpdate: { kind: "full", lines: string[] } | { kind: "rows", startRow: number, lines: string[] } | null = null
   let renderScheduled = false
+  // Frames taller than the terminal are cut off at the top, so the output and prompts at the bottom stay visible.
+  let hiddenTopRows = 0
+
+  const isVisibleRow = (rowIndex: number) => rowIndex >= hiddenTopRows && rowIndex < hiddenTopRows + getTerminalRows()
+  const moveToRow = (rowIndex: number) => `\u001b[${rowIndex - hiddenTopRows + 1};1H\u001b[2K`
 
   const writeRows = (startRow: number, lines: string[]) => {
     if (!process.stdout.isTTY) {
@@ -234,11 +246,11 @@ export function createScreenRenderer(): ScreenRenderer {
       const nextLine = fittedLines[offset]
       const previousLine = previousLines[rowIndex]
 
-      if (nextLine === previousLine) {
+      if (nextLine === previousLine || !isVisibleRow(rowIndex)) {
         continue
       }
 
-      updates.push(`\u001b[${rowIndex + 1};1H\u001b[2K`)
+      updates.push(moveToRow(rowIndex))
       updates.push(nextLine)
       previousLines[rowIndex] = nextLine
     }
@@ -300,17 +312,25 @@ export function createScreenRenderer(): ScreenRenderer {
       initialized = true
     }
 
+    const nextHiddenTopRows = Math.max(0, fittedLines.length - getTerminalRows())
+    if (nextHiddenTopRows !== hiddenTopRows) {
+      // Every visible row shifts, so redraw the whole screen.
+      hiddenTopRows = nextHiddenTopRows
+      previousLines = []
+      updates.push("\u001b[2J")
+    }
+
     const maxLineCount = Math.max(previousLines.length, fittedLines.length)
 
     for (let index = 0; index < maxLineCount; index += 1) {
       const nextLine = fittedLines[index]
       const previousLine = previousLines[index]
 
-      if (nextLine === previousLine) {
+      if (nextLine === previousLine || !isVisibleRow(index)) {
         continue
       }
 
-      updates.push(`\u001b[${index + 1};1H\u001b[2K`)
+      updates.push(moveToRow(index))
       if (typeof nextLine === "string") {
         updates.push(nextLine)
       }
@@ -380,6 +400,10 @@ function fitTerminalLine(line: string): string {
   }
 
   return `${sliceAnsiVisible(line, terminalWidth)}${ansi.reset}`
+}
+
+function getTerminalRows(): number {
+  return process.stdout.rows || 24
 }
 
 function getSafeTerminalWidth(): number {
