@@ -125,6 +125,18 @@
       ]
     },
     {
+      "identifier": "capabilities",
+      "icon": "mdi:toolbox-outline",
+      "options": {
+        "recipes": {
+          "hidden_from_frontend": "!id || (actor_type != 'ai' && id != user().id)"
+        }
+      },
+      "rows": [
+        "${capabilityComposable('agent_capabilities')}"
+      ]
+    },
+    {
       "identifier": "rights_and_tech",
       "icon": "mdi:shield-account-outline",
       "options": {

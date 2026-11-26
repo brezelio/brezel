@@ -16,6 +16,10 @@
           { "path": "scripts/fetch_weather.py", "content": "${file('skills/dwd-weather/scripts/fetch_weather.py')}" }
         ],
         "active": true,
+        "requirements": [
+          "shell",
+          "network"
+        ],
         "import_check": {
           "verdict": "ok",
           "summary": "Der Skill ruft Wetterdaten und DWD-Warnungen für angegebene Orte oder Routen ab und gibt sie als JSON aus. Es fällt nichts Sicherheitsrelevantes auf; Ortsnamen werden zur Geocodierung an OpenStreetMap Nominatim gesendet.",

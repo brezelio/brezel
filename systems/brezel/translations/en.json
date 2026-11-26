@@ -70,6 +70,7 @@
         "agent": "Agent",
         "assistant": "Assistant",
         "assistant_advanced": "Advanced",
+        "capabilities": "Capabilities",
         "rights_and_tech": "Rights & technology"
       },
       "headlines": {
