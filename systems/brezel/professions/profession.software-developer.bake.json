@@ -13,7 +13,8 @@
         "skills": [
           "${resource_entity.skill_code_review}",
           "${resource_entity.skill_debugging}",
-          "${resource_entity.skill_testing_strategy}"
+          "${resource_entity.skill_testing_strategy}",
+          "${resource_entity.skill_brezel_api_client}"
         ],
         "toolkits": [
           "entities",

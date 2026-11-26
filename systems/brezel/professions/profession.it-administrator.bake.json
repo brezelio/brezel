@@ -13,7 +13,8 @@
         "skills": [
           "${resource_entity.skill_incident_response}",
           "${resource_entity.skill_change_request}",
-          "${resource_entity.skill_runbook}"
+          "${resource_entity.skill_runbook}",
+          "${resource_entity.skill_brezel_api_client}"
         ],
         "toolkits": [
           "entities",
