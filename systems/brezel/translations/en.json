@@ -133,6 +133,79 @@
     },
     "skills": {
       "title": "Skills"
+    },
+    "calendars": {
+      "title": "Calendars",
+      "fields": {
+        "name": "Name",
+        "color": "Colour",
+        "owner": "Owner",
+        "kind": "Kind",
+        "timezone": "Time zone",
+        "readers": "May read",
+        "editors": "May edit"
+      },
+      "choice": {
+        "kind": {
+          "personal": "Personal",
+          "team": "Team",
+          "room": "Room",
+          "resource": "Resource"
+        }
+      }
+    },
+    "events": {
+      "title": "Events",
+      "fields": {
+        "title": "Title",
+        "dates": "Time",
+        "timezone": "Time zone",
+        "calendar": "Calendar",
+        "location": "Location",
+        "description": "Description",
+        "recurrence": "Repeat",
+        "exdates": "Skipped occurrences",
+        "recurrence_of": "Part of series",
+        "recurrence_id": "Original occurrence in the series",
+        "organizer": "Organizer",
+        "organizer_email": "Organizer's email",
+        "attendees": "Attendees",
+        "attendee_user": "Person",
+        "attendee_email": "Email",
+        "attendee_role": "Attendance",
+        "attendee_status": "Response",
+        "visibility": "Visibility",
+        "busy": "Show as",
+        "status": "Status",
+        "meeting_url": "Online meeting link",
+        "uid": "Event ID",
+        "sequence": "Version"
+      },
+      "choice": {
+        "visibility": {
+          "public": "Public",
+          "private": "Private"
+        },
+        "busy": {
+          "busy": "Busy",
+          "free": "Free"
+        },
+        "status": {
+          "confirmed": "Confirmed",
+          "tentative": "Tentative",
+          "cancelled": "Cancelled"
+        },
+        "attendee_role": {
+          "required": "Required",
+          "optional": "Optional"
+        },
+        "attendee_status": {
+          "needs-action": "No answer yet",
+          "accepted": "Accepted",
+          "declined": "Declined",
+          "tentative": "Tentative"
+        }
+      }
     }
   },
   "widgets": {},

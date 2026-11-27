@@ -1,0 +1,22 @@
+[
+  {
+    "resource_module": "calendars",
+    "depends_on": "resource_module.users",
+    "resource": {
+      "identifier": "calendars",
+      "title": "name",
+      "icon": "mdi:calendar-account-outline",
+      "options": {
+        "capabilities": [
+          {
+            "identifier": "Calendars",
+            "options": {
+              "user_module": "users"
+            }
+          }
+        ]
+      },
+      "fields": []
+    }
+  }
+]

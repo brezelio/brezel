@@ -72,6 +72,133 @@
             "fields": true,
             "update": true,
             "delete": true
+          },
+          "calendars": {
+            "filter": [
+              [
+                {
+                  "field": "owner.id",
+                  "operator": "=",
+                  "recipe": "user().id"
+                }
+              ],
+              [
+                {
+                  "field": "readers.id",
+                  "operator": "=",
+                  "recipe": "user().id"
+                }
+              ],
+              [
+                {
+                  "field": "editors.id",
+                  "operator": "=",
+                  "recipe": "user().id"
+                }
+              ]
+            ],
+            "read": true,
+            "create": true,
+            "update": {
+              "filter": [
+                [
+                  {
+                    "field": "owner.id",
+                    "operator": "=",
+                    "recipe": "user().id"
+                  }
+                ]
+              ]
+            },
+            "delete": {
+              "filter": [
+                [
+                  {
+                    "field": "owner.id",
+                    "operator": "=",
+                    "recipe": "user().id"
+                  }
+                ]
+              ]
+            },
+            "fields": true
+          },
+          "events": {
+            "read": {
+              "filter": [
+                [
+                  {
+                    "field": "calendar.owner.id",
+                    "operator": "=",
+                    "recipe": "user().id"
+                  }
+                ],
+                [
+                  {
+                    "field": "calendar.editors.id",
+                    "operator": "=",
+                    "recipe": "user().id"
+                  }
+                ],
+                [
+                  {
+                    "field": "calendar.readers.id",
+                    "operator": "=",
+                    "recipe": "user().id"
+                  },
+                  {
+                    "field": "visibility",
+                    "operator": "=",
+                    "value": "public"
+                  }
+                ],
+                [
+                  {
+                    "field": "attendees.attendee_user.id",
+                    "operator": "=",
+                    "recipe": "user().id"
+                  }
+                ]
+              ]
+            },
+            "create": true,
+            "update": {
+              "filter": [
+                [
+                  {
+                    "field": "calendar.owner.id",
+                    "operator": "=",
+                    "recipe": "user().id"
+                  }
+                ],
+                [
+                  {
+                    "field": "calendar.editors.id",
+                    "operator": "=",
+                    "recipe": "user().id"
+                  }
+                ]
+              ]
+            },
+            "delete": {
+              "filter": [
+                [
+                  {
+                    "field": "calendar.owner.id",
+                    "operator": "=",
+                    "recipe": "user().id"
+                  }
+                ],
+                [
+                  {
+                    "field": "calendar.editors.id",
+                    "operator": "=",
+                    "recipe": "user().id"
+                  }
+                ]
+              ]
+            },
+            "fields": true
           }
         }
       }

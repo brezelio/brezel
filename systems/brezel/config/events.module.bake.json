@@ -1,0 +1,23 @@
+[
+  {
+    "resource_module": "events",
+    "depends_on": "resource_module.calendars",
+    "resource": {
+      "identifier": "events",
+      "title": "title",
+      "icon": "mdi:calendar-blank-outline",
+      "options": {
+        "capabilities": [
+          {
+            "identifier": "Events",
+            "options": {
+              "calendar_module": "calendars",
+              "user_module": "users"
+            }
+          }
+        ]
+      },
+      "fields": []
+    }
+  }
+]

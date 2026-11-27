@@ -134,6 +134,79 @@
     },
     "skills": {
       "title": "Fähigkeiten"
+    },
+    "calendars": {
+      "title": "Kalender",
+      "fields": {
+        "name": "Name",
+        "color": "Farbe",
+        "owner": "Eigentümer",
+        "kind": "Art",
+        "timezone": "Zeitzone",
+        "readers": "Lesen dürfen",
+        "editors": "Bearbeiten dürfen"
+      },
+      "choice": {
+        "kind": {
+          "personal": "Persönlich",
+          "team": "Team",
+          "room": "Raum",
+          "resource": "Ressource"
+        }
+      }
+    },
+    "events": {
+      "title": "Termine",
+      "fields": {
+        "title": "Titel",
+        "dates": "Zeit",
+        "timezone": "Zeitzone",
+        "calendar": "Kalender",
+        "location": "Ort",
+        "description": "Beschreibung",
+        "recurrence": "Wiederholung",
+        "exdates": "Ausgelassene Termine",
+        "recurrence_of": "Gehört zur Serie",
+        "recurrence_id": "Ursprünglicher Termin der Serie",
+        "organizer": "Organisator",
+        "organizer_email": "E-Mail des Organisators",
+        "attendees": "Teilnehmer",
+        "attendee_user": "Person",
+        "attendee_email": "E-Mail",
+        "attendee_role": "Teilnahme",
+        "attendee_status": "Antwort",
+        "visibility": "Sichtbarkeit",
+        "busy": "Anzeigen als",
+        "status": "Status",
+        "meeting_url": "Link zum Online-Meeting",
+        "uid": "Termin-ID",
+        "sequence": "Version"
+      },
+      "choice": {
+        "visibility": {
+          "public": "Öffentlich",
+          "private": "Privat"
+        },
+        "busy": {
+          "busy": "Gebucht",
+          "free": "Frei"
+        },
+        "status": {
+          "confirmed": "Bestätigt",
+          "tentative": "Vorläufig",
+          "cancelled": "Abgesagt"
+        },
+        "attendee_role": {
+          "required": "Erforderlich",
+          "optional": "Optional"
+        },
+        "attendee_status": {
+          "needs-action": "Offen",
+          "accepted": "Zugesagt",
+          "declined": "Abgesagt",
+          "tentative": "Mit Vorbehalt"
+        }
+      }
     }
   },
   "widgets": {},
